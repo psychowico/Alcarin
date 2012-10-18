@@ -1,0 +1,14 @@
+{
+    "name": "alcarin/alcarin",
+    "description": "Alcarin MMORPG",
+    "license": "BSD-3-Clause",
+    "keywords": [
+        "alcarin",
+        "rpg"
+    ],
+    "homepage": "http://projectksi.com/",
+    "require": {
+        "php": ">=5.3.3",
+        "zendframework/zend-mvc": "2.*"
+    }
+}
