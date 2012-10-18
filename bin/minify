@@ -1,0 +1,9 @@
+#!/usr/bin/php
+<?php
+
+$argv = array_merge( $argv, ['minify'] );
+$argc = count($argv);
+$_SERVER['argv'] = $argv;
+$_SERVER['argc'] = $argc;
+
+require __DIR__ . '/../public/index.php';
