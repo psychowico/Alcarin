@@ -28,7 +28,9 @@ class MinifierController extends AbstractActionController
         $this->verbose = $request->getParam('verbose') || $request->getParam('v');
 
         $this->log('Initializing..');
+
         $minifier = $this->getServiceLocator()->get('minifier');
+        $minifier->compile();
 
         return array();
     }
