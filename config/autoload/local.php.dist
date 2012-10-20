@@ -12,5 +12,8 @@
  */
 
 return array(
-    // ...
+    'minifier'    => array(
+        'development_mode'       => true,
+    ),
 );
+
