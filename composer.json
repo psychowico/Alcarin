@@ -12,6 +12,7 @@
         "zendframework/zend-mvc": "2.*",
         "matthiasmullie/minify" : "dev-master",
         "minifier/minifier" : "dev-master",
-        "zf-commons/zfc-twig": "dev-master"
+        "zf-commons/zfc-twig": "dev-master",
+        "propel/propel"      : "dev-master"
     }
 }
