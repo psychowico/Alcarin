@@ -10,6 +10,7 @@
     "require": {
         "php": ">=5.4.0",
         "zendframework/zend-mvc": "2.*",
-        "matthiasmullie/minify" : "dev-master"
+        "matthiasmullie/minify" : "dev-master",
+        "minifier/minifier" : "dev-master"
     }
 }
