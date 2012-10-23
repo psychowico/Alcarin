@@ -1,0 +1,42 @@
+<?php
+/**
+ * Local Configuration Override
+ *
+ * This configuration override file is for overriding environment-specific and
+ * security-sensitive configuration information. Copy this file without the
+ * .dist extension at the end and populate values as needed.
+ *
+ * @NOTE: This file is ignored from Git by default with the .gitignore included
+ * in ZendSkeletonApplication. This is a good practice, as it prevents sensitive
+ * credentials from accidentally being committed into version control.
+ */
+
+return array(
+    'minifier'    => array(
+        'development_mode'       => true,
+        'bundles'   => array(
+            'js'    => array(
+                'output_dir'     => '/js/bundles',
+                'list'              => array(
+                    'js_bundle' => array(
+                        'sources' => array(
+                            '/js/test.js',
+                            '/js/compiled_coffee/test321.js',
+                            '/js/compiled_coffee/my_dir/in_test.js',
+                        ),
+                    ),
+                ),
+            ),
+            'css'    => array(
+                'output_dir' => '/css/bundles',
+                'list'       => array(
+                    'css_bundle' => array(
+                        'sources' => '/css/style.css',
+                    ),
+                ),
+            ),
+        ),
+    ),
+);
+
+
