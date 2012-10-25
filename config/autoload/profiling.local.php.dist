@@ -25,25 +25,9 @@ return array(
     ),
 
     'service_manager' => array(
-        'factories' => array(
-            'Zend\Db\Adapter\Adapter' => function ($sm) {
-                $adapter = new BjyProfiler\Db\Adapter\ProfilingAdapter(array(
-                    'driver'    => 'pdo',
-                    'dsn'       => 'mysql:dbname=dbname;host=localhost',
-                    'database'  => 'dbname',
-                    'username'  => 'username',
-                    'password'  => 'password',
-                    'hostname'  => 'localhost',
-                ));
-
-                $adapter->setProfiler(new BjyProfiler\Db\Profiler\Profiler);
-                $adapter->injectProfilingStatementPrototype();
-                return $adapter;
-            },
-        ),
     ),
 
-      'zenddevelopertools' => array(
+   'zenddevelopertools' => array(
          /**
           * General Profiler settings
           */
@@ -114,7 +98,10 @@ return array(
              *
              * Expects: array
              */
-            'collectors' => array(),
+            'collectors' => array(
+                'db' => null,
+                'test'  => 'ZDTPack\TestCollector'
+             ),
         ),
          /**
           * General Toolbar settings
@@ -173,7 +160,9 @@ return array(
              *
              * Expects: array
              */
-            'entries' => array(),
+            'entries' => array(
+                'test'  => 'zdt-pack/toolbar/test-collector'
+            ),
         ),
     ),
 );
