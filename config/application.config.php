@@ -7,9 +7,13 @@ return array(
         'ZfcTwig',
         'ZfcBase',
         'ZfcUser',
+        'DoctrineModule',
+        'DoctrineMongoODMModule',
+        //adapter for zfc-user and mongo-odm
+        'ZfcUserDoctrineMongoODM',
         //profiling modules, can be removed in production
         'ZendDeveloperTools',
-        'BjyProfiler',
+        'ZDTPack',
         'ZF2NetteDebug'
     ),
     'module_listener_options' => array(
