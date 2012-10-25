@@ -17,4 +17,9 @@ return array(
         //profiling enable
         'profiling' => true,
     ),
+
+    'zfcuser'   => array(
+        //small cost to fast login on development env
+        'password_cost' => 4,
+    ),
 );

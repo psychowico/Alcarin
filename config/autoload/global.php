@@ -12,5 +12,19 @@
  */
 
 return array(
-    //...
+    'service_manager' => array(
+        'factories'    => array(
+            //override default zfcuser mapper by our own
+            'zfcuser_user_mapper' => function( $sm ) {
+                $mongo = $sm->get('mongo');
+                $mapper = new \Alcarin\Mapper\MongoUserMapper();
+                $mapper->setMongoDriver( $mongo );
+                return $mapper;
+            },
+        ),
+    ),
+
+    'zfcuser'   => array(
+        'user_entity_class' => 'Alcarin\Mapper\UserArrayMapper',
+    ),
 );
