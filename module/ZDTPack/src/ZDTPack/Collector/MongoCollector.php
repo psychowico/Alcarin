@@ -21,14 +21,14 @@ use ZendDeveloperTools\Collector\AbstractCollector;
  * @package    ZendDeveloperTools
  * @subpackage Collector
  */
-class TestCollector extends AbstractCollector
+class MongoCollector extends AbstractCollector
 {
     /**
      * @inheritdoc
      */
     public function getName()
     {
-        return 'test';
+        return 'mongo';
     }
 
     /**
