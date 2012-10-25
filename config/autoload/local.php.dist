@@ -12,21 +12,9 @@
  */
 
 return array(
-        'doctrine' => array(
-
-        'connection' => array(
-            'odm_default' => array(
-               'server'    => 'localhost',
-               'port'      => '27017',
-               'user'      => null,
-               'password'  => null,
-            ),
-        ),
-
-        'configuration' => array(
-            'odm_default' => array(
-               'default_db'         => 'alcarin',
-            )
-        ),
+    'mongo' => array(
+        'database'  => 'alcarin',
+        //profiling enable
+        'profiling' => true,
     ),
 );

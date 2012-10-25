@@ -2,15 +2,16 @@
 return array(
     'modules' => array(
         'Alcarin',
+        'Core',
         //external libraries
         'AssetsCompiler',
         'ZfcTwig',
         'ZfcBase',
         'ZfcUser',
-        'DoctrineModule',
+        /*'DoctrineModule',
         'DoctrineMongoODMModule',
         //adapter for zfc-user and mongo-odm
-        'ZfcUserDoctrineMongoODM',
+        'ZfcUserDoctrineMongoODM',*/
         //profiling modules, can be removed in production
         'ZendDeveloperTools',
         'ZDTPack',

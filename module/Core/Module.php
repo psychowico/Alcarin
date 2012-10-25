@@ -7,40 +7,37 @@
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 
-namespace ZDTPack;
+namespace Core;
 
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 
 /**
- * this module extending ZendDevelopTools toolbar about new features
+ * alcarin system core module, should contains classes that will be shared between
+ * system api modules.
  */
 class Module
 {
-    public function onBootstrap(MvcEvent $e)
-    {
-        /*$e->getApplication()->getServiceManager()->get('translator');
-        $eventManager        = $e->getApplication()->getEventManager();
-        $moduleRouteListener = new ModuleRouteListener();
-        $moduleRouteListener->attach($eventManager);*/
-    }
-
     public function getServiceConfig()
     {
         return array(
             'factories' => array(
-                'mongo_profiler' => function( $sm ) {
-                    $profiler_config = $sm->get('config')['mongo_profiler'];
-                    $profiler_class  = $profiler_config['class'];
-
-                    $options = isset( $profiler_config['options'] ) ? $profiler_config['options'] : [];
-
-                    $profiler = new $profiler_class( $options );
-
-                    return $profiler;
+                //sharing mongo
+                'mongo' => function( $sm ) {
+                    $config = $sm->get('config')['mongo'];
+                    $db = \Mongo_Database::instance('mongo', $config );
+                    if( !empty( $config['profiling'] ) ) {
+                        $profiler = $sm->get('mongo_profiler');
+                        $db->set_profiler( [$profiler, 'start'], [$profiler, 'stop'] );
+                    }
+                    return $db;
                 }
             ),
         );
+    }
+
+    public function onBootstrap(MvcEvent $e)
+    {
     }
 
     public function getConfig()

@@ -44,12 +44,28 @@ class TestCollector extends AbstractCollector
      */
     public function collect(MvcEvent $mvcEvent)
     {
-        // todo
-        //echo 'test';exit;
+        $sm = $mvcEvent->getApplication()->getServiceManager();
+        $this->data = $sm->get('mongo_profiler')->getStoredData();
     }
 
-    public function test()
+    public function getQueries()
     {
-        return 'some test data';
+        $result = [];
+        foreach( $this->data as $value ) {
+            $result[ $value['query'] ] = $value['time'];
+        }
+        return $result;
+    }
+
+    public function getQueryCount()
+    {
+        return count( $this->data );
+    }
+
+    public function getTotalTime()
+    {
+        return array_sum( array_map( function( $el ) {
+            return $el['time'];
+        }, $this->data ) );
     }
 }
