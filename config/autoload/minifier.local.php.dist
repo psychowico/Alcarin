@@ -17,11 +17,25 @@ return array(
             'js'    => array(
                 'output_dir'     => '/js/bundles',
                 'list'              => array(
-                    'js_bundle' => array(
+                    //files enough for guest users
+                    'guest' => array(
                         'sources' => array(
-                            '/js/test.js',
-                            '/js/compiled_coffee/test321.js',
-                            '/js/compiled_coffee/my_dir/in_test.js',
+                            '/js/compiled_coffee/core.js',
+                            '/js/compiled_coffee/test.js',
+                        ),
+                    ),
+                    //files enough for admins
+                    'admin' => array(
+                        'sources' => array(
+                            '/js/compiled_coffee/core.js',
+                            '/js/compiled_coffee/test.js',
+                        ),
+                    ),
+                    //files for regular players
+                    'guest' => array(
+                        'sources' => array(
+                            '/js/compiled_coffee/core.js',
+                            '/js/compiled_coffee/test.js',
                         ),
                     ),
                 ),
@@ -29,7 +43,15 @@ return array(
             'css'    => array(
                 'output_dir' => '/css/bundles',
                 'list'       => array(
-                    'css_bundle' => array(
+                    'guest' => array(
+                        'sources' => '/css/style.css',
+                    ),
+                    //files enough for admins
+                    'admin' => array(
+                        'sources' => '/css/style.css',
+                    ),
+                    //files for regular players
+                    'guest' => array(
                         'sources' => '/css/style.css',
                     ),
                 ),

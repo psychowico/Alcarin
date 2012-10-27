@@ -16,6 +16,7 @@ class UserArrayMapper implements UserInterface
         'display_name' => null,
         'password'     => null,
         'email'        => null,
+        'privilages'   => null,
     ];
 
     public function __construct($array = null)
@@ -162,6 +163,18 @@ class UserArrayMapper implements UserInterface
     public function setPassword($password)
     {
         $this->data['password'] = $password;
+        return $this;
+    }
+
+    public function getPrivilages()
+    {
+        return isset( $this->data['privilages'] ) ? $this->data['privilages'] :
+                      \Core\Permission\Resource::defaultForLoggedUser();
+    }
+
+    public function setPrivilages($privilages)
+    {
+        $this->data['privilages'] = $privilages;
         return $this;
     }
 }

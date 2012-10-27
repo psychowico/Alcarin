@@ -9,6 +9,13 @@ return array(
         'collection'=> 'Mongo_Collection',
     ),
 
+    'controller_plugins' => array(
+        'invokables'    => array(
+            //can be helpful in modules to checking user privilages to specific resources
+            'isAllowed' => 'Core\Controller\Plugin\IsAllowed',
+        ),
+    ),
+
     'service_manager' => array(
         'invokables' => array(
         ),

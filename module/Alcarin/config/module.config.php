@@ -52,6 +52,13 @@ return array(
             'translator' => 'Zend\I18n\Translator\TranslatorServiceFactory',
         ),
     ),
+
+    'view_helpers' => array(
+        'invokables'    => array(
+            'isAllowed' => 'Alcarin\View\Helper\IsAllowed',
+        ),
+    ),
+
     'translator' => array(
         'locale' => 'en_US',
         'translation_file_patterns' => array(

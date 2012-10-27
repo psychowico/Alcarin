@@ -28,13 +28,15 @@ class Module
                 //sharing mongo
                 'mongo' => function( $sm ) {
                     $config = $sm->get('config')['mongo'];
+
                     $db = \Mongo_Database::instance('mongo', $config );
                     if( !empty( $config['profiling'] ) ) {
                         $profiler = $sm->get('mongo_profiler');
                         $db->set_profiler( [$profiler, 'start'], [$profiler, 'stop'] );
                     }
                     return $db;
-                }
+                },
+
             ),
         );
     }
@@ -46,12 +48,15 @@ class Module
 
     public function onRender( MvcEvent $e )
     {
-        $this->turnOffJsonNest( $e );
+        if( $e->getRequest() instanceof \Zend\Http\Request ) {
+            $this->turnOffJsonNest( $e );
+        }
     }
 
-    private function turnOffJsonNest( $e )
+    private function turnOffJsonNest( MvcEvent $e )
     {
         $accept  = $e->getRequest()->getHeaders()->get('Accept');
+
         if (($match = $accept->match('application/json, application/javascript')) == false) {
             return;
         }

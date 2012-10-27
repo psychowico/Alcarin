@@ -49,7 +49,7 @@ class MongoUserMapper extends EventProvider implements UserInterface
         $mongo = $this->getMongoDriver();
 
         $result = $mongo->{$this->tableName}
-                ->findOne( $where, [ 'email', 'password', 'username', 'display_name'] );
+                ->findOne( $where, [ 'email', 'password', 'username', 'display_name', 'privilages'] );
 
         if( $result == null ) return null;
 

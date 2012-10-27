@@ -37,9 +37,12 @@ class ExternalErrorsController extends AbstractRestfulController
 
     public function create( $data )
     {
+        $user_ip = $this->getRequest()->getServer('REMOTE_ADDR');
+        $data['user-ip'] = $user_ip;
+
         //let us 'ok' instead of 'success' flag everywhere, we make it less writing
         //and less data to send
         /*return new \Zend\View\Model\JsonModel( ['ok' => 1] );*/
-        return ['ok' => 1, 'errors' => (object)['1', 'dwa'] ];
+        return $data;
     }
 }
