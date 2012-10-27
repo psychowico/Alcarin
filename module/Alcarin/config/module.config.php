@@ -56,7 +56,9 @@ return array(
     'view_helpers' => array(
         'invokables'    => array(
             'isAllowed' => 'Alcarin\View\Helper\IsAllowed',
-            '_'         => 'Zend\I18n\View\Helper\Translate',
+        ),
+        'aliases'   => array(
+            '_'         => 'translate',
         ),
     ),
 
