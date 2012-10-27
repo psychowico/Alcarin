@@ -12,6 +12,9 @@ namespace Alcarin;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 
+/**
+ * main web module provided web-site that using game web api
+ */
 class Module
 {
     public function onBootstrap(MvcEvent $e)

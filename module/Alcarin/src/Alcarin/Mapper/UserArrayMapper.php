@@ -4,6 +4,9 @@ namespace Alcarin\Mapper;
 
 use ZfcUser\Entity\UserInterface;
 
+/**
+ * override ZfcUser\Entity\User class to support mongo
+ */
 class UserArrayMapper implements UserInterface
                      //, ArraySerializableInterface
 

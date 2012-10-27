@@ -16,6 +16,16 @@ class IndexController extends AbstractActionController
 {
     public function indexAction()
     {
+        /*$mongo = $this->getServiceLocator()->get('mongo');
+
+        $x= array();
+        $i =0;
+
+        $collection = $mongo->testing->limit(10000);
+        foreach( $collection as $c ) {
+
+        }*/
+
         return [ 'version' => \Zend\Version\Version::VERSION ];
     }
 }

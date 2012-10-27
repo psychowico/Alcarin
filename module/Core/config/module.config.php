@@ -15,4 +15,10 @@ return array(
         'factories'  => array(
         ),
     ),
+
+    'view_manager' => array(
+        'strategies' => array(
+            'ViewJsonStrategy',
+        ),
+    ),
 );

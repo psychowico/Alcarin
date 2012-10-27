@@ -15,7 +15,7 @@ return array(
                 'options' => array(
                     'route'    => '/',
                     'defaults' => array(
-                        'controller' => 'Alcarin\Controller\Index',
+                        'controller' => 'home',
                         'action'     => 'index',
                     ),
                 ),
@@ -27,12 +27,7 @@ return array(
             'application' => array(
                 'type'    => 'Literal',
                 'options' => array(
-                    'route'    => '/application',
-                    'defaults' => array(
-                        '__NAMESPACE__' => 'Alcarin\Controller',
-                        'controller'    => 'Index',
-                        'action'        => 'index',
-                    ),
+                    'route'    => '/api',
                 ),
                 'may_terminate' => true,
                 'child_routes' => array(
@@ -69,10 +64,12 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'Alcarin\Controller\Index' => 'Alcarin\Controller\IndexController'
+            'external-errors' => 'Alcarin\Controller\ExternalErrorsController',
+            'home'            => 'Alcarin\Controller\IndexController'
         ),
     ),
     'view_manager' => array(
+        'captureTo' => 'test_test',
         'doctype'               => 'HTML5',
         'display_not_found_reason' => true,
         'display_exceptions'       => true,

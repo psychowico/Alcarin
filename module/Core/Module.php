@@ -11,6 +11,9 @@ namespace Core;
 
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
+use Zend\View\ViewEvent;
+use Zend\View\Model\JsonModel;
+use Zend\View\Renderer\JsonRenderer;
 
 /**
  * alcarin system core module, should contains classes that will be shared between
@@ -38,6 +41,28 @@ class Module
 
     public function onBootstrap(MvcEvent $e)
     {
+        $e->getApplication()->getEventManager()->attach( MvcEvent::EVENT_RENDER, array( $this, 'onRender' ), -100 );
+    }
+
+    public function onRender( MvcEvent $e )
+    {
+        $this->turnOffJsonNest( $e );
+    }
+
+    private function turnOffJsonNest( $e )
+    {
+        $accept  = $e->getRequest()->getHeaders()->get('Accept');
+        if (($match = $accept->match('application/json, application/javascript')) == false) {
+            return;
+        }
+
+        if ($match->getTypeString() == 'application/json' ||
+            $match->getTypeString() == 'application/javascript' ) {
+            // application/json Accept header found
+            foreach( $e->getViewModel()->getChildren() as $child ) {
+                $child->setCaptureTo( null );
+            }
+        }
     }
 
     public function getConfig()
