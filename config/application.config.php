@@ -24,8 +24,9 @@ return array(
             'config/autoload/{,*.}{global,local}.php',
         ),
         'module_paths' => array(
-            './module',
+            './module/Web',
             './module/Api',
+            './module',
             './vendor',
         ),
     ),
