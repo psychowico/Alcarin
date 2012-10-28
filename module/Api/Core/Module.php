@@ -14,6 +14,7 @@ use Zend\Mvc\MvcEvent;
 use Zend\View\ViewEvent;
 use Zend\View\Model\JsonModel;
 use Zend\View\Renderer\JsonRenderer;
+use Zend\Http\Request;
 
 /**
  * alcarin system core module, should contains classes that will be shared between
@@ -21,6 +22,14 @@ use Zend\View\Renderer\JsonRenderer;
  */
 class Module
 {
+    public function onBootstrap(MvcEvent $e)
+    {
+        $eventManager = $e->getApplication()->getEventManager();
+        $eventManager->attach( MvcEvent::EVENT_RENDER, array( $this, 'onRender' ), -100 );
+
+        $this->setupRestfulStandard( $e->getRequest() );
+    }
+
     public function getServiceConfig()
     {
         return array(
@@ -41,10 +50,33 @@ class Module
         );
     }
 
-    public function onBootstrap(MvcEvent $e)
+    /**
+     * we setup default way to handle "DELETE" and "PUT" restful
+     * request (because they are unsupported by default html)
+     *
+     * @param $request \Zend\Http\Request
+     */
+    private function setupRestfulStandard( $request )
     {
-        $e->getApplication()->getEventManager()->attach( MvcEvent::EVENT_RENDER, array( $this, 'onRender' ), -100 );
+        //we don't run this in specific situation, like console runing scripts
+        if( $request instanceof Request ) {
+            if( $request->isPost() ) {
+                $_method = isset( $request->getPost()->_method ) ? $request->getPost()->_method :
+                            Request::METHOD_POST;
+
+                switch( $_method ) {
+                    case Request::METHOD_PUT:
+                        $request->setMethod(Request::METHOD_PUT);
+                        $request->setContent(file_get_contents('php://input'));
+                        break;
+                    case Request::METHOD_DELETE:
+                        $request->setMethod(Request::METHOD_DELETE);
+                        break;
+                }
+            }
+        }
     }
+
 
     public function onRender( MvcEvent $e )
     {

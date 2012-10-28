@@ -17,10 +17,9 @@
 
         <!-- Scripts -->
         <?php
-        /*$this->prependJsBundle('js_bundle');*/
         echo $this->headScript()->prependFile($this->basePath() . '/js/html5.js', 'text/javascript', array('conditional' => 'lt IE 9',))
                                 ->prependFile($this->basePath() . '/js/bootstrap.min.js')
-                                ->prependFile($this->basePath() . '/js/jquery.min.js')
+                                ->prependFile($this->basePath() . '/js/jquery.js')
                                 ->appendBundle('guest');
         ?>
     </head>

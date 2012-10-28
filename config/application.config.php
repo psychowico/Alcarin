@@ -3,6 +3,8 @@ return array(
     'modules' => array(
         'Alcarin',
         'Core',
+        //game modules
+        'Errors',
         //external libraries
         'AssetsCompiler',
         'ZfcTwig',
@@ -23,6 +25,7 @@ return array(
         ),
         'module_paths' => array(
             './module',
+            './module/Api',
             './vendor',
         ),
     ),

@@ -49,9 +49,3 @@ class Module
         );
     }
 }
-
-
-class Adapter extends \Zend\Db\Adapter\Adapter
-{
-    public function __construct(){}
-}
