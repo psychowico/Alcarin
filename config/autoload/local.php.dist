@@ -22,4 +22,8 @@ return array(
         //small cost to fast login on development env
         'password_cost' => 4,
     ),
+
+    'translator' => array(
+        'locale' => 'pl_PL',
+    ),
 );

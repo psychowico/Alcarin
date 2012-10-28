@@ -8,7 +8,7 @@
  * @package   Zend_Db
  */
 
-namespace Alcarin\Mapper;
+namespace Core\Mapper;
 
 use ZfcBase\Mapper\AbstractDbMapper;
 use ZfcUser\Mapper\UserInterface;

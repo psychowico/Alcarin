@@ -1,6 +1,6 @@
 <?php
 
-namespace Alcarin\Mapper;
+namespace Core\Mapper;
 
 use ZfcUser\Entity\UserInterface;
 
@@ -23,12 +23,6 @@ class UserArrayMapper implements UserInterface
     {
         if( !empty($array) ) $this->data = $array;
     }
-
-    /*public function set_Id($id)
-    {
-        \Zend\Debug\Debug::dump( 'id: ' . $id );
-        exit;
-    }*/
 
     public function getArrayCopy()
     {

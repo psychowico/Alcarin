@@ -45,8 +45,7 @@ class Module
                     }
                     return $db;
                 },
-
-            ),
+            )
         );
     }
 
