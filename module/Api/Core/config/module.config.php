@@ -25,7 +25,8 @@ return array(
 
     'controller_plugins' => array(
         'invokables'    => array(
-            'log'       => 'Core\Controller\Plugin\Logger',
+            'log'          => 'Core\Controller\Plugin\Logger',
+            'gameServices' => 'Core\Controller\Plugin\GameServices',
         ),
     ),
 
@@ -33,6 +34,7 @@ return array(
         'invokables'   => array(
             'mongo-log-writer' => 'Core\Log\Writer\MongoWriter',
             'auth-service'     => 'Core\Permission\AuthService',
+            'game-services' => 'Core\Service\GameServiceContainer'
         ),
         'factories'    => array(
             //override default zfcuser mapper by our own

@@ -25,11 +25,13 @@ class Module
     public function onBootstrap(MvcEvent $e)
     {
         $eventManager = $e->getApplication()->getEventManager();
+
         $eventManager->attach( MvcEvent::EVENT_RENDER, array( $this, 'onRender' ), -100 );
         //before controller are choose
         $eventManager->attach( MvcEvent::EVENT_ROUTE , array( $this, 'onPreRoute' ), -100 );
 
-            $this->setupRestfulStandard( $e->getRequest() );
+        $this->setupRestfulStandard( $e->getRequest() );
+
     }
 
     public function getServiceConfig()

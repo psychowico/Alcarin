@@ -14,6 +14,7 @@ use Zend\Mvc\ModuleRouteListener;
 
 class Module implements AutoloaderProviderInterface
 {
+
     public function getAutoloaderConfig()
     {
         return array(

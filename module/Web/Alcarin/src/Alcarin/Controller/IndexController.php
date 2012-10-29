@@ -17,10 +17,25 @@ class IndexController extends AbstractActionController
 {
     public function indexAction()
     {
-        if( $this->isAllowed()->hasAccessToAdminPanels() ) {
-            \Zend\Debug\Debug::dump( 'test' );
+        $this->gameServices('mongo-log-writer', function( $gm ) {
+            return new \Core\Log\Writer\MongoWriter();
+        });
+        $sl = $this->getServiceLocator();
+        $gameServices = $this->gameServices();
 
+        $start = microtime(true);
+
+
+        for ($i=0; $i < 5; $i++) {
+            $m = $gameServices->get2('mongo-log-writer');
+            /*$sl->get('mongo-log-writer');*/
         }
+
+
+
+        \Zend\Debug\Debug::dump( 1000*(microtime(true) - $start) );
+
+
         return [ 'version' => \Zend\Version\Version::VERSION ];
     }
 }
