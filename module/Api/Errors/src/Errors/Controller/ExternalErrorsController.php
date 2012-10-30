@@ -1,15 +1,8 @@
 <?php
-/**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/ZendSkeletonApplication for the canonical source repository
- * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- */
 
 namespace Errors\Controller;
 
-use Zend\Mvc\Controller\AbstractRestfulController;
+use Core\Mvc\Controller\AbstractAlcarinController;
 use Zend\View\Model\ViewModel;
 
 use Zend\InputFilter\InputFilter;
@@ -21,39 +14,9 @@ use Zend\InputFilter\InputFilter;
  * in "ext_logs_limit" table, to make requests limit per day
  * ( to ExternalErrorsController::LOGS_DAY_LIMIT_PER_IP )
  */
-class ExternalErrorsController extends AbstractRestfulController
+class ExternalErrorsController extends AbstractAlcarinController
 {
     const LOGS_DAY_LIMIT_PER_IP = 5;
-
-    protected $mongo = null;
-
-    protected function mongo()
-    {
-        if( $this->mongo == null ) {
-            $this->mongo = $this->getServiceLocator()->get('mongo');
-        }
-        return $this->mongo;
-    }
-
-    public function getList()
-    {
-        return ['getlist'=>321];
-    }
-
-    public function get( $id )
-    {
-        return ['get'=>321];
-    }
-
-    public function update( $id, $data )
-    {
-        return ['update'=>321];
-    }
-
-    public function delete( $id )
-    {
-        return ['delte'=>321];
-    }
 
     private function errorInputFilter()
     {
@@ -115,7 +78,7 @@ class ExternalErrorsController extends AbstractRestfulController
             $data = $inputFilter->getValues();
             $user_ip = $this->getRequest()->getServer('REMOTE_ADDR');
 
-            $mongo = $this->mongo();
+            $mongo = $this->gameService('mongo');
 
             $limitQ = $mongo->ext_logs_limit->findOne( ['ip' => $user_ip ] );
             if( $limitQ == null ) {
@@ -152,7 +115,7 @@ class ExternalErrorsController extends AbstractRestfulController
 
     private function updateLogsLimit( $ip, $limit )
     {
-        $this->mongo()->ext_logs_limit->update( ['ip' => $ip],
+        $this->gameService('mongo')->ext_logs_limit->update( ['ip' => $ip],
                 ['ip' => $ip, 'count' => $limit, 'last_time' => new \MongoDate() ],
                 ['upsert' => true] );
     }

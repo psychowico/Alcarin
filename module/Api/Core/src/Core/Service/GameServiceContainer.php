@@ -10,7 +10,10 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  * game api modules. it have much less functionality, but works much faster.
  * you can register service bet $gsc->set( $key, $service ), where service
  * must be a closure that will be lazy called when needed, with $gsc argument.
- * this closure can't return closure itself. To get service you just call $gm->get( $key ).
+ * To get service you just call $gm->get( $key ).
+ *
+ * If GameServiceContainer can not found a service, it try use standard
+ * zend service manager and cache results as himself.
  */
 class GameServiceContainer implements ServiceLocatorAwareInterface
 {
@@ -49,13 +52,20 @@ class GameServiceContainer implements ServiceLocatorAwareInterface
                 return $service;
             }
             else {
-                if( $throw_exceptions ) {
-                    throw new \DomainException( sprintf(
-                        'Service "%s" not exists in %s.',
-                        $key, __CLASS__
-                    ));
+                if( $this->getServiceLocator()->has( $key ) ) {
+                    $this->resolved[$key] = $service =
+                                            $this->getServiceLocator()->get( $key );
+                    return $service;
                 }
-                return null;
+                else {
+                    if( $throw_exceptions ) {
+                        throw new \DomainException( sprintf(
+                            'Service "%s" not exists in %s.',
+                            $key, __CLASS__
+                        ));
+                    }
+                    return null;
+                }
             }
         }
     }
