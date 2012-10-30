@@ -45,6 +45,16 @@ class Module
                     }
                     return $db;
                 },
+                'logger' => function( $sm ) {
+                    $logger = new \Zend\Log\Logger();
+                    $plugins_manager = new \Zend\Log\WriterPluginManager();
+                    //register mongo-log-writer in log plugins
+                    $plugins_manager->setService('mongo', $sm->get('mongo-log-writer') );
+
+                    $logger->setWriterPluginManager( $plugins_manager );
+                    $logger->addWriter('mongo');
+                    return $logger;
+                }
             )
         );
     }

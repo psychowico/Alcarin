@@ -1,5 +1,10 @@
 <?php
 return array(
+    'logs'  => array(
+        'writes'    => array(
+
+        )
+    ),
     'mongo' => array(
         'server'    => 'mongodb://localhost:27017',
         'database'  => 'dbname',
@@ -20,10 +25,14 @@ return array(
         'invokables'    => array(
             //can be helpful in modules to checking user privilages to specific resources
             'isAllowed' => 'Core\Controller\Plugin\IsAllowed',
+            'log'       => 'Core\Controller\Plugin\Logger',
         ),
     ),
 
     'service_manager' => array(
+        'invokables'   => array(
+            'mongo-log-writer' => 'Core\Log\Writer\MongoWriter',
+        ),
         'factories'    => array(
             //override default zfcuser mapper by our own
             'zfcuser_user_mapper' => function( $sm ) {
