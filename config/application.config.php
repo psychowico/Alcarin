@@ -1,19 +1,18 @@
 <?php
 return array(
     'modules' => array(
+        'Guest',
         'Alcarin',
+        'GameMaster',
+        'Admin',
+        //game api modules
         'Core',
-        //game modules
         'Errors',
         //external libraries
         'AssetsCompiler',
         'ZfcTwig',
         'ZfcBase',
         'ZfcUser',
-        /*'DoctrineModule',
-        'DoctrineMongoODMModule',
-        //adapter for zfc-user and mongo-odm
-        'ZfcUserDoctrineMongoODM',*/
         //profiling modules, can be removed in production
         'ZendDeveloperTools',
         'ZDTPack',

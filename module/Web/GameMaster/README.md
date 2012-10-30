@@ -1,0 +1,1 @@
+game masters view panels
