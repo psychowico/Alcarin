@@ -38,9 +38,17 @@ class Module
                 'mongo' => function( $sm ) {
                     $config = $sm->get('config')['mongo'];
 
-                    $db = \Mongo_Database::instance('mongo', $config );
+                    $profiler = null;
                     if( !empty( $config['profiling'] ) ) {
-                        $profiler = $sm->get('mongo_profiler');
+                        if( $sm->has( 'mongo_profiler' ) ) {
+                            $profiler = $sm->get('mongo_profiler');
+                        }
+                        else {
+                            $config['profiling'] = false;
+                        }
+                    }
+                    $db = \Mongo_Database::instance('mongo', $config );
+                    if( isset( $profiler ) ) {
                         $db->set_profiler( [$profiler, 'start'], [$profiler, 'stop'] );
                     }
                     return $db;
