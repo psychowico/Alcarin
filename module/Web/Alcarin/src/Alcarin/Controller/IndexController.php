@@ -17,7 +17,10 @@ class IndexController extends AbstractActionController
 {
     public function indexAction()
     {
-        $this->log('test log');
+        if( $this->isAllowed()->hasAccessToAdminPanels() ) {
+            \Zend\Debug\Debug::dump( 'test' );
+
+        }
         return [ 'version' => \Zend\Version\Version::VERSION ];
     }
 }

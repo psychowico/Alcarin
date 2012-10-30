@@ -12,6 +12,12 @@ class IsAllowed extends AbstractPlugin implements ServiceManagerAwareInterface
 {
     protected $serviceManager;
     protected $auth;
+    protected $resource;
+
+    public function __construct()
+    {
+        $this->resource = new \Core\Permission\Resource();
+    }
 
     protected function auth()
     {
@@ -22,22 +28,37 @@ class IsAllowed extends AbstractPlugin implements ServiceManagerAwareInterface
     }
 
     /**
-     * check that logged user is allowed to use specific $resource
-     * @param $resource it should be constant from \Core\Permission\Resources class
+     * return logged user privilages or false if user isn't logged
      */
-    public function __invoke( $resource )
+    protected function userPrivilages()
     {
-        if( $resource == null ) {
-            throw new \DomainException( 'Resource can not be null.' );
-        }
-
-
         if( !$this->auth()->hasIdentity() ) return false;
 
         $identity = $this->auth()->getIdentity();
-        $privilages = $identity->getPrivilages();
+        return $identity->getPrivilages();
+    }
 
-        return ($privilages & $resource ) == $resource;
+    /**
+     * return true if specific privilages provides access to any
+     * from admin panels
+     */
+    public function hasAccessToAdminPanels()
+    {
+        $privilages = $this->userPrivilages();
+        return $privilages ? $this->resource->hasAccessToAdminPanels( $privilages ) : false;
+    }
+
+    /**
+     * check that logged user is allowed to use specific $resource
+     * @param $resource it should be constant from \Core\Permission\Resources class
+     */
+    public function __invoke( $resource = null )
+    {
+        if( $resource === null ) return $this;
+
+        $privilages = $this->userPrivilages();
+
+        return $privilages ? $this->resource->isAllowed( $privilages, $resource ) : false;
     }
 
 
