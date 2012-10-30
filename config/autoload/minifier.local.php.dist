@@ -17,11 +17,20 @@ return array(
             'js'    => array(
                 'output_dir'     => '/js/bundles',
                 'list'              => array(
+                    'external'  => array(
+                        'sources'   => array(
+                            '/js/jquery.js',
+                            '/js/bootstrap.min.js',
+                            '/js/jquery.cookie.js',
+                        ),
+                    ),
                     //files enough for guest users
                     'guest' => array(
                         'sources' => array(
                             '/js/compiled_coffee/core.js',
+                            '/js/compiled_coffee/errors-core.js',
                             '/js/compiled_coffee/test.js',
+                            '/js/compiled_coffee/JQueryPlugins/RESTful.js',
                         ),
                     ),
                     //files enough for admins
@@ -32,7 +41,7 @@ return array(
                         ),
                     ),
                     //files for regular players
-                    'guest' => array(
+                    'player' => array(
                         'sources' => array(
                             '/js/compiled_coffee/core.js',
                             '/js/compiled_coffee/test.js',
@@ -43,6 +52,13 @@ return array(
             'css'    => array(
                 'output_dir' => '/css/bundles',
                 'list'       => array(
+                    'external'  => array(
+                        'sources'   => array(
+                            '/css/style.css',
+                            '/css/bootstrap.min.css',
+                            '/css/bootstrap-responsive.min.css',
+                        ),
+                    ),
                     'guest' => array(
                         'sources' => '/css/style.css',
                     ),
@@ -51,7 +67,7 @@ return array(
                         'sources' => '/css/style.css',
                     ),
                     //files for regular players
-                    'guest' => array(
+                    'player' => array(
                         'sources' => '/css/style.css',
                     ),
                 ),
