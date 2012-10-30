@@ -13,6 +13,7 @@ return array(
         'ZfcTwig',
         'ZfcBase',
         'ZfcUser',
+        'EdpModuleLayouts',
         //profiling modules, can be removed in production
         'ZendDeveloperTools',
         'ZDTPack',

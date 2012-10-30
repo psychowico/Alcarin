@@ -1,5 +1,9 @@
 <?php
 return array(
+    'module_layouts' => array(
+        'Guest' => 'guest-layout',
+    ),
+
     'controllers' => array(
         'invokables' => array(
             'guest-home' => 'Guest\Controller\GuestHomeController',
@@ -39,7 +43,11 @@ return array(
             ),
         ),
     ),
+
     'view_manager' => array(
+        'template_map' => array(
+            'guest-layout'           => __DIR__ . '/../view/layout/layout.phtml',
+        ),
         'template_path_stack' => array(
             'guest' => __DIR__ . '/../view',
         ),

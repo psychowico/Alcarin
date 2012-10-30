@@ -1,5 +1,9 @@
 <?php
 return array(
+    'module_layouts' => array(
+        'Admin' => 'admin-layout',
+    ),
+
     'controllers' => array(
         'invokables' => array(
             'admin-home' => 'Admin\Controller\AdminHomeController',
@@ -39,7 +43,11 @@ return array(
             ),
         ),
     ),
+
     'view_manager' => array(
+        'template_map' => array(
+            'admin-layout'           => __DIR__ . '/../view/layout/layout.phtml',
+        ),
         'template_path_stack' => array(
             'admin' => __DIR__ . '/../view',
         ),

@@ -35,6 +35,7 @@
 
         "zendframework/zend-developer-tools": "dev-master",
         "webino/zf2nette-debug"             : "1.1.0",
-        "colinmollenhour/mongodb-php-odm"   : "dev-master"
+        "colinmollenhour/mongodb-php-odm"   : "dev-master",
+        "evandotpro/edp-module-layouts"     : "dev-master"
     }
 }
