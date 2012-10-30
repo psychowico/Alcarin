@@ -1,8 +1,10 @@
 <?php
 return array(
     'logs'  => array(
-        'writes'    => array(
-
+        //list of services, that will be used as
+        //logs writers
+        'writers'    => array(
+            'null'  => array(),
         )
     ),
     'mongo' => array(

@@ -18,6 +18,19 @@ return array(
         'profiling' => true,
     ),
 
+
+    'logs'  => array(
+        'writers'   => array(
+            'mongo-log-writer' => array(
+                'service' => 'mongo-log-writer',
+            ),
+            'stream'    => array(
+                'stream' => __DIR__ . '/../../data/alcarin.log',
+            ),
+        )
+    ),
+
+
     'zfcuser'   => array(
         //small cost to fast login on development env
         'password_cost' => 4,

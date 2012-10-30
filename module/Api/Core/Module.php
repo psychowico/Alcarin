@@ -48,11 +48,23 @@ class Module
                 'logger' => function( $sm ) {
                     $logger = new \Zend\Log\Logger();
                     $plugins_manager = new \Zend\Log\WriterPluginManager();
-                    //register mongo-log-writer in log plugins
-                    $plugins_manager->setService('mongo', $sm->get('mongo-log-writer') );
 
+                    $writers = $sm->get('config')['logs']['writers'];
+
+                    //let register dedicated writers
+                    foreach( $writers as $writer_key => $options ) {
+                        $service = isset( $options['service'] ) ? $options['service'] : null;
+                        if( $service == null ) continue;
+                        if( !$plugins_manager->has( $service) ) {
+                            $plugins_manager->setService($service, $sm->get( $service ) );
+                        }
+                    }
                     $logger->setWriterPluginManager( $plugins_manager );
-                    $logger->addWriter('mongo');
+
+                    //and add them as writers
+                    foreach( $writers as $key => $options ) {
+                        $logger->addWriter( $key, 1, $options );
+                    }
                     return $logger;
                 }
             )

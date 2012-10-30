@@ -17,6 +17,7 @@ class IndexController extends AbstractActionController
 {
     public function indexAction()
     {
+        $this->log('test log');
         return [ 'version' => \Zend\Version\Version::VERSION ];
     }
 }
