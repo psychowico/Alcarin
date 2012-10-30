@@ -11,6 +11,15 @@ use Zend\ServiceManager\ServiceManager;
 class IsAllowed extends AbstractPlugin implements ServiceManagerAwareInterface
 {
     protected $serviceManager;
+    protected $auth;
+
+    protected function auth()
+    {
+        if( $this->auth == null ) {
+            $this->auth = $this->getServiceManager()->get('zfcuser_auth_service');
+        }
+        return $this->auth;
+    }
 
     /**
      * check that logged user is allowed to use specific $resource
@@ -22,11 +31,10 @@ class IsAllowed extends AbstractPlugin implements ServiceManagerAwareInterface
             throw new \DomainException( 'Resource can not be null.' );
         }
 
-        $auth = $this->getServiceManager()->get('zfcuser_auth_service');
 
-        if( !$auth->hasIdentity() ) return false;
+        if( !$this->auth()->hasIdentity() ) return false;
 
-        $identity = $auth->getIdentity();
+        $identity = $this->auth()->getIdentity();
         $privilages = $identity->getPrivilages();
 
         return ($privilages & $resource ) == $resource;
