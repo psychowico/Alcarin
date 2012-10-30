@@ -26,8 +26,10 @@ class Module
     {
         $eventManager = $e->getApplication()->getEventManager();
         $eventManager->attach( MvcEvent::EVENT_RENDER, array( $this, 'onRender' ), -100 );
+        //before controller are choose
+        $eventManager->attach( MvcEvent::EVENT_ROUTE , array( $this, 'onPreRoute' ), -100 );
 
-        $this->setupRestfulStandard( $e->getRequest() );
+            $this->setupRestfulStandard( $e->getRequest() );
     }
 
     public function getServiceConfig()
@@ -77,6 +79,53 @@ class Module
                 }
             )
         );
+    }
+
+    public function getControllerPluginConfig()
+    {
+        return array(
+            'factories' => array(
+                'isAllowed' => function( $sm ) {
+                    //can be helpful in modules to checking user privilages to specific resources
+                    $plugin = new \Core\Controller\Plugin\IsAllowed();
+                    $plugin->setAuthService( $sm->getServiceLocator()->get('auth-service') );
+                    return $plugin;
+                }
+            ),
+        );
+    }
+
+    /**
+     * //before controller choose we check privilages for current.
+     */
+    public function onPreRoute( MvcEvent $event )
+    {
+        $app = $event->getApplication();
+        $config = $app->getConfig();
+        if( !isset( $config['controllers_access'] ) ) return;
+        $access_list = $config['controllers_access']['controllers'];
+
+        $route_match = $event->getRouteMatch();
+        $choosed = $route_match->getParam('controller');
+        if( isset( $access_list[$choosed] ) ) {
+            $authService = $app->getServiceManager()->get('auth-service');
+
+
+            $options = $access_list[$choosed];
+            if( is_scalar( $options ) ) $options = [ 'resources' => [$options] ];
+
+            $resources = isset( $options['resources'] ) ? $options['resources'] : [];
+            foreach( $resources as $resource ) {
+                //if logged user not have privilages to any of needed
+                //resources, we render for him 'notallowed' site.
+                if( !$authService->isAllowed( $resource ) ) {
+                    $route_params = $config['controllers_access']['notallowed_route'];
+                    foreach ($route_params as $name => $value) {
+                        $route_match->setParam( $name, $value);
+                    }
+                }
+            }
+        }
     }
 
     /**

@@ -25,8 +25,6 @@ return array(
 
     'controller_plugins' => array(
         'invokables'    => array(
-            //can be helpful in modules to checking user privilages to specific resources
-            'isAllowed' => 'Core\Controller\Plugin\IsAllowed',
             'log'       => 'Core\Controller\Plugin\Logger',
         ),
     ),
@@ -34,6 +32,7 @@ return array(
     'service_manager' => array(
         'invokables'   => array(
             'mongo-log-writer' => 'Core\Log\Writer\MongoWriter',
+            'auth-service'     => 'Core\Permission\AuthService',
         ),
         'factories'    => array(
             //override default zfcuser mapper by our own

@@ -10,29 +10,12 @@ class Resource
     const ADMIN_TRANSLATION_PANEL  = 1;
     const ADMIN_TRANSLATION_ACCEPT = 2;
 
-    public function defaultForLoggedUser()
+    public static function defaultForLoggedUser()
     {
         return static::PLAYER_PANEL;
     }
 
-    public function hasAccessToAdminPanels( $privilages )
-    {
-        //check that user privilages and admin resources privilages
-        //has at least one common value
-        return( ($privilages & static::adminResources() ) > 0 );
-    }
-
-    /**
-     * check than specific privilages nb has access to specific resource
-     */
-    public function isAllowed( $privilages, $resource )
-    {
-        $resource_privilage = ( 1 << $resource );
-
-        return ($privilages & $resource_privilage ) == $resource_privilage;
-    }
-
-    private function adminResources()
+    public static function adminResources()
     {
         /*$refl = new \ReflectionClass('Core\Permission\Resource');
         $result = 0;

@@ -3,38 +3,16 @@
 namespace Alcarin\View\Helper;
 
 use Zend\View\Helper\AbstractHelper;
+use Core\Permission\AuthService;
 
-use Zend\ServiceManager\ServiceManagerAwareInterface;
-use Zend\ServiceManager\ServiceManager;
-
-class IsAllowed extends AbstractHelper implements ServiceManagerAwareInterface
+class IsAllowed extends AbstractHelper
 {
-    protected $serviceManager;
-    protected $resource;
-    protected $auth;
+    protected $authService;
 
-    public function __construct()
+    public function setAuthService( AuthService $auth )
     {
-        $this->resource = new \Core\Permission\Resource();
-    }
-
-    protected function auth()
-    {
-        if( $this->auth == null ) {
-            $this->auth = $this->getServiceManager()->get('zfcuser_auth_service');
-        }
-        return $this->auth;
-    }
-
-    /**
-     * return logged user privilages or false if user isn't logged
-     */
-    protected function userPrivilages()
-    {
-        if( !$this->auth()->hasIdentity() ) return false;
-
-        $identity = $this->auth()->getIdentity();
-        return $identity->getPrivilages();
+        $this->authService = $auth;
+        return $this;
     }
 
     /**
@@ -43,34 +21,8 @@ class IsAllowed extends AbstractHelper implements ServiceManagerAwareInterface
      */
     public function __invoke( $resource = null )
     {
-        if( $resource === null ) {
-            throw new \DomainException( 'Resource can not be null.' );
-        }
+        if( $resource === null ) return $this->authService;
 
-        $privilages = $this->userPrivilages();
-
-        return $privilages ? $this->resource->isAllowed( $privilages, $resource ) : false;
+        return $this->authService->isAllowed( $resource );
     }
-
-    /**
-     * Retrieve service manager instance
-     *
-     * @return ServiceManager
-     */
-    public function getServiceManager()
-    {
-        return $this->serviceManager->getServiceLocator();
-    }
-
-    /**
-     * Set service manager instance
-     *
-     * @param ServiceManager $locator
-     * @return void
-     */
-    public function setServiceManager(ServiceManager $serviceManager)
-    {
-        $this->serviceManager = $serviceManager;
-    }
-
 }

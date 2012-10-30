@@ -25,11 +25,17 @@ class Module
         $moduleRouteListener->attach($eventManager);
     }
 
-    public function getServiceConfig()
+    public function getViewHelperConfig()
     {
         return array(
-            'factories'    => array(
-            )
+            'factories' => array(
+                'isAllowed' => function( $sm ) {
+                    //can be helpful in modules to checking user privilages to specific resources
+                    $helper = new \Alcarin\View\Helper\IsAllowed();
+                    $helper->setAuthService( $sm->getServiceLocator()->get('auth-service') );
+                    return $helper;
+                }
+            ),
         );
     }
 

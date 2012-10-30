@@ -1,4 +1,7 @@
 <?php
+
+use Core\Permission\Resource;
+
 /**
  * Global Configuration Override
  *
@@ -12,4 +15,20 @@
  */
 
 return array(
+    'controllers_access' => array(
+        //route param that will used to render 'notallowed' site
+        'notallowed_route' => array(
+            'controller' => 'home',
+            'action'     => 'index',
+        ),
+        //controllers adn their required resources privilages
+        'controllers' => array(
+            'admin-home'     => Resource::ADMIN_TRANSLATION_PANEL,
+            /*'admin-home' => array(
+                'resources' => array(
+                    Resource::ADMIN_TRANSLATION_PANEL
+                ),
+            )*/
+    )   ,
+    ),
 );

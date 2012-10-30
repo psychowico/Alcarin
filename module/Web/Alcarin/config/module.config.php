@@ -33,9 +33,6 @@ return array(
     ),
 
     'view_helpers' => array(
-        'invokables'    => array(
-            'isAllowed' => 'Alcarin\View\Helper\IsAllowed',
-        ),
         'aliases'   => array(
             '_'         => 'translate',
         ),
