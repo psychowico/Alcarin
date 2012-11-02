@@ -1,5 +1,63 @@
-@test: white;
+.rounded-corners (@radius: 17px) {
+  -webkit-border-radius: @radius;
+  -moz-border-radius: @radius;
+  -ms-border-radius: @radius;
+  -o-border-radius: @radius;
+  border-radius: @radius;
+}
+
+ .both-containers() {
+    background: rgb(29, 29, 29);
+    margin: 10px;
+    padding: 10px;
+    min-height: 560px;
+    .rounded-corners;
+ }
 
 body {
-    background-color: @test;
+  color: #999180;
+  padding: 0;
+  background: rgb(50, 50, 50);
+}
+
+.game-container {
+  font-family: "Helvetica";
+  font-size: 12.5px;
+  margin: 0px auto;
+  background: rgb(42, 42, 42);
+}
+
+#game-events {
+  width: 38.2%;
+  .events {
+    width:100%;
+    .events-container {
+      .both-containers;
+      padding-right: 15px;
+    }
+  }
+}
+
+#game-pages {
+  width: 61.8%;
+  .pages {
+    .pages-container {
+      .both-containers;
+      padding-left: 15px;
+      position: relative;
+      div {
+        position: absolute;
+      }
+    }
+  }
+}
+
+#game-events, #game-pages {
+  position: relative;
+  float:left;
+  .events, .pages {
+    min-height: 600px;
+    float:left;
+    width: 100%;
+  }
 }

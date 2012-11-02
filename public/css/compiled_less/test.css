@@ -1,3 +1,61 @@
 body {
-  background-color: #ffffff;
+  color: #999180;
+  padding: 0;
+  background: #323232;
+}
+.game-container {
+  font-family: "Helvetica";
+  font-size: 12.5px;
+  margin: 0px auto;
+  background: #2a2a2a;
+}
+#game-events {
+  width: 38.2%;
+}
+#game-events .events {
+  width: 100%;
+}
+#game-events .events .events-container {
+  background: #1d1d1d;
+  margin: 10px;
+  padding: 10px;
+  min-height: 560px;
+  -webkit-border-radius: 17px;
+  -moz-border-radius: 17px;
+  -ms-border-radius: 17px;
+  -o-border-radius: 17px;
+  border-radius: 17px;
+  padding-right: 15px;
+}
+#game-pages {
+  width: 61.8%;
+}
+#game-pages .pages .pages-container {
+  background: #1d1d1d;
+  margin: 10px;
+  padding: 10px;
+  min-height: 560px;
+  -webkit-border-radius: 17px;
+  -moz-border-radius: 17px;
+  -ms-border-radius: 17px;
+  -o-border-radius: 17px;
+  border-radius: 17px;
+  padding-left: 15px;
+  position: relative;
+}
+#game-pages .pages .pages-container div {
+  position: absolute;
+}
+#game-events,
+#game-pages {
+  position: relative;
+  float: left;
+}
+#game-events .events,
+#game-pages .events,
+#game-events .pages,
+#game-pages .pages {
+  min-height: 600px;
+  float: left;
+  width: 100%;
 }

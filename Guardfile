@@ -5,7 +5,7 @@
 
 guard 'livereload', :port => '35729' do
   watch(%r{^public/.+\.(css|js)})
-  watch(%r{^module/.+\.(phtml)})
+  watch(%r{^module/.+\.(phtml|twig)})
 end
 
 guard 'less', :all_on_start => false, :output => 'public/css/compiled_less' do

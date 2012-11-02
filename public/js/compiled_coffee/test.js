@@ -2,22 +2,43 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
 
 namespace('Alcarin', function(exports, Alcarin) {
   var _this = this;
-  $(function() {
-    var test;
-    return test = new Alcarin.TestClass();
-  });
-  return exports.TestClass = (function() {
+  exports.TestClass = (function() {
+    var hashchange;
 
     function TestClass() {
-      this.factor = __bind(this.factor, this);
+      this.init = __bind(this.init, this);
 
     }
 
-    TestClass.prototype.factor = function(x) {
-      return x * x;
+    hashchange = function(e) {
+      var state;
+      state = $.bbq.getState() || {};
+      window.scrollTo(0, 0);
+      $('.pages-container > .current').removeClass('current').fadeOut();
+      $('.pages-container > .page-' + state.href).addClass('current').fadeIn();
+      return true;
+    };
+
+    TestClass.prototype.init = function() {
+      $(window).bind('hashchange', hashchange);
+      $('a').on('click', function() {
+        var href, state;
+        href = $(this).attr('href').replace(/^#/, '');
+        state = {
+          'href': href
+        };
+        $.bbq.pushState(state);
+        return false;
+      });
+      return false;
     };
 
     return TestClass;
 
   })();
+  return $(function() {
+    var test;
+    test = new Alcarin.TestClass();
+    return test.init();
+  });
 });

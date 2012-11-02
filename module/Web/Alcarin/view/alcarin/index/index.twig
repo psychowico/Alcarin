@@ -1,71 +1,42 @@
-{{ _('Discover Modules') }}
-<div class="container2">
-    <div class="left">
-        <p>
-            3701-6.26: Widzisz jak dwudziestoletni mężczyzna wskazuje na trochę ziemniaków.<br />
-            3701-6.26: Widzisz jak dwudziestoletni mężczyzna wskazuje na trochę ziemniaków.
-        </p>
+<section id="game-events">
+    <div class="events">
+        <div class="events-container">
+            <ul>
+                {% for i in 0..8 %}
+                <li>Something strange just happen..</li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
-    <div class="right">
-        <p>
-            tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania..
-            tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania..
-            tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą panel zarządzania.. tutaj będą p
-        </p>
-    </div>
+</section>
+
+<div id="main-nav">
+    <nav>
+        <ul class="nav-bar">
+            {% for class in ['home', 'glass', 'plane', 'eye-close', 'circle-arrow-up', 'calendar'] %}
+            <li>
+                <a href="#{{class}}">
+                    <i class="icon-{{class}}"></i>
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+    </nav>
 </div>
+
+<section id="game-pages">
+    <div class="pages">
+        <div class="pages-container">
+            <div class="page-home current">
+                {% for i in 0..118 %} home.. {% endfor %}
+            </div>
+            {% for class in ['home', 'glass', 'plane', 'eye-close', 'circle-arrow-up', 'calendar'] %}
+            <div class="page-{{class}} hide">
+                {% for i in 0..118 %} {{class}}.. {% endfor %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
 
 <div style="clear: both"></div>
-
-<style>
-    .container2 {
-        width: 960px;
-        margin: 0 auto;
-    }
-    .left p, .right p {
-        padding: 10px;
-        font-family: "Helvetica";
-        font-size: 12.5px
-    }
-    .left {
-        width: 38.2%;
-        height: 1500px;
-        background: gray;
-        float: left;
-    }
-    .right {
-        width: 61.8%;
-        height: 1500px;
-        background: silver;
-        float: left;
-    }
-</style>
-
-<!--
-<b>{{result[0]}}</b>
-<div class="hero-unit">
-    <h1>Welcome to <span class="zf-green">Zend Framework 2</span></h1>
-    <p>Congratulations! You have successfully installed the <a href="https://github.com/zendframework/ZendSkeletonApplication" target="_blank">ZF2 Skeleton Application</a>. You are currently running Zend Framework version {{ version }}. This skeleton can serve as a simple starting point for you to begin building your application on ZF2.</p>
-    <p><a class="btn btn-success btn-large" href="https://github.com/zendframework/zf2" target="_blank">Fork Zend Framework 2 on GitHub &raquo;</a></p>
-</div>
-
-<div class="row">
-    <div class="span4">
-        <h2>Follow Development</h2>
-        <p>Zend Framework 2 is under active development. If you are interested in following the development of ZF2, there is a special ZF2 portal on the official Zend Framework webiste which provides links to the ZF2 <a href="http://framework.zend.com/wiki/display/ZFDEV2/Home">wiki</a>, <a href="http://framework.zend.com/zf2/blog">dev blog</a>, <a href="http://framework.zend.com/issues/browse/ZF2">issue tracker</a>, and much more. This is a great resource for staying up to date with the latest developments!</p>
-        <p><a class="btn btn-success" href="http://framework.zend.com/zf2" target="_blank">ZF2 Development Portal &raquo;</a></p>
-
-    </div>
-    <div class="span4">
-        <h2>Discover Modules</h2>
-        <p>The community is working on developing a community site to serve as a repository and gallery for ZF2 modules. The project is available <a href="https://github.com/zendframework/modules.zendframework.com">on GitHub</a>. The site is currently live and currently contains a list of some of the modules already available for ZF2.</p>
-        <p><a class="btn btn-success" href="http://modules.zendframework.com/" target="_blank">Explore ZF2 Modules &raquo;</a></p>
-    </div>
-    <div class="span4">
-
-        <h2>Help &amp; Support</h2>
-        <p>If you need any help or support while developing with ZF2, you may reach us via IRC: <a href="irc://irc.freenode.net/zftalk.2">#zftalk.2 on Freenode</a>. We'd love to hear any questions or feedback you may have regarding the beta releases. Alternatively, you may subscribe and post questions to the <a href="http://framework.zend.com/wiki/display/ZFDEV/Mailing+Lists">mailing lists</a>.</p>
-        <p><a class="btn btn-success" href="http://webchat.freenode.net?channels=zftalk.2" target="_blank">Ping us on IRC &raquo;</a></p>
-    </div>
-</div>
--->

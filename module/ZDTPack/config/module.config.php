@@ -18,8 +18,8 @@ return array(
 
     'service_manager' => array(
         'invokables' => array(
-            'ZDTPack\MongoCollector'     => 'ZDTPack\Collector\MongoCollector',
-            'ZDTPack\MongoCollection'   => 'ZDTPack\MongoCollection',
+            'ZDTPack\MongoCollector'  => 'ZDTPack\Collector\MongoCollector',
+            'ZDTPack\MongoCollection' => 'ZDTPack\MongoCollection',
         ),
     ),
 );
