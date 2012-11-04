@@ -21,7 +21,7 @@ namespace('Alcarin', function(exports, Alcarin) {
 
     TestClass.prototype.init = function() {
       $(window).bind('hashchange', hashchange);
-      $('a').on('click', function() {
+      $('#main-nav a').on('click', function() {
         var href, state;
         href = $(this).attr('href').replace(/^#/, '');
         state = {

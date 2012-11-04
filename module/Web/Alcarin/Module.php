@@ -34,8 +34,11 @@ class Module
                     $helper = new \Alcarin\View\Helper\IsAllowed();
                     $helper->setAuthService( $sm->getServiceLocator()->get('auth-service') );
                     return $helper;
-                }
+                },
             ),
+            'aliases' => array(
+                'authService' => 'isAllowed',
+            )
         );
     }
 

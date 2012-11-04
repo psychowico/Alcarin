@@ -26,6 +26,13 @@
                         {% for i in 1..10 %}
                         <li>test{{i}}</li>
                         {% endfor %}
+
+                        {% if authService().hasAccessToAdminPanels() %}
+                        <li>
+                            {% set admin_url = url('admin') %}
+                            <a href="{{admin_url}}">Admin panels</a>
+                        </li>
+                        {% endif %}
                     </ul>
                 </nav>
                 {{ content | raw }}

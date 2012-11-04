@@ -9,7 +9,7 @@ namespace 'Alcarin', (exports, Alcarin) ->
 
         init : =>
             $(window).bind 'hashchange', hashchange
-            $('a').on 'click', ->
+            $('#main-nav a').on 'click', ->
                 href = $(@).attr('href').replace /^#/, ''
                 state = { 'href': href }
                 $.bbq.pushState( state );
