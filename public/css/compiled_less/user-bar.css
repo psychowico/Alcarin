@@ -1,3 +1,21 @@
-div.a1 {
-  background-color: #ff0000;
+#user-bar {
+  height: 35px;
+  margin: 0 10px 0 10px;
+  padding-top: 5px;
+  -webkit-border-radius: 17px;
+  -moz-border-radius: 17px;
+  -ms-border-radius: 17px;
+  -o-border-radius: 17px;
+  border-radius: 17px;
+  background: #1d1d1d;
+}
+#user-bar ul {
+  margin: 0;
+  list-style: none;
+}
+#user-bar ul li {
+  margin-left: 20px;
+  float: left;
+  border: 1px solid red;
+  padding: 2px 10px 2px 10px;
 }

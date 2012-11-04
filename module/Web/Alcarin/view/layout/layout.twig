@@ -21,6 +21,13 @@
     <body>
         <div class="container">
             <div class="game-container">
+                <nav id="user-bar">
+                    <ul>
+                        {% for i in 1..10 %}
+                        <li>test{{i}}</li>
+                        {% endfor %}
+                    </ul>
+                </nav>
                 {{ content | raw }}
             </div>
             <!-- <hr> -->

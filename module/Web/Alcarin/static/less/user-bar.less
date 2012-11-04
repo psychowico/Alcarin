@@ -1,3 +1,25 @@
-div.a1 {
-    background-color: red
+.rounded-corners (@radius: 17px) {
+    -webkit-border-radius: @radius;
+    -moz-border-radius: @radius;
+    -ms-border-radius: @radius;
+    -o-border-radius: @radius;
+    border-radius: @radius;
+}
+
+#user-bar {
+    height: 35px;
+    margin: 0 10px 0 10px;
+    padding-top: 5px;
+    .rounded-corners;
+    background: rgb(29, 29, 29);
+    ul {
+        margin: 0;
+        list-style: none;
+        li {
+            margin-left: 20px;
+            float: left;
+            border: 1px solid red;
+            padding: 2px 10px 2px 10px;
+        }
+    }
 }
