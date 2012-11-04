@@ -1,0 +1,40 @@
+{{ doctype() }}
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+
+        {{ headTitle('Alcarin') }}
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {{ headMeta() }}
+
+        {{ headLink( {'rel': 'shortcut icon', 'type': 'image/vnd.microsoft.icon', 'href':  basePath('/images/favicon.ico') } )
+                        .appendBundle('external')
+                        .appendBundle('guest') | raw }}
+
+        <!-- Scripts -->
+        {{ headScript().prependFile( basePath( '/js/html5.js' ), 'text/javascript', { 'conditional': 'lt IE 9' } )
+                                .appendBundle('external')
+                                .appendBundle('guest') | raw }}
+    </head>
+    <body>
+        <div class="container">
+            <div class="game-container">
+                <nav id="user-bar">
+                    <ul>
+                        {% for i in 1..10 %}
+                        <li>admin-test{{i}}</li>
+                        {% endfor %}
+                    </ul>
+                </nav>
+                {{ content | raw }}
+            </div>
+            <!-- <hr> -->
+            <footer>
+                <!-- <p>&copy; 2005 - 2012 by Zend Technologies Ltd. <?php echo $this->translate('All rights reserved.') ?></p> -->
+            </footer>
+        </div> <!-- /container -->
+        {{ inlineScript() | raw }}
+    </body>
+</html>

@@ -46,7 +46,7 @@ return array(
 
     'view_manager' => array(
         'template_map' => array(
-            'admin-layout'           => __DIR__ . '/../view/layout/layout.phtml',
+            'admin-layout'           => __DIR__ . '/../view/layout/layout.twig',
         ),
         'template_path_stack' => array(
             'admin' => __DIR__ . '/../view',
