@@ -39,17 +39,9 @@ ul#admin-pages li a:visited {
   -o-transition: all 0.1s linear;
   transition: all 0.1s linear;
 }
-ul#admin-pages li a:hover {
+ul#admin-pages li a:hover,
+ul#admin-pages li a:visited:hover {
   -moz-transform: scale(1.2);
   -webkit-transform: scale(1.2);
   -o-transform: scale(1.2);
 }
-/*ul#admin-pages {
-    li.page-controller1 {
-        a{
-            background-image:url("../img/glyphicons-halflings.png");
-            background-position:14px 14px;
-        }
-    }
-}*/
-/*sample icon*/

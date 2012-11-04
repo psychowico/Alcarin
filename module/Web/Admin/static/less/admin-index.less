@@ -1,26 +1,4 @@
-.rounded-corners (@radius: 17px) {
-  -webkit-border-radius: @radius;
-  -moz-border-radius: @radius;
-  -ms-border-radius: @radius;
-  -o-border-radius: @radius;
-  border-radius: @radius;
-}
-
-.scale(@value: 1.1) {
-  -moz-transform: scale(@value);
-  -webkit-transform: scale(@value);
-  -o-transform: scale(@value)
-}
-
-
-.transition( @time: .1s, @type: linear ) {
-  -webkit-transition: all @time @type;
-  -moz-transition: all @time @type;
-  -ms-transition: all @time @type;
-  -o-transition: all @time @type;
-  transition: all @time @type;
-}
-
+@import 'core';
 
 ul#admin-pages {
     width: 800px;
@@ -46,21 +24,10 @@ ul#admin-pages {
             position: relative;
             text-decoration:none;
             background-image:url("../../img/glyphicons-halflings.png");
-            .transition
-        }
-        a:hover {
-            .scale(1.2)
+            .transition;
+            &:hover {
+                .scale(1.2)
+            }
         }
     }
 }
-
-
-/*ul#admin-pages {
-    li.page-controller1 {
-        a{
-            background-image:url("../img/glyphicons-halflings.png");
-            background-position:14px 14px;
-        }
-    }
-}*/
-/*sample icon*/

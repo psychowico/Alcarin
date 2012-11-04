@@ -8,7 +8,8 @@ guard 'livereload', :port => '35729' do
   watch(%r{^module/.+\.(phtml|twig)})
 end
 
-guard 'less', :all_on_start => false, :output => 'public/css/compiled_less' do
+guard 'less', :all_on_start => false, :output => 'public/css/compiled_less',
+              :import_paths => ['module/Web/Alcarin/static/less/libs'] do
   watch(%r{^module/.+/static/less/(.+\.less)})
 end
 

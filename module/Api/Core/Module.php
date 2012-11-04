@@ -111,7 +111,7 @@ class Module
         //if logged user not have privilages to any of needed
         //resources, we render for him 'notallowed' site.
         if( !$authService->isAllowedToController( $choosed ) ) {
-            $route_params = $config['controllers_access']['notallowed_route'];
+            $route_params = $sm->get('config')['controllers_access']['notallowed_route'];
             foreach ($route_params as $name => $value) {
                 $route_match->setParam( $name, $value);
             }
