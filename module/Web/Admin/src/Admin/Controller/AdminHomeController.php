@@ -13,15 +13,34 @@ use Zend\Mvc\Controller\AbstractActionController;
 
 class AdminHomeController extends AbstractActionController
 {
+    protected $admin_pages = [
+        'controller1',
+        'controller2',
+        'controller3',
+        'controller4',
+        'controller5',
+        'controller6',
+        'controller7',
+        'controller8',
+    ];
+
     public function indexAction()
     {
-        return array();
+        $result = [];
+        $authService = $this->isAllowed();
+        foreach( $this->admin_pages as $controller ) {
+            if( $authService->isAllowedToController( $controller ) ) {
+                $result[$controller] = $this->url()->fromRoute( 'admin',
+                    [ 'controller' => $controller ] );
+            }
+        }
+        return [ 'pages' => $result ];
     }
 
     public function fooAction()
     {
         // This shows the :controller and :action parameters in default route
         // are working when you browse to /module-specific-root/skeleton/foo
-        return array();
+        return [];
     }
 }

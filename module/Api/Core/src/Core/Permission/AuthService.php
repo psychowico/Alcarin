@@ -26,6 +26,34 @@ class AuthService implements ServiceManagerAwareInterface
     }
 
     /**
+     * checking resources needed to see $controller_alias in
+     * controllers_access->controllers configuration list and
+     * return true, if user have privilages to them. otherwise
+     * return false.
+     */
+    public function isAllowedToController( $controller_alias )
+    {
+        $sm = $this->getServiceManager();
+        $config = $sm->get('config');
+
+        if( !isset( $config['controllers_access']['controllers'] ) ) return true;
+        $access_list = $config['controllers_access']['controllers'];
+
+        if( isset( $access_list[$controller_alias] ) ) {
+            $options = $access_list[$controller_alias];
+            if( is_scalar( $options ) ) $options = [ 'resources' => [$options] ];
+
+            $resources = isset( $options['resources'] ) ? $options['resources'] : [];
+            foreach( $resources as $resource ) {
+                if( !$this->isAllowed( $resource ) ) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
      * check than specific privilages nb has access to specific resource
      */
     public function isAllowed( $resource )

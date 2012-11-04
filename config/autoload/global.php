@@ -21,7 +21,7 @@ return array(
             'controller' => 'home',
             'action'     => 'index',
         ),
-        //controllers adn their required resources privilages
+        //controllers and their required resources privilages
         'controllers' => array(
             'admin-home'     => Resource::ADMIN_TRANSLATION_PANEL,
             /*'admin-home' => array(

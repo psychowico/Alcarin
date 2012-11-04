@@ -102,30 +102,18 @@ class Module
      */
     public function onPreRoute( MvcEvent $event )
     {
-        $app = $event->getApplication();
-        $config = $app->getConfig();
-        if( !isset( $config['controllers_access'] ) ) return;
-        $access_list = $config['controllers_access']['controllers'];
+        $sm = $event->getApplication()->getServiceManager();
+        $authService = $sm->get('auth-service');
 
         $route_match = $event->getRouteMatch();
         $choosed = $route_match->getParam('controller');
-        if( isset( $access_list[$choosed] ) ) {
-            $authService = $app->getServiceManager()->get('auth-service');
 
-
-            $options = $access_list[$choosed];
-            if( is_scalar( $options ) ) $options = [ 'resources' => [$options] ];
-
-            $resources = isset( $options['resources'] ) ? $options['resources'] : [];
-            foreach( $resources as $resource ) {
-                //if logged user not have privilages to any of needed
-                //resources, we render for him 'notallowed' site.
-                if( !$authService->isAllowed( $resource ) ) {
-                    $route_params = $config['controllers_access']['notallowed_route'];
-                    foreach ($route_params as $name => $value) {
-                        $route_match->setParam( $name, $value);
-                    }
-                }
+        //if logged user not have privilages to any of needed
+        //resources, we render for him 'notallowed' site.
+        if( !$authService->isAllowedToController( $choosed ) ) {
+            $route_params = $config['controllers_access']['notallowed_route'];
+            foreach ($route_params as $name => $value) {
+                $route_match->setParam( $name, $value);
             }
         }
     }
