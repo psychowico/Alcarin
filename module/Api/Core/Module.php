@@ -103,18 +103,21 @@ class Module
     public function onPreRoute( MvcEvent $event )
     {
         $sm = $event->getApplication()->getServiceManager();
-        $authService = $sm->get('auth-service');
 
         $route_match = $event->getRouteMatch();
         $choosed = $route_match->getParam('controller');
 
         //if logged user not have privilages to any of needed
         //resources, we render for him 'notallowed' site.
+        $authService = $sm->get('auth-service');
         if( !$authService->isAllowedToController( $choosed ) ) {
             $route_params = $sm->get('config')['controllers_access']['notallowed_route'];
             foreach ($route_params as $name => $value) {
                 $route_match->setParam( $name, $value);
             }
+            //let set redirect value
+            $original_uri = $event->getRequest()->getServer( 'REQUEST_URI' );
+            $event->getRequest()->getQuery()->set('redirect', $original_uri);
         }
     }
 

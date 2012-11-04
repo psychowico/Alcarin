@@ -1,6 +1,13 @@
 <?php
 return array(
     'modules' => array(
+        //external libraries
+        'AssetsCompiler',
+        'ZfcTwig',
+        'ZfcBase',
+        'ZfcUser',
+        'EdpModuleLayouts',
+        //my game web panels
         'Guest',
         'Alcarin',
         'GameMaster',
@@ -8,12 +15,6 @@ return array(
         //game api modules
         'Core',
         'Errors',
-        //external libraries
-        'AssetsCompiler',
-        'ZfcTwig',
-        'ZfcBase',
-        'ZfcUser',
-        'EdpModuleLayouts',
         //profiling modules, can be removed in production
         'ZendDeveloperTools',
         'ZDTPack',

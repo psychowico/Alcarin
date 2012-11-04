@@ -18,8 +18,8 @@ return array(
     'controllers_access' => array(
         //route param that will used to render 'notallowed' site
         'notallowed_route' => array(
-            'controller' => 'home',
-            'action'     => 'index',
+            'controller' => 'zfcuser',
+            'action'     => 'login',
         ),
         //controllers and their required resources privilages
         'controllers' => array(
@@ -29,6 +29,6 @@ return array(
                     Resource::ADMIN_TRANSLATION_PANEL
                 ),
             )*/
-    )   ,
+        ),
     ),
 );
