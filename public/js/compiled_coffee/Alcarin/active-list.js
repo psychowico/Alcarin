@@ -1,9 +1,7 @@
-var __slice = [].slice,
-  __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+var __slice = [].slice;
 
 namespace('Alcarin', function(exports, Alcarin) {
-  exports.ActiveList = (function() {
+  return exports.ActiveList = (function() {
 
     function ActiveList(el) {
       this.parent = $(el);
@@ -82,35 +80,23 @@ namespace('Alcarin', function(exports, Alcarin) {
     return ActiveList;
 
   })();
-  return exports.TestView = (function(_super) {
+  /*class exports.TestView extends Alcarin.ActiveView
+      name    : @dependencyProperty('name', 'test')
+      val     : @dependencyProperty('value', 0)
+  
+  $ ->
+  list = new Alcarin.ActiveList('#active-select')
+  
+  v = new Alcarin.TestView()
+  v.name(7)
+  v2 = new Alcarin.TestView()
+  v2.name('10')
+  v3 = new Alcarin.TestView()
+  v3.name('środek')
+  v3.val 33
+  
+  list.push( v, v2 )
+  list.insert(1, v3)
+  */
 
-    __extends(TestView, _super);
-
-    function TestView() {
-      return TestView.__super__.constructor.apply(this, arguments);
-    }
-
-    TestView.prototype.name = TestView.dependencyProperty(TestView, 'name');
-
-    return TestView;
-
-  })(Alcarin.ActiveView);
-});
-
-$(function() {
-  var list, v, v2, v3;
-  list = new Alcarin.ActiveList('#active-list');
-  v = new Alcarin.TestView();
-  v.name(7);
-  v2 = new Alcarin.TestView();
-  v2.name('10');
-  v3 = new Alcarin.TestView();
-  v3.name('środek');
-  $('#active-list').click(function() {
-    var x;
-    x = list.pop();
-    return console.log(x);
-  });
-  list.push(v, v2);
-  return list.insert(1, v3);
 });

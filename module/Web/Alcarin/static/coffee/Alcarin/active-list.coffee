@@ -1,3 +1,4 @@
+
 namespace 'Alcarin', (exports, Alcarin) ->
 
     #base class for active views - grouped data
@@ -72,11 +73,12 @@ namespace 'Alcarin', (exports, Alcarin) ->
             @source.valueOf()
 
 
-    class exports.TestView extends Alcarin.ActiveView
-        name    : @dependencyProperty(@, 'name')
+    ###class exports.TestView extends Alcarin.ActiveView
+        name    : @dependencyProperty('name', 'test')
+        val     : @dependencyProperty('value', 0)
 
 $ ->
-    list = new Alcarin.ActiveList('#active-list')
+    list = new Alcarin.ActiveList('#active-select')
 
     v = new Alcarin.TestView()
     v.name(7)
@@ -84,9 +86,7 @@ $ ->
     v2.name('10')
     v3 = new Alcarin.TestView()
     v3.name('środek')
+    v3.val 33
 
-    $('#active-list').click ->
-        x = list.pop()
-        console.log x
     list.push( v, v2 )
-    list.insert(1, v3)
+    list.insert(1, v3)###

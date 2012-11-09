@@ -25,7 +25,7 @@ namespace 'Alcarin', (exports, Alcarin) ->
 
         constructor: ->
             $.merge exports.ActiveView.global_list, [@]
-            @properties_container = {}
+            @properties_container = jQuery.extend({}, @.properties_container)
             @initialized          = false
             @bindings             = {}
 
@@ -59,8 +59,8 @@ namespace 'Alcarin', (exports, Alcarin) ->
 
         #it return function, should be used to preparing view properties.
         #check sample view below
-        @dependencyProperty: ( context, name, default_value)->
-            if default_value? then context.prototype.properties_container[name] = default_value
+        @dependencyProperty: ( name, default_value)->
+            if default_value? then @.__super__.properties_container[name] = default_value
             #this methid will be called in specific object context
             (val) ->
                 if not val? then return @properties_container[name]
@@ -134,8 +134,8 @@ namespace 'Alcarin', (exports, Alcarin) ->
     Usage sample.
 
     class exports.TestView extends exports.ActiveView
-        me    : @dependencyProperty(@, 'me')
-        teraz : @dependencyProperty(@, 'teraz', 12)
+        me    : @dependencyProperty('me')
+        teraz : @dependencyProperty('teraz', 12)
 
     av = new Alcarin.TestView()
     av.me 'psychowico321'

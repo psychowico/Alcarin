@@ -18,7 +18,7 @@ namespace('Alcarin', function(exports, Alcarin) {
 
     function ActiveView() {
       $.merge(exports.ActiveView.global_list, [this]);
-      this.properties_container = {};
+      this.properties_container = jQuery.extend({}, this.properties_container);
       this.initialized = false;
       this.bindings = {};
     }
@@ -65,9 +65,9 @@ namespace('Alcarin', function(exports, Alcarin) {
       return _results;
     };
 
-    ActiveView.dependencyProperty = function(context, name, default_value) {
+    ActiveView.dependencyProperty = function(name, default_value) {
       if (default_value != null) {
-        context.prototype.properties_container[name] = default_value;
+        this.__super__.properties_container[name] = default_value;
       }
       return function(val) {
         if (!(val != null)) {
@@ -178,8 +178,8 @@ namespace('Alcarin', function(exports, Alcarin) {
       Usage sample.
   
       class exports.TestView extends exports.ActiveView
-          me    : @dependencyProperty(@, 'me')
-          teraz : @dependencyProperty(@, 'teraz', 12)
+          me    : @dependencyProperty('me')
+          teraz : @dependencyProperty('teraz', 12)
   
       av = new Alcarin.TestView()
       av.me 'psychowico321'
