@@ -29,7 +29,7 @@
         "zendframework/zendframework"       : "2.*",
         "psychowico/assets-compiler"        : "dev-master",
 
-        "zf-commons/zfc-twig"               : "dev-master",
+        "zf-commons/zfc-twig"               : "dev-master#cdc570cff5d710555426a86d9cde967e05867176",
         "zf-commons/zfc-base"               : "dev-master",
         "zf-commons/zfc-user"               : "dev-master",
 

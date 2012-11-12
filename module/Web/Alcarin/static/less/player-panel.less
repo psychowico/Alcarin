@@ -1,9 +1,11 @@
 @import 'core';
 
+
+@spaces: 8px;
  .both-containers() {
-    background: rgb(29, 29, 29);
-    margin: 10px;
-    padding: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    margin: 2 * @spaces @spaces 2 * @spaces @spaces;
+    padding: 20px 30px 20px 30px;
     min-height: 560px;
     .rounded-corners;
  }
@@ -22,8 +24,8 @@ body {
   font-family: "Helvetica";
   font-size: 12.5px;
   margin: 0px auto;
-  padding-top: 5px;
-  background: rgb(42, 42, 42);
+  padding: 0 @spaces 0 @spaces;
+  background: rgba(42, 42, 42, 0.3);
 }
 
 #game-events {
@@ -42,7 +44,6 @@ body {
   .pages {
     .pages-container {
       .both-containers;
-      padding-left: 15px;
       position: relative;
       div {
         position: absolute;

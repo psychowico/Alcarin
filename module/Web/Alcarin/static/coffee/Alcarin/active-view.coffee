@@ -103,7 +103,6 @@ namespace 'Alcarin', (exports, Alcarin) ->
                 if not $el.children().length
                     list = list.concat [$el.get 0]
 
-
                 for child in list
                     $child = $(child)
                     @prepare_bind $e, $child, $child.html()

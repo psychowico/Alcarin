@@ -1,16 +1,17 @@
-.. Alcarin documentation master file, created by
-   sphinx-quickstart on Fri Nov  9 14:56:43 2012.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
-Welcome to Alcarin's documentation!
+Welcome to Alcarin documentation!
 ===================================
+
+Alcarin will be a fantasy, persistent browser-based role-playing game.
+This documentation is divided into few parts. I try hold developing things
+in eglish, but for my convenience other parts will be only in polish for now, sorry!
 
 Contents:
 
 .. toctree::
    :maxdepth: 2
 
+   story
+   mechanic/index
    dev/installation
 
 Indices and tables

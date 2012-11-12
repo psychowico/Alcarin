@@ -30,7 +30,6 @@ return array(
         )
     ),
 
-
     'zfcuser'   => array(
         //small cost to fast login on development env
         'password_cost' => 4,

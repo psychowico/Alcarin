@@ -1,12 +1,12 @@
-=============
-Opowieść (pl)
-=============
+=======================
+Alcarin - Opowieść (pl)
+=======================
 
 Narazie wrzucę tutaj trochę opisu świata gry i luźno powiązanych myśli,
 ta część będzie ważniejsza w przyszłości.
 
-Świat w Alcarin
-===============
+Świat
+=====
 
 Świat w Alcarin nie przypomina naszej planety. Jest mieszanką mitologii indyjskiej, książek Tolkiena,
 Pratchett'a i innych.
@@ -19,8 +19,14 @@ Na planecie nie ma wyraźnych pór roku, za to są obszary znacznie różniące 
 planety panuje wieczne zlodowacenie (dzięki temu oceny nie "spływają"), za to w okolicach centrum
 mamy coś w rodzaju tropikalnej dżungli.
 
-Życie w Alcarin
-===============
+Życie
+=====
+
+Rośliny
+-------
+W świecie magii i pradawnych mocy czasem trudno określić, co jest rośliną a co zwierzęciem. Nie zdziw
+się jeśli będzie zmuszony uciekać gdy w trakcie polowania spotkasz gigantyczne drzewo, któremu nie
+spodoba się twoje towarzystwo.
 
 Zwierzęta
 ---------

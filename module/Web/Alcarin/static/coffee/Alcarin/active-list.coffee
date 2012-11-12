@@ -8,17 +8,23 @@ namespace 'Alcarin', (exports, Alcarin) ->
 
         constructor: (el)->
             @parent = $ el
-            @protype = $(el).children().first()
-            @protype.remove()
+
+            pr = @parent[0].firstChild
+            while pr && pr.nodeType != 1
+                pr = pr.nextSibling
+            @prototype = $ pr
+            @prototype.remove()
+
             @source = []
 
         #insert elements at list end, and update related view
         push: (elements...)->
             for el in elements
                 @source.push el
-                dom_obj = @protype.clone(true)
+                dom_obj = @prototype.clone(true)
                 el.bind dom_obj
                 @parent.append dom_obj
+            true
 
         pop: ->
             @removeAt @source.length - 1
@@ -36,7 +42,7 @@ namespace 'Alcarin', (exports, Alcarin) ->
             #update list
             @source.splice index, 0, obj
             #prepare prototype
-            dom_obj = @protype.clone(true)
+            dom_obj = @prototype.clone(true)
 
             #auto bind if this is a activeview
             if obj instanceof exports.ActiveView
@@ -48,6 +54,7 @@ namespace 'Alcarin', (exports, Alcarin) ->
                 children.last().after dom_obj
             else
                 children.eq(index).before dom_obj
+            true
 
         remove: (obj)->
             index = @source.indexOf obj
@@ -73,7 +80,7 @@ namespace 'Alcarin', (exports, Alcarin) ->
             @source.valueOf()
 
 
-    ###class exports.TestView extends Alcarin.ActiveView
+    class exports.TestView extends Alcarin.ActiveView
         name    : @dependencyProperty('name', 'test')
         val     : @dependencyProperty('value', 0)
 
@@ -89,4 +96,5 @@ $ ->
     v3.val 33
 
     list.push( v, v2 )
-    list.insert(1, v3)###
+    list.insert(1, v3)
+    true

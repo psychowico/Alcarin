@@ -14,7 +14,7 @@
 return array(
 
     'nette_debug' => array(
-        'enabled'      => true,
+        'enabled'      => false,
         'mode'         => null,        // true = production|false = development|null = autodetect|IP address(es) csv/array
         'bar'          => false,       // bool = enabled|Toggle nette diagnostics bar.
         'strict'       => true,        // bool = cause immediate death|int = matched against error severity
@@ -22,9 +22,6 @@ return array(
         'email'        => "",          // in production mode notifies the recipient
         'max_depth'    => 3,           // nested levels of array/object
         'max_len'      => 150,         // max string display length
-    ),
-
-    'service_manager' => array(
     ),
 
    'zenddevelopertools' => array(

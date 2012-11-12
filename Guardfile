@@ -6,6 +6,11 @@
 guard 'livereload', :port => '35729' do
   watch(%r{^public/.+\.(css|js)})
   watch(%r{^module/.+\.(phtml|twig)})
+  watch(%r{^docs/build/html/.+\.html})
+end
+
+guard :shell do
+  watch(%r{^docs/source.+\.rst}){ `make html -C ./docs` }
 end
 
 guard 'less', :all_on_start => false, :output => 'public/css/compiled_less',

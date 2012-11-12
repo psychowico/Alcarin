@@ -10,8 +10,8 @@ body {
   font-family: "Helvetica";
   font-size: 12.5px;
   margin: 0px auto;
-  padding-top: 5px;
-  background: #2a2a2a;
+  padding: 0 8px 0 8px;
+  background: rgba(42, 42, 42, 0.3);
 }
 #game-events {
   width: 38.2%;
@@ -20,9 +20,9 @@ body {
   width: 100%;
 }
 #game-events .events .events-container {
-  background: #1d1d1d;
-  margin: 10px;
-  padding: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  margin: 16px 8px 16px 8px;
+  padding: 20px 30px 20px 30px;
   min-height: 560px;
   -webkit-border-radius: 17px;
   -moz-border-radius: 17px;
@@ -35,16 +35,15 @@ body {
   width: 61.8%;
 }
 #game-pages .pages .pages-container {
-  background: #1d1d1d;
-  margin: 10px;
-  padding: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  margin: 16px 8px 16px 8px;
+  padding: 20px 30px 20px 30px;
   min-height: 560px;
   -webkit-border-radius: 17px;
   -moz-border-radius: 17px;
   -ms-border-radius: 17px;
   -o-border-radius: 17px;
   border-radius: 17px;
-  padding-left: 15px;
   position: relative;
 }
 #game-pages .pages .pages-container div {
