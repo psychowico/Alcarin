@@ -5,6 +5,11 @@ namespace 'Alcarin', (exports, Alcarin) ->
             window.scrollTo 0, 0
             $('.pages-container > .current').removeClass('current').fadeOut()
             $('.pages-container > .page-' + state.href).addClass('current').fadeIn()
+
+            $('#main-nav > nav > ul > .current').removeClass 'current'
+
+            $('#main-nav a[href="#' + state.href + '"]').closest('li').addClass 'current'
+
             true
 
         init : =>
@@ -12,12 +17,11 @@ namespace 'Alcarin', (exports, Alcarin) ->
             $('#main-nav a').on 'click', ->
                 href = $(@).attr('href').replace /^#/, ''
                 state = { 'href': href }
-                $.bbq.pushState( state );
-                $(@).closest('ul').children('li').removeClass 'current'
-                $(@).closest('li').addClass 'current'
+                $.bbq.pushState( state )
                 false
             false
 
     $ =>
         test = new Alcarin.TestClass()
         test.init()
+        $(window).trigger('hashchange')

@@ -16,6 +16,8 @@ namespace('Alcarin', function(exports, Alcarin) {
       window.scrollTo(0, 0);
       $('.pages-container > .current').removeClass('current').fadeOut();
       $('.pages-container > .page-' + state.href).addClass('current').fadeIn();
+      $('#main-nav > nav > ul > .current').removeClass('current');
+      $('#main-nav a[href="#' + state.href + '"]').closest('li').addClass('current');
       return true;
     };
 
@@ -28,8 +30,6 @@ namespace('Alcarin', function(exports, Alcarin) {
           'href': href
         };
         $.bbq.pushState(state);
-        $(this).closest('ul').children('li').removeClass('current');
-        $(this).closest('li').addClass('current');
         return false;
       });
       return false;
@@ -41,6 +41,7 @@ namespace('Alcarin', function(exports, Alcarin) {
   return $(function() {
     var test;
     test = new Alcarin.TestClass();
-    return test.init();
+    test.init();
+    return $(window).trigger('hashchange');
   });
 });
