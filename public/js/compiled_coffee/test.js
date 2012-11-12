@@ -28,6 +28,8 @@ namespace('Alcarin', function(exports, Alcarin) {
           'href': href
         };
         $.bbq.pushState(state);
+        $(this).closest('ul').children('li').removeClass('current');
+        $(this).closest('li').addClass('current');
         return false;
       });
       return false;

@@ -13,6 +13,8 @@ namespace 'Alcarin', (exports, Alcarin) ->
                 href = $(@).attr('href').replace /^#/, ''
                 state = { 'href': href }
                 $.bbq.pushState( state );
+                $(@).closest('ul').children('li').removeClass 'current'
+                $(@).closest('li').addClass 'current'
                 false
             false
 

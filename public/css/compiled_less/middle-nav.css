@@ -16,8 +16,8 @@
   position: relative;
   list-style: none;
 }
-#main-nav nav ul li:hover {
-  background: #b0b0b0;
+#main-nav nav ul li.current {
+  background: #c2c2c2;
 }
 #main-nav nav ul li {
   width: 40px;
@@ -27,7 +27,7 @@
   position: relative;
   top: 0;
   left: -17px;
-  background: #8f8f8f;
+  background: #828282;
   -webkit-border-radius: 50px;
   -moz-border-radius: 50px;
   -ms-border-radius: 50px;
@@ -38,6 +38,9 @@
   -ms-transition: all 0.2s linear;
   -o-transition: all 0.2s linear;
   transition: all 0.2s linear;
+}
+#main-nav nav ul li:hover {
+  background: #c2c2c2;
 }
 #main-nav nav ul li a {
   color: #8f8f8f;
