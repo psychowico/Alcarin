@@ -2,6 +2,8 @@
 Installation
 ============
 
+You can find full docs here: http://alcarin.readthedocs.org/.
+
 
 Introduction
 ============
