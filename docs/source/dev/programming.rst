@@ -47,6 +47,8 @@ create another client tool (for sample application written in java) to play Alca
 modules should be stored in *module/API* directory. We use RESTful standard to write our controllers
 in this app part.
 
+.. _`communicate with clients`: http://en.wikipedia.org/wiki/Client%E2%80%93server_model
+
 Web
 ---
 
@@ -65,6 +67,30 @@ ZendDeveloperTools_.
 
 Remember to read samples code before writing anything.
 
+Guard configuration
+===================
 
+https://github.com/guard/guard
 
-.. _`communicate with clients`: http://en.wikipedia.org/wiki/Client%E2%80%93server_model
+Guard is a command line tool to easily handle events on file system modifications. If you do not
+want waste you time to recompiling your coffeescript, less files, RST docs or reloading web-browser
+after any changes in code - it is something that you need.
+You need fallow guard installation instructions. Next you should install 4 plugins:
+ - **guard-less** to automatically compiles less (like lessc --watch)
+ - **guard-coffeescript** to automatically generates your JavaScripts from your CoffeeScripts
+ - **guard-shell** to automatically runs shell commands when watched files are modified
+ - **guard-livereload** to automatically reloads your browser when 'view' files are modified
+
+You will find them on `guard plugins page`_.
+
+If you have all installed you can simply go to *Alcarin* main directory and write:
+
+.. code-block:: bash
+    guard
+
+And it is all. All your coffeescripts, less files and docs will be automatically recompiling.
+If you want use livereload too (auto reload browser when your make changes in files) you will
+probably need a browser plugin, related with you client type. Check on `this site`_.
+
+.. _`guard plugins page`: https://rubygems.org/search?query=guard-
+.. _`this site`: http://feedback.livereload.com/knowledgebase/articles/86242-how-do-i-install-and-use-the-browser-extensions-
