@@ -33,6 +33,18 @@ and use `composer` to install dependencies:
 (The `self-update` directive is to ensure you have an up-to-date `composer.phar`
 available.)
 
+Database
+--------
+
+Prefered way to working with Alcarin code is setup you own MongoDB_ server. Next you should
+prepare empty "alcarin" database and left free access to it.
+
+Local files
+-----------
+
+In */config/autoload* are few files with *.local.php.dist extension. You should copy it to
+*.local.php and setting you own configuration (probably you do not need change anything).
+
 Virtual Host
 ------------
 Afterwards, set up a virtual host to point to the public/ directory of the

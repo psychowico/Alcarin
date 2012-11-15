@@ -30,6 +30,7 @@ If you want developing new code you should know few technologies:
 Read about `guard configuration`_ to make you life easier with automate compile LESS, COFFEE, docs
 and reloading browser when you make any changes in project.
 
+
 Architecture design
 ===================
 

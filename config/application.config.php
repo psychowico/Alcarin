@@ -27,7 +27,7 @@ return array(
         'module_paths' => array(
             './module/Web',
             './module/Api',
-            './module',
+            './module/Dev',
             './vendor',
         ),
     ),
