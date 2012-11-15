@@ -2,28 +2,28 @@
 <zend-config>
     <js>
         <guest>
-            <md5>7888e1954aedd15edc42bdce188550b5</md5>
-            <filepath>/js/bundles/guest-7888e1954aedd15edc42bdce188550b5.js</filepath>
+            <md5>2b17a18106f8e502dd20312dd05db892</md5>
+            <filepath>/js/bundles/guest-2b17a18106f8e502dd20312dd05db892.js</filepath>
             <sources>
                 <file>/js/compiled_coffee/core.js</file>
                 <file>/js/compiled_coffee/Alcarin/active-view.js</file>
                 <file>/js/compiled_coffee/Alcarin/active-list.js</file>
-                <file>/js/compiled_coffee/errors-core.js</file>
                 <file>/js/compiled_coffee/test.js</file>
+                <file>/js/compiled_coffee/Alcarin/Errors/errors-core.js</file>
                 <file>/js/compiled_coffee/Alcarin/JQueryPlugins/RESTful.js</file>
             </sources>
         </guest>
         <admin>
-            <md5>25d03936dfb75b949b792524be51884c</md5>
-            <filepath>/js/bundles/admin-25d03936dfb75b949b792524be51884c.js</filepath>
+            <md5>be448fa89ae23a91fc01e39b43e32663</md5>
+            <filepath>/js/bundles/admin-be448fa89ae23a91fc01e39b43e32663.js</filepath>
             <sources>
                 <file>/js/compiled_coffee/core.js</file>
                 <file>/js/compiled_coffee/test.js</file>
             </sources>
         </admin>
         <player>
-            <md5>25d03936dfb75b949b792524be51884c</md5>
-            <filepath>/js/bundles/player-25d03936dfb75b949b792524be51884c.js</filepath>
+            <md5>be448fa89ae23a91fc01e39b43e32663</md5>
+            <filepath>/js/bundles/player-be448fa89ae23a91fc01e39b43e32663.js</filepath>
             <sources>
                 <file>/js/compiled_coffee/core.js</file>
                 <file>/js/compiled_coffee/test.js</file>
@@ -42,8 +42,8 @@
     </js>
     <css>
         <guest>
-            <md5>3e043b5440f0be5fb80de81209c12220</md5>
-            <filepath>/css/bundles/guest-3e043b5440f0be5fb80de81209c12220.css</filepath>
+            <md5>ee66e672d0c98eae1eb8568ee03e9c3f</md5>
+            <filepath>/css/bundles/guest-ee66e672d0c98eae1eb8568ee03e9c3f.css</filepath>
             <sources>
                 <file>/css/compiled_less/player-panel.css</file>
                 <file>/css/compiled_less/user-bar.css</file>
