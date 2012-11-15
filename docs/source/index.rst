@@ -13,6 +13,7 @@ Contents:
    story
    mechanic/index
    dev/installation
+   dev/programming
 
 Indices and tables
 ==================
