@@ -1,11 +1,8 @@
-
-
 ============
 Installation
 ============
 
-You can find full docs here: http://alcarin.readthedocs.org/.
-
+.. if you update this file you should update README.rst in main project directory too.
 
 Introduction
 ============
