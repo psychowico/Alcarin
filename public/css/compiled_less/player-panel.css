@@ -2,6 +2,7 @@ body {
   color: #8f8f8f;
   padding: 0;
   background: #323232;
+  background: url('../../img/pattern.gif') repeat top left;
 }
 .container {
   padding: 0;

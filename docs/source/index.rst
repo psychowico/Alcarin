@@ -12,7 +12,7 @@ Contents:
 
    story
    mechanic/index
-   dev/installation
+   dev/installation instructions
    dev/programming
 
 Indices and tables

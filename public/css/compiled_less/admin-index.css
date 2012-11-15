@@ -32,7 +32,6 @@ ul#admin-pages li a:visited {
   display: block;
   position: relative;
   text-decoration: none;
-  background-image: url("../../img/glyphicons-halflings.png");
   -webkit-transition: all 0.1s linear;
   -moz-transition: all 0.1s linear;
   -ms-transition: all 0.1s linear;

@@ -1,6 +1,8 @@
-============
-Installation
-============
+.. _installation:
+
+=========================
+Installation instructions
+=========================
 
 .. if you update this file you should update README.rst in main project directory too.
 
