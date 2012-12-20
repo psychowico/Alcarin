@@ -17,6 +17,9 @@ class IndexController extends AbstractActionController
 {
     public function indexAction()
     {
-        return [ 'version' => \Zend\Version\Version::VERSION ];
+        return [
+            'version' => \Zend\Version\Version::VERSION,
+            'href' => $this->getRequest()->getQuery('href')
+        ];
     }
 }

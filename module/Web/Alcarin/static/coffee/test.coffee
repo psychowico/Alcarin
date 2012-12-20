@@ -9,7 +9,6 @@ namespace 'Alcarin', (exports, Alcarin) ->
             target_state: null,
         }
 
-
         _activate : =>
             if @_options.target_state instanceof Function
                 @_options.target_state = @_options.target_state.call(@_el)
@@ -33,17 +32,17 @@ namespace 'Alcarin', (exports, Alcarin) ->
             $('.pages-container > .page-' + state.href).addClass('current').fadeIn()
 
             $('#main-nav > nav > ul > .current').removeClass 'current'
-            $('#main-nav a[href="' + state.href + '"]').closest('li').addClass 'current'
+            $('#main-nav a[data-hash-href="' + state.href + '"]').closest('li').addClass 'current'
 
             true
 
         init : =>
             $(window).bind 'hashchange', hashchange
-            $('#main-nav a').on 'click', ->
+            ###$('#main-nav a').on 'click', ->
                 href = $(@).attr('href').replace /^#/, ''
                 state = { 'href': href }
                 $.bbq.pushState( state )
-                false
+                false###
             false
 
     $ =>
@@ -54,12 +53,12 @@ namespace 'Alcarin', (exports, Alcarin) ->
                     options = _options
                     if not target_state?
                         target_state = {}
-                        data = [].filter.call( @.attributes, (at) ->
-                            /^data-hash-/.test(at.name)
-                        )
-                        for i, obj of data
-                            new_key = obj.name.replace /^data-hash-/, ''
-                            target_state[new_key] = obj.value
+                        data = $(@).data()
+                        for key, obj of data
+                            console.log key
+                            if /^hash[A-Z]/.test key
+                                new_key = key.replace /^hash/, ''
+                                target_state[new_key.toLowerCase()] = obj
 
                     options = options or {}
                     options.target_state = target_state
@@ -68,12 +67,11 @@ namespace 'Alcarin', (exports, Alcarin) ->
                     $(@).data 'hashLink', link
         }
 
-        $('#main-nav a').hashLink()
+        $('.active-link').hashLink()
+        $('#active-select').data('hash-test', 313).hashLink()
 
-
-
-        ###test = new Alcarin.TestClass()
-        test.init()###
+        test = new Alcarin.TestClass()
+        test.init()
 
         #let turn off animation when page is loading
         jQuery.fx.off = true

@@ -2,8 +2,8 @@
 <zend-config>
     <js>
         <guest>
-            <md5>2b17a18106f8e502dd20312dd05db892</md5>
-            <filepath>/js/bundles/guest-2b17a18106f8e502dd20312dd05db892.js</filepath>
+            <md5>1879a76b78b8475221c3884b1fbb0ea5</md5>
+            <filepath>/js/bundles/guest-1879a76b78b8475221c3884b1fbb0ea5.js</filepath>
             <sources>
                 <file>/js/compiled_coffee/core.js</file>
                 <file>/js/compiled_coffee/Alcarin/active-view.js</file>
@@ -14,16 +14,16 @@
             </sources>
         </guest>
         <admin>
-            <md5>be448fa89ae23a91fc01e39b43e32663</md5>
-            <filepath>/js/bundles/admin-be448fa89ae23a91fc01e39b43e32663.js</filepath>
+            <md5>058c833b05e0eaa9040d29921eed20b8</md5>
+            <filepath>/js/bundles/admin-058c833b05e0eaa9040d29921eed20b8.js</filepath>
             <sources>
                 <file>/js/compiled_coffee/core.js</file>
                 <file>/js/compiled_coffee/test.js</file>
             </sources>
         </admin>
         <player>
-            <md5>be448fa89ae23a91fc01e39b43e32663</md5>
-            <filepath>/js/bundles/player-be448fa89ae23a91fc01e39b43e32663.js</filepath>
+            <md5>058c833b05e0eaa9040d29921eed20b8</md5>
+            <filepath>/js/bundles/player-058c833b05e0eaa9040d29921eed20b8.js</filepath>
             <sources>
                 <file>/js/compiled_coffee/core.js</file>
                 <file>/js/compiled_coffee/test.js</file>

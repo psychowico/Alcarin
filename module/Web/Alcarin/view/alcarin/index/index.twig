@@ -12,8 +12,8 @@
     <nav>
         <ul class="nav-bar">
             {% for class in ['home', 'glass', 'plane', 'eye-close', 'circle-arrow-up', 'calendar'] %}
-            <li>
-                <a href="/some/url/if/js/not/working" data-hash-href="{{class}}">
+            <li {% if class == href %} class="current" {% endif %}>
+                <a href="?href={{class}}" class="active-link" data-hash-href="{{class}}">
                     <i class="icon-{{class}}"></i>
                 </a>
             </li>
@@ -25,11 +25,8 @@
 <section id="game-pages">
     <div class="pages">
         <div class="pages-container">
-            <div class="page-home current">
-                {% for i in 0..118 %} home.. {% endfor %}
-            </div>
             {% for class in ['home', 'glass', 'plane', 'eye-close', 'circle-arrow-up', 'calendar'] %}
-            <div class="page-{{class}} hide">
+            <div class="page-{{class}} {% if class != href %} hide{% endif %}">
                 {% for i in 0..118 %} {{class}}.. {% endfor %}
             </div>
             {% endfor %}

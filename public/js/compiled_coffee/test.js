@@ -49,21 +49,19 @@ namespace('Alcarin', function(exports, Alcarin) {
       $('.pages-container > .current').removeClass('current').fadeOut();
       $('.pages-container > .page-' + state.href).addClass('current').fadeIn();
       $('#main-nav > nav > ul > .current').removeClass('current');
-      $('#main-nav a[href="' + state.href + '"]').closest('li').addClass('current');
+      $('#main-nav a[data-hash-href="' + state.href + '"]').closest('li').addClass('current');
       return true;
     };
 
     TestClass.prototype.init = function() {
       $(window).bind('hashchange', hashchange);
-      $('#main-nav a').on('click', function() {
-        var href, state;
-        href = $(this).attr('href').replace(/^#/, '');
-        state = {
-          'href': href
-        };
-        $.bbq.pushState(state);
-        return false;
-      });
+      /*$('#main-nav a').on 'click', ->
+          href = $(@).attr('href').replace /^#/, ''
+          state = { 'href': href }
+          $.bbq.pushState( state )
+          false
+      */
+
       return false;
     };
 
@@ -71,21 +69,23 @@ namespace('Alcarin', function(exports, Alcarin) {
 
   })();
   return $(function() {
+    var test;
     $.fn.extend({
       hashLink: function(_target_state, _options) {
         return this.each(function() {
-          var data, i, link, new_key, obj, options, target_state;
+          var data, key, link, new_key, obj, options, target_state;
           target_state = _target_state;
           options = _options;
           if (!(target_state != null)) {
             target_state = {};
-            data = [].filter.call(this.attributes, function(at) {
-              return /^data-hash-/.test(at.name);
-            });
-            for (i in data) {
-              obj = data[i];
-              new_key = obj.name.replace(/^data-hash-/, '');
-              target_state[new_key] = obj.value;
+            data = $(this).data();
+            for (key in data) {
+              obj = data[key];
+              console.log(key);
+              if (/^hash[A-Z]/.test(key)) {
+                new_key = key.replace(/^hash/, '');
+                target_state[new_key.toLowerCase()] = obj;
+              }
             }
           }
           options = options || {};
@@ -95,11 +95,10 @@ namespace('Alcarin', function(exports, Alcarin) {
         });
       }
     });
-    $('#main-nav a').hashLink();
-    /*test = new Alcarin.TestClass()
-    test.init()
-    */
-
+    $('.active-link').hashLink();
+    $('#active-select').data('hash-test', 313).hashLink();
+    test = new Alcarin.TestClass();
+    test.init();
     jQuery.fx.off = true;
     $(window).trigger('hashchange');
     return jQuery.fx.off = false;
