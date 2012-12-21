@@ -18,6 +18,23 @@ return array(
         'profiling' => true,
     ),
 
+    'minifier'    => array(
+        'development_mode'      => true,
+        'js_adapter'           => array(
+            'class'   => 'AssetsCompiler\Minifier\Adapter\Closure',
+            'options' => array(
+                'exec' => '/usr/bin/google-closure.jar',
+                'flags'   => array(
+                    '--warning_level' => 'QUIET',
+                ),
+            ),
+        ),
+        'css_adapter'           => array(
+            'class'   => 'AssetsCompiler\Minifier\Adapter\Minify',
+            'options' => array(
+            ),
+        ),
+    ),
 
     'logs'  => array(
         'writers'   => array(

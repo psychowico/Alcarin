@@ -2,17 +2,6 @@
 
 return array(
     'minifier'    => array(
-        'development_mode'      => true,
-        'js_adapter'           => array(
-            'class'   => 'AssetsCompiler\Minifier\Adapter\UglifyJS2',
-            'options' => array(
-            ),
-        ),
-        'css_adapter'           => array(
-            'class'   => 'AssetsCompiler\Minifier\Adapter\Minify',
-            'options' => array(
-            ),
-        ),
         'bundles'   => array(
             'js'    => array(
                 'output_dir'     => '/js/bundles',
