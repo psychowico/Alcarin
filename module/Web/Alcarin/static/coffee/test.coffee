@@ -1,4 +1,4 @@
-namespace 'Alcarin', (exports, Alcarin) ->
+namespace 'Alcarin', (exports, Alcarin ) ->
 
     class exports.UpdateHashLink
         @maxid : 0

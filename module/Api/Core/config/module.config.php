@@ -19,9 +19,6 @@ return array(
     'zfcuser'   => array(
         'user_entity_class' => 'Core\Mapper\UserArrayMapper',
     ),
-    'zfcuser'   => array(
-        'user_entity_class' => 'Alcarin\Mapper\UserArrayMapper',
-    ),
 
     'controller_plugins' => array(
         'invokables'    => array(

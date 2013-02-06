@@ -40,10 +40,10 @@ Stwierdziliśmy, że wszelkie używalne surowce jak i szeroko rozumiane narzędz
 - *etykieta(label)* - tłumaczalny ciąg używany do wygenerowania nazwy substancji w grze, z użyciem jej głównego składnika (np. “{{material}} młotek”)
 - *opis(description)* - słowny opis wyglądu i podstawowych właściwości substancji
 - *stan skupienia(state of matter)* - stan skupienia materii, jeden z czterech:
-- *gazowy(gas)* - przenoszony jedynie w dedykowanych pojemnikach, samoczynnie po prostu rozpływa się w powietrzu
-- *ciekły(liquid)* - przenoszony w większości pojemników, samoczynnie rozlewa się i zatraca
-- *sypki(powder)* - może leżeć na ziemi w dowolnej ilości, zmienny kształt
-- *sztuki(units)* - jako jedyny liczony w sztukach, a nie w pojemnikach (czyli niedoszacowanej objętości, sprawdź dokument “System metryczny”); może leżeć na ziemi i być noszony w pojemnikach, często duża objętość względem masy
+    - *gazowy(gas)* - przenoszony jedynie w dedykowanych pojemnikach, samoczynnie po prostu rozpływa się w powietrzu
+    - *ciekły(liquid)* - przenoszony w większości pojemników, samoczynnie rozlewa się i zatraca
+    - *sypki(powder)* - może leżeć na ziemi w dowolnej ilości, zmienny kształt
+    - *sztuki(units)* - jako jedyny liczony w sztukach, a nie w pojemnikach (czyli niedoszacowanej objętości, sprawdź dokument “System metryczny”); może leżeć na ziemi i być noszony w pojemnikach, często duża objętość względem masy
 - *cechy(properties)* - zbiór właściwości określający możliwość interakcji obiektu ze światem, jak jego palność, wytrzymałość, czy twardość. Od tego zależy, jak dobrze będzie się palił dany obiekt etc. Obiekty pozyskiwane ze źródeł przyjmują wartość tych właściwość zależnie od ustawień źródła. Obiekty tworzone przez postacie zyskują je domyślnie przy pomocy obliczania średniej ważonej substancji użytych przy wytwarzaniu danego obiektu. Jednak kążdą z wartości cech konkretnej substancji można nadpisać własnym wzorem, używającym wszelkich innych cech tej substancji.
 - *jakość(quality)*- jakość jest specjalnym typem cechy. Charakteryzuje się tym, że domyślnie nie jest obliczana jedynie przy użyciu średniej ważonej jakości użytych substancji, ale także przy uwzględnieniu staranności pracy, umiejętności rzemieślnika, jakości użytych narzędzi.
 

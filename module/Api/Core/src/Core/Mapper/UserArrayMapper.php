@@ -171,4 +171,30 @@ class UserArrayMapper implements UserInterface
         $this->data['privilages'] = $privilages;
         return $this;
     }
+
+    /**
+     * @var int
+     */
+    protected $state;
+    /**
+     * Get state.
+     *
+     * @return int
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * Set state.
+     *
+     * @param int $state
+     * @return UserInterface
+     */
+    public function setState($state)
+    {
+        $this->state = $state;
+        return $this;
+    }
 }
