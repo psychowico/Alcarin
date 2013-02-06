@@ -35,6 +35,26 @@ and use `composer` to install dependencies:
 (The `self-update` directive is to ensure you have an up-to-date `composer.phar`
 available.)
 
+In second step you should copy all "dist" configuration files to you local and reconfigure
+their if needed. Fastest way on linux is:
+
+.. code-block:: bash
+
+    cd my/project/dir
+    cd config/autoload
+    for i in *.dist; do cp "$i" "${i/.dist/}"; done
+
+
+Finally, if you are on UNIX system, you will probably need give change owner for you
+data/cache directory, for this same like you php server use. On apache this will probably
+work:
+
+.. code-block:: bash
+
+    cd my/project/dir
+    sudo chown www-data data/cache
+
+
 Virtual Host
 ------------
 Afterwards, set up a virtual host to point to the public/ directory of the
