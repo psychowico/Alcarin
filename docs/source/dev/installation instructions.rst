@@ -40,7 +40,7 @@ their if needed. Fastest way on linux is:
 
 .. code-block:: bash
 
-    cd my/project/dir
+    cd my/project/dir/Alcarin
     cd config/autoload
     for i in *.dist; do cp "$i" "${i/.dist/}"; done
 
@@ -51,7 +51,7 @@ work:
 
 .. code-block:: bash
 
-    cd my/project/dir
+    cd my/project/dir/Alcarin
     sudo chown www-data data/cache
 
 
