@@ -30,7 +30,6 @@
         "psychowico/assets-compiler"        : "dev-master",
 
         "zf-commons/zfc-twig"               : "dev-master",
-        "zf-commons/zfc-base"               : "dev-master",
         "zf-commons/zfc-user"               : "dev-master",
 
         "zendframework/zend-developer-tools": "dev-master",
