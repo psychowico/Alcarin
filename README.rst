@@ -7,8 +7,6 @@ was Cantr_, old, similar game where characters live in more real environment.
 
 
 You can find full docs here: http://alcarin.readthedocs.org/.
-.. _installation:
-
 
 .. _Cantr: http://cantr.net
 
