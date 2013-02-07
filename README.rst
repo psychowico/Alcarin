@@ -35,9 +35,7 @@ their if needed. Fastest way on linux is:
 
 .. code-block:: bash
 
-    cd my/project/dir
-    cd config/autoload
-    for i in *.dist; do cp "$i" "${i/.dist/}"; done
+    for i in config/autoload/*.dist; do cp "$i" "${i/.dist/}"; done
 
 
 Finally, if you are on UNIX system, you will probably need give change owner for you
@@ -46,7 +44,6 @@ work:
 
 .. code-block:: bash
 
-    cd my/project/dir
     sudo chown www-data data/cache
 
 
