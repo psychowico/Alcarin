@@ -2,13 +2,12 @@
 Installation
 ============
 
-You can find full docs here: http://alcarin.readthedocs.org/.
-
-Introduction
-============
-
 Alcarin is a complex, browser game based on ZF2 technology. Inspiration for creating it
 was Cantr_, old, similar game where characters live in more real environment.
+
+
+You can find full docs here: http://alcarin.readthedocs.org/.
+.. _installation:
 
 
 .. _Cantr: http://cantr.net
@@ -33,17 +32,25 @@ and use `composer` to install dependencies:
 (The `self-update` directive is to ensure you have an up-to-date `composer.phar`
 available.)
 
-Database
---------
+In second step you should copy all "dist" configuration files to you local and reconfigure
+their if needed. Fastest way on linux is:
 
-Prefered way to working with Alcarin code is setup you own MongoDB_ server. Next you should
-prepare empty "alcarin" database and left free access to it.
+.. code-block:: bash
 
-Local files
------------
+    cd my/project/dir
+    cd config/autoload
+    for i in *.dist; do cp "$i" "${i/.dist/}"; done
 
-In */config/autoload* are few files with *.local.php.dist extension. You should copy it to
-*.local.php and setting you own configuration (probably you do not need change anything).
+
+Finally, if you are on UNIX system, you will probably need give change owner for you
+data/cache directory, for this same like you php server use. On apache this will probably
+work:
+
+.. code-block:: bash
+
+    cd my/project/dir
+    sudo chown www-data data/cache
+
 
 Virtual Host
 ------------
