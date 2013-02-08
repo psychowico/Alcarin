@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * js and css libraries that should be included in specific site bundles,
+ * you dont need to use minifier file version - they will be minify in bundle
+ * packing process.
+ **/
+
 return array(
     'minifier'    => array(
         'bundles'   => array(
@@ -8,10 +14,10 @@ return array(
                 'list'              => array(
                     'external'  => array(
                         'sources'   => array(
-                            '/js/jquery.js',
-                            '/js/bootstrap.min.js',
-                            '/js/jquery.cookie.js',
-                            '/js/jquery.ba-bbq.js',
+                            '/js/jquery/jquery-1.9.1.js',
+                            '/js/jquery/jquery.ba-bbq-1.4pre.js',
+                            '/js/jquery/jquery.cookie-1.3.1.js',
+                            '/js/bootstrap-2.3.0.js',
                         ),
                     ),
                     //files enough for guest users
@@ -48,8 +54,8 @@ return array(
                     'external'  => array(
                         'sources'   => array(
                             '/css/style.css',
-                            '/css/bootstrap.min.css',
-                            '/css/bootstrap-responsive.min.css',
+                            '/css/bootstrap.css',
+                            '/css/bootstrap-responsive.css',
                         ),
                     ),
                     'guest' => array(
