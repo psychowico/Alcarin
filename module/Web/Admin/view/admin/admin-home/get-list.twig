@@ -1,0 +1,9 @@
+<ul id="admin-pages">
+    {% for page, data in pages %}
+    <li class="page-{{page}}">
+        <a href="{{ data['href'] }}" title="{{ data['alt'] }}" >
+            <img src="{{ data['icon'] }}">
+        </a>
+    </li>
+    {% endfor %}
+</ul>
