@@ -8,6 +8,7 @@ namespace 'Alcarin', (exports, Alcarin) ->
 
         constructor: (el)->
             @parent = $ el
+            console.log @parent
 
             pr = @parent[0].firstChild
             while pr && pr.nodeType != 1
@@ -85,7 +86,7 @@ namespace 'Alcarin', (exports, Alcarin) ->
         val     : @dependencyProperty('value', 0)
 
 $ ->
-    list = new Alcarin.ActiveList('#active-select')
+    ###list = new Alcarin.ActiveList('#active-select')
 
     v = new Alcarin.TestView()
     v.name(7)
@@ -97,4 +98,4 @@ $ ->
 
     list.push( v, v2 )
     list.insert(1, v3)
-    true
+    true###

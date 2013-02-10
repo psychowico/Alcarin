@@ -38,6 +38,11 @@ ul#admin-pages li a:visited {
   -o-transition: all 0.1s linear;
   transition: all 0.1s linear;
 }
+ul#admin-pages li a img,
+ul#admin-pages li a:visited img {
+  margin: 5px;
+  width: 90%;
+}
 ul#admin-pages li a:hover,
 ul#admin-pages li a:visited:hover {
   -moz-transform: scale(1.2);

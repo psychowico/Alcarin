@@ -8,6 +8,7 @@ namespace('Alcarin', function(exports, Alcarin) {
     function ActiveList(el) {
       var pr;
       this.parent = $(el);
+      console.log(this.parent);
       pr = this.parent[0].firstChild;
       while (pr && pr.nodeType !== 1) {
         pr = pr.nextSibling;
@@ -105,16 +106,19 @@ namespace('Alcarin', function(exports, Alcarin) {
 });
 
 $(function() {
-  var list, v, v2, v3;
-  list = new Alcarin.ActiveList('#active-select');
-  v = new Alcarin.TestView();
-  v.name(7);
-  v2 = new Alcarin.TestView();
-  v2.name('10');
-  v3 = new Alcarin.TestView();
-  v3.name('środek');
-  v3.val(33);
-  list.push(v, v2);
-  list.insert(1, v3);
-  return true;
+  /*list = new Alcarin.ActiveList('#active-select')
+  
+  v = new Alcarin.TestView()
+  v.name(7)
+  v2 = new Alcarin.TestView()
+  v2.name('10')
+  v3 = new Alcarin.TestView()
+  v3.name('środek')
+  v3.val 33
+  
+  list.push( v, v2 )
+  list.insert(1, v3)
+  true
+  */
+
 });

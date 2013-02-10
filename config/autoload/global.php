@@ -15,27 +15,28 @@ use Core\Permission\Resource;
  */
 
 return array(
-    'zfctwig' => array(
-         /**
-         * If set to true disables ZF's notion of parent/child layouts in favor of
-         * Twig's inheritance model.
-         */
-        'disable_zf_model' => false,
-    ),
     'controllers_access' => array(
-        //route param that will used to render 'notallowed' site
+        /* route param that will used to render 'notallowed' site */
         'notallowed_route' => array(
             'controller' => 'zfcuser',
             'action'     => 'login',
         ),
-        //controllers and their required resources privilages
+        /* controllers and their required resources privilages */
         'controllers' => array(
-            'admin-home'     => Resource::ADMIN_TRANSLATION_PANEL,
+            'admin-home'     => Resource::ADMIN_MENU,
+            'privilages'     => Resource::ADMIN_PRIVILAGES_MANAGING,
             /*'admin-home' => array(
                 'resources' => array(
                     Resource::ADMIN_TRANSLATION_PANEL
                 ),
             )*/
         ),
+    ),
+    'zfctwig' => array(
+         /**
+         * If set to true disables ZF's notion of parent/child layouts in favor of
+         * Twig's inheritance model.
+         */
+        'disable_zf_model' => false,
     ),
 );

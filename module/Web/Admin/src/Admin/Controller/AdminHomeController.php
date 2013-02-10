@@ -14,33 +14,34 @@ use Zend\Mvc\Controller\AbstractActionController;
 class AdminHomeController extends AbstractActionController
 {
     protected $admin_pages = [
-        'controller1',
-        'controller2',
-        'controller3',
-        'controller4',
-        'controller5',
-        'controller6',
-        'controller7',
-        'controller8',
+        [
+            'name' => 'privilages',
+            'icon' => 'http://fc04.deviantart.net/fs71/f/2011/030/3/8/microsoft_access_icon_by_obinoobie-d38edtv.png',
+            'alt'  => 'Manage users privilages.',
+        ],
     ];
 
     public function indexAction()
     {
         $result = [];
         $authService = $this->isAllowed();
-        foreach( $this->admin_pages as $controller ) {
-            if( $authService->isAllowedToController( $controller ) ) {
-                $result[$controller] = $this->url()->fromRoute( 'admin',
-                    [ 'controller' => $controller ] );
+        foreach( $this->admin_pages as $data ) {
+            $page = $data['name'];
+            if( $authService->isAllowedToController( $page ) ) {
+                $router = $this->getServiceLocator()->get('router');
+                $url =$router->assemble( ['controller' => $page], ['name' => 'admin']);
+
+                $result[$page] = $this->pageData( $data );
             }
         }
         return [ 'pages' => $result ];
     }
 
-    public function fooAction()
-    {
-        // This shows the :controller and :action parameters in default route
-        // are working when you browse to /module-specific-root/skeleton/foo
-        return [];
+    private function pageData( $data ) {
+        return [
+            'href' => $this->url()->fromRoute( 'admin', [ 'controller' => $data['name'] ] ),
+            'icon' => empty( $data['icon'] ) ? null : $data['icon'],
+            'alt'  => empty( $data['alt'] ) ? null : $data['alt'],
+        ];
     }
 }

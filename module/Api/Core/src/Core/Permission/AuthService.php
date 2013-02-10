@@ -11,19 +11,6 @@ class AuthService implements ServiceManagerAwareInterface
     protected $serviceManager;
     protected $auth;
 
-    /**
-     * return true if specific privilages provides access to any
-     * from admin panels
-     */
-    public function hasAccessToAdminPanels()
-    {
-        //check that user privilages and admin resources privilages
-        //has at least one common value
-        $privilages = $this->userPrivilages();
-
-        if( $privilages === false ) return false;
-        return ( ($privilages & Resource::adminResources() ) > 0 );
-    }
 
     /**
      * checking resources needed to see $controller_alias in
@@ -41,6 +28,7 @@ class AuthService implements ServiceManagerAwareInterface
 
         if( isset( $access_list[$controller_alias] ) ) {
             $options = $access_list[$controller_alias];
+
             if( is_scalar( $options ) ) $options = [ 'resources' => [$options] ];
 
             $resources = isset( $options['resources'] ) ? $options['resources'] : [];
@@ -58,7 +46,9 @@ class AuthService implements ServiceManagerAwareInterface
      */
     public function isAllowed( $resource )
     {
+
         $privilages = $this->userPrivilages();
+        if( $privilages === false ) return false;
 
         $resource_privilage = ( 1 << $resource );
 

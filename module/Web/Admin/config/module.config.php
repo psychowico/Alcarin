@@ -7,39 +7,26 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'admin-home' => 'Admin\Controller\AdminHomeController',
+            'privilages' => 'Admin\Controller\PrivilagesController',
         ),
     ),
     'router' => array(
         'routes' => array(
             'admin' => array(
-                'type'    => 'Literal',
+                'type'    => 'Segment',
                 'options' => array(
                     // Change this to something specific to your module
-                    'route'    => '/admin',
+                    'route'    => '/admin[/:controller[/:action]]',
                     'defaults' => array(
                         'controller'    => 'admin-home',
                         'action'        => 'index',
                     ),
-                ),
-                'may_terminate' => true,
-                'child_routes' => array(
-                    // This route is a sane default when developing a module;
-                    // as you solidify the routes for your module, however,
-                    // you may want to remove it and replace it with more
-                    // specific routes.
-                    'default' => array(
-                        'type'    => 'Segment',
-                        'options' => array(
-                            'route'    => '/[:controller[/:action]]',
-                            'constraints' => array(
+                    'constraints' => array(
                                 'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
                                 'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
-                            ),
-                            'defaults' => array(
-                            ),
-                        ),
                     ),
                 ),
+                'may_terminate' => true,
             ),
         ),
     ),

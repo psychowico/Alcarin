@@ -25,7 +25,8 @@
                         <li>test{{i}}</li>
                         {% endfor %}
 
-                        {% if authService().hasAccessToAdminPanels() %}
+                        {% set ADMIN_MENU = constant('Core\\Permission\\Resource::ADMIN_MENU') %}
+                        {% if isAllowed( ADMIN_MENU ) %}
                         <li>
                             {% set admin_url = url('admin') %}
                             <a href="{{admin_url}}">Admin panels</a>
