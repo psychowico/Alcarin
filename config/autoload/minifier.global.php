@@ -58,17 +58,24 @@ return array(
                             '/css/bootstrap-responsive.css',
                         ),
                     ),
+                    'common' => array(
+                        'sources' => array(
+                            '/css/compiled_less/user-bar.css',
+                            '/css/compiled_less/main-layout.css',
+                            '/css/compiled_less/player-panel.css',
+                        ),
+                    ),
                     'guest' => array(
                         'sources' => array(
-                            '/css/compiled_less/player-panel.css',
-                            '/css/compiled_less/user-bar.css',
                             '/css/compiled_less/middle-nav.css',
-                            '/css/compiled_less/admin-index.css',
                         ),
                     ),
                     //files enough for admins
                     'admin' => array(
-                        'sources' => '/css/compiled_less/test.css',
+                        'sources' => array(
+                            '/css/compiled_less/admin-index.css',
+                            '/css/compiled_less/admin-privilages.css',
+                        ),
                     ),
                     //files for regular players
                     'player' => array(

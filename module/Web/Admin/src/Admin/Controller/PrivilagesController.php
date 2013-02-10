@@ -10,10 +10,13 @@
 namespace Admin\Controller;
 
 use Core\Controller\AbstractAlcarinRestfulController;
+use Core\Permission\Resource;
 
 class PrivilagesController extends AbstractAlcarinRestfulController
 {
     public function getList()
     {
+        //$authService = $this->getServiceLocator()->get('auth-service');
+        return [ 'resources_group' => Resource::$Descriptions ];
     }
 }

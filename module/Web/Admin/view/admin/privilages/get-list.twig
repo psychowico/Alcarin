@@ -1,0 +1,16 @@
+<div class="active-legends">
+
+  <form>
+  {% for group, resources in resources_group %}
+    <fieldset>
+      <legend>{{ group }}</legend>
+      {% for id, resource in resources %}
+      <label class="checkbox">
+        <input type="checkbox"> {{ resource[0] }} - <i> {{ resource[1] | lower }} </i>
+      </label>
+      {% endfor %}
+    </fieldset>
+  {% endfor %}
+  </form>
+
+</div>

@@ -14,9 +14,13 @@ class Resource
      * useable on privilages managing panels
      */
     public static $Descriptions = [
-        Resource::PLAYER_PANEL => ["Public", "Public data acessible for all logged users."],
-        Resource::ADMIN_MENU => ["Admin menu", "Administrative menu."],
-        Resource::ADMIN_PRIVILAGES_MANAGING => ["Administration of privileges", "Viewing and managing users privilages."],
+        'General'   => [
+            Resource::PLAYER_PANEL => ["Public", "Public data acessible for all logged users."],
+        ],
+        'Administrative' => [
+            Resource::ADMIN_MENU => ["Admin menu", "Administrative menu."],
+            Resource::ADMIN_PRIVILAGES_MANAGING => ["Administration of privileges", "Viewing and managing users privilages."],
+        ],
     ];
 
     public static function defaultForLoggedUser()

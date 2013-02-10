@@ -9,12 +9,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         {{ headMeta() }}
 
-        {{ headLink().appendBundle('external').appendBundle('guest') | raw }}
+        {{ headLink().appendBundle('external')
+                     .appendBundle('common')
+                     .appendBundle('admin') | raw }}
 
         <!-- Scripts -->
         {{ headScript().prependFile( basePath( '/js/html5.js' ), 'text/javascript', { 'conditional': 'lt IE 9' } )
                                 .appendBundle('external')
-                                .appendBundle('guest') | raw }}
+                                .appendBundle('admin') | raw }}
     </head>
     <body>
         <div class="container">
