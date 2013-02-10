@@ -10,7 +10,7 @@ use Zend\Mvc\Controller\AbstractRestfulController;
  * only piece of methods).
  * It provide frequently used properties too.
  */
-abstract class AbstractAlcarinController extends AbstractRestfulController
+abstract class AbstractAlcarinRestfulController extends AbstractRestfulController
 {
     private $gameServiceContainer = null;
 

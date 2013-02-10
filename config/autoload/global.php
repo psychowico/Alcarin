@@ -23,13 +23,10 @@ return array(
         ),
         /* controllers and their required resources privilages */
         'controllers' => array(
+            'home'           => Resource::PLAYER_PANEL,
             'admin-home'     => Resource::ADMIN_MENU,
             'privilages'     => Resource::ADMIN_PRIVILAGES_MANAGING,
-            /*'admin-home' => array(
-                'resources' => array(
-                    Resource::ADMIN_TRANSLATION_PANEL
-                ),
-            )*/
+            /*'admin-home' => [ Resource::ADMIN_TRANSLATION_PANEL, ... ]*/
         ),
     ),
     'zfctwig' => array(

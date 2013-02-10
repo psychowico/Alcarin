@@ -9,9 +9,9 @@
 
 namespace Admin\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
+use Core\Controller\AbstractAlcarinRestfulController;
 
-class AdminHomeController extends AbstractActionController
+class AdminHomeController extends AbstractAlcarinRestfulController
 {
     protected $admin_pages = [
         [
@@ -21,7 +21,7 @@ class AdminHomeController extends AbstractActionController
         ],
     ];
 
-    public function indexAction()
+    public function getList()
     {
         $result = [];
         $authService = $this->isAllowed();

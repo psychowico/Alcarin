@@ -111,13 +111,20 @@ class Module
         //resources, we render for him 'notallowed' site.
         $authService = $sm->get('auth-service');
         if( !$authService->isAllowedToController( $choosed ) ) {
-            $route_params = $sm->get('config')['controllers_access']['notallowed_route'];
-            foreach ($route_params as $name => $value) {
+            $not_allowed_route_params = $sm->get('config')['controllers_access']['notallowed_route'];
+            foreach ($not_allowed_route_params as $name => $value) {
                 $route_match->setParam( $name, $value);
             }
             //let set redirect value
             $original_uri = $event->getRequest()->getServer( 'REQUEST_URI' );
             $event->getRequest()->getQuery()->set('redirect', $original_uri);
+        }
+    }
+
+    public function onRender( MvcEvent $e )
+    {
+        if( $e->getRequest() instanceof \Zend\Http\Request ) {
+            $this->turnOffJsonNest( $e );
         }
     }
 
@@ -130,7 +137,7 @@ class Module
     private function setupRestfulStandard( $request )
     {
         //we don't run this in specific situation, like console runing scripts
-        if( $request instanceof Request ) {
+        if( $request instanceof \Zend\Http\Request ) {
             if( $request->isPost() ) {
                 $_method = isset( $request->getPost()->_method ) ? $request->getPost()->_method :
                             Request::METHOD_POST;
@@ -148,14 +155,9 @@ class Module
         }
     }
 
-
-    public function onRender( MvcEvent $e )
-    {
-        if( $e->getRequest() instanceof \Zend\Http\Request ) {
-            $this->turnOffJsonNest( $e );
-        }
-    }
-
+    /**
+     * automatically turning off layouts for JSON requests.
+     */
     private function turnOffJsonNest( MvcEvent $e )
     {
         $accept  = $e->getRequest()->getHeaders()->get('Accept');

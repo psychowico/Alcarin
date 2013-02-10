@@ -27,11 +27,10 @@ class AuthService implements ServiceManagerAwareInterface
         $access_list = $config['controllers_access']['controllers'];
 
         if( isset( $access_list[$controller_alias] ) ) {
-            $options = $access_list[$controller_alias];
+            $resources = $access_list[$controller_alias];
 
-            if( is_scalar( $options ) ) $options = [ 'resources' => [$options] ];
+            if( is_scalar( $resources ) ) $resources = [ $resources ];
 
-            $resources = isset( $options['resources'] ) ? $options['resources'] : [];
             foreach( $resources as $resource ) {
                 if( !$this->isAllowed( $resource ) ) {
                     return false;
@@ -46,7 +45,6 @@ class AuthService implements ServiceManagerAwareInterface
      */
     public function isAllowed( $resource )
     {
-
         $privilages = $this->userPrivilages();
         if( $privilages === false ) return false;
 
