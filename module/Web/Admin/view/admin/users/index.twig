@@ -1,0 +1,11 @@
+{# {{ url('admin-users', {controller: 'privilages'}) }} #}
+
+<div class="general-users-list">
+{% for user in users %}
+    <a href="{{ url('admin-users', {id: user['id']}) }}">
+        <div>
+            {{ user['email'] }}
+        </div>
+    </a>
+{% endfor %}
+</div>

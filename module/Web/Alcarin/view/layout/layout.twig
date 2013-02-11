@@ -9,7 +9,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         {{ headMeta() }}
 
-        {{ headLink().appendBundle('external').appendBundle('guest') | raw }}
+        {{ headLink().appendBundle('external').appendBundle('common').appendBundle('guest') | raw }}
 
         <!-- Scripts -->
         {{ headScript().prependFile( basePath( '/js/html5.js' ), 'text/javascript', { 'conditional': 'lt IE 9' } )
@@ -25,8 +25,7 @@
                         <li>test{{i}}</li>
                         {% endfor %}
 
-                        {% set ADMIN_MENU = constant('Core\\Permission\\Resource::ADMIN_MENU') %}
-                        {% if isAllowed( ADMIN_MENU ) %}
+                        {% if isAllowed( 'ADMIN_MENU' ) %}
                         <li>
                             {% set admin_url = url('admin') %}
                             <a href="{{admin_url}}">Admin panels</a>

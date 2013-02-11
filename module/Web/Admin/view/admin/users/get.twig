@@ -1,0 +1,15 @@
+<div>
+
+<h1>{{ context['email'] }}</h1>
+
+Krótkie info o użytkowniku.
+
+{% if isAllowed( 'ADMIN_PRIVILAGES_MANAGING' ) %}
+<a href="{{ url('admin-users',
+        {controller: 'privilages', id: context['id']})
+    }}" class="btn">
+    Edytuj uprawnienia
+</a>
+{% endif %}
+
+</div>
