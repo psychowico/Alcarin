@@ -74,7 +74,7 @@ return array(
                     'admin' => array(
                         'sources' => array(
                             '/css/compiled_less/admin-index.css',
-                            '/css/compiled_less/admin-privilages.css',
+                            '/css/compiled_less/admin-users.css',
                         ),
                     ),
                     //files for regular players

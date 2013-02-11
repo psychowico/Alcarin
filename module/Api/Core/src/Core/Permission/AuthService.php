@@ -11,7 +11,6 @@ class AuthService implements ServiceManagerAwareInterface
     protected $serviceManager;
     protected $auth;
 
-
     /**
      * checking resources needed to see $controller_alias in
      * controllers_access->controllers configuration list and
@@ -41,7 +40,7 @@ class AuthService implements ServiceManagerAwareInterface
     }
 
     /**
-     * check than specific privilages nb has access to specific resource
+     * check than logged user has access to specific resource
      */
     public function isAllowed( $resource )
     {
@@ -52,7 +51,6 @@ class AuthService implements ServiceManagerAwareInterface
 
         return ($privilages & $resource_privilage ) == $resource_privilage;
     }
-
 
     /**
      * return logged user privilages or false if user isn't logged

@@ -6,8 +6,9 @@ return array(
 
     'controllers' => array(
         'invokables' => array(
-            'admin-home' => 'Admin\Controller\AdminHomeController',
-            'privilages' => 'Admin\Controller\PrivilagesController',
+            'admin-home'            => 'Admin\Controller\AdminHomeController',
+            'admin-users' => 'Admin\Controller\UsersController',
+            'privilages'            => 'Admin\Controller\Users\PrivilagesController',
         ),
     ),
     'router' => array(
@@ -16,12 +17,27 @@ return array(
                 'type'    => 'Segment',
                 'options' => array(
                     // Change this to something specific to your module
-                    'route'    => '/admin[/:controller[/:id[/:action]]]',
+                    'route'    => '/admin[/:controller][/:id][/:action]',
                     'defaults' => array(
                         'controller'    => 'admin-home',
                     ),
                     'constraints' => array(
                         'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[a-zA-Z0-9_-]+',
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                ),
+            ),
+            'admin-users' => array(
+                'type'    => 'Segment',
+                'options' => array(
+                    // Change this to something specific to your module
+                    'route'    => '/admin/users[/:id][/:controller][/:action]',
+                    'defaults' => array(
+                        'controller'    => 'admin-users',
+                    ),
+                    'constraints' => array(
+                        'controller' => 'privilages',
                         'id'     => '[a-zA-Z0-9_-]+',
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     ),

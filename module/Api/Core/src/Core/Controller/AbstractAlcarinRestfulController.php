@@ -5,7 +5,8 @@
 
 namespace Core\Controller;
 
-use Zend\Mvc\Controller\AbstractRestfulController;
+use Zend\Mvc\Controller\AbstractRestfulController,
+    Zend\Mvc\MvcEvent;
 
 /***
  * default abstract controller, base class for most controllers in "Everest" module.
@@ -14,6 +15,8 @@ use Zend\Mvc\Controller\AbstractRestfulController;
  */
 abstract class AbstractAlcarinRestfulController extends AbstractRestfulController
 {
+    protected $mongo;
+
     /**
      * Debug temporary default action, "Return list of resources", it shouldn't be
      * called, it's used only for mute debug message about abstract functions
@@ -80,5 +83,28 @@ abstract class AbstractAlcarinRestfulController extends AbstractRestfulControlle
         $className = get_class( $this );
         $type = 'DELETE';
         throw new \LogicException("Method '$type' in controller '$className' isn't implemented yet.");
+    }
+
+    public function onDispatch(MvcEvent $e)
+    {
+        $routeMatch = $e->getRouteMatch();
+        $action  = $routeMatch->getParam('action', false);
+
+        $result = parent::onDispatch( $e );
+
+        if (!$action) {
+            $routeMatch->setParam( 'action', 'index' );
+        }
+
+        return $result;
+    }
+
+    protected function mongo()
+    {
+        if( $this->mongo == null ) {
+            $this->mongo = $this->getServiceLocator()->get('mongo');
+        }
+
+        return $this->mongo;
     }
 }

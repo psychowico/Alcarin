@@ -14,6 +14,20 @@ use Zend\Mvc\ModuleRouteListener;
 
 class Module implements AutoloaderProviderInterface
 {
+    /**
+     * Expected to return \Zend\ServiceManager\Config object or array to
+     * seed such an object.
+     *
+     * @return array|\Zend\ServiceManager\Config
+     */
+    public function getServiceConfig()
+    {
+        return array(
+            'invokables' => array(
+                'user-admin' => 'Admin\Model\UserAdministrationModel',
+            ),
+        );
+    }
 
     public function getAutoloaderConfig()
     {

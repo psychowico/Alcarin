@@ -9,7 +9,7 @@ class IsAllowed extends AbstractHelper
 {
     protected $authService;
 
-    public function setAuthService( AuthService $auth )
+    public function setAuthService(AuthService $auth)
     {
         $this->authService = $auth;
         return $this;
@@ -19,10 +19,17 @@ class IsAllowed extends AbstractHelper
      * check that logged user is allowed to use specific $resource
      * @param $resource it should be constant from \Core\Permission\Resources class
      */
-    public function __invoke( $resource = null )
+    public function __invoke($resource = null)
     {
         if( $resource === null ) return $this->authService;
 
+        if( is_string($resource) ) {
+            $r_resource = constant('Core\\Permission\\Resource::' . $resource);
+            if( $r_resource == null ) {
+                throw new \DomainException(sprintf('"%s" is not a valid resource name.', $resource ));
+            }
+            $resource = $r_resource;
+        }
         return $this->authService->isAllowed( $resource );
     }
 }

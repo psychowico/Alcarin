@@ -8,6 +8,11 @@ namespace ZDTPack;
  */
 class MongoCollection extends \Mongo_Collection
 {
+  public function findById($_id, $fields = [])
+  {
+    return parent::findOne(['_id' => new \MongoId($_id)], $fields);
+  }
+
   private function start_iterate_profiling()
   {
     if($this->db()->profiling) {
