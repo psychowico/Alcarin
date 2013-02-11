@@ -8,7 +8,8 @@ class Resource
     const PLAYER_PANEL              = 0;
     /* ADMINS privilages */
     const ADMIN_MENU                = 1;
-    const ADMIN_PRIVILAGES_MANAGING = 2;
+    const ADMIN_USERS               = 2;
+    const ADMIN_PRIVILAGES_MANAGING = 3;
 
     /**
      * useable on privilages managing panels
@@ -19,6 +20,7 @@ class Resource
         ],
         'Administrative' => [
             Resource::ADMIN_MENU => ["Admin menu", "Administrative menu."],
+            Resource::ADMIN_USERS => ["Users menu", "Users administration menu."],
             Resource::ADMIN_PRIVILAGES_MANAGING => ["Administration of privileges", "Viewing and managing users privilages."],
         ],
     ];

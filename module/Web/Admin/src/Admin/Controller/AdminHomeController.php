@@ -15,9 +15,9 @@ class AdminHomeController extends AbstractAlcarinRestfulController
 {
     protected $admin_pages = [
         [
-            'name' => 'privilages',
-            'icon' => 'http://fc04.deviantart.net/fs71/f/2011/030/3/8/microsoft_access_icon_by_obinoobie-d38edtv.png',
-            'alt'  => 'Manage users privilages.',
+            'name' => 'users',
+            'icon' => 'http://img.weather.weatherbug.com/forecast/icons/localized/500x420/en/trans/cond000.png',
+            'alt'  => 'Manage users.',
         ],
     ];
 

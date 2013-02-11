@@ -25,7 +25,8 @@ return array(
         'controllers' => array(
             'home'           => Resource::PLAYER_PANEL,
             'admin-home'     => Resource::ADMIN_MENU,
-            'privilages'     => Resource::ADMIN_PRIVILAGES_MANAGING,
+            'admin-users'    => Resource::ADMIN_USERS,
+            'privilages'     => [Resource::ADMIN_USERS, Resource::ADMIN_PRIVILAGES_MANAGING],
             /*'admin-home' => [ Resource::ADMIN_TRANSLATION_PANEL, ... ]*/
         ),
     ),
