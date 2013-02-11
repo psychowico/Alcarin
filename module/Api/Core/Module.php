@@ -66,6 +66,11 @@ class Module
 
                     $writers = $sm->get('config')['logs']['writers'];
 
+                    if( count($writers) == 0 ) {
+                        $logger->addWriter( new \Zend\Log\Writer\Null() );
+                        return $logger;
+                    }
+
                     //let register dedicated writers
                     foreach( $writers as $writer_key => $options ) {
                         $service = isset( $options['service'] ) ? $options['service'] : null;
