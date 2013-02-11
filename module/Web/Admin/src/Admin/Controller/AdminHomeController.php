@@ -23,6 +23,7 @@ class AdminHomeController extends AbstractAlcarinRestfulController
 
     public function getList()
     {
+        throw new \Exception('test');
         $result = [];
         $authService = $this->isAllowed();
         foreach( $this->admin_pages as $data ) {

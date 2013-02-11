@@ -2,7 +2,7 @@
 return array(
     'view_manager' => array(
         'template_path_stack' => array(
-            'zdt-pack' => __DIR__ . '/../view',
+            'dev-pack' => __DIR__ . '/../view',
         ),
     ),
 

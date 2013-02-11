@@ -15,7 +15,7 @@ return array(
 
     'nette_debug' => array(
         'enabled'      => false,
-        'mode'         => null,        // true = production|false = development|null = autodetect|IP address(es) csv/array
+        'mode'         => true,        // true = production|false = development|null = autodetect|IP address(es) csv/array
         'bar'          => false,       // bool = enabled|Toggle nette diagnostics bar.
         'strict'       => true,        // bool = cause immediate death|int = matched against error severity
         'log'          => "",          // bool = enabled|Path to directory eg. data/logs
@@ -158,7 +158,7 @@ return array(
              * Expects: array
              */
             'entries' => array(
-                'mongo'  => 'zdt-pack/toolbar/mongo-collector'
+                'mongo'  => 'dev-pack/toolbar/mongo-collector'
             ),
         ),
     ),
