@@ -17,7 +17,7 @@ return array(
         'Errors',
         //profiling modules, can be removed in production
         'ZendDeveloperTools',
-        'ZDTPack',
+        'DevPack',
         'ZF2NetteDebug'
     ),
     'module_listener_options' => array(

@@ -1,6 +1,6 @@
 <?php
 
-namespace ZDTPack\Factory;
+namespace DevPack\Factory;
 
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;

@@ -9,7 +9,7 @@
  * @subpackage Collector
  */
 
-namespace ZDTPack\Collector;
+namespace DevPack\Collector;
 
 use Zend\Mvc\MvcEvent;
 use ZendDeveloperTools\Collector\AbstractCollector;

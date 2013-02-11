@@ -97,7 +97,7 @@ return array(
              */
             'collectors' => array(
                 'db' => null,
-                'mongo'  => 'ZDTPack\MongoCollector'
+                'mongo'  => 'DevPack\MongoCollector'
              ),
         ),
          /**

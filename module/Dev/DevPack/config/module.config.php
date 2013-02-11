@@ -7,31 +7,31 @@ return array(
     ),
 
     'mongo' => array(
-        'collection'    => 'ZDTPack\MongoCollection'
+        'collection'    => 'DevPack\MongoCollection'
     ),
 
     'mongo_profiler' => array(
-        'class'   => 'ZDTPack\Profiler',
+        'class'   => 'DevPack\Profiler',
         'options' => array(
         ),
     ),
 
     'controller_plugins' => array(
         'factories' => array(
-            'debug' => 'ZDTPack\Factory\DebugLoggerFactory',
+            'debug' => 'DevPack\Factory\DebugLoggerFactory',
         ),
     ),
 
     'service_manager' => array(
         'invokables' => array(
-            'ZDTPack\MongoCollector'  => 'ZDTPack\Collector\MongoCollector',
-            'ZDTPack\MongoCollection' => 'ZDTPack\MongoCollection',
+            'DevPack\MongoCollector'  => 'DevPack\Collector\MongoCollector',
+            'DevPack\MongoCollection' => 'DevPack\MongoCollection',
         ),
     ),
 
     'controllers' => array(
         'invokables' => array(
-            'ZDTPack\DevConsoleController' => 'ZDTPack\Controller\DevConsoleController',
+            'DevPack\DevConsoleController' => 'DevPack\Controller\DevConsoleController',
         ),
     ),
 
@@ -42,7 +42,7 @@ return array(
                     'options' => array(
                         'route'    => 'create su <suemail> <supass>',
                         'defaults' => array(
-                            'controller' => 'ZDTPack\DevConsoleController',
+                            'controller' => 'DevPack\DevConsoleController',
                             'action'     => 'createSu',
                         ),
                     ),

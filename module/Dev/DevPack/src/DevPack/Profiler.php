@@ -1,6 +1,6 @@
 <?php
 
-namespace ZDTPack;
+namespace DevPack;
 
 /**
  * profiler for mongo db odm wrapper

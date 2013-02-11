@@ -1,6 +1,6 @@
 <?php
 
-namespace ZDTPack;
+namespace DevPack;
 
 /**
  * override default \Mongo_Collection from colinmollenhour
