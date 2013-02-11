@@ -45,6 +45,7 @@ class AuthService implements ServiceManagerAwareInterface
     public function isAllowed( $resource )
     {
         $privilages = $this->userPrivilages();
+
         if( $privilages === false ) return false;
 
         $resource_privilage = ( 1 << $resource );

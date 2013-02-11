@@ -1,0 +1,13 @@
+#!/usr/bin/php
+<?php
+
+if( $_SERVER['argc'] - 1 < 2 ) {
+    echo "You need call this with 2 args - super user email and password." . PHP_EOL;
+    return;
+}
+
+
+$_SERVER['argv'] = $argv = array( $argv[0], 'create',  'su', $_SERVER['argv'][1], $_SERVER['argv'][2] );
+$_SERVER['argc'] = $argc = count($argv) ;
+
+require __DIR__ . '/../public/index.php';

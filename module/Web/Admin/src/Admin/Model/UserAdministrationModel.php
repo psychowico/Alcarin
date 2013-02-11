@@ -12,6 +12,7 @@ class UserAdministrationModel implements \Zend\ServiceManager\ServiceLocatorAwar
     {
         $user_data = $this->getUser( $userid );
         $user_priv = empty( $user_data['privilages'] ) ? false : $user_data['privilages'];
+
         if( $user_priv === false ) return false;
 
         $resource_privilage = ( 1 << $resource );
@@ -47,6 +48,8 @@ class UserAdministrationModel implements \Zend\ServiceManager\ServiceLocatorAwar
         $this->users_store[$userid] = $dataset;
 
         $mongo = $this->getServiceLocator()->get('mongo');
+
+        $dataset['privilages'] = new \MongoInt64($dataset['privilages']);
         $mongo->users->update_safe(['_id' => new \MongoId($userid)], $dataset);
     }
 }

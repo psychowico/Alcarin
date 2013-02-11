@@ -11,12 +11,25 @@ namespace ZDTPack;
 
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
+use Zend\Console\Adapter\AdapterInterface as ConsoleAdapterInterface;
+use Zend\ModuleManager\Feature\ConsoleUsageProviderInterface;
 
 /**
  * this module extending ZendDevelopTools toolbar about new features
  */
-class Module
+class Module implements ConsoleUsageProviderInterface
 {
+    /**
+     * @param ConsoleAdapterInterface $console
+     * @return array|string|null
+     */
+    public function getConsoleUsage(ConsoleAdapterInterface $console)
+    {
+        return array(
+            'create su <suemail> <supass>' => 'Create super user with specific email and password. SU will have all possible privilages.',
+        );
+    }
+
     public function getServiceConfig()
     {
         return array(

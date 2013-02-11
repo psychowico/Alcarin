@@ -4,6 +4,10 @@ namespace Core\Permission;
 
 class Resource
 {
+    //you shouldn't defining more resources that this number,
+    //because it can generate problems with 'long' numbers in php.
+    const RESOURCE_LIMIT = 50;
+
     //main chars panel
     const PLAYER_PANEL              = 0;
     /* ADMINS privilages */

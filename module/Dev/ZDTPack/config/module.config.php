@@ -22,4 +22,26 @@ return array(
             'ZDTPack\MongoCollection' => 'ZDTPack\MongoCollection',
         ),
     ),
+
+    'controllers' => array(
+        'invokables' => array(
+            'ZDTPack\DevConsoleController' => 'ZDTPack\Controller\DevConsoleController',
+        ),
+    ),
+
+    'console' => array(
+        'router' => array(
+            'routes' => array(
+                'create-su' => array(
+                    'options' => array(
+                        'route'    => 'create su <suemail> <supass>',
+                        'defaults' => array(
+                            'controller' => 'ZDTPack\DevConsoleController',
+                            'action'     => 'createSu',
+                        ),
+                    ),
+                ),
+            ),
+        ),
+    ),
 );

@@ -40,6 +40,9 @@ class Module
             'factories' => array(
                 //sharing mongo
                 'mongo' => function( $sm ) {
+                    //ini_set('mongo.native_long', 1);
+                    //ini_set('mongo.long_as_object', 1);
+
                     $config = $sm->get('config')['mongo'];
 
                     $profiler = null;
