@@ -38,12 +38,16 @@ return array(
 
     'logs'  => array(
         'writers'   => array(
-            'mongo-log-writer' => array(
+            //writing logs to database
+            /*'mongo-log-writer' => array(
                 'service' => 'mongo-log-writer',
-            ),
-            'stream'    => array(
-                'stream' => __DIR__ . '/../../data/alcarin.log',
-            ),
+                //you can set minimal priority of messages that will be logged to this writer
+                'min-priority'  => Zend\Log\Logger::ERR,
+            ),*/
+            //writing logs to file, remeber to make it writeable!
+            /*'stream'    => array(
+                'stream' => __DIR__ . '/../../data/logs/alcarin.log',
+            ),*/
         )
     ),
 

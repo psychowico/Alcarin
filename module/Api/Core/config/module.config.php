@@ -3,9 +3,7 @@ return array(
     'logs'  => array(
         //list of services, that will be used as
         //logs writers
-        'writers'    => array(
-            'null'  => array(),
-        )
+        'writers'    => array()
     ),
     'mongo' => array(
         'server'    => 'mongodb://localhost:27017',

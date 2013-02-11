@@ -60,7 +60,7 @@ class Module
                     }
                     return $db;
                 },
-                'logger' => function( $sm ) {
+                'system-logger' => function( $sm ) {
                     $logger = new \Zend\Log\Logger();
                     $plugins_manager = new \Zend\Log\WriterPluginManager();
 
@@ -78,7 +78,14 @@ class Module
 
                     //and add them as writers
                     foreach( $writers as $key => $options ) {
-                        $logger->addWriter( $key, 1, $options );
+                        $writer = $logger->writerPlugin( $key, $options );
+                        if( isset( $options['min-priority'] ) ) {
+                            $filter = new \Zend\Log\Filter\Priority( $options['min-priority'] );
+                            $writer->addFilter( $filter );
+                            unset($options['min-priority']);
+                        }
+
+                        $logger->addWriter( $writer );
                     }
                     return $logger;
                 }

@@ -5,15 +5,14 @@ namespace Core\Controller\Plugin;
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 use Core\Permission\Resources;
 
-use Zend\ServiceManager\ServiceManagerAwareInterface;
+use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceManager;
 
 /**
  * controller plugin helpers to have easy access to loging system,
  */
-class Logger extends AbstractPlugin implements ServiceManagerAwareInterface
+class Logger extends AbstractPlugin
 {
-    protected $serviceManager;
     protected $logger;
 
     /**
@@ -22,7 +21,7 @@ class Logger extends AbstractPlugin implements ServiceManagerAwareInterface
     protected function logger()
     {
         if( $this->logger == null ) {
-            $this->logger = $this->getServiceManager()->get('logger');
+            $this->logger = $this->getController()->getServiceLocator()->get('system-logger');
         }
         return $this->logger;
     }
@@ -36,27 +35,5 @@ class Logger extends AbstractPlugin implements ServiceManagerAwareInterface
         if( $msg == null ) return $this->logger();
 
         return $this->logger()->log( $priority, $msg );
-    }
-
-
-    /**
-     * Retrieve service manager instance
-     *
-     * @return ServiceManager
-     */
-    public function getServiceManager()
-    {
-        return $this->serviceManager->getServiceLocator();
-    }
-
-    /**
-     * Set service manager instance
-     *
-     * @param ServiceManager $locator
-     * @return void
-     */
-    public function setServiceManager(ServiceManager $serviceManager)
-    {
-        $this->serviceManager = $serviceManager;
     }
 }
