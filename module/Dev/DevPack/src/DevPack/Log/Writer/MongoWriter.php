@@ -8,7 +8,7 @@
  * @package   Zend_Log
  */
 
-namespace Core\Log\Writer;
+namespace DevPack\Log\Writer;
 
 use Zend\Log\Writer\AbstractWriter;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;

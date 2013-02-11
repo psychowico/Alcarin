@@ -1,5 +1,11 @@
 <?php
 return array(
+    'logs'  => array(
+        //list of services, that will be used as
+        //logs writers
+        'writers'    => array()
+    ),
+
     'view_manager' => array(
         'template_path_stack' => array(
             'dev-pack' => __DIR__ . '/../view',
@@ -17,6 +23,9 @@ return array(
     ),
 
     'controller_plugins' => array(
+        'invokables' => array(
+            'log'   => 'DevPack\Controller\Plugin\Logger',
+        ),
         'factories' => array(
             'debug' => 'DevPack\Factory\DebugLoggerFactory',
         ),
@@ -24,6 +33,7 @@ return array(
 
     'service_manager' => array(
         'invokables' => array(
+            'mongo-log-writer'        => 'DevPack\Log\Writer\MongoWriter',
             'DevPack\MongoCollector'  => 'DevPack\Collector\MongoCollector',
             'DevPack\MongoCollection' => 'DevPack\MongoCollection',
         ),

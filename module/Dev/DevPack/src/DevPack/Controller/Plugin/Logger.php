@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Controller\Plugin;
+namespace DevPack\Controller\Plugin;
 
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 use Core\Permission\Resources;
