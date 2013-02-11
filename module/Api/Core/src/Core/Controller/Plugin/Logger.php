@@ -14,6 +14,12 @@ use Zend\ServiceManager\ServiceManager;
 class Logger extends AbstractPlugin
 {
     protected $logger;
+    protected $default_priority;
+
+    public function setDefaultPriority( $priority )
+    {
+        $this->default_priority = $priority;
+    }
 
     /**
      * @return \Zend\Log\Logger
@@ -30,8 +36,16 @@ class Logger extends AbstractPlugin
      *
      * @param $resource it should be constant from \Core\Permission\Resources class
      */
-    public function __invoke( $msg = null, $priority = \Zend\Log\Logger::INFO )
+    public function __invoke( $msg = null, $priority = null )
     {
+        if( $priority == null ) {
+            if( $this->default_priority != null ) {
+                $priority = $this->default_priority;
+            }
+            else {
+                $priority = \Zend\Log\Logger::INFO;
+            }
+        }
         if( $msg == null ) return $this->logger();
 
         return $this->logger()->log( $priority, $msg );

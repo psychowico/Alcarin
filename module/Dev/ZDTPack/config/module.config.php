@@ -16,6 +16,12 @@ return array(
         ),
     ),
 
+    'controller_plugins' => array(
+        'factories' => array(
+            'debug' => 'ZDTPack\Factory\DebugLoggerFactory',
+        ),
+    ),
+
     'service_manager' => array(
         'invokables' => array(
             'ZDTPack\MongoCollector'  => 'ZDTPack\Collector\MongoCollector',

@@ -94,9 +94,9 @@ abstract class AbstractAlcarinRestfulController extends AbstractRestfulControlle
 
         //log request
         $method = $routeMatch->getParam('action', false);
-        $this->log( sprintf('REST call: "%s", "%s"',
-                            $method, get_class($this)),
-                    \Zend\Log\Logger::DEBUG );
+
+        $this->debug( sprintf('REST call: "%s", "%s"',
+                            $method, get_class($this)) );
 
         if (!$action) {
             $routeMatch->setParam( 'action', 'index' );

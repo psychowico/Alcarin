@@ -20,7 +20,7 @@ return array(
 
     'controller_plugins' => array(
         'invokables'    => array(
-            'log'          => 'Core\Controller\Plugin\Logger',
+            'log'   => 'Core\Controller\Plugin\Logger',
         ),
     ),
 
