@@ -47,6 +47,8 @@ class PrivilagesController extends AbstractAlcarinRestfulController
                     $changed_resources[$resource] = in_array($resource, $resources);
                 }
                 $user_admin->updateUserPrivilages($userid, $changed_resources);
+
+                $this->log('User "%s" privilages updated.', [$userid]);
             }
         }
         return $this->get($userid);

@@ -36,8 +36,14 @@ class Logger extends AbstractPlugin
      *
      * @param $resource it should be constant from \Core\Permission\Resources class
      */
-    public function __invoke( $msg = null, $priority = null )
+    public function __invoke( $msg = null, $priority_or_params = null )
     {
+        if( is_array($priority_or_params) ) {
+            $msg = vsprintf( $msg, $priority_or_params);
+            $priority_or_params = null;
+        }
+        $priority = $priority_or_params;
+
         if( $priority == null ) {
             if( $this->default_priority != null ) {
                 $priority = $this->default_priority;
