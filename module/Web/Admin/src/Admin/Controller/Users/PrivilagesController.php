@@ -25,6 +25,8 @@ class PrivilagesController extends AbstractAlcarinRestfulController
 
     public function update($userid, $set)
     {
+        // Pass in the route/url you want to redirect to after the POST
+
         if( !empty( $set['group'] ) ) {
             $group = $set['group'];
             $forms = $this->preparePrivilagesForms($userid);
@@ -43,13 +45,14 @@ class PrivilagesController extends AbstractAlcarinRestfulController
                     $this->userAdmin()->updateUserPrivilages($userid, $changed_resources);
 
                     $this->log()->info('User "%s" privilages updated.', $userid);
+                    $uri = $this->getRequest()->getRequestUri();
                 }
                 else {
                     $this->log()->warn('Can not save privilages form.');
                 }
             }
         }
-        return $this->get($userid);
+        return $this->redirect()->toSelf();
     }
 
     protected function userAdmin()

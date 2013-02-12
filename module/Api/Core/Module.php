@@ -72,7 +72,7 @@ class Module
             'factories' => array(
                 'isAllowed' => function( $sm ) {
                     //can be helpful in modules to checking user privilages to specific resources
-                    $plugin = new \Core\Controller\Plugin\IsAllowed();
+                    $plugin = new \Core\Mvc\Controller\Plugin\IsAllowed();
                     $plugin->setAuthService( $sm->getServiceLocator()->get('auth-service') );
                     return $plugin;
                 }

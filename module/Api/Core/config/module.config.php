@@ -13,6 +13,12 @@ return array(
         'user_entity_class' => 'Core\Mapper\UserArrayMapper',
     ),
 
+    'controller_plugins' => array(
+        'invokables' => array(
+            'redirect'   => 'Core\Mvc\Controller\Plugin\Redirect',
+        ),
+    ),
+
     'service_manager' => array(
         'invokables'   => array(
             'auth-service'  => 'Core\Permission\AuthService',

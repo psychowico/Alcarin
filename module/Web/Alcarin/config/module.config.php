@@ -12,20 +12,6 @@ return array(
         'Alcarin' => 'alcarin-layout',
     ),
 
-    'router' => array(
-        'routes' => array(
-            'home' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route'    => '/',
-                    'defaults' => array(
-                        'controller' => 'home',
-                        'action'     => 'index',
-                    ),
-                ),
-            ),
-        ),
-    ),
     'service_manager' => array(
         'factories' => array(
             'translator' => 'Zend\I18n\Translator\TranslatorServiceFactory',

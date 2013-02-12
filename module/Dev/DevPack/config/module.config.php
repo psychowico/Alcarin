@@ -24,7 +24,7 @@ return array(
 
     'controller_plugins' => array(
         'invokables' => array(
-            'log'   => 'DevPack\Controller\Plugin\Logger',
+            'log'   => 'DevPack\Mvc\Controller\Plugin\Logger',
         ),
         'factories' => array(
             'debug' => 'DevPack\Factory\DebugLoggerFactory',

@@ -10,7 +10,7 @@
         {{ headMeta() }}
 
         <!-- temporary turning off favicon requests -->
-        <link rel="shortcut icon" href="#" />
+        <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
         {{ headLink().appendBundle('external')
                      .appendBundle('common')
                      .appendBundle('admin') | raw }}

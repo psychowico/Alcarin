@@ -11,6 +11,15 @@ return array(
     ),
     'router' => array(
         'routes' => array(
+            'home' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/',
+                    'defaults' => array(
+                        'controller' => 'guest-home',
+                    ),
+                ),
+            ),
             'guest' => array(
                 'type'    => 'Literal',
                 'options' => array(
@@ -18,7 +27,6 @@ return array(
                     'route'    => '/guest',
                     'defaults' => array(
                         'controller'    => 'guest-home',
-                        'action'        => 'index',
                     ),
                 ),
                 'may_terminate' => true,
