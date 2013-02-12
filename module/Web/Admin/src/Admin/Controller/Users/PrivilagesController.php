@@ -44,6 +44,9 @@ class PrivilagesController extends AbstractAlcarinRestfulController
 
                     $this->log()->info('User "%s" privilages updated.', $userid);
                 }
+                else {
+                    $this->log()->warn('Can not save privilages form.');
+                }
             }
         }
         return $this->get($userid);
@@ -64,11 +67,13 @@ class PrivilagesController extends AbstractAlcarinRestfulController
 
         $privilages_forms = [];
         foreach( Resource::$Descriptions as $group => $privilages ) {
-            $form = $builder->createForm( new PrivilagesGroupForm() );
-            $form->setName('privilages-' . strtolower($group))
-                 ->setLabel($group);
+            $form = $builder->createForm( new PrivilagesGroupForm(), 'Confirm' );
+            $form->setName('privilages-' . strtolower($group));
 
-            $form->get('group')->setValue($group);
+            $content = $form;
+            $content->setLabel($group);
+
+            $content->get('group')->setValue($group);
 
             $options = [];
             $checked_values = [];
@@ -79,7 +84,7 @@ class PrivilagesController extends AbstractAlcarinRestfulController
                 }
             }
 
-            $form->get('resource')->setValueOptions( $options )
+            $content->get('resource')->setValueOptions( $options )
                  ->setValue($checked_values);
 
             $privilages_forms [$group]= $form;

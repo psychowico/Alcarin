@@ -3,6 +3,7 @@
 namespace Core\Service;
 
 use Zend\Form\Annotation\AnnotationBuilder;
+use Zend\Stdlib\ArrayUtils;
 
 /**
  * Parses a class' properties for annotations in order to create a form and
@@ -12,6 +13,7 @@ use Zend\Form\Annotation\AnnotationBuilder;
 class AnnotationBuilderService
 {
     protected $builder;
+    protected $default_fieldset;
 
     protected function builder()
     {
@@ -20,6 +22,20 @@ class AnnotationBuilderService
         }
 
         return $this->builder;
+    }
+
+    public function getDefaultFieldset()
+    {
+        if( $this->default_fieldset == null ) {
+            $this->default_fieldset = new \Core\Form\DefaultFieldset();
+        }
+        return $this->default_fieldset;
+    }
+
+    public function setDefaultFieldset($fieldset)
+    {
+        $this->default_fieldset = $fieldset;
+        return $this;
     }
 
     /**
@@ -84,8 +100,42 @@ class AnnotationBuilderService
      * @param  string|object $entity
      * @return \Zend\Form\Form
      */
-    public function createForm($entity)
+    public function createForm($entity,
+                               $submit_button_caption = null,
+                               $add_default_fieldset = true)
     {
-        return $this->builder()->createForm($entity);
+        $form = $this->builder()->createForm($entity);
+
+        if( $add_default_fieldset ) {
+            $default = $this->generateDefaultFieldset($submit_button_caption);
+            //I just added fieldset elements to form, because simple adding full fieldset
+            //generate some problems when rendering. (ZF2.2.0)
+            foreach( $default->getElements() as $el ) {
+                $form->add($el);
+            }
+        }
+
+        return $form;
+    }
+
+    protected function createFieldset($entity)
+    {
+        $formSpec    = ArrayUtils::iteratorToArray($this->builder()->getFormSpecification($entity));
+        $formFactory = $this->builder()->getFormFactory();
+        return $formFactory->createFieldset($formSpec);
+    }
+
+    protected function generateDefaultFieldset($submit_button_caption)
+    {
+        $builder = $this->builder();
+
+        $default = $this->getDefaultFieldset();
+        $fieldset = $this->createFieldset($default);
+
+        if( $submit_button_caption !== null ) {
+            $fieldset->get('submit')->setValue($submit_button_caption);
+        }
+
+        return $fieldset;
     }
 }

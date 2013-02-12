@@ -27,10 +27,4 @@ class PrivilagesGroupForm
      * @Annotation\Options({"label":"", "value_options": { "empty" }})
      */
     public $resource;
-
-    /**
-     * @Annotation\Type("submit")
-     * @Annotation\Attributes({"value":"Confirm"})
-     */
-    public $submit;
 }

@@ -3,7 +3,7 @@
 {% for form in forms %}
 
 {{ form().openTag(form) | raw }}
-{{ formCollection(form)  }}
+{{ formCollection(form) }}
 {{ form().closeTag() | raw }}
 
 {% endfor %}
