@@ -15,8 +15,9 @@ return array(
 
     'service_manager' => array(
         'invokables'   => array(
-            'auth-service'     => 'Core\Permission\AuthService',
-            'game-services' => 'Core\Service\GameServiceContainer'
+            'auth-service'  => 'Core\Permission\AuthService',
+            'game-services' => 'Core\Service\GameServiceContainer',
+            'form-builder'  => 'Core\Service\AnnotationBuilderService',
         ),
         'factories'    => array(
             //override default zfcuser mapper by our own

@@ -60,8 +60,8 @@ return array(
                     ),
                     'common' => array(
                         'sources' => array(
+                            '/css/compiled_less/common.css',
                             '/css/compiled_less/user-bar.css',
-                            '/css/compiled_less/main-layout.css',
                             '/css/compiled_less/player-panel.css',
                         ),
                     ),

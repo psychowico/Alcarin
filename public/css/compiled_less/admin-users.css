@@ -5,6 +5,11 @@
 .general-users-list div:hover {
   opacity: 0.9;
 }
-.active-legends legend {
-  cursor: pointer;
+div.admin-privilages {
+  width: 900px;
+  margin: 0 auto;
+  margin-top: 10px;
+}
+div.admin-privilages input[type="submit"] {
+  float: right;
 }

@@ -1,20 +1,11 @@
-<div class="active-legends">
+<div class="admin-privilages">
 
-  {% for group, resources in resources_group %}
-  <form method="post">
-    <fieldset>
-      <legend>{{ group }}</legend>
-      <input type="hidden" name="_method" value="PUT">
-      <input type="hidden" name="group" value="{{ group }}">
-      {% for id, resource in resources %}
-      <label class="checkbox">
-        <input type="checkbox" {{ resource['has'] ? 'checked' }} name="resource[]" value="{{ resource['id'] }}">
-        {{ resource['name'] }} - <i> {{ resource['description'] | lower }} </i>
-      </label>
-      {% endfor %}
-      <button type="submit" class="btn pull-right">Save</button>
-    </fieldset>
-  </form>
+{% for form in forms %}
 
-  {% endfor %}
+{{ form().openTag(form) | raw }}
+{{ formCollection(form)  }}
+{{ form().closeTag() | raw }}
+
+{% endfor %}
+
 </div>
