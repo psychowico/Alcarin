@@ -9,6 +9,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         {{ headMeta() }}
 
+        <!-- temporary turning off favicon requests -->
+        <link rel="shortcut icon" href="#" />
         {{ headLink().appendBundle('external').appendBundle('common').appendBundle('guest') | raw }}
 
         <!-- Scripts -->

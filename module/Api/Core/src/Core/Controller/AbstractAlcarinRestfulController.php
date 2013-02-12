@@ -92,11 +92,6 @@ abstract class AbstractAlcarinRestfulController extends AbstractRestfulControlle
 
         $result = parent::onDispatch( $e );
 
-        //log request
-        $method = $routeMatch->getParam('action', false);
-
-        $this->debug( 'REST call: "%s", "%s"', [$method, get_class($this)] );
-
         if (!$action) {
             $routeMatch->setParam( 'action', 'index' );
         }

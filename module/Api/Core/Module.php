@@ -30,8 +30,10 @@ class Module
         //before controller are choose
         $eventManager->attach( MvcEvent::EVENT_ROUTE , array( $this, 'onPreRoute' ), -100 );
 
-        $this->setupRestfulStandard( $e->getRequest() );
+        $sm = $e->getApplication()->getServiceManager();
+        $request = $e->getRequest();
 
+        $this->setupRestfulStandard( $sm, $request );
     }
 
     public function getServiceConfig()
@@ -115,10 +117,11 @@ class Module
      *
      * @param $request \Zend\Http\Request
      */
-    private function setupRestfulStandard( $request )
+    private function setupRestfulStandard( $sm, $request )
     {
         //we don't run this in specific situation, like console runing scripts
         if( $request instanceof \Zend\Http\Request ) {
+            $log = $sm->get('system-logger');
             if( $request->isPost() ) {
                 $_method = isset( $request->getPost()->_method ) ? $request->getPost()->_method :
                             Request::METHOD_POST;
@@ -133,6 +136,12 @@ class Module
                         break;
                 }
             }
+            else {
+                $_method = Request::METHOD_GET;
+            }
+
+            $debug_msg = sprintf('%s, %s', $_method, $request->getRequestUri() );
+            $log->debug( $debug_msg );
         }
     }
 

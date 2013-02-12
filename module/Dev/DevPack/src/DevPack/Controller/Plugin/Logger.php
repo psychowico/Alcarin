@@ -14,12 +14,22 @@ use Zend\ServiceManager\ServiceManager;
 class Logger extends AbstractPlugin
 {
     protected $logger;
-    protected $default_priority;
 
-    public function setDefaultPriority( $priority )
+    public function __call($method, $args)
     {
-        $this->default_priority = $priority;
+        $logger = $this->logger();
+        if( method_exists($logger, $method) ) {
+            $msg = $args[0];
+            $args = array_splice($args, 1);
+            $msg = vsprintf($msg, $args);
+
+            return call_user_func([$logger, $method], $msg);
+        }
+        else {
+            throw new \DomainException(sprintf('Method "%s" not exists.'), $method);
+        }
     }
+
 
     /**
      * @return \Zend\Log\Logger
@@ -36,23 +46,9 @@ class Logger extends AbstractPlugin
      *
      * @param $resource it should be constant from \Core\Permission\Resources class
      */
-    public function __invoke( $msg = null, $priority_or_params = null )
+    public function __invoke( $msg = null, $priority = \Zend\Log\Logger::INFO )
     {
-        if( is_array($priority_or_params) ) {
-            $msg = vsprintf( $msg, $priority_or_params);
-            $priority_or_params = null;
-        }
-        $priority = $priority_or_params;
-
-        if( $priority == null ) {
-            if( $this->default_priority != null ) {
-                $priority = $this->default_priority;
-            }
-            else {
-                $priority = \Zend\Log\Logger::INFO;
-            }
-        }
-        if( $msg == null ) return $this->logger();
+        if( $msg === null ) return $this;
 
         return $this->logger()->log( $priority, $msg );
     }
