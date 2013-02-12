@@ -1,0 +1,38 @@
+{{ doctype() }}
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+
+        {{ headTitle('Alcarin') }}
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {{ headMeta() }}
+
+        <!-- temporary turning off favicon requests -->
+        <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+        {{ headLink().appendBundle('external').appendBundle('common').appendBundle('guest') | raw }}
+
+        <!-- Scripts -->
+        {{ headScript().prependFile( basePath( '/js/html5.js' ), 'text/javascript', { 'conditional': 'lt IE 9' } )
+                                .appendBundle('external')
+                                .appendBundle('guest') | raw }}
+    </head>
+    <body>
+        <div class="container">
+            <div class="game-container">
+                <nav id="user-bar">
+                    <ul>
+                        <h4>You are a guest.</h4>
+                    </ul>
+                </nav>
+                {{ content | raw }}
+            </div>
+            <!-- <hr> -->
+            <footer>
+                <!-- <p>&copy; 2005 - 2012 by Zend Technologies Ltd. <?php echo $this->translate('All rights reserved.') ?></p> -->
+            </footer>
+        </div> <!-- /container -->
+        {{ inlineScript() | raw }}
+    </body>
+</html>
