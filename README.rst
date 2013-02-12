@@ -51,3 +51,16 @@ Virtual Host
 ------------
 Afterwards, set up a virtual host to point to the public/ directory of the
 project and you should be ready to go!
+
+Administration
+--------------
+
+You will probably need user with all privilages to work easy and fast. You can create one
+by using console script, in project main directory:
+
+.. code-block:: bash
+
+    bin/createsu alcarin@test.com test321
+
+First argument will be super user email address, second - password. You can use any
+email and password you want.
