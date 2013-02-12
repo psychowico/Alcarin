@@ -47,7 +47,6 @@ class PrivilagesController extends AbstractAlcarinRestfulController
             }
         }
         return $this->get($userid);
-
     }
 
     protected function userAdmin()
