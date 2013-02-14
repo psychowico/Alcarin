@@ -2,7 +2,7 @@
 Installation
 ============
 
-Alcarin is a complex, browser game based on ZF2 technology. Inspiration for creating it
+Alcarin is a complex, browser mmorpg game based on ZF2 technology. Inspiration for creating it
 was Cantr_, old, similar game where characters live in more real environment.
 
 
