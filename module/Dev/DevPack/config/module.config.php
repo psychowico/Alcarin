@@ -6,6 +6,12 @@ return array(
         'writers'    => array()
     ),
 
+    'nette_debug' => array(
+        'template_map' => array(       // merge templates if enabled
+            'error/index' => __DIR__ . '/../view/error/index.phtml',
+        ),
+    ),
+
     'view_manager' => array(
         'template_path_stack' => array(
             'dev-pack' => __DIR__ . '/../view',

@@ -17,8 +17,8 @@ return array(
         'Errors',
         //profiling modules, can be removed in production
         'ZendDeveloperTools',
+        'ZF2NetteDebug',
         'DevPack',
-        'ZF2NetteDebug'
     ),
     'module_listener_options' => array(
         'config_glob_paths'    => array(
