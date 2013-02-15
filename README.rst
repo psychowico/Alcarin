@@ -46,6 +46,14 @@ work:
 
     sudo chown www-data data/cache
 
+Persistent system
+-----------------
+
+Alcarin use MongoDB as his persistent system. You should `install mongo server`_. If you
+need any configuration you should looking in *config/autoload/local.php* file,
+under the key 'mongo'.
+
+.. _`install mongo server`: http://docs.mongodb.org/manual/installation/
 
 Virtual Host
 ------------
