@@ -32,8 +32,8 @@ mode all info will be disabled.
 <dl>
     <dl>{{ translate('Controller') }}:</dt>
     <dd>{{ escapeHtml(controller) }}
-        {% if controller_class != controller %}
-            ( {{ translate('resolves to %s') | format(controller_class | escape) }} )
+        {% if controller_class is not null and controller_class != controller %}
+            ( {{ translate('resolves to %s') | format(controller_class | e) }} )
         {% endif %}
     </dd>
 </dl>

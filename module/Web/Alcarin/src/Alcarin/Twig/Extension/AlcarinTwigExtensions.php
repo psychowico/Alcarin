@@ -21,7 +21,7 @@ class AlcarinTwigExtensions extends \Twig_Extension
         return 'alcarin-twig';
     }
 
-    private function class_filter($obj) {
+    public function class_filter($obj) {
             return get_class($obj);
     }
 }
