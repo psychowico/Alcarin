@@ -86,6 +86,7 @@ You will find them on `guard plugins page`_.
 If you have all installed you can simply go to *Alcarin* main directory and write:
 
 .. code-block:: bash
+
     guard
 
 And it is all. All your coffeescripts, less files and docs will be automatically recompiling.
