@@ -1,0 +1,34 @@
+{% extends "guest-layout" %}
+
+{% block content %}
+    <h1>Sign In</h1>
+
+    {% set form = loginForm %}
+    {% do form.prepare()
+              .setAttribute('action', url('zfcuser/login'))
+              .setAttribute('method', 'post') %}
+
+    {{ form().openTag(form) | raw }}
+
+        <dl class="zend_form">
+            {{ formElementErrors(form.get('identity')) }}
+
+            <dt>{{ formLabel(form.get('identity')) }}</dt>
+            <dd>{{ formInput(form.get('identity')) }}</dd>
+
+            <dt>{{ formLabel(form.get('credential')) }}</dt>
+            <dd>{{ formInput(form.get('credential')) }}</dd>
+
+            {% if redirect is defined %}
+                <input type="hidden" name="redirect" value="{{ redirect }}" />
+            {% endif %}
+
+            <dd>{{ formButton(form.get('submit')) }}</dd>
+        </dl>
+
+    {{ form().closeTag() | raw }}
+
+    {% if enableRegistration is defined %}
+    Not registered? <a href="{{ url('zfcuser/register') ~ (redirect ? '?redirect=' ~ redirect : '') }}">Sign up!</a>
+    {% endif %}
+{% endblock %}

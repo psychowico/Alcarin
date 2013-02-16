@@ -54,7 +54,7 @@ return array(
 
     'view_manager' => array(
         'template_map' => array(
-            'guest-layout'           => __DIR__ . '/../view/layout/layout.twig',
+            'guest-layout'           => __DIR__ . '/../view/layout/guest-layout.twig',
         ),
         'template_path_stack' => array(
             'guest' => __DIR__ . '/../view',

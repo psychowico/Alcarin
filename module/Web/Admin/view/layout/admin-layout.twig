@@ -1,0 +1,8 @@
+{% extends "common-layout" %}
+
+{% do headLink().appendBundle('admin') %}
+{% do headScript().appendBundle('admin') %}
+
+{% block title %}
+    {{ headTitle('Alcarin - panel administracyjny') }}
+{% endblock %}

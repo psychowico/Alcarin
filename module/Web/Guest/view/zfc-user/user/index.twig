@@ -1,0 +1,8 @@
+{% extends "guest-layout" %}
+
+{% block content %}
+    <div style="float:left; padding-right:16px;">{{ gravatar(zfcUserIdentity().getEmail()) }}</div>
+    <h3>Hello, {{ zfcUserDisplayName() }}!</h3>
+    <a href="{{ url('zfcuser/logout') }}">[Sign Out]</a>
+    <div style="clear:both;"></div>
+{% endblock %}

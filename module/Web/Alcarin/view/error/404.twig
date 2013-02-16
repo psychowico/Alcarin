@@ -1,0 +1,100 @@
+{#
+this is only debug version of 404 error. later I should add condition, so in production
+mode all info will be disabled.
+#}
+
+{% extends "common-layout" %}
+
+{% block content %}
+<h1>{{ translate('A 404 error occurred') }}</h1>
+<h2>{{ message }}</h2>
+
+{% if reason is defined %}
+
+<p>
+{% if reason == 'error-controller-cannot-dispatch' %}
+    {{ translate('The requested controller was unable to dispatch the request.') }}
+{% elseif reason == 'error-controller-not-found' %}
+    {{ translate('The requested controller could not be mapped to an existing controller class.') }}
+{% elseif reason == 'error-controller-invalid' %}
+    {{ translate('The requested controller was not dispatchable.') }}
+{% elseif reason == 'error-router-no-match' %}
+    {{ translate('The requested URL could not be matched by routing.') }}
+{% else %}
+    {{ translate('We cannot determine at this time why a 404 was generated.') }}
+{% endif %}
+</p>
+
+{% endif %}
+
+{% if controller is defined %}
+
+<dl>
+    <dl>{{ translate('Controller') }}:</dt>
+    <dd>{{ escapeHtml(controller) }}
+        {% if controller_class != controller %}
+            ( {{ translate('resolves to %s') | format(controller_class | escape) }} )
+        {% endif %}
+    </dd>
+</dl>
+
+{% endif %}
+
+{% if display_exceptions is defined %}
+ {% if exception is defined %}
+
+<hr/>
+<h2>{{ translate('Additional information') }}:</h2>
+
+<h3>{{ exception | class }}</h3>
+
+<dl>
+    <dt>{{ translate('File') }}:</dt>
+    <dd>
+        <pre class="prettyprint linenums">{{ exception.getFile() }}:{{ exception.getLine() }}</pre>
+    </dd>
+    <dt>{{ translate('Message') }}:</dt>
+    <dd>
+        <pre class="prettyprint linenums">{{ exception.getMessage() }}</pre>
+    </dd>
+    <dt>{{ translate('Stack trace') }}:</dt>
+    <dd>
+        <pre class="prettyprint linenums">{{ exception.getTraceAsString() }}</pre>
+    </dd>
+</dl>
+{% set e = exception.getPrevious() %}
+{% if e is defined %}
+<hr/>
+<h2>{{ translate('Previous exceptions') }}:</h2>
+<ul class="unstyled">
+    {% for e in 1..1000 if e is defined %}
+    <li>
+        <h3>{{ e | class }}</h3>
+        <dl>
+            <dt>{{ translate('File') }}:</dt>
+            <dd>
+                <pre class="prettyprint linenums">{{ e.getFile() }}:{{ e.getLine() }}</pre>
+            </dd>
+            <dt>{{ translate('Message') }}:</dt>
+            <dd>
+                <pre class="prettyprint linenums">{{ e.getMessage() }}</pre>
+            </dd>
+            <dt>{{ translate('Stack trace') }}:</dt>
+            <dd>
+                <pre class="prettyprint linenums">{{ e.getTraceAsString() }}</pre>
+            </dd>
+        </dl>
+    </li>
+    {% set e = e.getPrevious() %}
+    {% endfor %}
+</ul>
+{% endif %}
+
+{% else %}
+
+<h3>{{ translate('No Exception available') }}</h3>
+
+ {% endif %}
+{% endif %}
+
+{% endblock %}

@@ -1,5 +1,6 @@
 var namespace,
-  __slice = [].slice;
+  __slice = [].slice,
+  _this = this;
 
 namespace = function(target, name, block) {
   var item, main_ns, _i, _len, _ref, _ref1;
@@ -15,3 +16,7 @@ namespace = function(target, name, block) {
   }
   return block(target, main_ns);
 };
+
+$(function() {
+  return $('input[type="text"]:first').focus();
+});

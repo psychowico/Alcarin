@@ -12,6 +12,12 @@ return array(
         'Alcarin' => 'alcarin-layout',
     ),
 
+    'zfctwig' => array(
+        'extensions' => array(
+            'alcarin-twig' => '\Alcarin\Twig\Extension\AlcarinTwigExtensions',
+        )
+    ),
+
     'service_manager' => array(
         'factories' => array(
             'translator' => 'Zend\I18n\Translator\TranslatorServiceFactory',
@@ -47,8 +53,9 @@ return array(
         'not_found_template'       => 'error/404',
         'exception_template'       => 'error/index',
         'template_map' => array(
-            'alcarin-layout'           => __DIR__ . '/../view/layout/layout.twig',
-            'error/404'               => __DIR__ . '/../view/error/404.phtml',
+            'common-layout'  => __DIR__ . '/../view/layout/common-layout.twig',
+            'alcarin-layout' => __DIR__ . '/../view/layout/alcarin-layout.twig',
+            'error/404'      => __DIR__ . '/../view/error/404.phtml',
         ),
         'template_path_stack' => array(
             'alcarin' => __DIR__ . '/../view',

@@ -1,15 +1,21 @@
-<div>
+{% extends "admin-layout" %}
 
-<h1>{{ context['email'] }}</h1>
+{% block content %}
 
-Krótkie info o użytkowniku.
+    <div>
 
-{% if isAllowed( 'ADMIN_PRIVILAGES_MANAGING' ) %}
-<a href="{{ url('admin-users',
-        {controller: 'privilages', id: context['id']})
-    }}" class="btn">
-    Edytuj uprawnienia
-</a>
-{% endif %}
+    <h1>{{ context['email'] }}</h1>
 
-</div>
+    Krótkie info o użytkowniku.
+
+    {% if isAllowed( 'ADMIN_PRIVILAGES_MANAGING' ) %}
+    <a href="{{ url('admin-users',
+            {controller: 'privilages', id: context['id']})
+        }}" class="btn">
+        Edytuj uprawnienia
+    </a>
+    {% endif %}
+
+    </div>
+
+{% endblock %}

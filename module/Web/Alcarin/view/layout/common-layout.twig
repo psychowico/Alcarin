@@ -1,0 +1,47 @@
+{{ doctype() }}
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+
+        {% block title %}
+        {{ headTitle('Alcarin') }}
+        {% endblock %}
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        {{ headMeta() }}
+
+        <!-- temporary turning off favicon requests -->
+        <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+
+        {{ headLink().prependBundle('common').prependBundle('external') | raw }}
+
+        <!-- Scripts -->
+        {{ headScript().prependFile(
+            basePath( '/js/html5.js' ), 'text/javascript', { 'conditional': 'lt IE 9' }
+        ).prependBundle('external') | raw }}
+    </head>
+    <body>
+        <div class="container">
+            <div class="game-container">
+                <nav id="user-bar">
+                    <ul>
+                        {% block userbar_left %}{% endblock %}
+                        <h4>Here will be a common user bar.</h4>
+                        {% block userbar_right %}{% endblock %}
+                    </ul>
+                </nav>
+                {% block content %}
+                &nbsp;
+                {% endblock %}
+            </div>
+
+            <footer>
+                {% block footer %}
+                <p>&copy; Not idea what I should write in footer for open-source projects.</p>
+                {% endblock %}
+            </footer>
+        </div>
+        {{ inlineScript() | raw }}
+    </body>
+</html>

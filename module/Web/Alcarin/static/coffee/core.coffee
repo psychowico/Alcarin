@@ -6,3 +6,6 @@ namespace = (target, name, block) ->
 
     target = target[item] or= {} for item in name.split '.'
     block target, main_ns
+
+$ =>
+    $('input[type="text"]:first').focus()

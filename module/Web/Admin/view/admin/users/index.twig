@@ -1,11 +1,13 @@
-{# {{ url('admin-users', {controller: 'privilages'}) }} #}
+{% extends "admin-layout" %}
 
-<div class="general-users-list">
-{% for user in users %}
-    <a href="{{ url('admin-users', {id: user['id']}) }}">
-        <div>
-            {{ user['email'] }}
-        </div>
-    </a>
-{% endfor %}
-</div>
+{% block content %}
+    <div class="general-users-list">
+    {% for user in users %}
+        <a href="{{ url('admin-users', {id: user['id']}) }}">
+            <div>
+                {{ user['email'] }}
+            </div>
+        </a>
+    {% endfor %}
+    </div>
+{% endblock %}

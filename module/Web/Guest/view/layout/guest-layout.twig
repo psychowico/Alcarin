@@ -1,0 +1,8 @@
+{% extends "common-layout" %}
+
+{% do headLink().appendBundle('guest') %}
+{% do headScript().appendBundle('guest') %}
+
+{% block title %}
+    {{ headTitle('Alcarin - witamy!') }}
+{% endblock %}
