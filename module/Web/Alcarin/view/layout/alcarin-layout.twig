@@ -1,5 +1,8 @@
 {% extends "common-layout" %}
 
+{% do headLink().appendBundle('player') %}
+{% do headScript().appendBundle('player') %}
+
 {% block title %}
     {{ headTitle('Alcarin') }}
 {% endblock %}

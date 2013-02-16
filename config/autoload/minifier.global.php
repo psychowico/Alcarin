@@ -67,7 +67,6 @@ return array(
                     ),
                     'guest' => array(
                         'sources' => array(
-                            '/css/compiled_less/middle-nav.css',
                         ),
                     ),
                     //files enough for admins
@@ -79,7 +78,10 @@ return array(
                     ),
                     //files for regular players
                     'player' => array(
-                        'sources' => '/css/compiled_less/test.css',
+                        'sources' => array(
+                            '/css/compiled_less/middle-nav.css',
+                            '/css/compiled_less/test.css',
+                        ),
                     ),
                 ),
             ),
