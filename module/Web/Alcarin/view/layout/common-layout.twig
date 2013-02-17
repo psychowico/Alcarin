@@ -27,8 +27,17 @@
                 <nav id="user-bar">
                     <ul>
                         {% block userbar_left %}{% endblock %}
-                        <h4>Here will be a common user bar.</h4>
+                        <li>
+                            <span>
+                                Here will be a common user bar.
+                            </span>
+                        </li>
                         {% block userbar_right %}{% endblock %}
+                        {% if zfcUserIdentity() %}
+                        <li class="logout-btn">
+                            <a href="{{ url('zfcuser/logout') }}">Wyloguj się</a>
+                        </li>
+                        {% endif %}
                     </ul>
                 </nav>
                 {% block content %}

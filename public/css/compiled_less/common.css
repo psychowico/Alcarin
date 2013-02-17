@@ -16,3 +16,9 @@ html,
 form input[type="checkbox"] {
   margin: 5px;
 }
+a {
+  color: #8f8f8f;
+}
+a:hover {
+  color: #8f8f8f;
+}

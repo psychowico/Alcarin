@@ -10,7 +10,14 @@ class AlcarinTwigExtensions extends \Twig_Extension
     {
         $filter = new \Twig_SimpleFilter('class', array($this, 'class_filter'));
 
-        return ['get_class' => $filter];
+        return ['class' => $filter];
+    }
+
+    public function getFunctions()
+    {
+        $method = new \Twig_SimpleFunction('throw', array($this, 'throw_function'));
+
+        return ['throw' => $method];
     }
 
     /*
@@ -23,5 +30,10 @@ class AlcarinTwigExtensions extends \Twig_Extension
 
     public function class_filter($obj) {
             return get_class($obj);
+    }
+
+    public function throw_function($exception)
+    {
+        throw $exception;
     }
 }

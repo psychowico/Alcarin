@@ -1,9 +1,0 @@
-<?php
- if( $this->exception instanceof \MongoConnectionException ):
-    $this->layout()->setTemplate('error/layout');
-?>
-
-    <p>Database Error: Unable to connect to the mongo database.</p>
-    <p><small>Please, check your database connection!</small></p>
-
-<?php else: throw $this->exception; endif ?>

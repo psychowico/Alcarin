@@ -1,32 +1,58 @@
 @import 'core';
 
 .rounded-bar (@radius: 17px) {
-  -webkit-border-bottom-right-radius: @radius;
-  -webkit-border-bottom-left-radius: @radius;
-  -moz-border-radius-bottomright: @radius;
-  -moz-border-radius-bottomleft: @radius;
-  -o-border-radius-bottomright: @radius;
-  -o-border-radius-bottomleft: @radius;
-  border-bottom-right-radius: @radius;
-  border-bottom-left-radius: @radius;
+    -webkit-border-bottom-right-radius: @radius;
+    -webkit-border-bottom-left-radius: @radius;
+    -moz-border-radius-bottomright: @radius;
+    -moz-border-radius-bottomleft: @radius;
+    -o-border-radius-bottomright: @radius;
+    -o-border-radius-bottomleft: @radius;
+    border-bottom-right-radius: @radius;
+    border-bottom-left-radius: @radius;
 }
 
-@spaces : 8px;
+@main: #207CE5;
+@alpha: 10%;
 
 #user-bar {
-    height: 35px;
-    margin: 0 @spaces 0px @spaces;
-    padding-top: 5px;
+    font-size: 15px;
+    font: 13px Helvetica, arial, freesans, clean, sans-serif;
+    line-height: 1.4;
+    font-weight: bold;
+
+    height: 40px;
+    margin: 0 8px;
     .rounded-bar;
-    background: rgba(255, 255, 255, 0.05);
     ul {
         margin: 0;
         list-style: none;
+        height: 100%;
         li {
-            margin-left: 20px;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+
             float: left;
-            border: 1px solid red;
-            padding: 2px 10px 2px 10px;
+            background: fade(@main, @alpha);
+
+            .rounded-bar;
+
+            &:nth-child(odd) {
+                background: fade(@main, 1.5 * @alpha);
+            }
+
+            &:hover {
+                background: fade(@main, 3 * @alpha);
+            }
+
+            * {
+                padding: 10px;
+                display: block;
+            }
+            &.logout-btn {
+                //padding: 0;
+                float: right;
+            }
         }
     }
 }

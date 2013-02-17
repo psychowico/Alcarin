@@ -1,0 +1,10 @@
+{% extends "error/layout" %}
+
+{% block content %}
+    {% if exception | class == 'MongoConnectionException' %}
+        <p>Database Error: Unable to connect to the mongo database.</p>
+        <p><small>Please, check your database connection!</small></p>
+    {% else %}
+        {% do throw(exception) %}
+    {% endif %}
+{% endblock %}

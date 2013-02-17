@@ -14,6 +14,8 @@
 <body>
     <title>Server Error</title>
     <h1>Server Error</h1>
-    {{ content | raw }}
+    {% block content %}
+    &nbsp;
+    {% endblock %}
 </body>
 </html>
