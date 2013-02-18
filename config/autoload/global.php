@@ -36,5 +36,12 @@ return array(
          * Twig's inheritance model.
          */
         'disable_zf_model' => true,
+
+        /**
+         * Options that are passed directly to the Twig_Environment.
+         */
+        'environment_options' => array(
+            'cache'            => __DIR__ . '/../../data/cache/twig',
+        ),
     ),
 );

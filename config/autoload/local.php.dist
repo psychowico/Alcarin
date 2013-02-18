@@ -10,17 +10,25 @@
  * in ZendSkeletonApplication. This is a good practice, as it prevents sensitive
  * credentials from accidentally being committed into version control.
  */
+define('DEBUG', true);
 
 return array(
     'mongo' => array(
         'server'    => 'mongodb://localhost:27017',
         'database'  => 'alcarin',
         //profiling enable
-        'profiling' => true,
+        'profiling' => DEBUG,
+    ),
+
+    'zfctwig' => array(
+        'environment_options' => array(
+            'strict_variables' => DEBUG,
+            'auto_reload'      => DEBUG,
+        ),
     ),
 
     'minifier'    => array(
-        'development_mode'      => true,
+        'development_mode'      => DEBUG,
         'js_adapter'           => array(
             'class'   => 'AssetsCompiler\Minifier\Adapter\Closure',
             'options' => array(
