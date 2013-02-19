@@ -1,11 +1,4 @@
 <?php
-/**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/ZendSkeletonApplication for the canonical source repository
- * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- */
 
 return array(
     'module_layouts' => array(
@@ -30,6 +23,24 @@ return array(
         ),
     ),
 
+
+    'router' => array(
+        'routes' => array(
+            'alcarin' => array(
+                'type'    => 'alcarin',
+                'options' => array(
+                    'route'    => '/game',
+                    'namespace'=> 'Alcarin\Controller',
+                    'restmode' => false,
+                    'defaults' => array(
+                        'controller' => 'Index',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+        ),
+    ),
+
     'translator' => array(
         'locale' => 'en_US',
         'translation_file_patterns' => array(
@@ -42,9 +53,10 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'home'            => 'Alcarin\Controller\IndexController'
+            'Alcarin\Controller\Index' => 'Alcarin\Controller\IndexController'
         ),
     ),
+
     'view_manager' => array(
         'doctype'               => 'HTML5',
         'display_not_found_reason' => true,

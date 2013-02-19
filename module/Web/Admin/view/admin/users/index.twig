@@ -3,7 +3,7 @@
 {% block content %}
     <div class="general-users-list">
     {% for user in users %}
-        <a href="{{ url('admin-users', {id: user['id']}) }}">
+        <a href="{{ url('admin/default', {controller: 'users', id: user['id']}) }}">
             <div>
                 {{ user['email'] }}
             </div>

@@ -29,7 +29,7 @@ class AdminHomeController extends AbstractAlcarinRestfulController
             $page = $data['name'];
             if( $authService->isAllowedToController( $page ) ) {
                 $router = $this->getServiceLocator()->get('router');
-                $url =$router->assemble( ['controller' => $page], ['name' => 'admin']);
+                $url = '#';//$router->assemble( ['controller' => $page], ['name' => 'admin']);
 
                 $result[$page] = $this->pageData( $data );
             }
@@ -39,7 +39,7 @@ class AdminHomeController extends AbstractAlcarinRestfulController
 
     private function pageData( $data ) {
         return [
-            'href' => $this->url()->fromRoute( 'admin', [ 'controller' => $data['name'] ] ),
+            'href' => $this->url()->fromRoute( 'admin/default', [ 'controller' => $data['name'] ] ),
             'icon' => empty( $data['icon'] ) ? null : $data['icon'],
             'alt'  => empty( $data['alt'] ) ? null : $data['alt'],
         ];

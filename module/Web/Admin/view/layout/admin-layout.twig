@@ -6,3 +6,11 @@
 {% block title %}
     {{ headTitle('Alcarin - panel administracyjny') }}
 {% endblock %}
+
+{% block userbar_left %}
+<li>
+    <a href="{{ url('admin/default') }}">
+        Home
+    </a>
+</li>
+{% endblock %}

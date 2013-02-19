@@ -15,10 +15,10 @@ return array(
         //game api modules
         'Core',
         'Errors',
+        'DevPack',
         //profiling modules, can be removed in production
         'ZendDeveloperTools',
         'ZF2NetteDebug',
-        'DevPack',
     ),
     'module_listener_options' => array(
         'config_glob_paths'    => array(

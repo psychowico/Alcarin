@@ -40,6 +40,12 @@ class Module
     {
         return array(
             'factories' => array(
+                'RoutePluginManager'             => function($sm) {
+                    $factory = new \Zend\Mvc\Service\RoutePluginManagerFactory;
+                    $pluginManager = $factory->createService($sm);
+                    $pluginManager->setInvokableClass('alcarin', 'Core\Mvc\Router\Http\AlcarinRoute');
+                    return $pluginManager;
+                },
                 //sharing mongo
                 'mongo' => function( $sm ) {
                     //ini_set('mongo.native_long', 1);

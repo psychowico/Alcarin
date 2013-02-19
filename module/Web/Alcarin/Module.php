@@ -9,7 +9,7 @@
 
 namespace Alcarin;
 
-use Zend\Mvc\ModuleRouteListener;
+use Core\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 
 /**
@@ -20,6 +20,9 @@ class Module
     public function onBootstrap(MvcEvent $e)
     {
         $e->getApplication()->getServiceManager()->get('translator');
+
+        //this code is neccesery for working routing "per module".
+        //it is enough if it in one place in application
         $eventManager        = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);

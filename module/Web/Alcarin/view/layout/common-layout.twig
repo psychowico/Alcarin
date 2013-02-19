@@ -26,12 +26,13 @@
             <div class="game-container">
                 <nav id="user-bar">
                     <ul>
-                        {% block userbar_left %}{% endblock %}
+                        {% block userbar_left %}
                         <li>
-                            <span>
-                                Here will be a common user bar.
-                            </span>
+                            <a href="/">
+                                Home
+                            </a>
                         </li>
+                        {% endblock %}
                         {% block userbar_right %}{% endblock %}
                         {% if zfcUserIdentity() %}
                         <li class="logout-btn">
