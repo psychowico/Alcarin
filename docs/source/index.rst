@@ -14,6 +14,7 @@ Contents:
    mechanic/index
    dev/installation instructions
    dev/programming
+   dev/core
 
 Indices and tables
 ==================

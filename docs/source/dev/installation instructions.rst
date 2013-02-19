@@ -25,7 +25,6 @@ The recommended way to get a working copy of this project is to clone the reposi
 and use `composer` to install dependencies:
 
 .. code-block:: bash
-
     cd my/project/dir
     git clone git://github.com/psychowico/Alcarin.git
     cd Alcarin
