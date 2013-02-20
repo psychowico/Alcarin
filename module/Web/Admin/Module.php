@@ -56,9 +56,6 @@ class Module implements AutoloaderProviderInterface, GameModuleInterface
     public function getServiceConfig()
     {
         return array(
-            'invokables' => array(
-                'user-admin' => 'Admin\Model\UserAdministrationModel',
-            ),
         );
     }
 

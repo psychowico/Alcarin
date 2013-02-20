@@ -54,8 +54,9 @@ class GameServiceContainer implements ServiceLocatorAwareInterface
                 }
                 else {
                     //factory
-                    $this->resolved[$key] = $service = $service( $this );
+                    $service = $service( $this );
                 }
+                $this->resolved[$key] = $service;
                 unset( $this->services[$key] );
             }
             else {

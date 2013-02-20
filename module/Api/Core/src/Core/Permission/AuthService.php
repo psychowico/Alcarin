@@ -61,6 +61,7 @@ class AuthService implements ServiceManagerAwareInterface
         if( !$this->auth()->hasIdentity() ) return false;
 
         $identity = $this->auth()->getIdentity();
+
         return $identity->getPrivilages();
     }
 

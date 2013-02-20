@@ -36,7 +36,7 @@ class Module implements GameModuleInterface
     public function getGameObjects()
     {
         return [
-            'player' => 'EngineBase\GameObject\Player',
+            'players' => 'EngineBase\GameObject\Players',
         ];
     }
 

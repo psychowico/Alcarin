@@ -10,7 +10,20 @@ class MongoCollection extends \Mongo_Collection
 {
   public function findById($_id, $fields = [])
   {
-    return parent::findOne(['_id' => new \MongoId($_id)], $fields);
+    $result = parent::findOne(['_id' => new \MongoId($_id)], $fields);
+    /*let use normal string as mongoid - php as default using \MongoId object
+    //$result['_id'] = $result['_id']->{'$id'};*/
+    return $result;
+  }
+
+  public function updateById($_id, $dataset, $safe = true)
+  {
+    if($safe) {
+      return $this->update_safe(['_id' => new \MongoId($_id)], $dataset);
+    }
+    else {
+      return $this->update(['_id' => new \MongoId($_id)], $dataset);
+    }
   }
 
   private function start_iterate_profiling()

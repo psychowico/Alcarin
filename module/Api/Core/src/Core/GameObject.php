@@ -10,6 +10,7 @@ class GameObject implements GameServiceAwareInterface
     use GameServiceAwareTrait;
 
     protected $parent;
+    protected $mongo;
     protected $extManager;
     protected $plugins   = [];
 
@@ -21,6 +22,17 @@ class GameObject implements GameServiceAwareInterface
     public function parent()
     {
         return $this->parent;
+    }
+
+    /**
+     * we will need it very often, so let create shortcut in this base class
+     */
+    protected function mongo()
+    {
+        if( $this->mongo == null ) {
+            $this->mongo = $this->getServicesContainer()->get('mongo');
+        }
+        return $this->mongo;
     }
 
     protected function getExtManager()

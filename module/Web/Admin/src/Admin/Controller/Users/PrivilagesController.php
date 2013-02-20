@@ -42,7 +42,11 @@ class PrivilagesController extends AbstractAlcarinRestfulController
                     foreach( Resource::$Descriptions[$group] as $resource => $privDesc ) {
                         $changed_resources[$resource] = in_array($resource, $resources);
                     }
-                    $this->userAdmin()->updateUserPrivilages($userid, $changed_resources);
+
+                    $players = $this->gameServices()->get('players');
+                    $player_priv = $players->get($userid)->admin()->privilages();
+
+                    $player_priv->update($changed_resources);
 
                     $this->log()->info('User "%s" privilages updated.', $userid);
                     $uri = $this->getRequest()->getRequestUri();
@@ -66,9 +70,12 @@ class PrivilagesController extends AbstractAlcarinRestfulController
     private function preparePrivilagesForms($userid)
     {
         $builder = $this->getServiceLocator()->get('form-builder');
-        $user_admin = $this->userAdmin();
 
         $privilages_forms = [];
+
+        $players = $this->gameServices()->get('players');
+        $player_priv = $players->get($userid)->admin()->privilages();
+
         foreach( Resource::$Descriptions as $group => $privilages ) {
             $form = $builder->createForm( new PrivilagesGroupForm(), 'Confirm' );
             $form->setName('privilages-' . strtolower($group));
@@ -82,7 +89,8 @@ class PrivilagesController extends AbstractAlcarinRestfulController
             $checked_values = [];
             foreach( $privilages as $resource => $privDescr ) {
                 $options [$resource] =  $privDescr[1];
-                if( $user_admin->userHasAccessTo($userid, $resource) ){
+
+                if( $player_priv->hasAccessTo($resource) ) {
                     $checked_values []= $resource;
                 }
             }
