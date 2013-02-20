@@ -1,4 +1,5 @@
 <?php
+
 return array(
     'modules' => array(
         //external libraries
@@ -7,15 +8,16 @@ return array(
         'ZfcBase',
         'ZfcUser',
         'EdpModuleLayouts',
+        //game api modules
+        'Core',
+        'EngineBase',
+        'Errors',
+        'DevPack',
         //my game web panels
         'Guest',
         'Alcarin',
         'GameMaster',
         'Admin',
-        //game api modules
-        'Core',
-        'Errors',
-        'DevPack',
         //profiling modules, can be removed in production
         'ZendDeveloperTools',
         'ZF2NetteDebug',

@@ -7,7 +7,7 @@
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 
-namespace Core;
+namespace EngineBase;
 
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
@@ -15,15 +15,34 @@ use Zend\View\ViewEvent;
 use Zend\View\Model\JsonModel;
 use Zend\View\Renderer\JsonRenderer;
 use Zend\Http\Request;
+use Core\GameModuleInterface;
 
-/**
- * alcarin system core module, should contains classes that will be shared between
- * system api modules.
- */
-class Module
+class Module implements GameModuleInterface
 {
-    public function onBootstrap(MvcEvent $e)
+    /**
+     * game module can extend game objects on some plugins - this method return
+     * array of ['Full\GameObject\Class' => ['plugin1' => $plugin1]] - assigns array
+     * of plugins to specific game object class.
+     */
+    public function getGameObjectsPlugins()
     {
+        return [];
+    }
+    /**
+     * game module can extend game service on new gameobjects - this method return
+     * array of ['game-object-alias' => $factory_or_invokable] - assigns array
+     * of gameobject aliases and factory method/invokable class string.
+     */
+    public function getGameObjects()
+    {
+        return [
+            'player' => 'EngineBase\GameObject\Player',
+        ];
+    }
+
+    public function getGameModuleDescription()
+    {
+        return "Base game objects with minimum functionality.";
     }
 
     public function getServiceConfig()

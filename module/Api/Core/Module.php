@@ -33,7 +33,26 @@ class Module
         $sm = $e->getApplication()->getServiceManager();
         $request = $e->getRequest();
 
-        $this->setupRestfulStandard( $sm, $request );
+        $this->setupRestfulStandard($sm, $request);
+        $this->setupGameModulesSystem($sm);
+    }
+
+    protected function setupGameModulesSystem($sm)
+    {
+        //let register all gameobject and gameobject extensions
+        //provided by GameModule's
+
+        $gameServices = $sm->get('game-services');
+
+        $log = $sm->get('system-logger');
+
+        $modules = $sm->get('ModuleManager')->getLoadedModules();
+        foreach($modules as $module) {
+            if (!$module instanceof \Core\GameModuleInterface) continue;
+            $gameServices->registerGameModule($module);
+        }
+
+        $log->debug('Game objects and plugins plugged.');
     }
 
     public function getServiceConfig()

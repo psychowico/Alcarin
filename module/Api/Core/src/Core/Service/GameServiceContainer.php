@@ -4,6 +4,7 @@ namespace Core\Service;
 
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use Core\Service\GameServiceAwareInterface;
 
 /**
  * simply version of service manager to share game services between
@@ -17,9 +18,9 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  */
 class GameServiceContainer implements ServiceLocatorAwareInterface
 {
-    protected $serviceLocator;
-    protected $services = [];
+    use \Zend\ServiceManager\ServiceLocatorAwareTrait;
 
+    protected $services = [];
     protected $resolved = [];
 
     public function has( $key )
@@ -27,35 +28,40 @@ class GameServiceContainer implements ServiceLocatorAwareInterface
         return array_key_exists( $key, $this->services );
     }
 
-    public function set( $key, \Closure $service_builder )
+    public function set( $key, $service_builder_or_invokable )
     {
-        if( isset( $this->services[$key] ) ) {
+        if( isset($this->services[$key] ) ) {
             throw new \DomainException( sprintf(
                 'A "%s" service already exists in %s.',
                 $key, __CLASS__
             ));
         }
 
-        $this->services[$key] = $service_builder;
+        $this->services[$key] = $service_builder_or_invokable;
     }
 
     public function get( $key, $throw_exceptions = true )
     {
-        if( isset( $this->resolved[$key] ) ) {
+        if( isset($this->resolved[$key]) ) {
             return $this->resolved[$key];
         }
         else {
-            if( isset( $this->services[$key] ) ) {
+            if( isset($this->services[$key]) ) {
                 $service = $this->services[$key];
-                $this->resolved[$key] = $service = $service( $this );
+                if(is_string($service)){
+                    //invokable
+                    $service = new $service();
+                }
+                else {
+                    //factory
+                    $this->resolved[$key] = $service = $service( $this );
+                }
                 unset( $this->services[$key] );
-                return $service;
             }
             else {
                 if( $this->getServiceLocator()->has( $key ) ) {
                     $this->resolved[$key] = $service =
                                             $this->getServiceLocator()->get( $key );
-                    return $service;
                 }
                 else {
                     if( $throw_exceptions ) {
@@ -67,26 +73,26 @@ class GameServiceContainer implements ServiceLocatorAwareInterface
                     return null;
                 }
             }
+
+            if( $service instanceof GameServiceAwareInterface ) {
+                $service->setServicesContainer($this);
+            }
+            return $service;
         }
     }
 
-    /**
-     * Set service locator
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     */
-    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
+    public function registerGameModule($module)
     {
-        $this->serviceLocator = $serviceLocator;
-    }
+        $extManager   = $this->get('ext-manager');
 
-    /**
-     * Get service locator
-     *
-     * @return ServiceLocatorInterface
-     */
-    public function getServiceLocator()
-    {
-        return $this->serviceLocator;
+        //$desc = $module->getGameModuleDescription();
+        foreach( $module->getGameObjects() as $key => $game_object ) {
+            $this->set($key, $game_object);
+        }
+        foreach( $module->getGameObjectsPlugins() as $object => $plugins ) {
+            foreach( $plugins as $ext_name => $ext ) {
+                $extManager->registerFactory($object, $ext_name, $ext);
+            }
+        }
     }
 }

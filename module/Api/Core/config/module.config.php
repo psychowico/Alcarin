@@ -21,6 +21,7 @@ return array(
 
     'service_manager' => array(
         'invokables'   => array(
+            'ext-manager'   => 'Core\GameObjectExtManager',
             'auth-service'  => 'Core\Permission\AuthService',
             'game-services' => 'Core\Service\GameServiceContainer',
             'form-builder'  => 'Core\Service\AnnotationBuilderService',

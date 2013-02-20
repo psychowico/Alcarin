@@ -16,6 +16,7 @@ use Zend\Mvc\Controller\AbstractRestfulController,
 abstract class AbstractAlcarinRestfulController extends AbstractRestfulController
 {
     protected $mongo;
+    protected $game_services;
 
     /**
      * Debug temporary default action, "Return list of resources", it shouldn't be
@@ -106,5 +107,14 @@ abstract class AbstractAlcarinRestfulController extends AbstractRestfulControlle
         }
 
         return $this->mongo;
+    }
+
+    protected function gameServices()
+    {
+        if( $this->game_services == null ) {
+            $this->game_services = $this->getServiceLocator()->get('game-services');
+        }
+
+        return $this->game_services;
     }
 }
