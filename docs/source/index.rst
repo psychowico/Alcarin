@@ -16,6 +16,7 @@ Contents:
    dev/programming
    dev/core
    dev/game objects
+   dev/log
 
 Indices and tables
 ==================
