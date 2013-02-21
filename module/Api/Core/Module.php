@@ -15,6 +15,7 @@ use Zend\View\ViewEvent;
 use Zend\View\Model\JsonModel;
 use Zend\View\Renderer\JsonRenderer;
 use Zend\Http\Request;
+use Zend\Stdlib\ArrayUtils;
 
 /**
  * alcarin system core module, should contains classes that will be shared between
@@ -42,17 +43,26 @@ class Module
         //let register all gameobject and gameobject extensions
         //provided by GameModule's
 
-        $gameServices = $sm->get('game-services');
+        $game_services = $sm->get('game-services');
 
-        $log = $sm->get('system-logger');
+        $config = [];
+        $global_config = $sm->get('config');
+        if( isset($global_config['game-modules']) ){
+            $config = ArrayUtils::merge($config, $global_config['game-modules']);
+        }
 
         $modules = $sm->get('ModuleManager')->getLoadedModules();
         foreach($modules as $module) {
-            if (!$module instanceof \Core\GameModuleInterface) continue;
-            $gameServices->registerGameModule($module);
+            if(method_exists($module, 'getGameModuleConfig')){
+                $config = ArrayUtils::merge($config, $module->getGameModuleConfig());
+            }
         }
 
-        $log->debug('Game objects and plugins plugged.');
+        foreach($config as $module_key => $module_config) {
+            $game_services->registerGameModule($module_key, $module_config);
+        }
+
+        $sm->get('system-logger')->debug('Game objects and plugins plugged.');
     }
 
     public function getServiceConfig()

@@ -11,40 +11,24 @@ namespace Admin;
 
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\Mvc\ModuleRouteListener;
-use Core\GameModuleInterface;
 
-class Module implements AutoloaderProviderInterface, GameModuleInterface
+class Module implements AutoloaderProviderInterface
 {
-    public function getGameModuleDescription()
+    public function getGameModuleConfig()
     {
-        return 'AdminMain';
-    }
-
-    /**
-     * game module can extend game objects on some plugins - this method return
-     * array of ['Full\GameObject\Class' => ['plugin1' => $plugin1]] - assigns array
-     * of plugins to specific game object class.
-     */
-    public function getGameObjectsPlugins()
-    {
-        return [
-            'EngineBase\GameObject\Player' => [
-                'admin' => 'Admin\GameObject\Extension\PlayerAdmin'
-            ],
-            'Admin\GameObject\Extension\PlayerAdmin' => [
-                'privilages' => 'Admin\GameObject\Extension\AdminPrivilages',
-            ],
-        ];
-    }
-
-    /**
-     * game module can extend game service on new gameobjects - this method return
-     * array of ['game-object-alias' => $factory_or_invokable] - assigns array
-     * of gameobject aliases and factory method/invokable class string.
-     */
-    public function getGameObjects()
-    {
-        return [];
+        return array(
+            'Admin' => array(
+                'discription'  => 'Administrative module',
+                'game-objects-ext' => array(
+                    'EngineBase\GameObject\Player' => array(
+                        'admin' => 'Admin\GameObject\Extension\PlayerAdmin'
+                    ),
+                    'Admin\GameObject\Extension\PlayerAdmin' => array(
+                        'privilages' => 'Admin\GameObject\Extension\AdminPrivilages',
+                    ),
+                ),
+            ),
+        );
     }
 
     /**

@@ -82,17 +82,21 @@ class GameServiceContainer implements ServiceLocatorAwareInterface
         }
     }
 
-    public function registerGameModule($module)
+    public function registerGameModule($name, $module)
     {
         $extManager   = $this->get('ext-manager');
 
         //$desc = $module->getGameModuleDescription();
-        foreach( $module->getGameObjects() as $key => $game_object ) {
-            $this->set($key, $game_object);
+        if( isset($module['game-objects']) ) {
+            foreach( $module['game-objects'] as $key => $game_object ) {
+                $this->set($key, $game_object);
+            }
         }
-        foreach( $module->getGameObjectsPlugins() as $object => $plugins ) {
-            foreach( $plugins as $ext_name => $ext ) {
-                $extManager->registerFactory($object, $ext_name, $ext);
+        if( isset($module['game-objects-ext']) ) {
+            foreach( $module['game-objects-ext'] as $object => $plugins ) {
+                foreach( $plugins as $ext_name => $ext ) {
+                    $extManager->registerFactory($object, $ext_name, $ext);
+                }
             }
         }
     }

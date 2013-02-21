@@ -15,34 +15,19 @@ use Zend\View\ViewEvent;
 use Zend\View\Model\JsonModel;
 use Zend\View\Renderer\JsonRenderer;
 use Zend\Http\Request;
-use Core\GameModuleInterface;
 
-class Module implements GameModuleInterface
+class Module
 {
-    /**
-     * game module can extend game objects on some plugins - this method return
-     * array of ['Full\GameObject\Class' => ['plugin1' => $plugin1]] - assigns array
-     * of plugins to specific game object class.
-     */
-    public function getGameObjectsPlugins()
+    public function getGameModuleConfig()
     {
-        return [];
-    }
-    /**
-     * game module can extend game service on new gameobjects - this method return
-     * array of ['game-object-alias' => $factory_or_invokable] - assigns array
-     * of gameobject aliases and factory method/invokable class string.
-     */
-    public function getGameObjects()
-    {
-        return [
-            'players' => 'EngineBase\GameObject\Players',
-        ];
-    }
-
-    public function getGameModuleDescription()
-    {
-        return "Base game objects with minimum functionality.";
+        return array(
+            'EngineBase' => array(
+                'description' => 'Base game objects with minimum functionality.',
+                'game-objects' => array(
+                    'players' => 'EngineBase\GameObject\Players',
+                ),
+            ),
+        );
     }
 
     public function getServiceConfig()
