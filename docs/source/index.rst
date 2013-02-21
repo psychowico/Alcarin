@@ -15,6 +15,7 @@ Contents:
    dev/installation instructions
    dev/programming
    dev/core
+   dev/game objects
 
 Indices and tables
 ==================

@@ -29,7 +29,7 @@ class Module
 
         $eventManager->attach( MvcEvent::EVENT_RENDER, array( $this, 'onRender' ), -100 );
         //before controller are choose
-        $eventManager->attach( MvcEvent::EVENT_ROUTE , array( $this, 'onPreRoute' ), -100 );
+        $eventManager->attach( MvcEvent::EVENT_ROUTE , array( $this, 'setupAccessSystem' ), -100 );
 
         $sm = $e->getApplication()->getServiceManager();
         $request = $e->getRequest();
@@ -118,12 +118,15 @@ class Module
     /**
      * //before controller choose we check privilages for current.
      */
-    public function onPreRoute( MvcEvent $event )
+    public function setupAccessSystem( MvcEvent $event )
     {
         $sm = $event->getApplication()->getServiceManager();
+        $logger = $sm->get('system-logger');
 
         $route_match = $event->getRouteMatch();
         $choosed = $route_match->getParam('controller');
+
+        $logger->debug(sprintf('Checking access for "%s".', $choosed));
 
         //if logged user not have privilages to any of needed
         //resources, we render for him 'notallowed' site.

@@ -80,7 +80,6 @@ return array(
                     'player' => array(
                         'sources' => array(
                             '/css/compiled_less/middle-nav.css',
-                            '/css/compiled_less/test.css',
                         ),
                     ),
                 ),

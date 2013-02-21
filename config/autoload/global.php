@@ -18,18 +18,19 @@ return array(
     'controllers_access' => array(
         /* route param that will used to render 'notallowed' site */
         'notallowed_route' => array(
-            'controller' => 'zfcuser',
-            'action'     => 'login',
+            'controller'    => 'zfcuser',
+            'action'        => 'login',
+            '__NAMESPACE__' => '',
         ),
         /* controllers and their required resources privilages */
         'controllers' => array(
-            'home'           => Resource::PLAYER_PANEL,
-            'admin-home'     => Resource::ADMIN_MENU,
-            'admin-users'    => Resource::ADMIN_USERS,
-            'privilages'     => [Resource::ADMIN_USERS, Resource::ADMIN_PRIVILAGES_MANAGING],
-            /*'admin-home' => [ Resource::ADMIN_TRANSLATION_PANEL, ... ]*/
+            'Alcarin\Controller\Index'    => Resource::PLAYER_PANEL,
+            'Admin\Controller\Home'       => Resource::ADMIN_MENU,
+            'Admin\Controller\Users'      => Resource::ADMIN_USERS,
+            'Admin\Controller\Users\Privilages' => [Resource::ADMIN_USERS, Resource::ADMIN_PRIVILAGES_MANAGING],
         ),
     ),
+
     'zfctwig' => array(
          /**
          * If set to true disables ZF's notion of parent/child layouts in favor of

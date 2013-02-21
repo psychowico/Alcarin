@@ -40,6 +40,9 @@ return array(
             'DevPack\MongoCollector'  => 'DevPack\Collector\MongoCollector',
             'DevPack\MongoCollection' => 'DevPack\MongoCollection',
         ),
+        'factories' => array(
+            'system-logger' => 'DevPack\Factory\SystemLoggerFactory',
+        )
     ),
 
     'controllers' => array(

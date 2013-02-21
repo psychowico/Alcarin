@@ -18,7 +18,7 @@ return array(
         'Alcarin',
         'GameMaster',
         'Admin',
-        //profiling modules, can be removed in production
+        //profiling modules
         'ZendDeveloperTools',
         'ZF2NetteDebug',
     ),
