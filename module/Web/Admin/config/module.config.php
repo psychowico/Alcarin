@@ -13,6 +13,20 @@ return array(
         ),
     ),
 
+    'game-modules' => array(
+        'Admin' => array(
+            'discription'  => 'Administrative module',
+            'game-objects-ext' => array(
+                'EngineBase\GameObject\Player' => array(
+                    'admin' => 'Admin\GameObject\Extension\PlayerAdmin'
+                ),
+                'Admin\GameObject\Extension\PlayerAdmin' => array(
+                    'privilages' => 'Admin\GameObject\Extension\AdminPrivilages',
+                ),
+            ),
+        ),
+    ),
+
     'router' => array(
         'routes' => array(
             'admin' => array(

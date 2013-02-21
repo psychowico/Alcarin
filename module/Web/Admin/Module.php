@@ -14,23 +14,6 @@ use Zend\Mvc\ModuleRouteListener;
 
 class Module implements AutoloaderProviderInterface
 {
-    public function getGameModuleConfig()
-    {
-        return array(
-            'Admin' => array(
-                'discription'  => 'Administrative module',
-                'game-objects-ext' => array(
-                    'EngineBase\GameObject\Player' => array(
-                        'admin' => 'Admin\GameObject\Extension\PlayerAdmin'
-                    ),
-                    'Admin\GameObject\Extension\PlayerAdmin' => array(
-                        'privilages' => 'Admin\GameObject\Extension\AdminPrivilages',
-                    ),
-                ),
-            ),
-        );
-    }
-
     /**
      * Expected to return \Zend\ServiceManager\Config object or array to
      * seed such an object.
