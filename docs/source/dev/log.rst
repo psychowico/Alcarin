@@ -18,6 +18,11 @@ In Alcarin game you can get logger class by 'system-logger' key.
     $logger = $service_manager->get('system-logger');
     $logger->debug('test debug message');
 
+    ...
+    //in controllers you can use our controller log plugin:
+    $this->log()->debug('test debug message from controller');
+
+
 You can use all standard *\\Zend\\Log\\Logger* methods, like *debug*, *info*, *warn* etc.
 To configure you local log system you should edit following lines in you *local.php* file:
 
