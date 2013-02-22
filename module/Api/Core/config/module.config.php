@@ -24,7 +24,6 @@ return array(
             'ext-manager'   => 'Core\GameObjectExtManager',
             'auth-service'  => 'Core\Permission\AuthService',
             'game-services' => 'Core\Service\GameServiceContainer',
-            'form-builder'  => 'Core\Service\AnnotationBuilderService',
         ),
         'factories'    => array(
             //override default zfcuser mapper by our own

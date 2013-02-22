@@ -52,6 +52,8 @@ class PrivilagesController extends AbstractAlcarinRestfulController
                     $uri = $this->getRequest()->getRequestUri();
                 }
                 else {
+                    \Zend\Debug\Debug::dump($form->getMessages());exit;
+
                     $this->log()->warn('Can not save privilages form.');
                 }
             }
@@ -69,7 +71,7 @@ class PrivilagesController extends AbstractAlcarinRestfulController
 
     private function preparePrivilagesForms($userid)
     {
-        $builder = $this->getServiceLocator()->get('form-builder');
+        $builder = new \Core\Service\AnnotationBuilderService();
 
         $privilages_forms = [];
 

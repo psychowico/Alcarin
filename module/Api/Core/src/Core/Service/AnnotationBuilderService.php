@@ -60,7 +60,7 @@ class AnnotationBuilderService
         }
 
         //adding service directly
-        $validator_plugins->setService('TestValidator', $validator);
+        $validator_plugins->setService($key, $validator);
 
         $input_factory->setDefaultValidatorChain( $validator_chain );
         return $this;
@@ -88,7 +88,7 @@ class AnnotationBuilderService
         }
 
         //adding service directly
-        $filter_plugins->setService('TestValidator', $filter);
+        $filter_plugins->setService($key, $filter);
 
         $input_factory->setDefaultValidatorChain( $filter_chain );
         return $this;
