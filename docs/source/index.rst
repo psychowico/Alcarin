@@ -8,15 +8,16 @@ in eglish, but for my convenience other parts will be only in polish for now, so
 Contents:
 
 .. toctree::
-   :maxdepth: 2
+    :maxdepth: 2
 
-   story
-   mechanic/index
-   dev/installation instructions
-   dev/programming
-   dev/core
-   dev/game objects
-   dev/log
+    story
+    mechanic/index
+    dev/installation instructions
+    dev/programming
+    dev/core
+    dev/game objects
+    dev/log
+    dev/forms
 
 Indices and tables
 ==================
