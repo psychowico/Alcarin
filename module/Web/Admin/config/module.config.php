@@ -7,7 +7,9 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'Admin\Controller\Home'  => 'Admin\Controller\AdminHomeController',
+
             'Admin\Controller\Users' => 'Admin\Controller\UsersController',
+            'Admin\Controller\Orbis' => 'Admin\Controller\OrbisController',
 
             'Admin\Controller\Users\Privilages' => 'Admin\Controller\Users\PrivilagesController',
         ),
@@ -51,6 +53,7 @@ return array(
         'namespaces' => array(
             'admin/subdefault' => array(
                 'users' => 'Admin\Controller\Users',
+                'orbis' => 'Admin\Controller\Orbis',
             ),
         ),
     ),
