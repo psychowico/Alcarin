@@ -17,6 +17,7 @@ return array(
                             '/js/jquery/jquery-1.9.1.js',
                             '/js/jquery/jquery.ba-bbq-1.4pre.js',
                             '/js/jquery/jquery.cookie-1.3.1.js',
+                            '/js/jquery/jcanvas-13.02.11.js',
                             '/js/bootstrap-2.3.0.js',
                         ),
                     ),
@@ -37,6 +38,7 @@ return array(
                         'sources' => array(
                             '/js/compiled_coffee/core.js',
                             '/js/compiled_coffee/test.js',
+                            '/js/compiled_coffee/Orbis/minimap.js',
                         ),
                     ),
                     //files for regular players
@@ -71,8 +73,9 @@ return array(
                     //files enough for admins
                     'admin' => array(
                         'sources' => array(
-                            '/css/compiled_less/admin-index.css',
-                            '/css/compiled_less/admin-users.css',
+                            '/css/compiled_less/admin/index.css',
+                            '/css/compiled_less/admin/users.css',
+                            '/css/compiled_less/admin/orbis.css',
                         ),
                     ),
                     //files for regular players

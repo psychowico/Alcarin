@@ -1,5 +1,16 @@
 //some basic function that we used frequently in another less files
 
+.clearfix()
+{
+  &:after {
+    visibility: hidden;
+    display:block;
+    clear:both;
+    height:0;
+    *zoom:1;
+  }
+}
+
 .v-center() {
   height:100%;
   width: 100%;

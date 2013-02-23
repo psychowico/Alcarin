@@ -19,6 +19,11 @@ class AdminHomeController extends AbstractAlcarinRestfulController
             'title'  => 'Manage players',
             'icon' => 'icon-search',
         ],
+        [
+            'name' => 'orbis',
+            'title'  => '"Orbis" Editor',
+            'icon' => 'icon-globe',
+        ],
     ];
 
     public function getList()

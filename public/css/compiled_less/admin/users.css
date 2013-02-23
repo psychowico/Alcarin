@@ -1,0 +1,15 @@
+.general-users-list div {
+  border: 1px solid silver;
+  padding: 8px;
+}
+.general-users-list div:hover {
+  opacity: 0.9;
+}
+div.admin-privilages {
+  width: 900px;
+  margin: 0 auto;
+  margin-top: 10px;
+}
+div.admin-privilages input[type="submit"] {
+  float: right;
+}

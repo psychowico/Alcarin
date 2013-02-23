@@ -11,6 +11,13 @@ use Zend\Form\Annotation;
 class DefaultFieldset
 {
     /**
+     * @Annotation\Type("hidden")
+     * @Annotation\Required(false)
+     * @Annotation\Attributes({"value":"POST"})
+     */
+    public $_method;
+
+    /**
      * @Annotation\Type("csrf")
      */
     public $CSRF;

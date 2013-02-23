@@ -11,6 +11,7 @@ return array(
             'Admin\Controller\Users' => 'Admin\Controller\UsersController',
             'Admin\Controller\Orbis' => 'Admin\Controller\OrbisController',
 
+            'Admin\Controller\Orbis\Minimap' => 'Admin\Controller\Orbis\MinimapController',
             'Admin\Controller\Users\Privilages' => 'Admin\Controller\Users\PrivilagesController',
         ),
     ),
@@ -24,7 +25,13 @@ return array(
     'game-modules' => array(
         'Admin' => array(
             'discription'  => 'Administrative module',
+            'game-objects' => array(
+                'orbis' => 'Admin\GameObject\Orbis',
+            ),
             'game-objects-ext' => array(
+                'Admin\GameObject\Orbis' => array(
+                    'minimap' => 'Admin\GameObject\Extension\OrbisMinimap',
+                ),
                 'EngineBase\GameObject\Player' => array(
                     'admin' => 'Admin\GameObject\Extension\PlayerAdmin'
                 ),
@@ -45,6 +52,18 @@ return array(
                     'restmode' => true,
                     'defaults' => array(
                         'controller' => 'Home',
+                    ),
+                ),
+            ),
+            'minimap'   => array(
+                'type' => 'literal',
+                'options' => array(
+                    // Change this to something specific to your module
+                    'route'    => '/admin/orbis/minimap',
+                    'defaults' => array(
+                        // Change this value to reflect the namespace in which
+                        // the controllers for your module are found
+                        'controller'    => 'Admin\Controller\Orbis\Minimap',
                     ),
                 ),
             ),

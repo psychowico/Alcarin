@@ -110,8 +110,10 @@ class AnnotationBuilderService
             $default = $this->generateDefaultFieldset($submit_button_caption);
             //I just added fieldset elements to form, because simple adding full fieldset
             //generate some problems when rendering. (ZF2.2.0)
-            foreach( $default->getElements() as $el ) {
-                $form->add($el);
+            foreach( $default->getElements() as $name => $el ) {
+                if(!$form->has($name)) {
+                    $form->add($el);
+                }
             }
         }
 
