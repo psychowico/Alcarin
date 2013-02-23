@@ -22,25 +22,26 @@
         ).prependBundle('external') | raw }}
     </head>
     <body>
+        <nav class="navbar navbar-static-top navbar-inverse">
+          <div class="navbar-inner">
+            <a class="brand" href="/">Alcarin</a>
+            <ul class="nav pull-left">
+                {% block userbar_left %}{% endblock %}
+            </ul>
+            <ul class="nav pull-right">
+                {% block userbar_right %}{% endblock %}
+                {% if zfcUserIdentity() %}
+                <li class="divider-vertical"></li>
+                <li>
+                    <a href="{{ url('zfcuser/logout') }}">Wyloguj się</a>
+                </li>
+                {% endif %}
+            </ul>
+          </div>
+        </nav>
+
         <div class="container">
             <div class="game-container">
-                <nav id="user-bar">
-                    <ul>
-                        {% block userbar_left %}
-                        <li>
-                            <a href="/">
-                                Home
-                            </a>
-                        </li>
-                        {% endblock %}
-                        {% block userbar_right %}{% endblock %}
-                        {% if zfcUserIdentity() %}
-                        <li class="logout-btn">
-                            <a href="{{ url('zfcuser/logout') }}">Wyloguj się</a>
-                        </li>
-                        {% endif %}
-                    </ul>
-                </nav>
                 {% block content %}
                 &nbsp;
                 {% endblock %}

@@ -21,6 +21,7 @@ class IsAllowed extends AbstractHelper
      */
     public function __invoke($resource = null)
     {
+        return $this;
         if( $resource === null ) return $this->authService;
 
         if( is_string($resource) ) {

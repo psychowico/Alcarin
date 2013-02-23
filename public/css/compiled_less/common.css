@@ -9,7 +9,7 @@ html,
 .game-container footer {
   height: 5%;
 }
-.game-container div {
+.game-container > div {
   margin: 14px;
   padding-bottom: 5px;
 }

@@ -13,6 +13,12 @@ return array(
         ),
     ),
 
+    'view_helpers' => array(
+        'invokables'   => array(
+            'parentUri'         => 'Admin\View\Helper\ParentUri',
+        ),
+    ),
+
     'game-modules' => array(
         'Admin' => array(
             'discription'  => 'Administrative module',

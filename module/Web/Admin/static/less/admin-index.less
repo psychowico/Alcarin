@@ -1,6 +1,10 @@
 @import 'core';
 
-ul#admin-pages {
+@item-size: 90px;
+@icon-scale: 1.1;
+
+ul.tiles-list {
+    font: 15px Helvetica, arial, freesans, clean, sans-serif;
     width: 800px;
     height: 600px;
     background: rgb(29, 29, 29);
@@ -10,8 +14,8 @@ ul#admin-pages {
     list-style-type:none;
     .rounded-corners;
     li {
-        width: 100px;
-        height: 100px;
+        width: @item-size;
+        height: @item-size;
         margin: 18px 0 0 28px;
         float: left;
         a, a:visited {
@@ -24,9 +28,16 @@ ul#admin-pages {
             position: relative;
             text-decoration:none;
             .transition;
-            img {
-                margin: 5px;
-                width: 90%;
+            .v-center();
+            span {
+                .h-center();
+                padding: 10px;
+                i {
+                    position: absolute;
+                    .scale(@icon-scale);
+                    left: @item-size - 20px;
+                    top: @item-size - 23px;
+                }
             }
             &:hover {
                 .scale(1.2)

@@ -1,4 +1,5 @@
-ul#admin-pages {
+ul.tiles-list {
+  font: 15px Helvetica, arial, freesans, clean, sans-serif;
   width: 800px;
   height: 600px;
   background: #1d1d1d;
@@ -12,14 +13,14 @@ ul#admin-pages {
   -o-border-radius: 17px;
   border-radius: 17px;
 }
-ul#admin-pages li {
-  width: 100px;
-  height: 100px;
+ul.tiles-list li {
+  width: 90px;
+  height: 90px;
   margin: 18px 0 0 28px;
   float: left;
 }
-ul#admin-pages li a,
-ul#admin-pages li a:visited {
+ul.tiles-list li a,
+ul.tiles-list li a:visited {
   width: 100%;
   height: 100%;
   background: #191919;
@@ -37,14 +38,34 @@ ul#admin-pages li a:visited {
   -ms-transition: all 0.1s linear;
   -o-transition: all 0.1s linear;
   transition: all 0.1s linear;
+  height: 100%;
+  width: 100%;
+  display: block;
+  display: -webkit-box;
+  display: -moz-box;
+  display: box;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  box-align: center;
 }
-ul#admin-pages li a img,
-ul#admin-pages li a:visited img {
-  margin: 5px;
-  width: 90%;
+ul.tiles-list li a span,
+ul.tiles-list li a:visited span {
+  display: block;
+  margin: 0 auto;
+  text-align: center;
+  padding: 10px;
 }
-ul#admin-pages li a:hover,
-ul#admin-pages li a:visited:hover {
+ul.tiles-list li a span i,
+ul.tiles-list li a:visited span i {
+  position: absolute;
+  -moz-transform: scale(1.1);
+  -webkit-transform: scale(1.1);
+  -o-transform: scale(1.1);
+  left: 70px;
+  top: 67px;
+}
+ul.tiles-list li a:hover,
+ul.tiles-list li a:visited:hover {
   -moz-transform: scale(1.2);
   -webkit-transform: scale(1.2);
   -o-transform: scale(1.2);

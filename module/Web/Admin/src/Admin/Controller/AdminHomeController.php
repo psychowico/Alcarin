@@ -16,8 +16,8 @@ class AdminHomeController extends AbstractAlcarinRestfulController
     protected $admin_pages = [
         [
             'name' => 'users',
-            'icon' => 'http://img.weather.weatherbug.com/forecast/icons/localized/500x420/en/trans/cond000.png',
-            'alt'  => 'Manage users.',
+            'title'  => 'Manage players',
+            'icon' => 'icon-search',
         ],
     ];
 
@@ -41,7 +41,7 @@ class AdminHomeController extends AbstractAlcarinRestfulController
         return [
             'href' => $this->url()->fromRoute( 'admin/default', [ 'controller' => $data['name'] ] ),
             'icon' => empty( $data['icon'] ) ? null : $data['icon'],
-            'alt'  => empty( $data['alt'] ) ? null : $data['alt'],
+            'title'  => empty( $data['title'] ) ? null : $data['title'],
         ];
     }
 }

@@ -1,4 +1,4 @@
-#user-bar {
+.user-bar {
   font-size: 15px;
   font: 13px Helvetica, arial, freesans, clean, sans-serif;
   line-height: 1.4;
@@ -14,12 +14,12 @@
   border-bottom-right-radius: 17px;
   border-bottom-left-radius: 17px;
 }
-#user-bar ul {
+.user-bar ul {
   margin: 0;
   list-style: none;
   height: 100%;
 }
-#user-bar ul li {
+.user-bar ul li {
   margin: 0;
   padding: 0;
   height: 100%;
@@ -34,16 +34,16 @@
   border-bottom-right-radius: 17px;
   border-bottom-left-radius: 17px;
 }
-#user-bar ul li:nth-child(odd) {
+.user-bar ul li:nth-child(odd) {
   background: rgba(32, 124, 229, 0.15);
 }
-#user-bar ul li:hover {
+.user-bar ul li:hover {
   background: rgba(32, 124, 229, 0.3);
 }
-#user-bar ul li * {
+.user-bar ul li * {
   padding: 10px;
   display: block;
 }
-#user-bar ul li.logout-btn {
+.user-bar ul li.logout-btn {
   float: right;
 }
