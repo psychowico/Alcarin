@@ -10,7 +10,6 @@ html,
   height: 5%;
 }
 .game-container > div {
-  margin: 14px;
   padding-bottom: 5px;
 }
 form input[type="checkbox"] {

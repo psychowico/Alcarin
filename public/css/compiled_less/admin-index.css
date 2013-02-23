@@ -2,10 +2,8 @@ ul.tiles-list {
   font: 15px Helvetica, arial, freesans, clean, sans-serif;
   width: 800px;
   height: 600px;
-  background: #1d1d1d;
   margin: 0 auto;
   padding: 0;
-  margin-top: 10px;
   list-style-type: none;
   -webkit-border-radius: 17px;
   -moz-border-radius: 17px;
