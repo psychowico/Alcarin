@@ -10,7 +10,7 @@
  * in ZendSkeletonApplication. This is a good practice, as it prevents sensitive
  * credentials from accidentally being committed into version control.
  */
-define('DEBUG', true);
+if(!defined('DEBUG')) define('DEBUG', true);
 
 return array(
     'mongo' => array(
