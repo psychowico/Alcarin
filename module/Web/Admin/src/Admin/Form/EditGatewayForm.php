@@ -15,7 +15,7 @@ class EditGatewayForm
      * @Annotation\Type("text")
      * @Annotation\Options({"label":"Gateway name:"})
      * @Annotation\Required(true)
-     * @Annotation\Attributes({"value":"new_gateway", "id": "name"})
+     * @Annotation\Attributes({"value":"new_gateway"})
      */
     public $name;
 
@@ -23,7 +23,24 @@ class EditGatewayForm
      * @Annotation\Type("text")
      * @Annotation\Options({"label":"Gateway description:"})
      * @Annotation\Required(false)
-     * @Annotation\Attributes({"id": "description"})
      */
     public $description;
+
+    /**
+     * @Annotation\Type("text")
+     * @Annotation\Options({"label":"X:"})
+     * @Annotation\Required(true)
+     * @Annotation\Attributes({"value":"0"})
+     * @Annotation\Validator({"name": "Float"})
+     */
+    public $x;
+
+    /**
+     * @Annotation\Type("text")
+     * @Annotation\Options({"label":"Y:"})
+     * @Annotation\Required(true)
+     * @Annotation\Attributes({"value":"0"})
+     * @Annotation\Validator({"name": "Float"})
+     */
+    public $y;
 }

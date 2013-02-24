@@ -10,6 +10,8 @@ namespace('Alcarin', function(exports, Alcarin) {
 
     ActiveView.global_list = [];
 
+    ActiveView.auto_init = false;
+
     ActiveView.prototype.bindings = {};
 
     ActiveView.prototype.initialized = false;
@@ -19,19 +21,48 @@ namespace('Alcarin', function(exports, Alcarin) {
     function ActiveView() {
       $.merge(exports.ActiveView.global_list, [this]);
       this.properties_container = jQuery.extend({}, this.properties_container);
+      this.active_list_container = {};
       this.initialized = false;
       this.bindings = {};
     }
 
     ActiveView.initializeAll = function() {
-      var view, _i, _len, _ref, _results;
+      var view, _i, _len, _ref;
       _ref = exports.ActiveView.global_list;
-      _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         view = _ref[_i];
-        _results.push(view.initialize());
+        view.initialize();
       }
-      return _results;
+      return this.auto_init = true;
+    };
+
+    ActiveView.dependencyProperty = function(name, default_value, onChange) {
+      if (default_value != null) {
+        this.__super__.properties_container[name] = default_value;
+      }
+      return function(val) {
+        if (!(val != null)) {
+          return this.properties_container[name];
+        }
+        this.properties_container[name] = val;
+        if (this.initialized) {
+          this.propertyChanged(name);
+        }
+        return onChange != null ? onChange.call(this, val) : void 0;
+      };
+    };
+
+    ActiveView.dependencyList = function(query) {
+      return function(val) {
+        var activelist;
+        if (!(this.active_list_container[query] != null)) {
+          activelist = this.active_list_container[query] = new Alcarin.ActiveList;
+          if (this.bind_source != null) {
+            activelist.bind(this.bind_source.find(query));
+          }
+        }
+        return this.active_list_container[query];
+      };
     };
 
     ActiveView.prototype.propertyChanged = function(prop_name) {
@@ -65,21 +96,6 @@ namespace('Alcarin', function(exports, Alcarin) {
       return _results;
     };
 
-    ActiveView.dependencyProperty = function(name, default_value) {
-      if (default_value != null) {
-        this.__super__.properties_container[name] = default_value;
-      }
-      return function(val) {
-        if (!(val != null)) {
-          return this.properties_container[name];
-        }
-        this.properties_container[name] = val;
-        if (this.initialized) {
-          return this.propertyChanged(name);
-        }
-      };
-    };
-
     /*private function, storing entries in @bindings table for specific property
     names used in "content". it store object with 'type' (TYPE_ATTR/TYPE_CONTENT)
     'element' (jquery ref), 'original' ("content" value) and attribute
@@ -110,31 +126,48 @@ namespace('Alcarin', function(exports, Alcarin) {
     };
 
     ActiveView.prototype.bind = function(e) {
-      var $e,
+      var $e, activelist, query, _ref,
         _this = this;
       $e = $(e);
+      this.bind_source = $e;
+      $e.data('active-view', this);
       $e.each(function(index, val) {
-        var $child, $el, attr, child, children, list, _i, _j, _len, _len1, _ref;
+        var $child, $el, all_children, attr, child, children, list, _i, _j, _k, _len, _len1, _len2, _ref, _ref1;
         $el = $(val);
-        children = $el.find('*').filter(function(i, val) {
+        all_children = $el.find('*');
+        _ref = all_children.toArray().concat([$el.get(0)]);
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          child = _ref[_i];
+          $child = $(child);
+          _ref1 = child.attributes;
+          for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+            attr = _ref1[_j];
+            _this.prepare_bind($e, $child, attr.value, attr.name);
+          }
+          _this.prepare_bind($e, $child, attr.value, attr.name);
+        }
+        children = all_children.filter(function(i, val) {
           return !$(val).children().length;
         });
         list = children.toArray();
         if (!$el.children().length) {
           list = list.concat([$el.get(0)]);
         }
-        for (_i = 0, _len = list.length; _i < _len; _i++) {
-          child = list[_i];
+        for (_k = 0, _len2 = list.length; _k < _len2; _k++) {
+          child = list[_k];
           $child = $(child);
           _this.prepare_bind($e, $child, $child.html());
-          _ref = child.attributes;
-          for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
-            attr = _ref[_j];
-            _this.prepare_bind($e, $child, attr.value, attr.name);
-          }
         }
         return true;
       });
+      _ref = this.active_list_container;
+      for (query in _ref) {
+        activelist = _ref[query];
+        activelist.bind($e.find(query));
+      }
+      if (ActiveView.auto_init && !this.initialized) {
+        this.initialize();
+      }
       return true;
     };
 
@@ -180,6 +213,7 @@ namespace('Alcarin', function(exports, Alcarin) {
       class exports.TestView extends exports.ActiveView
           me    : @dependencyProperty('me')
           teraz : @dependencyProperty('teraz', 12)
+          active_list: @dependencyList('.items') #jquery style child query
   
       av = new Alcarin.TestView()
       av.me 'psychowico321'

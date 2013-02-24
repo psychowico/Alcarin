@@ -18,11 +18,9 @@ return array(
     ),
 
     'view_helpers' => array(
-        'invokables' => array(
-            'formHorizontal'         => 'Alcarin\Form\View\Helper\FormHorizontal',
-        ),
         'aliases'   => array(
             '_'         => 'translate',
+            'bootstrap'  => 'form',
         ),
     ),
 

@@ -1,43 +1,32 @@
-<div class="gateways-list">
-    <h2>{{ _('Gateways') }}</h2>
+<div class="gateways-groups">
     <div class="add clearfix">
-        <button class="btn btn-inverse">{{ _('Add group') }}</button>
+        <button class="btn btn-inverse add-group">{{ _('Add group') }}</button>
     </div>
-    <div class="accordion" id="accordion2">
+    <div class="accordion active-group" id="acc-group">
+        {# js active list prototype #}
         <div class="accordion-group">
             <div class="accordion-heading">
-            <a class="accordion-toggle text-center" data-toggle="collapse" data-parent="#accordion2" href="#collapse-1">
-                Gateways 1<button class="close">&times;</button>
+            <a href="#{item.group_href}" class="accordion-toggle text-center"
+                data-toggle="collapse" data-parent="#acc-group">
+                <span>{item.group_name}</span>
+                <button class="close">&times;</button>
             </a>
             </div>
-            <div id="collapse-1" class="accordion-body collapse in">
-            <div class="accordion-inner navbar-inverse">
-                <ul class="nav nav-list gateways-list">
-                    <li><a href="#"><i class="icon-flag"></i>Home</a></li>
-                    <li><a href="#"><i class="icon-flag"></i>Library</a></li>
-                    <li><a href="#"><i class="icon-flag"></i>Home</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#"><i class="icon-plus"></i>Add</a></li>
-                </ul>
-            </div>
-            </div>
-        </div>
-        <div class="accordion-group">
-            <div class="accordion-heading">
-            <a class="accordion-toggle text-center" data-toggle="collapse" data-parent="#accordion2" href="#gateway-ungrouped">
-                Ungrouped
-            </a>
-            </div>
-            <div id="gateway-ungrouped" class="accordion-body collapse">
-            <div class="accordion-inner navbar-inverse">
-                <ul class="nav nav-list gateways-list">
-                    <li><a href="#"><i class="icon-flag"></i>non-Home</a></li>
-                    <li><a href="#"><i class="icon-flag"></i>non-Library</a></li>
-                    <li><a href="#"><i class="icon-flag"></i>non-Home</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#"><i class="icon-plus"></i>Add</a></li>
-                </ul>
-            </div>
+            <div id="{item.group_href}" class="accordion-body collapse {item.group_class}">
+                <div class="accordion-inner navbar-inverse">
+                    <ul class="nav nav-list items">
+                        {# js active list prototype #}
+                        <li>
+                            <a href="#">
+                                <i class="icon-flag"></i><span>{item.name}</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav nav-list">
+                        <li class="divider"></li>
+                        <li><a href="#" class="create-gateway"><i class="icon-plus"></i>Add</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>

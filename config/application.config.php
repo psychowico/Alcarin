@@ -7,6 +7,7 @@ return array(
         'ZfcTwig',
         'ZfcBase',
         'ZfcUser',
+        'TwbBundle',
         'EdpModuleLayouts',
         //game api modules
         'Core',

@@ -19,7 +19,7 @@
         <!-- Scripts -->
         {{ headScript().prependFile(
             basePath( '/js/html5.js' ), 'text/javascript', { 'conditional': 'lt IE 9' }
-        ).prependBundle('external') | raw }}
+        ).prependBundle('common').prependBundle('external') | raw }}
     </head>
     <body>
         <nav class="navbar navbar-static-top navbar-inverse">

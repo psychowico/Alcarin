@@ -21,13 +21,17 @@ return array(
                             '/js/bootstrap-2.3.0.js',
                         ),
                     ),
+                    'common'    => array(
+                        'sources' => array(
+                            '/js/compiled_coffee/core.js',
+                            '/js/compiled_coffee/Alcarin/Errors/errors-core.js',
+                            '/js/compiled_coffee/Alcarin/active-view.js',
+                            '/js/compiled_coffee/Alcarin/active-list.js',
+                        ),
+                    ),
                     //files enough for guest users
                     'guest' => array(
                         'sources' => array(
-                            '/js/compiled_coffee/core.js',
-                            '/js/compiled_coffee/Alcarin/active-view.js',
-                            '/js/compiled_coffee/Alcarin/active-list.js',
-                            '/js/compiled_coffee/Alcarin/Errors/errors-core.js',
                             '/js/compiled_coffee/Alcarin/game-events-proxy.js',
                             '/js/compiled_coffee/test.js',
                             '/js/compiled_coffee/Alcarin/JQueryPlugins/RESTful.js',
@@ -36,15 +40,15 @@ return array(
                     //files enough for admins
                     'admin' => array(
                         'sources' => array(
-                            '/js/compiled_coffee/core.js',
                             '/js/compiled_coffee/test.js',
-                            '/js/compiled_coffee/Orbis/minimap.js',
+                            '/js/compiled_coffee/Orbis/gateways.js',
+                            '/js/compiled_coffee/Orbis/minimap-renderer.js',
+                            '/js/compiled_coffee/Orbis/orbis.js',
                         ),
                     ),
                     //files for regular players
                     'player' => array(
                         'sources' => array(
-                            '/js/compiled_coffee/core.js',
                             '/js/compiled_coffee/test.js',
                         ),
                     ),

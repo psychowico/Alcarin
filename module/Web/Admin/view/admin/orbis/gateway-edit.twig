@@ -1,19 +1,10 @@
-<div class="gateway-edit accordion-group">
-    {{ form().openTag(form, {class: 'form-horizontal'}) |raw }}
-        <fieldset>
-            <legend>{{ _('Edit gateway') }}</legend>
-
-            {{ formHorizontal(form) }}
-
-            <!-- <div class="control-group">
-                <label class="control-label" for="{{ el.getAttribute('id') }}">
-                    {{el.getLabel() }}
-                </label>
-                <div class="controls">
-                    {{ formElement(el) }}
-                </div>
-            </div>
-             -->
-        </fieldset>
-    {{ form().closeTag() |raw }}
+<div class="gateway-edit accordion-group hide">
+    <div class="accordion-heading">
+        <div class="accordion-toggle text-center">
+            {{ _('Edit gateway') }}<button class="close">×</button>
+        </div>
+    </div>
+    <div class="accordion-inner">
+        {{ bootstrap(form, 'horizontal') }}
+    </div>
 </div>

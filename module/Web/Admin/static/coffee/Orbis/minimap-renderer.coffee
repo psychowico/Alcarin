@@ -1,6 +1,6 @@
 namespace 'Alcarin.Orbis', (exports, Alcarin) ->
 
-    class exports.Minimap
+    class exports.MinimapRenderer
 
         constructor : ( _minimap )->
             @minimap = _minimap
@@ -45,8 +45,3 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
             image.attr('original-src', image.attr('src'));
             imgObj.src = canvas.toDataURL();
             ###
-
-
-    $ =>
-        minimap = new Alcarin.Orbis.Minimap $('#minimap')
-        minimap.init()

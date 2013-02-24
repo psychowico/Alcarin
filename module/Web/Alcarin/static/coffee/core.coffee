@@ -8,4 +8,20 @@ namespace = (target, name, block) ->
     block target, main_ns
 
 $ =>
+    # find all objects with 'data-instance' attribute and try use it value as @_class.
+    # it create instance of @_class with one argument - specific html element,
+    # and call it "init" method if exists
+    $('[data-instance]').each ->
+        class_str = $(@).data 'instance'
+        splitted = class_str.split '.'
+        _class = window
+        for str in splitted
+            if _class[str]?
+                _class = _class[str]
+            else
+                throw "Can not find instance of '#{class_str}' class."
+
+        instance = new _class $(@)
+        instance.init?()
+
     $('input[type="text"]:first').focus()

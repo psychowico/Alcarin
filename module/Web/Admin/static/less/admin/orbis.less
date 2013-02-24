@@ -1,9 +1,24 @@
 @import 'core';
 
-.gateways-list .add {
+.gateways-groups .add {
     button {
         width: 220px;
         float: right;
     }
     margin-bottom: 10px;
+}
+
+.gateways-list {
+    position: relative;
+    &>div {
+        position: absolute;
+        width: 100%;
+    }
+}
+
+.gateway-edit {
+    .accordion-inner {
+        padding-top: 20px;
+        padding-bottom: 0;
+    }
 }

@@ -12,6 +12,7 @@ namespace 'Alcarin', (exports, Alcarin) ->
         @regex       = /{item\.(.*?)}/g
         #static list of all created active views
         @global_list = []
+        @auto_init   = false
 
         #assoc array of this object properties. for each property name
         #we have list of jquery objects that need be updated when this
@@ -20,21 +21,48 @@ namespace 'Alcarin', (exports, Alcarin) ->
         #before full initialization bindings won't be called and html template
         #won't be updated
         initialized         : false
+
         #simple properties container
-        properties_container : {}
+        properties_container  : {}
 
         constructor: ->
             $.merge exports.ActiveView.global_list, [@]
-            @properties_container = jQuery.extend({}, @.properties_container)
-            @initialized          = false
-            @bindings             = {}
+            @properties_container  = jQuery.extend({}, @.properties_container)
+            @active_list_container = {}
+            @initialized           = false
+            @bindings              = {}
 
-        #static function, should ba called once, after all page loading,
-        #to prepare all views and update needed values
+        # static function, should ba called once, after all page loading,
+        # to prepare all views and update needed values. later all active-objects
+        # will be auto initialize when bind.
         @initializeAll : ->
             for view in exports.ActiveView.global_list
                 view.initialize()
+            @auto_init = true;
 
+        #it return function, should be used to preparing view properties.
+        #check sample view below
+        @dependencyProperty: (name, default_value, onChange)->
+            if default_value? then @.__super__.properties_container[name] = default_value
+            #this method will be called in specific object context
+            (val) ->
+                if not val? then return @properties_container[name]
+                @properties_container[name] = val
+                if @initialized
+                    @propertyChanged name
+                onChange?.call @, val
+
+
+        # it return function, should be used to updating activelist's
+        # inside object
+        @dependencyList: (query)->
+            #this method will be called in specific object context
+            (val) ->
+                if not @active_list_container[query]?
+                    activelist = @active_list_container[query] = new Alcarin.ActiveList
+                    if @bind_source?
+                        activelist.bind @bind_source.find query
+                return @active_list_container[query]
 
         #called automaticaly when class is full initialized and
         #property value will change.
@@ -57,16 +85,6 @@ namespace 'Alcarin', (exports, Alcarin) ->
                     else
                         throw new Error('"#{data.type}" type not supported.')
 
-        #it return function, should be used to preparing view properties.
-        #check sample view below
-        @dependencyProperty: ( name, default_value)->
-            if default_value? then @.__super__.properties_container[name] = default_value
-            #this methid will be called in specific object context
-            (val) ->
-                if not val? then return @properties_container[name]
-                @properties_container[name] = val
-                if @initialized
-                    @propertyChanged name
 
         ###private function, storing entries in @bindings table for specific property
         names used in "content". it store object with 'type' (TYPE_ATTR/TYPE_CONTENT)
@@ -89,14 +107,26 @@ namespace 'Alcarin', (exports, Alcarin) ->
                     }
             true
 
-        #check specific jquery element for properties that have been used inside
-        #and store them in @bindings assoc array, to update html template when
-        #correspondive property will change
+        # check specific jquery element for properties that have been used inside
+        # and store them in @bindings assoc array, to update html template when
+        # correspondive property will change
         bind: (e) ->
             $e = $ e
+            @bind_source = $e
+            $e.data 'active-view', @
             $e.each (index, val) =>
                 $el = $ val
-                children = $el.find('*').filter (i, val)->
+
+                all_children = $el.find('*')
+
+                #checking all children attributes
+                for child in all_children.toArray().concat [$el.get 0]
+                    $child = $ child
+                    for attr in child.attributes
+                        @prepare_bind $e, $child, attr.value, attr.name
+                    @prepare_bind $e, $child, attr.value, attr.name
+
+                children = all_children.filter (i, val)->
                     not $(val).children().length
 
                 list = children.toArray()
@@ -107,9 +137,13 @@ namespace 'Alcarin', (exports, Alcarin) ->
                     $child = $(child)
                     @prepare_bind $e, $child, $child.html()
 
-                    for attr in child.attributes
-                        @prepare_bind $e, $child, attr.value, attr.name
                 true
+
+            for query, activelist of @active_list_container
+                activelist.bind $e.find query
+
+            if ActiveView.auto_init and not @initialized
+                @initialize()
             true
 
         #unbind not needed view relation
@@ -119,8 +153,6 @@ namespace 'Alcarin', (exports, Alcarin) ->
                 for obj, index in list
                     if obj.root.is $e
                         list.splice(index, 1)
-
-
 
         #shouldn't be called directly, rather by initializeAll static method.
         initialize : ->
@@ -135,6 +167,7 @@ namespace 'Alcarin', (exports, Alcarin) ->
     class exports.TestView extends exports.ActiveView
         me    : @dependencyProperty('me')
         teraz : @dependencyProperty('teraz', 12)
+        active_list: @dependencyList('.items') #jquery style child query
 
     av = new Alcarin.TestView()
     av.me 'psychowico321'

@@ -1,20 +1,19 @@
 
 namespace('Alcarin.Orbis', function(exports, Alcarin) {
-  var _this = this;
-  exports.Minimap = (function() {
+  return exports.MinimapRenderer = (function() {
 
-    function Minimap(_minimap) {
+    function MinimapRenderer(_minimap) {
       this.minimap = _minimap;
     }
 
-    Minimap.prototype.context = function() {
+    MinimapRenderer.prototype.context = function() {
       if (this._context == null) {
         this._context = this.minimap[0].getContext('2d');
       }
       return this._context;
     };
 
-    Minimap.prototype.fill_by_sea = function() {
+    MinimapRenderer.prototype.fill_by_sea = function() {
       var context;
       context = this.context();
       context.fillStyle = 'blue';
@@ -25,7 +24,7 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
       return context.stroke();
     };
 
-    Minimap.prototype.init = function() {
+    MinimapRenderer.prototype.init = function() {
       this.w = this.minimap.width();
       this.h = this.minimap.height();
       return this.fill_by_sea();
@@ -51,12 +50,7 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
 
     };
 
-    return Minimap;
+    return MinimapRenderer;
 
   })();
-  return $(function() {
-    var minimap;
-    minimap = new Alcarin.Orbis.Minimap($('#minimap'));
-    return minimap.init();
-  });
 });

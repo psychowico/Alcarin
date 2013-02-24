@@ -6,9 +6,18 @@ namespace 'Alcarin', (exports, Alcarin) ->
     #corresponding part of the html template.
     class exports.ActiveList
 
-        constructor: (el)->
+        anim : 'show'
+
+        setAnim : (method) ->
+            @anim = method
+
+        constructor: ->
+            @source = []
+            @binded = false
+
+        bind: (el)->
             @parent = $ el
-            console.log @parent
+            @parent.data 'active-list', @
 
             pr = @parent[0].firstChild
             while pr && pr.nodeType != 1
@@ -16,15 +25,27 @@ namespace 'Alcarin', (exports, Alcarin) ->
             @prototype = $ pr
             @prototype.remove()
 
-            @source = []
+            @binded = true
+
+            for view in @source
+                dom_obj = @prototype.clone(true)
+                if view instanceof exports.ActiveView
+                    view.bind dom_obj
+                @parent.append dom_obj
+
 
         #insert elements at list end, and update related view
         push: (elements...)->
             for el in elements
                 @source.push el
-                dom_obj = @prototype.clone(true)
-                el.bind dom_obj
-                @parent.append dom_obj
+                if @binded
+                    dom_obj = @prototype.clone(true)
+                    if el instanceof exports.ActiveView
+                        el.bind dom_obj
+
+                    dom_obj.hide()
+                    @parent.append dom_obj
+                    dom_obj[@anim]()
             true
 
         pop: ->
@@ -42,20 +63,21 @@ namespace 'Alcarin', (exports, Alcarin) ->
         insert: (index, obj)->
             #update list
             @source.splice index, 0, obj
-            #prepare prototype
-            dom_obj = @prototype.clone(true)
+            if @binded
+                #prepare prototype
+                dom_obj = @prototype.clone(true)
 
-            #auto bind if this is a activeview
-            if obj instanceof exports.ActiveView
-                obj.bind dom_obj
+                #auto bind if this is a activeview
+                if obj instanceof exports.ActiveView
+                    obj.bind dom_obj
 
-            #insert it in DOM
-            children = @parent.children()
-            if index >= children.length
-                children.last().after dom_obj
-            else
-                children.eq(index).before dom_obj
-            true
+                #insert it in DOM
+                children = @parent.children()
+                if index >= children.length
+                    children.last().after dom_obj
+                else
+                    children.eq(index).before dom_obj
+                true
 
         remove: (obj)->
             index = @source.indexOf obj
@@ -63,16 +85,16 @@ namespace 'Alcarin', (exports, Alcarin) ->
 
         #remove one item and update related view
         removeAt: (index)->
-            dom_obj = @parent.children().eq index
-            dom_obj.remove()
+            if @binded
+                dom_obj = @parent.children().eq index
+                dom_obj.remove()
 
-            obj = @source[index]
+                obj = @source[index]
 
-            if obj instanceof exports.ActiveView
-                obj.unbind dom_obj
+                if obj instanceof exports.ActiveView
+                    obj.unbind dom_obj
 
             @source.splice index, 1
-            obj
 
         toString: ->
             @source.toString()
@@ -81,9 +103,9 @@ namespace 'Alcarin', (exports, Alcarin) ->
             @source.valueOf()
 
 
-    class exports.TestView extends Alcarin.ActiveView
-        name    : @dependencyProperty('name', 'test')
-        val     : @dependencyProperty('value', 0)
+    # class exports.TestView extends Alcarin.ActiveView
+    #     name    : @dependencyProperty('name', 'test')
+    #     val     : @dependencyProperty('value', 0)
 
 $ ->
     ###list = new Alcarin.ActiveList('#active-select')
