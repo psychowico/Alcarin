@@ -20,4 +20,12 @@ class OrbisController extends AbstractAlcarinRestfulController
         $builder = new \Core\Service\AnnotationBuilderService();
         return $builder->createForm($form_prototype, 'Save');
     }
+
+    public function update($id, $data)
+    {
+        echo 'dupa';
+        return $this->json([
+            'success' => 0,
+        ]);
+    }
 }

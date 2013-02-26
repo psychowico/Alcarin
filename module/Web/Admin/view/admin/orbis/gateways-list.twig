@@ -2,15 +2,25 @@
     <div class="add clearfix">
         <button class="btn btn-inverse add-group">{{ _('Add group') }}</button>
     </div>
-    <div class="accordion active-group" id="acc-group">
+    <div class="accordion active-group">
         {# js active list prototype #}
         <div class="accordion-group">
             <div class="accordion-heading">
-            <a href="#{item.group_href}" class="accordion-toggle text-center"
-                data-toggle="collapse" data-parent="#acc-group">
-                <span>{item.group_name}</span>
-                <button class="close">&times;</button>
-            </a>
+                <div class="group-name x-editable" data-toggle="manual" data-type="text"
+                        data-placement="up" data-name="group-name" data-value=""
+                        data-placeholder="group new name" data-url="orbis/1" data-pk="1">
+
+                <a href="#{item.group_href}" class="group-header accordion-toggle text-center"
+                    data-toggle="collapse" data-parent="#acc-group">
+                    <span>
+                        {item.group_name}
+                    </span>
+                    <button class="edit-group btn-inverse">
+                        <i class="icon-edit icon-white"></i>
+                    </button>
+                    <button class="close">&times;</button>
+                </a>
+            </div>
             </div>
             <div id="{item.group_href}" class="accordion-body collapse {item.group_class}">
                 <div class="accordion-inner navbar-inverse">

@@ -37,7 +37,7 @@ namespace 'Alcarin', (exports, Alcarin) ->
         # will be auto initialize when bind.
         @initializeAll : ->
             for view in exports.ActiveView.global_list
-                view.initialize()
+                view.init()
             @auto_init = true;
 
         #it return function, should be used to preparing view properties.
@@ -60,8 +60,8 @@ namespace 'Alcarin', (exports, Alcarin) ->
             (val) ->
                 if not @active_list_container[query]?
                     activelist = @active_list_container[query] = new Alcarin.ActiveList
-                    if @bind_source?
-                        activelist.bind @bind_source.find query
+                    if @rel?
+                        activelist.bind @rel.find query
                 return @active_list_container[query]
 
         #called automaticaly when class is full initialized and
@@ -112,7 +112,7 @@ namespace 'Alcarin', (exports, Alcarin) ->
         # correspondive property will change
         bind: (e) ->
             $e = $ e
-            @bind_source = $e
+            @rel = $e
             $e.data 'active-view', @
             $e.each (index, val) =>
                 $el = $ val
@@ -143,7 +143,7 @@ namespace 'Alcarin', (exports, Alcarin) ->
                 activelist.bind $e.find query
 
             if ActiveView.auto_init and not @initialized
-                @initialize()
+                @init()
             true
 
         #unbind not needed view relation
@@ -155,7 +155,7 @@ namespace 'Alcarin', (exports, Alcarin) ->
                         list.splice(index, 1)
 
         #shouldn't be called directly, rather by initializeAll static method.
-        initialize : ->
+        init : ->
             @initialized = true
             for property of @properties_container
                 @propertyChanged property

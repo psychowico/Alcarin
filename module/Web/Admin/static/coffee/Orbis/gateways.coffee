@@ -9,12 +9,21 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
 
         gateways   : @dependencyList '.items'
 
+        edit_group : =>
+            $('.group-name.x-editable').editable 'show'
+            false
+
+        init : ->
+            super()
+            @gateways()
+            @rel.on 'click', '.edit-group', @edit_group
+
         toggle   : (val) ->
             @group_class if val then 'in' else ''
 
-        constructor : (_group_name)->
+        constructor : (group_name)->
             super()
-            @group_name _group_name if _group_name?
+            @group_name group_name if group_name?
 
     class Gateway extends Alcarin.ActiveView
         name: @dependencyProperty('name')
@@ -39,16 +48,17 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
             @$groups_pane.fadeIn()
             @$edit_pane.fadeOut()
 
-        add_group : =>
+        create_group : =>
             new_group = new GatewayGroup('New_group')
-            new_group.gateways()
             #new_group.group_href 'pustak'
             @groups.push new_group
 
         init : ->
+            #register event
+
             @$groups_pane.on 'click', '.create-gateway', @create_gateway
+            @$groups_pane.on 'click', '.add-group', @create_group
             @$edit_pane.on 'click', '.close', @cancel_gateway_edit
-            @$groups_pane.on 'click', '.add-group', @add_group
 
             #preparing groups active lists
             @groups  = new Alcarin.ActiveList()
@@ -57,7 +67,8 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
 
             #default "ungrouped" group
             ungrouped = new GatewayGroup('Ungrouped')
-            @groups.ungrouped = ungrouped.gateways()
+
+            @groups.ungrouped
             @groups.push ungrouped
 
             ungrouped.toggle true

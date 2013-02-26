@@ -27,7 +27,6 @@ class Module
     {
         $eventManager = $e->getApplication()->getEventManager();
 
-        $eventManager->attach( MvcEvent::EVENT_RENDER, array( $this, 'onRender' ), -100 );
         //before controller are choose
         $eventManager->attach( MvcEvent::EVENT_ROUTE , array( $this, 'setupAccessSystem' ), -100 );
 
@@ -142,13 +141,6 @@ class Module
         }
     }
 
-    public function onRender( MvcEvent $e )
-    {
-        if( $e->getRequest() instanceof \Zend\Http\Request ) {
-            $this->turnOffJsonNest( $e );
-        }
-    }
-
     /**
      * we setup default way to handle "DELETE" and "PUT" restful
      * request (because they are unsupported by default html)
@@ -180,26 +172,6 @@ class Module
 
             $debug_msg = sprintf('%s, %s', $_method, $request->getRequestUri() );
             $log->debug( $debug_msg );
-        }
-    }
-
-    /**
-     * automatically turning off layouts for JSON requests.
-     */
-    private function turnOffJsonNest( MvcEvent $e )
-    {
-        $accept  = $e->getRequest()->getHeaders()->get('Accept');
-
-        if (($match = $accept->match('application/json, application/javascript')) == false) {
-            return;
-        }
-
-        if ($match->getTypeString() == 'application/json' ||
-            $match->getTypeString() == 'application/javascript' ) {
-            // application/json Accept header found
-            foreach( $e->getViewModel()->getChildren() as $child ) {
-                $child->setCaptureTo( null );
-            }
         }
     }
 

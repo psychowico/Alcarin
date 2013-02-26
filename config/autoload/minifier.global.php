@@ -19,6 +19,7 @@ return array(
                             '/js/jquery/jquery.cookie-1.3.1.js',
                             '/js/jquery/jcanvas-13.02.11.js',
                             '/js/bootstrap-2.3.0.js',
+                            '/js/bootstrap-editable-1.4.1.js'
                         ),
                     ),
                     'common'    => array(
@@ -62,6 +63,7 @@ return array(
                             '/css/style.css',
                             '/css/bootstrap.css',
                             '/css/bootstrap-responsive.css',
+                            '/css/bootstrap-editable-1.4.1.css',
                         ),
                     ),
                     'common' => array(

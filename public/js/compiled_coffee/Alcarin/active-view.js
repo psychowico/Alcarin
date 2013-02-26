@@ -31,7 +31,7 @@ namespace('Alcarin', function(exports, Alcarin) {
       _ref = exports.ActiveView.global_list;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         view = _ref[_i];
-        view.initialize();
+        view.init();
       }
       return this.auto_init = true;
     };
@@ -57,8 +57,8 @@ namespace('Alcarin', function(exports, Alcarin) {
         var activelist;
         if (!(this.active_list_container[query] != null)) {
           activelist = this.active_list_container[query] = new Alcarin.ActiveList;
-          if (this.bind_source != null) {
-            activelist.bind(this.bind_source.find(query));
+          if (this.rel != null) {
+            activelist.bind(this.rel.find(query));
           }
         }
         return this.active_list_container[query];
@@ -129,7 +129,7 @@ namespace('Alcarin', function(exports, Alcarin) {
       var $e, activelist, query, _ref,
         _this = this;
       $e = $(e);
-      this.bind_source = $e;
+      this.rel = $e;
       $e.data('active-view', this);
       $e.each(function(index, val) {
         var $child, $el, all_children, attr, child, children, list, _i, _j, _k, _len, _len1, _len2, _ref, _ref1;
@@ -166,7 +166,7 @@ namespace('Alcarin', function(exports, Alcarin) {
         activelist.bind($e.find(query));
       }
       if (ActiveView.auto_init && !this.initialized) {
-        this.initialize();
+        this.init();
       }
       return true;
     };
@@ -195,7 +195,7 @@ namespace('Alcarin', function(exports, Alcarin) {
       return _results;
     };
 
-    ActiveView.prototype.initialize = function() {
+    ActiveView.prototype.init = function() {
       var property;
       this.initialized = true;
       for (property in this.properties_container) {

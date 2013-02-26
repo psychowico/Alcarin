@@ -24,4 +24,9 @@ $ =>
         instance = new _class $(@)
         instance.init?()
 
+    #prepare x-editable defaults
+    $.fn.editable.defaults.ajaxOptions = {type: 'put', dataType: 'json'}
+    # apply x-editable plugin
+    $('.x-editable').editable()
+
     $('input[type="text"]:first').focus()

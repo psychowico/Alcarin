@@ -34,5 +34,10 @@ $(function() {
     instance = new _class($(this));
     return typeof instance.init === "function" ? instance.init() : void 0;
   });
+  $.fn.editable.defaults.ajaxOptions = {
+    type: 'put',
+    dataType: 'json'
+  };
+  $('.x-editable').editable();
   return $('input[type="text"]:first').focus();
 });

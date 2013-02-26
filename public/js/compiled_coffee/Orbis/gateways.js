@@ -1,6 +1,6 @@
-var __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 namespace('Alcarin.Orbis', function(exports, Alcarin) {
   var Gateway, GatewayGroup;
@@ -18,14 +18,26 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
 
     GatewayGroup.prototype.gateways = GatewayGroup.dependencyList('.items');
 
+    GatewayGroup.prototype.edit_group = function() {
+      $('.group-name.x-editable').editable('show');
+      return false;
+    };
+
+    GatewayGroup.prototype.init = function() {
+      GatewayGroup.__super__.init.call(this);
+      this.gateways();
+      return this.rel.on('click', '.edit-group', this.edit_group);
+    };
+
     GatewayGroup.prototype.toggle = function(val) {
       return this.group_class(val ? 'in' : '');
     };
 
-    function GatewayGroup(_group_name) {
+    function GatewayGroup(group_name) {
+      this.edit_group = __bind(this.edit_group, this);
       GatewayGroup.__super__.constructor.call(this);
-      if (_group_name != null) {
-        this.group_name(_group_name);
+      if (group_name != null) {
+        this.group_name(group_name);
       }
     }
 
@@ -51,7 +63,7 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
   return exports.Gateways = (function() {
 
     function Gateways($gateways) {
-      this.add_group = __bind(this.add_group, this);
+      this.create_group = __bind(this.create_group, this);
 
       this.cancel_gateway_edit = __bind(this.cancel_gateway_edit, this);
 
@@ -72,23 +84,22 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
       return this.$edit_pane.fadeOut();
     };
 
-    Gateways.prototype.add_group = function() {
+    Gateways.prototype.create_group = function() {
       var new_group;
       new_group = new GatewayGroup('New_group');
-      new_group.gateways();
       return this.groups.push(new_group);
     };
 
     Gateways.prototype.init = function() {
       var ungrouped;
       this.$groups_pane.on('click', '.create-gateway', this.create_gateway);
+      this.$groups_pane.on('click', '.add-group', this.create_group);
       this.$edit_pane.on('click', '.close', this.cancel_gateway_edit);
-      this.$groups_pane.on('click', '.add-group', this.add_group);
       this.groups = new Alcarin.ActiveList();
       this.groups.setAnim('slideDown');
       this.groups.bind(this.$groups_pane.find('.active-group'));
       ungrouped = new GatewayGroup('Ungrouped');
-      this.groups.ungrouped = ungrouped.gateways();
+      this.groups.ungrouped;
       this.groups.push(ungrouped);
       return ungrouped.toggle(true);
     };

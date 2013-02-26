@@ -15,7 +15,8 @@ return array(
 
     'controller_plugins' => array(
         'invokables' => array(
-            'redirect'   => 'Core\Mvc\Controller\Plugin\Redirect',
+            'redirect'  => 'Core\Mvc\Controller\Plugin\Redirect',
+            'json'      => 'Core\Mvc\Controller\Plugin\Json',
         ),
     ),
 
