@@ -35,10 +35,8 @@ namespace 'Alcarin', (exports, Alcarin) ->
 
 
         #insert elements at list end, and update related view
-        push: (element)->
-            if not $.isArray element
-                element = [element]
-            for el in element
+        push: (elements...)->
+            for el in elements
                 @source.push el
                 if @binded
                     dom_obj = @prototype.clone(true)
@@ -49,6 +47,9 @@ namespace 'Alcarin', (exports, Alcarin) ->
                     @parent.append dom_obj
                     dom_obj[@anim]()
             true
+
+        concat: (arrays...)->
+            @push element for element in array for array in arrays
 
         pop: ->
             @removeAt @source.length - 1

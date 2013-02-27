@@ -1,3 +1,4 @@
+var __slice = [].slice;
 
 namespace('Alcarin', function(exports, Alcarin) {
   return exports.ActiveList = (function() {
@@ -37,13 +38,11 @@ namespace('Alcarin', function(exports, Alcarin) {
       return _results;
     };
 
-    ActiveList.prototype.push = function(element) {
-      var dom_obj, el, _i, _len;
-      if (!$.isArray(element)) {
-        element = [element];
-      }
-      for (_i = 0, _len = element.length; _i < _len; _i++) {
-        el = element[_i];
+    ActiveList.prototype.push = function() {
+      var dom_obj, el, elements, _i, _len;
+      elements = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+      for (_i = 0, _len = elements.length; _i < _len; _i++) {
+        el = elements[_i];
         this.source.push(el);
         if (this.binded) {
           dom_obj = this.prototype.clone(true);
@@ -56,6 +55,25 @@ namespace('Alcarin', function(exports, Alcarin) {
         }
       }
       return true;
+    };
+
+    ActiveList.prototype.concat = function() {
+      var array, arrays, element, _i, _len, _results;
+      arrays = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+      _results = [];
+      for (_i = 0, _len = arrays.length; _i < _len; _i++) {
+        array = arrays[_i];
+        _results.push((function() {
+          var _j, _len1, _results1;
+          _results1 = [];
+          for (_j = 0, _len1 = array.length; _j < _len1; _j++) {
+            element = array[_j];
+            _results1.push(this.push(element));
+          }
+          return _results1;
+        }).call(this));
+      }
+      return _results;
     };
 
     ActiveList.prototype.pop = function() {

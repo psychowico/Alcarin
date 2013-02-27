@@ -146,7 +146,7 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
             return _results;
           })();
         }
-        return ungrouped.gateways().push(un_result);
+        return ungrouped.gateways().concat(un_result);
       });
     };
 

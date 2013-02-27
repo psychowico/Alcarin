@@ -92,5 +92,5 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
 
             Alcarin.get('/admin/orbis').done (response)->
                 un_result = (new Gateway(obj.name) for obj in response.gateways[0]) if response.gateways[0]
-                ungrouped.gateways().push un_result
+                ungrouped.gateways().concat un_result
 
