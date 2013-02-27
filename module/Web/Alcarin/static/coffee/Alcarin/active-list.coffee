@@ -35,8 +35,10 @@ namespace 'Alcarin', (exports, Alcarin) ->
 
 
         #insert elements at list end, and update related view
-        push: (elements...)->
-            for el in elements
+        push: (element)->
+            if not $.isArray element
+                element = [element]
+            for el in element
                 @source.push el
                 if @binded
                     dom_obj = @prototype.clone(true)

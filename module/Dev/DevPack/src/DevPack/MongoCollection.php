@@ -41,6 +41,11 @@ class MongoCollection extends \Mongo_Collection
     }
   }
 
+  public function toArray()
+  {
+    return $this->as_array();
+  }
+
   /**
    * let by default elements iterating by default, Cursor way, or by Iterator interface
    * when we are in profiling mode

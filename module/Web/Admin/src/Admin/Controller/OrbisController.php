@@ -11,7 +11,17 @@ class OrbisController extends AbstractAlcarinRestfulController
 {
     public function getList()
     {
-        return ['gateway_form' => $this->getForm()];
+        if($this->isJson()) {
+            $orbis = $this->gameServices()->get('orbis');
+            $grouped_gateways = $orbis->gateways()->find();
+
+            return $this->json(['gateways' => $grouped_gateways]);
+        }
+        else {
+            return [
+                'gateway_form' => $this->getForm()
+            ];
+        }
     }
 
     protected function getForm()

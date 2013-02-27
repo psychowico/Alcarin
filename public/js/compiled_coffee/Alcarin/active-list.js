@@ -1,4 +1,3 @@
-var __slice = [].slice;
 
 namespace('Alcarin', function(exports, Alcarin) {
   return exports.ActiveList = (function() {
@@ -38,11 +37,13 @@ namespace('Alcarin', function(exports, Alcarin) {
       return _results;
     };
 
-    ActiveList.prototype.push = function() {
-      var dom_obj, el, elements, _i, _len;
-      elements = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-      for (_i = 0, _len = elements.length; _i < _len; _i++) {
-        el = elements[_i];
+    ActiveList.prototype.push = function(element) {
+      var dom_obj, el, _i, _len;
+      if (!$.isArray(element)) {
+        element = [element];
+      }
+      for (_i = 0, _len = element.length; _i < _len; _i++) {
+        el = element[_i];
         this.source.push(el);
         if (this.binded) {
           dom_obj = this.prototype.clone(true);

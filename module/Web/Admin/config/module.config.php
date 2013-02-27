@@ -30,6 +30,7 @@ return array(
             ),
             'game-objects-ext' => array(
                 'Admin\GameObject\Orbis' => array(
+                    'gateways' => 'Admin\GameObject\Extension\OrbisGateways',
                     'minimap' => 'Admin\GameObject\Extension\OrbisMinimap',
                 ),
                 'EngineBase\GameObject\Player' => array(

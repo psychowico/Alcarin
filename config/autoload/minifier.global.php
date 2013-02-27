@@ -28,6 +28,7 @@ return array(
                             '/js/compiled_coffee/Alcarin/Errors/errors-core.js',
                             '/js/compiled_coffee/Alcarin/active-view.js',
                             '/js/compiled_coffee/Alcarin/active-list.js',
+                            '/js/compiled_coffee/Alcarin/JQueryPlugins/RESTful.js',
                         ),
                     ),
                     //files enough for guest users
@@ -35,7 +36,6 @@ return array(
                         'sources' => array(
                             '/js/compiled_coffee/Alcarin/game-events-proxy.js',
                             '/js/compiled_coffee/test.js',
-                            '/js/compiled_coffee/Alcarin/JQueryPlugins/RESTful.js',
                         ),
                     ),
                     //files enough for admins

@@ -17,6 +17,7 @@ return array(
         'invokables' => array(
             'redirect'  => 'Core\Mvc\Controller\Plugin\Redirect',
             'json'      => 'Core\Mvc\Controller\Plugin\Json',
+            'isJson'      => 'Core\Mvc\Controller\Plugin\IsJson',
         ),
     ),
 

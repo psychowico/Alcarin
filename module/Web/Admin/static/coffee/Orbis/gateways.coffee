@@ -72,7 +72,6 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
 
         init : ->
             #register event
-
             @$groups_pane.on 'click', '.create-gateway', @create_gateway
             @$groups_pane.on 'click', '.add-group', @create_group
             @$edit_pane.on 'click', '.close', @cancel_gateway_edit
@@ -90,4 +89,8 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
 
             ungrouped.toggle true
             ungrouped.disableEdition()
+
+            Alcarin.get('/admin/orbis').done (response)->
+                un_result = (new Gateway(obj.name) for obj in response.gateways[0]) if response.gateways[0]
+                ungrouped.gateways().push un_result
 

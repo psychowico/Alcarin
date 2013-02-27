@@ -131,7 +131,23 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
       this.groups.ungrouped;
       this.groups.push(ungrouped);
       ungrouped.toggle(true);
-      return ungrouped.disableEdition();
+      ungrouped.disableEdition();
+      return Alcarin.get('/admin/orbis').done(function(response) {
+        var obj, un_result;
+        if (response.gateways[0]) {
+          un_result = (function() {
+            var _i, _len, _ref, _results;
+            _ref = response.gateways[0];
+            _results = [];
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+              obj = _ref[_i];
+              _results.push(new Gateway(obj.name));
+            }
+            return _results;
+          })();
+        }
+        return ungrouped.gateways().push(un_result);
+      });
     };
 
     return Gateways;
