@@ -16,17 +16,46 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
 
     GatewayGroup.prototype.group_href = GatewayGroup.dependencyProperty('group_href', '');
 
+    GatewayGroup.prototype.edit_class = GatewayGroup.dependencyProperty('edit_btn_class', '');
+
+    GatewayGroup.prototype.id = GatewayGroup.dependencyProperty('id', 1);
+
     GatewayGroup.prototype.gateways = GatewayGroup.dependencyList('.items');
 
     GatewayGroup.prototype.edit_group = function() {
-      $('.group-name.x-editable').editable('show');
+      this.edit_btn.editable('show');
       return false;
     };
 
     GatewayGroup.prototype.init = function() {
+      var _this = this;
       GatewayGroup.__super__.init.call(this);
       this.gateways();
+      this.edit_btn = this.rel.find('.group-name.editable');
+      this.edit_btn.editable({
+        success: function(response, value) {
+          if (response.success) {
+            _this.group_name(value);
+            return {
+              newValue: void 0
+            };
+          }
+          if (response.error != null) {
+            return response.error;
+          } else {
+            return 'Error occured.';
+          }
+        }
+      }).on('shown', function(e) {
+        var $input;
+        $input = $(e.currentTarget).data('editable').input.$input;
+        return $input != null ? $input.val(_this.group_name()) : void 0;
+      });
       return this.rel.on('click', '.edit-group', this.edit_group);
+    };
+
+    GatewayGroup.prototype.disableEdition = function() {
+      return this.edit_class('hide');
     };
 
     GatewayGroup.prototype.toggle = function(val) {
@@ -101,7 +130,8 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
       ungrouped = new GatewayGroup('Ungrouped');
       this.groups.ungrouped;
       this.groups.push(ungrouped);
-      return ungrouped.toggle(true);
+      ungrouped.toggle(true);
+      return ungrouped.disableEdition();
     };
 
     return Gateways;

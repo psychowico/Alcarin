@@ -18,7 +18,7 @@ return array(
 
     'view_helpers' => array(
         'invokables'   => array(
-            'parentUri'         => 'Admin\View\Helper\ParentUri',
+            'uri'          => 'Admin\View\Helper\Uri',
         ),
     ),
 

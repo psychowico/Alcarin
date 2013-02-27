@@ -23,9 +23,8 @@ class OrbisController extends AbstractAlcarinRestfulController
 
     public function update($id, $data)
     {
-        echo 'dupa';
         return $this->json([
-            'success' => 0,
+            'success' => true,
         ]);
     }
 }

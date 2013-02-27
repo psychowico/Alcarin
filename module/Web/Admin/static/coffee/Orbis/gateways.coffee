@@ -6,17 +6,34 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
         )
         group_class: @dependencyProperty 'group_class', ''
         group_href : @dependencyProperty 'group_href', ''
+        edit_class : @dependencyProperty 'edit_btn_class', ''
+        id         : @dependencyProperty 'id', 1
 
         gateways   : @dependencyList '.items'
 
         edit_group : =>
-            $('.group-name.x-editable').editable 'show'
+            @edit_btn.editable('show')
             false
 
         init : ->
             super()
             @gateways()
+            @edit_btn = @rel.find '.group-name.editable'
+            @edit_btn.editable({
+                success: (response, value) =>
+                    if response.success
+                        @group_name value
+                        #to stop auto-update
+                        return {newValue: undefined}
+                    if response.error? then response.error else 'Error occured.'
+            }).on('shown', (e)=>
+                $input = $(e.currentTarget).data('editable').input.$input
+                $input?.val @group_name()
+            )
             @rel.on 'click', '.edit-group', @edit_group
+
+        disableEdition: ->
+            @edit_class 'hide'
 
         toggle   : (val) ->
             @group_class if val then 'in' else ''
@@ -72,4 +89,5 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
             @groups.push ungrouped
 
             ungrouped.toggle true
+            ungrouped.disableEdition()
 
