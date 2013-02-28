@@ -30,7 +30,7 @@ class OrbisGateways extends \Core\GameObject
         $all = $this->find();
 
         if(empty($all[$old_name])) {
-            return "Can not find group '$new_name'.";
+            return "Can not find group '$old_name'.";
         }
         if(!empty($all[$new_name])) {
             return "Group with name '$new_name' exists.";

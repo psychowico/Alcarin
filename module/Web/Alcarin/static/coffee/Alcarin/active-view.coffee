@@ -27,10 +27,28 @@ namespace 'Alcarin', (exports, Alcarin) ->
 
         constructor: ->
             $.merge exports.ActiveView.global_list, [@]
+
             @properties_container  = jQuery.extend({}, @.properties_container)
+
             @active_list_container = {}
             @initialized           = false
             @bindings              = {}
+
+        clone: ->
+            copy = new @.constructor
+            copy.properties_container = $.extend {}, @properties_container
+            copy
+
+        copy: (source)->
+            if $.isPlainObject source
+                for key, val of source
+                    @properties_container[key] = val
+                    @propertyChanged key
+            else
+                if @.constructor is source.constructor
+                    $.extend(@properties_container, source.properties_container)
+                    #reinit all properties
+                    @init()
 
         # static function, should ba called once, after all page loading,
         # to prepare all views and update needed values. later all active-objects
@@ -82,6 +100,7 @@ namespace 'Alcarin', (exports, Alcarin) ->
                         $el.html new_val
                     when exports.ActiveView.TYPE_ATTR
                         $el.prop data.attr, new_val
+                        $el.attr data.attr, new_val
                     else
                         throw new Error('"#{data.type}" type not supported.')
 
@@ -166,6 +185,7 @@ namespace 'Alcarin', (exports, Alcarin) ->
                             $el.html obj.original
                         when exports.ActiveView.TYPE_ATTR
                             $el.prop obj.attr, obj.original
+                            $el.attr obj.attr, obj.original
 
                     if obj?.root.is $e
                         list.splice(index, 1)

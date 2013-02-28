@@ -44,18 +44,9 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
     class Gateway extends Alcarin.ActiveView
         id         : @dependencyProperty 'id'
         name       : @dependencyProperty 'name'
-        description: @dependencyProperty 'description'
-        x          : @dependencyProperty 'x'
-        y          : @dependencyProperty 'y'
-
-        clone : ->
-            gateway = new Gateway @name()
-            gateway.id @id()
-            gateway.description @description()
-            gateway.x @x()
-            gateway.y @y()
-
-            gateway
+        description: @dependencyProperty 'description', ''
+        x          : @dependencyProperty 'x', '0'
+        y          : @dependencyProperty 'y', '0'
 
         constructor : (_name)->
             super()
@@ -70,13 +61,23 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
             @$edit_pane   = $gateways.find('.gateway-edit')
             @$edit_pane_form = @$edit_pane.find('form')
 
-        create_gateway : =>
-            @$groups_pane.fadeOut()
+        create_gateway : (e)=>
+            $sender = $ e.currentTarget
+            gateway  = new Gateway('new_gateway')
+
+            $form = @$edit_pane_form._method 'post'
+
+            gateway.bind @$edit_pane
+
+            gateways_group = $sender.closest('.accordion-inner').find('.items').data 'active-list'
+            @$edit_pane.data 'target-group', gateways_group
+
             @$edit_pane.fadeIn()
+            @$groups_pane.fadeOut()
+
+            false
 
         cancel_gateway_edit : =>
-            @$edit_pane_form._method 'post'
-
             @$groups_pane.fadeIn()
             @$edit_pane.fadeOut()
 
@@ -159,6 +160,7 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
             $form = @$edit_pane_form._method 'put'
             $form.data 'original-gateway', gateway
 
+
             edit_copy = gateway.clone()
             edit_copy.bind @$edit_pane
 
@@ -169,12 +171,19 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
             false
 
         form_submited: (response)=>
-            if response.success
-                @last_edited_gateway.name response.data.name
-                @last_edited_gateway.description response.data.description
-                @last_edited_gateway.x response.data.x
-                @last_edited_gateway.y response.data.y
-                @cancel_gateway_edit()
+            _method = @$edit_pane_form._method()
+            if _method == 'post'
+                gateway = @$edit_pane.data 'active-view'
+                group = @$edit_pane.data 'target-group'
+
+                new_entry = gateway.clone()
+                gateway.unbind()
+
+                group.push new_entry
+            else if _method == 'put'
+                if response.success
+                    @last_edited_gateway.copy response.data
+                    @cancel_gateway_edit()
 
         init : ->
             #register event

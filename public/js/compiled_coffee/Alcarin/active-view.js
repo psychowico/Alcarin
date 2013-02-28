@@ -26,6 +26,31 @@ namespace('Alcarin', function(exports, Alcarin) {
       this.bindings = {};
     }
 
+    ActiveView.prototype.clone = function() {
+      var copy;
+      copy = new this.constructor;
+      copy.properties_container = $.extend({}, this.properties_container);
+      return copy;
+    };
+
+    ActiveView.prototype.copy = function(source) {
+      var key, val, _results;
+      if ($.isPlainObject(source)) {
+        _results = [];
+        for (key in source) {
+          val = source[key];
+          this.properties_container[key] = val;
+          _results.push(this.propertyChanged(key));
+        }
+        return _results;
+      } else {
+        if (this.constructor === source.constructor) {
+          $.extend(this.properties_container, source.properties_container);
+          return this.init();
+        }
+      }
+    };
+
     ActiveView.initializeAll = function() {
       var view, _i, _len, _ref;
       _ref = exports.ActiveView.global_list;
@@ -87,7 +112,8 @@ namespace('Alcarin', function(exports, Alcarin) {
             _results.push($el.html(new_val));
             break;
           case exports.ActiveView.TYPE_ATTR:
-            _results.push($el.prop(data.attr, new_val));
+            $el.prop(data.attr, new_val);
+            _results.push($el.attr(data.attr, new_val));
             break;
           default:
             throw new Error('"#{data.type}" type not supported.');
@@ -196,6 +222,7 @@ namespace('Alcarin', function(exports, Alcarin) {
                 break;
               case exports.ActiveView.TYPE_ATTR:
                 $el.prop(obj.attr, obj.original);
+                $el.attr(obj.attr, obj.original);
             }
             if (obj != null ? obj.root.is($e) : void 0) {
               _results1.push(list.splice(index, 1));

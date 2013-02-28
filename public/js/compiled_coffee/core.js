@@ -39,5 +39,6 @@ $(function() {
     dataType: 'json'
   };
   $('.x-editable').editable();
-  return $('input[type="text"]:first').focus();
+  $('input[type="text"]:first').focus();
+  return $('body').disableSelection();
 });

@@ -29,4 +29,8 @@ $ =>
     # apply x-editable plugin
     $('.x-editable').editable()
 
+    # focus first input on site
     $('input[type="text"]:first').focus()
+
+    # disable selection on site
+    $('body').disableSelection()

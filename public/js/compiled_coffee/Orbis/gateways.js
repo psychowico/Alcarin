@@ -79,21 +79,11 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
 
     Gateway.prototype.name = Gateway.dependencyProperty('name');
 
-    Gateway.prototype.description = Gateway.dependencyProperty('description');
+    Gateway.prototype.description = Gateway.dependencyProperty('description', '');
 
-    Gateway.prototype.x = Gateway.dependencyProperty('x');
+    Gateway.prototype.x = Gateway.dependencyProperty('x', '0');
 
-    Gateway.prototype.y = Gateway.dependencyProperty('y');
-
-    Gateway.prototype.clone = function() {
-      var gateway;
-      gateway = new Gateway(this.name());
-      gateway.id(this.id());
-      gateway.description(this.description());
-      gateway.x(this.x());
-      gateway.y(this.y());
-      return gateway;
-    };
+    Gateway.prototype.y = Gateway.dependencyProperty('y', '0');
 
     function Gateway(_name) {
       Gateway.__super__.constructor.call(this);
@@ -126,13 +116,20 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
       this.$edit_pane_form = this.$edit_pane.find('form');
     }
 
-    Gateways.prototype.create_gateway = function() {
+    Gateways.prototype.create_gateway = function(e) {
+      var $form, $sender, gateway, gateways_group;
+      $sender = $(e.currentTarget);
+      gateway = new Gateway('new_gateway');
+      $form = this.$edit_pane_form._method('post');
+      gateway.bind(this.$edit_pane);
+      gateways_group = $sender.closest('.accordion-inner').find('.items').data('active-list');
+      this.$edit_pane.data('target-group', gateways_group);
+      this.$edit_pane.fadeIn();
       this.$groups_pane.fadeOut();
-      return this.$edit_pane.fadeIn();
+      return false;
     };
 
     Gateways.prototype.cancel_gateway_edit = function() {
-      this.$edit_pane_form._method('post');
       this.$groups_pane.fadeIn();
       return this.$edit_pane.fadeOut();
     };
@@ -260,12 +257,19 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
     };
 
     Gateways.prototype.form_submited = function(response) {
-      if (response.success) {
-        this.last_edited_gateway.name(response.data.name);
-        this.last_edited_gateway.description(response.data.description);
-        this.last_edited_gateway.x(response.data.x);
-        this.last_edited_gateway.y(response.data.y);
-        return this.cancel_gateway_edit();
+      var gateway, group, new_entry, _method;
+      _method = this.$edit_pane_form._method();
+      if (_method === 'post') {
+        gateway = this.$edit_pane.data('active-view');
+        group = this.$edit_pane.data('target-group');
+        new_entry = gateway.clone();
+        gateway.unbind();
+        return group.push(new_entry);
+      } else if (_method === 'put') {
+        if (response.success) {
+          this.last_edited_gateway.copy(response.data);
+          return this.cancel_gateway_edit();
+        }
       }
     };
 
