@@ -42,12 +42,19 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
             @group_name group_name if group_name?
 
     class Gateway extends Alcarin.ActiveView
-        name: @dependencyProperty 'name'
-        id  : @dependencyProperty 'id'
+        id         : @dependencyProperty 'id'
+        name       : @dependencyProperty 'name'
+        description: @dependencyProperty 'description'
+        x          : @dependencyProperty 'x'
+        y          : @dependencyProperty 'y'
 
         clone : ->
             gateway = new Gateway @name()
             gateway.id @id()
+            gateway.description @description()
+            gateway.x @x()
+            gateway.y @y()
+
             gateway
 
         constructor : (_name)->
@@ -61,21 +68,17 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
             @$gateways    = $gateways
             @$groups_pane = $gateways.find('.gateways-groups')
             @$edit_pane   = $gateways.find('.gateway-edit')
+            @$edit_pane_form = @$edit_pane.find('form')
 
         create_gateway : =>
             @$groups_pane.fadeOut()
             @$edit_pane.fadeIn()
 
         cancel_gateway_edit : =>
-            @$edit_pane.find('form')._method 'post'
+            @$edit_pane_form._method 'post'
 
             @$groups_pane.fadeIn()
             @$edit_pane.fadeOut()
-
-        form_submited: (response)=>
-            console.log response
-            if response.success
-                @cancel_gateway_edit()
 
         create_group : =>
 
@@ -144,19 +147,34 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
                     for gateway in gateways
                         new_gateway = new Gateway gateway.name
                         new_gateway.id gateway._id.$id
+                        new_gateway.description gateway.description
+                        new_gateway.x gateway.x
+                        new_gateway.y gateway.y
                         group.gateways().push new_gateway
 
         gateway_click: (e)=>
             $sender  = $(e.currentTarget)
             gateway  = $sender.data 'active-view'
 
-            $form = @$edit_pane.find('form')._method 'put'
+            $form = @$edit_pane_form._method 'put'
+            $form.data 'original-gateway', gateway
 
             edit_copy = gateway.clone()
             edit_copy.bind @$edit_pane
 
             @$edit_pane.fadeIn()
             @$groups_pane.fadeOut()
+
+            @last_edited_gateway = gateway
+            false
+
+        form_submited: (response)=>
+            if response.success
+                @last_edited_gateway.name response.data.name
+                @last_edited_gateway.description response.data.description
+                @last_edited_gateway.x response.data.x
+                @last_edited_gateway.y response.data.y
+                @cancel_gateway_edit()
 
         init : ->
             #register event
@@ -165,7 +183,6 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
             @$groups_pane.on 'click', 'button.close', @delete_group
             @$groups_pane.on 'click', '.items li.gateway', @gateway_click
 
-            #@$edit_pane.on 'click', 'input[type="submit"]', @accept_gateway_edit
             @$edit_pane.on 'click', '.close', @cancel_gateway_edit
             @$edit_pane.find('form').ajaxForm @form_submited
 

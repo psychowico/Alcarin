@@ -81,7 +81,7 @@ namespace 'Alcarin', (exports, Alcarin) ->
                     when exports.ActiveView.TYPE_CONTENT
                         $el.html new_val
                     when exports.ActiveView.TYPE_ATTR
-                        $el.attr data.attr, new_val
+                        $el.prop data.attr, new_val
                     else
                         throw new Error('"#{data.type}" type not supported.')
 
@@ -165,7 +165,7 @@ namespace 'Alcarin', (exports, Alcarin) ->
                         when exports.ActiveView.TYPE_CONTENT
                             $el.html obj.original
                         when exports.ActiveView.TYPE_ATTR
-                            $el.attr obj.attr, obj.original
+                            $el.prop obj.attr, obj.original
 
                     if obj?.root.is $e
                         list.splice(index, 1)

@@ -87,7 +87,7 @@ namespace('Alcarin', function(exports, Alcarin) {
             _results.push($el.html(new_val));
             break;
           case exports.ActiveView.TYPE_ATTR:
-            _results.push($el.attr(data.attr, new_val));
+            _results.push($el.prop(data.attr, new_val));
             break;
           default:
             throw new Error('"#{data.type}" type not supported.');
@@ -195,7 +195,7 @@ namespace('Alcarin', function(exports, Alcarin) {
                 $el.html(obj.original);
                 break;
               case exports.ActiveView.TYPE_ATTR:
-                $el.attr(obj.attr, obj.original);
+                $el.prop(obj.attr, obj.original);
             }
             if (obj != null ? obj.root.is($e) : void 0) {
               _results1.push(list.splice(index, 1));

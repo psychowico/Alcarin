@@ -8,7 +8,7 @@ class OrbisGateways extends \Core\GameObject
 
     public function find($grouped = true)
     {
-        $gateways = $this->mongo()->{static::COLLECTION}->find();
+        $gateways = $this->mongo()->{static::COLLECTION}->find()->sort(['name'=> 1]);
         if($grouped) {
             $gateways = $gateways->toArray();
             $grouped_gateways = [];
@@ -56,6 +56,11 @@ class OrbisGateways extends \Core\GameObject
         }
 
         return true;
+    }
+
+    public function update($id, $gateway_data)
+    {
+        return $this->mongo()->{static::COLLECTION}->updateById($id, $gateway_data);
     }
 
     public function insert($gateway_name, $group = null)

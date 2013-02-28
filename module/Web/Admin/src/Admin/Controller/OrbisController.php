@@ -26,7 +26,7 @@ class OrbisController extends AbstractAlcarinRestfulController
 
     public function create($data)
     {
-        $filter = $this->gatewayInputFilter();
+        $filter = $this->gatewayGroupInputFilter();
         $filter->setData($data);
 
         if($filter->isValid()) {
@@ -45,10 +45,10 @@ class OrbisController extends AbstractAlcarinRestfulController
     public function update($id, $data)
     {
         $mode = empty($data['name']) ? 'gateway' : $data['name'];
-        $filter = $this->gatewayInputFilter();
 
-        if(!empty($data['value'])) {
-            if($mode == 'group-name') {
+        if($mode == 'group-name') {
+            if(!empty($data['value'])) {
+                $filter = $this->gatewayGroupInputFilter();
                 $group_filter = $filter->get('group');
 
                 $group_name = $id;
@@ -71,11 +71,21 @@ class OrbisController extends AbstractAlcarinRestfulController
 
                 }
             }
-            else {
-                //gateways
-                return $this->json(['test'=> 'to jest test']);
+        }
+        else {
+            //gateways
+            $form = $this->getForm();
+            $form->setData($data);
+            if($form->isValid()) {
+                $new_data = $form->getData();
+                $this->orbis()->gateways()->update($id, $form->getData());
+                return $this->json([
+                    'success' => true,
+                    'data'    => $new_data,
+                ]);
             }
         }
+
 
         return $this->json()->fail();
     }
@@ -99,7 +109,7 @@ class OrbisController extends AbstractAlcarinRestfulController
         return $this->gameServices()->get('orbis');
     }
 
-    protected function gatewayInputFilter()
+    protected function gatewayGroupInputFilter()
     {
         $inputFilter = new InputFilter();
 
