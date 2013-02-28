@@ -113,9 +113,16 @@ namespace 'Alcarin', (exports, Alcarin) ->
         bind: (e) ->
             $e = $ e
             @rel = $e
-            $e.data 'active-view', @
             $e.each (index, val) =>
+
                 $el = $ val
+
+                # if this element was binded with another view we need unbind it to make
+                # things work with this one.
+                old_view = $el.data 'active-view'
+                old_view?.unbind()
+
+                $el.data 'active-view', @
 
                 all_children = $el.find('*')
 
@@ -149,9 +156,18 @@ namespace 'Alcarin', (exports, Alcarin) ->
         #unbind not needed view relation
         unbind: (e) ->
             $e = $ e
+            @rel.removeData 'active-view'
+            @rel = null
             for key, list of @bindings
                 for obj, index in list
-                    if obj.root.is $e
+                    $el = obj.element
+                    switch obj.type
+                        when exports.ActiveView.TYPE_CONTENT
+                            $el.html obj.original
+                        when exports.ActiveView.TYPE_ATTR
+                            $el.attr obj.attr, obj.original
+
+                    if obj?.root.is $e
                         list.splice(index, 1)
 
         #shouldn't be called directly, rather by initializeAll static method.

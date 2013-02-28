@@ -7,8 +7,6 @@ By default dataType == 'json'.
 */
 
 namespace('Alcarin.JQueryPlugins', function(exports, Alcarin) {
-  var RESTfulInstance, _caller,
-    _this = this;
   exports.RESTful = (function() {
     var _ajax, _method,
       _this = this;
@@ -19,13 +17,25 @@ namespace('Alcarin.JQueryPlugins', function(exports, Alcarin) {
       _ajax = jQuery.ajax;
     }
 
+    RESTful.getInstance = function() {
+      if (!(exports.RESTful.instance != null)) {
+        exports.RESTful.instance = new exports.RESTful();
+      }
+      return exports.RESTful.instance;
+    };
+
     _method = function(meth) {
-      return function(url, data, dataType) {
+      return function(url, data, ondone) {
         var method, settings;
-        dataType = dataType || 'json';
-        data = $.extend(data || {}, {
-          '_method': meth
-        });
+        if ($.isFunction(data)) {
+          ondone = data;
+          data = {};
+        }
+        if (meth !== 'POST' && meth !== 'GET') {
+          data = $.extend(data || {}, {
+            '_method': meth
+          });
+        }
         method = meth === 'GET' ? 'GET' : 'POST';
         settings = {
           'url': url,
@@ -33,48 +43,37 @@ namespace('Alcarin.JQueryPlugins', function(exports, Alcarin) {
           'dataType': 'json',
           'type': method
         };
-        return _ajax(settings);
+        return _ajax(settings).done(ondone);
       };
     };
 
-    RESTful.prototype.put = _method('PUT');
+    RESTful.prototype.$put = _method('PUT');
 
-    RESTful.prototype["delete"] = _method('DELETE');
+    RESTful.prototype.$delete = _method('DELETE');
 
-    RESTful.prototype.post = function(url, data, dataType) {
-      var settings;
-      settings = {
-        'url': url,
-        'data': data,
-        'dataType': 'json',
-        'type': 'POST'
-      };
-      return _ajax(settings);
-    };
+    RESTful.prototype.$post = _method('POST');
 
-    RESTful.prototype.get = function(url, data, dataType) {
-      var settings;
-      settings = {
-        'url': url,
-        'data': data,
-        'dataType': 'json',
-        'type': 'GET'
-      };
-      return _ajax(settings);
-    };
+    RESTful.prototype.$get = _method('GET');
+
+    RESTful.prototype.$update = _method('PUT');
+
+    RESTful.prototype.$create = _method('POST');
 
     return RESTful;
 
   }).call(this);
-  RESTfulInstance = new Alcarin.JQueryPlugins.RESTful();
-  _caller = function(method) {
-    return function(url, data, dataType) {
-      return RESTfulInstance[method](url, data, dataType);
-    };
+  return window.Rest = function() {
+    return Alcarin.JQueryPlugins.RESTful.getInstance();
   };
-  Alcarin.put = _caller('put');
-  Alcarin["delete"] = _caller('delete');
-  Alcarin.post = _caller('post');
-  Alcarin.get = _caller('get');
-  return true;
+  /*_caller = (method) =>
+      (url, data, ondone) =>
+          RESTfulInstance[method] url, data, ondone
+  
+  Alcarin.$put    = _caller '$put'
+  Alcarin.$delete = _caller '$delete'
+  Alcarin.$post   = _caller '$post'
+  Alcarin.$get    = _caller '$get'
+  true
+  */
+
 });

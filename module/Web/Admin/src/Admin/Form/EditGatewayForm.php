@@ -12,10 +12,17 @@ use Zend\Form\Annotation;
 class EditGatewayForm
 {
     /**
+     * @Annotation\Type("hidden")
+     * @Annotation\Required(false)
+     * @Annotation\Attributes({"value":"{item.id}"})
+     */
+    public $id;
+
+    /**
      * @Annotation\Type("text")
      * @Annotation\Options({"label":"Gateway name:"})
      * @Annotation\Required(true)
-     * @Annotation\Attributes({"value":"new_gateway"})
+     * @Annotation\Attributes({"value":"{item.name}"})
      */
     public $name;
 
@@ -23,6 +30,7 @@ class EditGatewayForm
      * @Annotation\Type("text")
      * @Annotation\Options({"label":"Gateway description:"})
      * @Annotation\Required(false)
+     * @Annotation\Attributes({"value":"{item.description}"})
      */
     public $description;
 
@@ -30,7 +38,7 @@ class EditGatewayForm
      * @Annotation\Type("text")
      * @Annotation\Options({"label":"X:"})
      * @Annotation\Required(true)
-     * @Annotation\Attributes({"value":"0"})
+     * @Annotation\Attributes({"value":"{item.x}"})
      * @Annotation\Validator({"name": "Float"})
      */
     public $x;
@@ -39,7 +47,7 @@ class EditGatewayForm
      * @Annotation\Type("text")
      * @Annotation\Options({"label":"Y:"})
      * @Annotation\Required(true)
-     * @Annotation\Attributes({"value":"0"})
+     * @Annotation\Attributes({"value":"{item.y}"})
      * @Annotation\Validator({"name": "Float"})
      */
     public $y;

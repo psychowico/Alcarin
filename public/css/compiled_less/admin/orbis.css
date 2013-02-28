@@ -8,6 +8,10 @@
   width: 220px;
   float: right;
 }
+.gateways-groups .edit-group {
+  float: left;
+  margin: 5px;
+}
 .gateways-list {
   position: relative;
 }

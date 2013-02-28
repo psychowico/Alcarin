@@ -130,10 +130,14 @@ namespace('Alcarin', function(exports, Alcarin) {
         _this = this;
       $e = $(e);
       this.rel = $e;
-      $e.data('active-view', this);
       $e.each(function(index, val) {
-        var $child, $el, all_children, attr, child, children, list, _i, _j, _k, _len, _len1, _len2, _ref, _ref1;
+        var $child, $el, all_children, attr, child, children, list, old_view, _i, _j, _k, _len, _len1, _len2, _ref, _ref1;
         $el = $(val);
+        old_view = $el.data('active-view');
+        if (old_view != null) {
+          old_view.unbind();
+        }
+        $el.data('active-view', _this);
         all_children = $el.find('*');
         _ref = all_children.toArray().concat([$el.get(0)]);
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -172,8 +176,10 @@ namespace('Alcarin', function(exports, Alcarin) {
     };
 
     ActiveView.prototype.unbind = function(e) {
-      var $e, index, key, list, obj, _ref, _results;
+      var $e, $el, index, key, list, obj, _ref, _results;
       $e = $(e);
+      this.rel.removeData('active-view');
+      this.rel = null;
       _ref = this.bindings;
       _results = [];
       for (key in _ref) {
@@ -183,7 +189,15 @@ namespace('Alcarin', function(exports, Alcarin) {
           _results1 = [];
           for (index = _i = 0, _len = list.length; _i < _len; index = ++_i) {
             obj = list[index];
-            if (obj.root.is($e)) {
+            $el = obj.element;
+            switch (obj.type) {
+              case exports.ActiveView.TYPE_CONTENT:
+                $el.html(obj.original);
+                break;
+              case exports.ActiveView.TYPE_ATTR:
+                $el.attr(obj.attr, obj.original);
+            }
+            if (obj != null ? obj.root.is($e) : void 0) {
               _results1.push(list.splice(index, 1));
             } else {
               _results1.push(void 0);

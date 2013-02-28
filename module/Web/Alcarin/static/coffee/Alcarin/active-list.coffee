@@ -8,6 +8,8 @@ namespace 'Alcarin', (exports, Alcarin) ->
 
         anim : 'show'
 
+        iterator: -> @source
+
         setAnim : (method) ->
             @anim = method
 
@@ -41,6 +43,7 @@ namespace 'Alcarin', (exports, Alcarin) ->
                 if @binded
                     dom_obj = @prototype.clone(true)
                     if el instanceof exports.ActiveView
+                        #el.reset()
                         el.bind dom_obj
 
                     dom_obj.hide()

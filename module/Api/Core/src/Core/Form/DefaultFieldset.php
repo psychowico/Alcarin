@@ -13,7 +13,7 @@ class DefaultFieldset
     /**
      * @Annotation\Type("hidden")
      * @Annotation\Required(false)
-     * @Annotation\Attributes({"value":"POST"})
+     * @Annotation\Attributes({"value":"post"})
      */
     public $_method;
 

@@ -18,6 +18,7 @@ return array(
                             '/js/jquery/jquery.ba-bbq-1.4pre.js',
                             '/js/jquery/jquery.cookie-1.3.1.js',
                             '/js/jquery/jcanvas-13.02.11.js',
+                            '/js/jquery/jquery.form-3.27.0.js',
                             '/js/bootstrap-2.3.0.js',
                             '/js/bootstrap-editable-1.4.1.js'
                         ),
@@ -25,10 +26,13 @@ return array(
                     'common'    => array(
                         'sources' => array(
                             '/js/compiled_coffee/core.js',
+                            '/js/compiled_coffee/urls.js',
                             '/js/compiled_coffee/Alcarin/Errors/errors-core.js',
                             '/js/compiled_coffee/Alcarin/active-view.js',
                             '/js/compiled_coffee/Alcarin/active-list.js',
                             '/js/compiled_coffee/Alcarin/JQueryPlugins/RESTful.js',
+                            '/js/compiled_coffee/Alcarin/JQueryPlugins/forms.js',
+                            '/js/compiled_coffee/Dialogs/confirms.js',
                         ),
                     ),
                     //files enough for guest users

@@ -4,9 +4,11 @@ namespace Admin\GameObject\Extension;
 
 class OrbisGateways extends \Core\GameObject
 {
+    const COLLECTION = 'map.gateways';
+
     public function find($grouped = true)
     {
-        $gateways = $this->mongo()->{'map.gateways'}->find();
+        $gateways = $this->mongo()->{static::COLLECTION}->find();
         if($grouped) {
             $gateways = $gateways->toArray();
             $grouped_gateways = [];
@@ -23,9 +25,42 @@ class OrbisGateways extends \Core\GameObject
         return $gateways;
     }
 
+    public function rename_group($old_name, $new_name)
+    {
+        $all = $this->find();
+
+        if(empty($all[$old_name])) {
+            return "Can not find group '$new_name'.";
+        }
+        if(!empty($all[$new_name])) {
+            return "Group with name '$new_name' exists.";
+        }
+
+        foreach($all[$old_name] as $gateway) {
+            $gateway['group'] = $new_name;
+            $this->mongo()->{static::COLLECTION}->updateById($gateway['_id'], $gateway);
+        }
+
+        return true;
+    }
+
+    public function delete_group($group_name)
+    {
+        $all = $this->find();
+
+        if(empty($all[$group_name])) return false;
+
+        foreach($all[$group_name] as $gateway) {
+            $gateway['group'] = 0;
+            $this->mongo()->{static::COLLECTION}->updateById($gateway['_id'], $gateway);
+        }
+
+        return true;
+    }
+
     public function insert($gateway_name, $group = null)
     {
-        return $this->mongo()->{'map.gateways'}->insert([
+        return $this->mongo()->{static::COLLECTION}->insert([
             'name'  => $gateway_name,
             'group' => $group
         ]);

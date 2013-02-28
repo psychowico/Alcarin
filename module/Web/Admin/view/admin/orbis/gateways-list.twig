@@ -7,18 +7,22 @@
         <div class="accordion-group">
             <div class="accordion-heading">
                 <div class="group-name editable" data-toggle="manual" data-type="text"
-                        data-placement="up" data-name="group-name" data-value="{item.group_name}" data-autotext="never"
-                        data-placeholder="group new name" data-url="{{ uri() }}/{item.id}" data-send="always">
+                        data-placement="left" data-name="group-name" data-params="{mode: 'group'}"
+                        data-value="{item.group_name}" data-autotext="never"
+                        data-placeholder="group new name" data-url="{{ uri() }}/{item.group_name}" data-send="always">
+
+                <button class="edit-group btn-inverse {item.edit_btn_class}">
+                    <i class="icon-edit icon-white"></i>
+                </button>
 
                 <a href="#{item.group_href}" class="group-header accordion-toggle text-center"
                     data-toggle="collapse" data-parent="#acc-group">
+
+
                     <span>
                         {item.group_name}
                     </span>
-                    <button class="edit-group btn-inverse {item.edit_btn_class}">
-                        <i class="icon-edit icon-white"></i>
-                    </button>
-                    <button class="close">&times;</button>
+                    <button class="close {item.edit_btn_class}">&times;</button>
                 </a>
             </div>
             </div>
@@ -26,7 +30,7 @@
                 <div class="accordion-inner navbar-inverse">
                     <ul class="nav nav-list items">
                         {# js active list prototype #}
-                        <li>
+                        <li class="gateway" data-gateway-id="{item.id}">
                             <a href="#">
                                 <i class="icon-flag"></i><span>{item.name}</span>
                             </a>

@@ -10,13 +10,13 @@
  * in ZendSkeletonApplication. This is a good practice, as it prevents sensitive
  * credentials from accidentally being committed into version control.
  */
-if(!defined('DEBUG')) define('DEBUG', true);
+define('PROFILING', true);
 
 return array(
 
     'nette_debug' => array(
-        'enabled'      => DEBUG,
-        'mode'         => !DEBUG,      // true = production|false = development|null = autodetect|IP address(es) csv/array
+        'enabled'      => PROFILING,
+        'mode'         => !PROFILING,      // true = production|false = development|null = autodetect|IP address(es) csv/array
         'bar'          => false,       // bool = enabled|Toggle nette diagnostics bar.
         'strict'       => true,        // bool = cause immediate death|int = matched against error severity
         'log'          => "data/logs", // bool = enabled|Path to directory eg. data/logs
@@ -36,7 +36,7 @@ return array(
              * Expects: boolean
              * Default: false
              */
-            'enabled' => DEBUG,
+            'enabled' => PROFILING,
 
             /**
              * Enables or disables the strict mode. If the strict mode is

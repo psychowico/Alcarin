@@ -5,6 +5,10 @@ namespace('Alcarin', function(exports, Alcarin) {
 
     ActiveList.prototype.anim = 'show';
 
+    ActiveList.prototype.iterator = function() {
+      return this.source;
+    };
+
     ActiveList.prototype.setAnim = function(method) {
       return this.anim = method;
     };
