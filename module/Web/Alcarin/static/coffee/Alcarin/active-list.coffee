@@ -6,12 +6,18 @@ namespace 'Alcarin', (exports, Alcarin) ->
     #corresponding part of the html template.
     class exports.ActiveList
 
-        anim : 'show'
+        anim : {
+            add: 'show',
+            remove: 'hide'
+        }
 
         iterator: -> @source
 
-        setAnim : (method) ->
-            @anim = method
+        setAnims : (adding, removing = 'hide') ->
+            @anim = {
+                add: adding,
+                remove: removing
+            }
 
         constructor: ->
             @source = []
@@ -37,7 +43,7 @@ namespace 'Alcarin', (exports, Alcarin) ->
 
 
         clear: ->
-            while @length > 0
+            while @source.length > 0
                 @pop()
 
         #insert elements at list end, and update related view
@@ -47,12 +53,11 @@ namespace 'Alcarin', (exports, Alcarin) ->
                 if @binded
                     dom_obj = @prototype.clone(true)
                     if el instanceof exports.ActiveView
-                        #el.reset()
                         el.bind dom_obj
 
                     dom_obj.hide()
                     @parent.append dom_obj
-                    dom_obj[@anim]()
+                    dom_obj[@anim.add]()
             true
 
         concat: (arrays...)->
@@ -89,20 +94,20 @@ namespace 'Alcarin', (exports, Alcarin) ->
                     children.eq(index).before dom_obj
                 true
 
-        remove: (obj)->
+        remove: (obj, on_done)->
             index = @source.indexOf obj
-            @removeAt index
+            @removeAt index, on_done
 
         #remove one item and update related view
-        removeAt: (index)->
+        removeAt: (index, on_done)->
             if @binded
                 dom_obj = @parent.children().eq index
-                dom_obj.remove()
-
-                obj = @source[index]
-
-                if obj instanceof exports.ActiveView
-                    obj.unbind()
+                dom_obj[@anim.remove] ->
+                    dom_obj.remove()
+                    obj = @source[index]
+                    if obj instanceof exports.ActiveView
+                        obj.unbind()
+                    on_done?()
 
             @source.splice index, 1
 

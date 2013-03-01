@@ -107,6 +107,9 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
                 Rest().$delete "#{uri}/#{id}", {mode: 'gateway'}, (response)=>
                     if response.success
                         @parent.gateways().remove @
+                        if @parent.gateways().length() == 0
+                            console.log @parent.parent.groups
+                            @parent.parent.groups.remove @parent
 
         init: ->
             super()
@@ -177,7 +180,7 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
 
             #preparing groups active lists
             @groups  = new Alcarin.ActiveList()
-            #@groups.setAnim 'slideDown'
+            @groups.setAnims 'show', 'slideUp'
             @groups.bind @$groups_pane.find('.active-group')
 
             #default "ungrouped" group

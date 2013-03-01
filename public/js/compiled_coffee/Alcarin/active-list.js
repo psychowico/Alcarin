@@ -3,14 +3,23 @@ var __slice = [].slice;
 namespace('Alcarin', function(exports, Alcarin) {
   return exports.ActiveList = (function() {
 
-    ActiveList.prototype.anim = 'show';
+    ActiveList.prototype.anim = {
+      add: 'show',
+      remove: 'hide'
+    };
 
     ActiveList.prototype.iterator = function() {
       return this.source;
     };
 
-    ActiveList.prototype.setAnim = function(method) {
-      return this.anim = method;
+    ActiveList.prototype.setAnims = function(adding, removing) {
+      if (removing == null) {
+        removing = 'hide';
+      }
+      return this.anim = {
+        add: adding,
+        remove: removing
+      };
     };
 
     function ActiveList() {
@@ -45,7 +54,7 @@ namespace('Alcarin', function(exports, Alcarin) {
     ActiveList.prototype.clear = function() {
       var _results;
       _results = [];
-      while (this.length > 0) {
+      while (this.source.length > 0) {
         _results.push(this.pop());
       }
       return _results;
@@ -64,7 +73,7 @@ namespace('Alcarin', function(exports, Alcarin) {
           }
           dom_obj.hide();
           this.parent.append(dom_obj);
-          dom_obj[this.anim]();
+          dom_obj[this.anim.add]();
         }
       }
       return true;
@@ -119,21 +128,25 @@ namespace('Alcarin', function(exports, Alcarin) {
       }
     };
 
-    ActiveList.prototype.remove = function(obj) {
+    ActiveList.prototype.remove = function(obj, on_done) {
       var index;
       index = this.source.indexOf(obj);
-      return this.removeAt(index);
+      return this.removeAt(index, on_done);
     };
 
-    ActiveList.prototype.removeAt = function(index) {
-      var dom_obj, obj;
+    ActiveList.prototype.removeAt = function(index, on_done) {
+      var dom_obj;
       if (this.binded) {
         dom_obj = this.parent.children().eq(index);
-        dom_obj.remove();
-        obj = this.source[index];
-        if (obj instanceof exports.ActiveView) {
-          obj.unbind();
-        }
+        dom_obj[this.anim.remove](function() {
+          var obj;
+          dom_obj.remove();
+          obj = this.source[index];
+          if (obj instanceof exports.ActiveView) {
+            obj.unbind();
+          }
+          return typeof on_done === "function" ? on_done() : void 0;
+        });
       }
       return this.source.splice(index, 1);
     };

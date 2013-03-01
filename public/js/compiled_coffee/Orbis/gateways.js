@@ -169,7 +169,11 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
           mode: 'gateway'
         }, function(response) {
           if (response.success) {
-            return _this.parent.gateways().remove(_this);
+            _this.parent.gateways().remove(_this);
+            if (_this.parent.gateways().length() === 0) {
+              console.log(_this.parent.parent.groups);
+              return _this.parent.parent.groups.remove(_this.parent);
+            }
           }
         });
       });
@@ -277,6 +281,7 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
       var ungrouped,
         _this = this;
       this.groups = new Alcarin.ActiveList();
+      this.groups.setAnims('show', 'slideUp');
       this.groups.bind(this.$groups_pane.find('.active-group'));
       ungrouped = new GatewayGroup(this, 'Ungrouped');
       this.groups.push(ungrouped);
