@@ -5,7 +5,7 @@
         </div>
     </div>
     <div class="accordion-inner">
-        {% do form.setAttribute('action', uri() ~ '/{item.id}') %}
+        {% do form.setAttribute('action', uri('orbis/default', {controller: 'gateways'}) ~ '/{item.id}') %}
 
         {{ bootstrap(form, 'horizontal') }}
     </div>

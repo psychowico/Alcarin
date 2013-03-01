@@ -57,7 +57,7 @@ return array(
                     ),
                 ),
             ),
-            'admin/orbis' => array(
+            'orbis' => array(
                 'type'    => 'alcarin',
                 'options' => array(
                     'route'    => '/admin/orbis',
