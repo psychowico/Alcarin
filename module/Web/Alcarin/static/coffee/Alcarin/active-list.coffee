@@ -102,7 +102,7 @@ namespace 'Alcarin', (exports, Alcarin) ->
         removeAt: (index, on_done)->
             if @binded
                 dom_obj = @parent.children().eq index
-                dom_obj[@anim.remove] ->
+                dom_obj[@anim.remove] =>
                     dom_obj.remove()
                     obj = @source[index]
                     if obj instanceof exports.ActiveView
