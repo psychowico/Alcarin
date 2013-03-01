@@ -26,6 +26,7 @@ namespace('Alcarin', function(exports, Alcarin) {
       this.active_list_container = {};
       this.initialized = false;
       this.bindings = {};
+      this.rel = $();
     }
 
     ActiveView.prototype.clone = function() {
@@ -58,9 +59,9 @@ namespace('Alcarin', function(exports, Alcarin) {
       _ref = exports.ActiveView.global_list;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         view = _ref[_i];
-        view.init();
+        view.update();
       }
-      return this.auto_init = true;
+      return this.auto_update = true;
     };
 
     ActiveView.dependencyProperty = function(name, default_value, onChange) {
@@ -160,13 +161,16 @@ namespace('Alcarin', function(exports, Alcarin) {
       var $e, activelist, query, _ref,
         _this = this;
       $e = $(e);
-      this.rel = $e;
+      if ($e.is(this.rel)) {
+        return false;
+      }
+      this.rel = this.rel.add($e);
       $e.each(function(index, val) {
         var $child, $el, all_children, attr, child, children, list, old_view, _i, _j, _k, _len, _len1, _len2, _ref, _ref1;
         $el = $(val);
         old_view = $el.data('active-view');
         if (old_view != null) {
-          old_view.unbind();
+          old_view.unbind($el);
         }
         $el.data('active-view', _this);
         all_children = $el.find('*');
@@ -177,9 +181,8 @@ namespace('Alcarin', function(exports, Alcarin) {
           _ref1 = child.attributes;
           for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
             attr = _ref1[_j];
-            _this.prepare_bind($e, $child, attr.value, attr.name);
+            _this.prepare_bind($el, $child, attr.value, attr.name);
           }
-          _this.prepare_bind($e, $child, attr.value, attr.name);
         }
         children = all_children.filter(function(i, val) {
           return !$(val).children().length;
@@ -191,7 +194,7 @@ namespace('Alcarin', function(exports, Alcarin) {
         for (_k = 0, _len2 = list.length; _k < _len2; _k++) {
           child = list[_k];
           $child = $(child);
-          _this.prepare_bind($e, $child, $child.html());
+          _this.prepare_bind($el, $child, $child.html());
         }
         return true;
       });
@@ -200,47 +203,42 @@ namespace('Alcarin', function(exports, Alcarin) {
         activelist = _ref[query];
         activelist.bind($e.find(query));
       }
-      if (ActiveView.auto_init && !this.initialized) {
-        this.init();
+      if (ActiveView.auto_update) {
+        this.update();
       }
       return true;
     };
 
-    ActiveView.prototype.unbind = function() {
-      var $el, index, key, list, obj, _ref, _results;
-      this.rel.removeData('active-view');
-      this.rel = null;
+    ActiveView.prototype.unbind = function(el) {
+      var $el, $target, index, key, list, new_list, obj, _i, _len, _ref;
+      $el = $(el);
       _ref = this.bindings;
-      _results = [];
       for (key in _ref) {
         list = _ref[key];
-        _results.push((function() {
-          var _i, _len, _results1;
-          _results1 = [];
-          for (index = _i = 0, _len = list.length; _i < _len; index = ++_i) {
-            obj = list[index];
-            $el = obj.element;
+        new_list = [];
+        for (index = _i = 0, _len = list.length; _i < _len; index = ++_i) {
+          obj = list[index];
+          if (obj.root.is($el)) {
+            $target = obj.element;
             switch (obj.type) {
               case exports.ActiveView.TYPE_CONTENT:
-                $el.html(obj.original);
+                $target.html(obj.original);
                 break;
               case exports.ActiveView.TYPE_ATTR:
-                $el.prop(obj.attr, obj.original);
-                $el.attr(obj.attr, obj.original);
+                $target.prop(obj.attr, obj.original);
+                $target.attr(obj.attr, obj.original);
             }
-            if (obj != null ? obj.root.is(this.rel) : void 0) {
-              _results1.push(list.splice(index, 1));
-            } else {
-              _results1.push(void 0);
-            }
+          } else {
+            new_list.push(obj);
           }
-          return _results1;
-        }).call(this));
+        }
+        this.bindings[key] = new_list;
       }
-      return _results;
+      $el.removeData('active-view');
+      return this.rel = this.rel.not($el);
     };
 
-    ActiveView.prototype.init = function() {
+    ActiveView.prototype.update = function() {
       var property;
       this.initialized = true;
       for (property in this.properties_container) {

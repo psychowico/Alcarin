@@ -35,6 +35,7 @@ namespace 'Alcarin', (exports, Alcarin) ->
             @active_list_container = {}
             @initialized           = false
             @bindings              = {}
+            @rel = $()
 
         clone: ->
             copy = new @.constructor
@@ -57,8 +58,8 @@ namespace 'Alcarin', (exports, Alcarin) ->
         # will be auto initialize when bind.
         @initializeAll : ->
             for view in exports.ActiveView.global_list
-                view.init()
-            @auto_init = true;
+                view.update()
+            @auto_update = true;
 
         #it return function, should be used to preparing view properties.
         #check sample view below
@@ -138,8 +139,10 @@ namespace 'Alcarin', (exports, Alcarin) ->
         # and store them in @bindings assoc array, to update html template when
         # correspondive property will change
         bind: (e) ->
-            $e = $ e
-            @rel = $e
+            $e   = $ e
+            return false if $e.is @rel
+
+            @rel = @rel.add $e
             $e.each (index, val) =>
 
                 $el = $ val
@@ -147,7 +150,7 @@ namespace 'Alcarin', (exports, Alcarin) ->
                 # if this element was binded with another view we need unbind it to make
                 # things work with this one.
                 old_view = $el.data 'active-view'
-                old_view?.unbind()
+                old_view?.unbind $el
 
                 $el.data 'active-view', @
 
@@ -157,8 +160,7 @@ namespace 'Alcarin', (exports, Alcarin) ->
                 for child in all_children.toArray().concat [$el.get 0]
                     $child = $ child
                     for attr in child.attributes
-                        @prepare_bind $e, $child, attr.value, attr.name
-                    @prepare_bind $e, $child, attr.value, attr.name
+                        @prepare_bind $el, $child, attr.value, attr.name
 
                 children = all_children.filter (i, val)->
                     not $(val).children().length
@@ -169,36 +171,41 @@ namespace 'Alcarin', (exports, Alcarin) ->
 
                 for child in list
                     $child = $(child)
-                    @prepare_bind $e, $child, $child.html()
+                    @prepare_bind $el, $child, $child.html()
 
                 true
 
             for query, activelist of @active_list_container
                 activelist.bind $e.find query
 
-            if ActiveView.auto_init and not @initialized
-                @init()
+            if ActiveView.auto_update
+                @update()
             true
 
         #unbind not needed view relation
-        unbind: ->
-            @rel.removeData 'active-view'
-            @rel = null
-            for key, list of @bindings
-                for obj, index in list
-                    $el = obj.element
-                    switch obj.type
-                        when exports.ActiveView.TYPE_CONTENT
-                            $el.html obj.original
-                        when exports.ActiveView.TYPE_ATTR
-                            $el.prop obj.attr, obj.original
-                            $el.attr obj.attr, obj.original
+        unbind: (el)->
+            $el = $ el
 
-                    if obj?.root.is @rel
-                        list.splice(index, 1)
+            for key, list of @bindings
+                new_list = []
+                for obj, index in list
+                    if obj.root.is $el
+                        $target = obj.element
+                        switch obj.type
+                            when exports.ActiveView.TYPE_CONTENT
+                                $target.html obj.original
+                            when exports.ActiveView.TYPE_ATTR
+                                $target.prop obj.attr, obj.original
+                                $target.attr obj.attr, obj.original
+                    else
+                        new_list.push obj
+                @bindings[key] = new_list
+
+            $el.removeData 'active-view'
+            @rel = @rel.not $el
 
         #shouldn't be called directly, rather by initializeAll static method.
-        init : ->
+        update : ->
             @initialized = true
             for property of @properties_container
                 @propertyChanged property
