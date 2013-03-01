@@ -24,22 +24,26 @@ namespace 'Alcarin', (exports, Alcarin) ->
             @binded = false
 
         bind: (el)->
-            @parent = $ el
-            @parent.data 'active-list', @
+            @parents = $ el
+            @parents.data 'active-list', @
 
-            pr = @parent[0].firstChild
-            while pr && pr.nodeType != 1
-                pr = pr.nextSibling
-            @prototype = $ pr
-            @prototype.remove()
+            @prototypes = []
+            for pr, ind in @parents.children()
+                while pr && pr.nodeType != 1
+                    pr = pr.nextSibling
+                @prototypes[ind] = $ pr
+                #delete prototype from DOM
+                @prototypes[ind].remove()
+
+            for view, ind in @source
+                for parent, ind in @parents
+                    dom_obj = @prototypes[ind].clone(true)
+                    if view instanceof exports.ActiveView
+                        view.bind dom_obj
+                    $(parent).append dom_obj
 
             @binded = true
 
-            for view in @source
-                dom_obj = @prototype.clone(true)
-                if view instanceof exports.ActiveView
-                    view.bind dom_obj
-                @parent.append dom_obj
 
 
         clear: ->
@@ -51,13 +55,14 @@ namespace 'Alcarin', (exports, Alcarin) ->
             for el in elements
                 @source.push el
                 if @binded
-                    dom_obj = @prototype.clone(true)
-                    if el instanceof exports.ActiveView
-                        el.bind dom_obj
+                    for parent, ind in @parents
+                        dom_obj = @prototypes[ind].clone(true)
+                        if el instanceof exports.ActiveView
+                            el.bind dom_obj
 
-                    dom_obj.hide()
-                    @parent.append dom_obj
-                    dom_obj[@anim.add]()
+                        dom_obj.hide()
+                        $(parent).append dom_obj
+                        dom_obj[@anim.add]()
             true
 
         concat: (arrays...)->
@@ -80,19 +85,20 @@ namespace 'Alcarin', (exports, Alcarin) ->
             @source.splice index, 0, obj
             if @binded
                 #prepare prototype
-                dom_obj = @prototype.clone(true)
+                for parent, ind in @parens
+                    dom_obj = @prototype[ind].clone(true)
 
-                #auto bind if this is a activeview
-                if obj instanceof exports.ActiveView
-                    obj.bind dom_obj
+                    #auto bind if this is a activeview
+                    if obj instanceof exports.ActiveView
+                        obj.bind dom_obj
 
-                #insert it in DOM
-                children = @parent.children()
-                if index >= children.length
-                    children.last().after dom_obj
-                else
-                    children.eq(index).before dom_obj
-                true
+                    #insert it in DOM
+                    children = $(parent).children()
+                    if index >= children.length
+                        children.last().after dom_obj
+                    else
+                        children.eq(index).before dom_obj
+                    true
 
         remove: (obj, on_done)->
             index = @source.indexOf obj
@@ -101,13 +107,28 @@ namespace 'Alcarin', (exports, Alcarin) ->
         #remove one item and update related view
         removeAt: (index, on_done)->
             if @binded
-                dom_obj = @parent.children().eq index
-                dom_obj[@anim.remove] =>
-                    dom_obj.remove()
-                    obj = @source[index]
-                    if obj instanceof exports.ActiveView
-                        obj.unbind()
-                    on_done?()
+                counter = @parents.length
+                for parent in @parents
+                    dom_obj = $(parent).children().eq index
+                    _on_done = (_index, _obj)=>
+                        _obj.remove()
+                        if counter == 0
+                            on_done?()
+                            obj = @source[_index]
+                            if obj instanceof exports.ActiveView
+                                obj.unbind()
+
+                    if @anim.remove == 'hide'
+                        dom_obj[@anim.remove]()
+                        _on_done.apply @, [index, dom_obj]
+                    else
+                        _context = (index, dom_obj) =>
+                            dom_obj[@anim.remove] =>
+                                _on_done.apply @, [index, dom_obj]
+                        # run it with own name context, because vars
+                        # can change to time, when anim will end
+                        _context(index, dom_obj)
+
 
             @source.splice index, 1
 
@@ -122,7 +143,6 @@ namespace 'Alcarin', (exports, Alcarin) ->
     #     name    : @dependencyProperty('name', 'test')
     #     val     : @dependencyProperty('value', 0)
 
-$ ->
     ###list = new Alcarin.ActiveList('#active-select')
 
     v = new Alcarin.TestView()
@@ -136,3 +156,40 @@ $ ->
     list.push( v, v2 )
     list.insert(1, v3)
     true###
+
+$ ->
+    class TestView extends Alcarin.ActiveView
+        a    : @dependencyProperty('a', '133')
+        b    : @dependencyProperty('b', 0)
+
+    el = $ 'div.test, div.test2'
+
+    i = 3
+    view = new TestView
+    view.a 'dupa'
+    view.b i++
+
+    list = new Alcarin.ActiveList
+    list.setAnims 'slideDown', 'slideUp'
+    list.push view
+    list.bind el
+
+    $('body').on 'click', ->
+        #view.b view.b() + 1
+
+    $('strong').on 'click', ->
+
+        view = new TestView
+        view.a 'dupa'
+        view.b i++
+        list.push view
+
+        console.log list.length()
+
+        false
+
+    $('.container').on 'click', 'a.prototype', ->
+        view = $(@).data 'active-view'
+        list.remove view
+        console.log list.length()
+        false
