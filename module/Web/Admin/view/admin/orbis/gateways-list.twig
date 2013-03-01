@@ -2,7 +2,7 @@
     <div class="add clearfix">
         <button class="btn btn-inverse add-group">{{ _('Add group') }}</button>
     </div>
-    <div class="accordion active-group">
+    <div class="accordion active-group" id="acc-group">
         {# js active list prototype #}
         <div class="accordion-group">
             <div class="accordion-heading">
@@ -20,7 +20,7 @@
                     <span>
                         {item.group_name}
                     </span>
-                    <button class="close {item.edit_btn_class}">&times;</button>
+                    <button class="close delete-group {item.edit_btn_class}">&times;</button>
                 </a>
             </div>
             </div>
@@ -29,6 +29,7 @@
                     <ul class="nav nav-list items">
                         {# js active list prototype #}
                         <li class="gateway" data-gateway-id="{item.id}">
+                            <button class="close">&times;</button>
                             <a href="#" style="display:inline" title="{item.description}">
                                 <i class="icon-flag"></i><span class="name">{item.name}</span>
                             </a>

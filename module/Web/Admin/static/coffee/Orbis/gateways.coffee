@@ -31,7 +31,7 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
             )
             @rel.on 'click', '.create-gateway', @create_gateway
             @rel.on 'click', '.edit-group', @edit_group
-            @rel.on 'click', 'button.close', @delete_group
+            @rel.on 'click', 'button.close.delete-group', @delete_group
 
         edit_group : =>
             @edit_btn.editable('show')
@@ -100,6 +100,14 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
             @parent.parent.$groups_pane.fadeOut()
             false
 
+        delete: =>
+            Alcarin.Dialogs.Confirms.admin 'Really deleting this gateway?', =>
+                uri = urls.orbis.gateways
+                id  = @id()
+                Rest().$delete "#{uri}/#{id}", {mode: 'gateway'}, (response)=>
+                    if response.success
+                        @parent.gateways().remove @
+
         init: ->
             super()
             if @parent?
@@ -107,7 +115,8 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
                 if group == 'Ungrouped'
                     group = 0
                 @group group
-                @rel.on 'click', @edit
+                @rel.on 'click', 'a', @edit
+                @rel.on 'click', '.close', @delete
 
         constructor : (@parent, _name)->
             super()

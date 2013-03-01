@@ -29,6 +29,20 @@ class MongoCollection extends \Mongo_Collection
     }
   }
 
+  public function removeById($_id, $safe = true)
+  {
+    if(!$_id instanceof \MongoId) {
+      $_id = new \MongoId($_id);
+    }
+
+    if($safe) {
+      return $this->remove_safe(['_id' => $_id]);
+    }
+    else {
+      return $this->remove(['_id' => new $_id]);
+    }
+  }
+
   private function start_iterate_profiling()
   {
     if($this->db()->profiling) {

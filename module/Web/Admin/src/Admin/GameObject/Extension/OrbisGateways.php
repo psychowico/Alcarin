@@ -44,6 +44,11 @@ class OrbisGateways extends \Core\GameObject
         return true;
     }
 
+    public function delete($gateway_id)
+    {
+        return $this->mongo()->{static::COLLECTION}->removeById($gateway_id);
+    }
+
     public function delete_group($group_name)
     {
         if($group_name === 0 || $group_name == 'Ungrouped') return false;

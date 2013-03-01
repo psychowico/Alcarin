@@ -108,6 +108,10 @@ class OrbisController extends AbstractAlcarinRestfulController
 
             return $this->json()->success();
         }
+        elseif($mode == 'gateway') {
+            $this->orbis()->gateways()->delete($id);
+            return $this->json()->success();
+        }
 
         return $this->json()->fail();
     }

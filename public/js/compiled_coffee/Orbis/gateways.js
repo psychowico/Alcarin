@@ -60,7 +60,7 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
       });
       this.rel.on('click', '.create-gateway', this.create_gateway);
       this.rel.on('click', '.edit-group', this.edit_group);
-      return this.rel.on('click', 'button.close', this.delete_group);
+      return this.rel.on('click', 'button.close.delete-group', this.delete_group);
     };
 
     GatewayGroup.prototype.edit_group = function() {
@@ -159,6 +159,22 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
       return false;
     };
 
+    Gateway.prototype["delete"] = function() {
+      var _this = this;
+      return Alcarin.Dialogs.Confirms.admin('Really deleting this gateway?', function() {
+        var id, uri;
+        uri = urls.orbis.gateways;
+        id = _this.id();
+        return Rest().$delete("" + uri + "/" + id, {
+          mode: 'gateway'
+        }, function(response) {
+          if (response.success) {
+            return _this.parent.gateways().remove(_this);
+          }
+        });
+      });
+    };
+
     Gateway.prototype.init = function() {
       var group;
       Gateway.__super__.init.call(this);
@@ -168,13 +184,16 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
           group = 0;
         }
         this.group(group);
-        return this.rel.on('click', this.edit);
+        this.rel.on('click', 'a', this.edit);
+        return this.rel.on('click', '.close', this["delete"]);
       }
     };
 
     function Gateway(parent, _name) {
       var _ref;
       this.parent = parent;
+      this["delete"] = __bind(this["delete"], this);
+
       this.edit = __bind(this.edit, this);
 
       Gateway.__super__.constructor.call(this);
