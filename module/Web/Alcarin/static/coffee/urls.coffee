@@ -6,6 +6,6 @@ Hrefs shouldn't have '/' symbol at end.
 ###
 @urls = {
     orbis: {
-        gateways: '/admin/orbis',
+        gateways: '/admin/orbis/gateways',
     }
 }

@@ -135,13 +135,14 @@ namespace('Alcarin', function(exports, Alcarin) {
     };
 
     ActiveList.prototype.removeAt = function(index, on_done) {
-      var dom_obj;
+      var dom_obj,
+        _this = this;
       if (this.binded) {
         dom_obj = this.parent.children().eq(index);
         dom_obj[this.anim.remove](function() {
           var obj;
           dom_obj.remove();
-          obj = this.source[index];
+          obj = _this.source[index];
           if (obj instanceof exports.ActiveView) {
             obj.unbind();
           }

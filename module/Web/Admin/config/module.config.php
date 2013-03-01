@@ -9,9 +9,10 @@ return array(
             'Admin\Controller\Home'  => 'Admin\Controller\AdminHomeController',
 
             'Admin\Controller\Users' => 'Admin\Controller\UsersController',
-            'Admin\Controller\Orbis' => 'Admin\Controller\OrbisController',
+            'Admin\Controller\Orbis\Orbis' => 'Admin\Controller\OrbisController',
 
             'Admin\Controller\Orbis\Minimap' => 'Admin\Controller\Orbis\MinimapController',
+            'Admin\Controller\Orbis\Gateways' => 'Admin\Controller\Orbis\GatewaysController',
             'Admin\Controller\Users\Privilages' => 'Admin\Controller\Users\PrivilagesController',
         ),
     ),
@@ -53,6 +54,17 @@ return array(
                     'restmode' => true,
                     'defaults' => array(
                         'controller' => 'Home',
+                    ),
+                ),
+            ),
+            'admin/orbis' => array(
+                'type'    => 'alcarin',
+                'options' => array(
+                    'route'    => '/admin/orbis',
+                    'namespace'=> 'Admin\Controller\Orbis',
+                    'restmode' => true,
+                    'defaults' => array(
+                        'controller' => 'Orbis',
                     ),
                 ),
             ),
