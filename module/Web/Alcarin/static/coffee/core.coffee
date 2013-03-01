@@ -28,6 +28,9 @@ $ =>
     $.fn.editable.defaults.ajaxOptions = {type: 'put', dataType: 'json'}
     # apply x-editable plugin
     $('.x-editable').editable()
+    # apply jquery form plugin and generate 'ajax-submit' event when ajax-form is submitted
+    $('.ajax-form').ajaxForm (response, a, b, form)->
+        $(form).trigger 'ajax-submit', response
 
     # focus first input on site
     $('input[type="text"]:first').focus()

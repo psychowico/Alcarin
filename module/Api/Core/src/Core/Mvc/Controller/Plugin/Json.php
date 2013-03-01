@@ -10,14 +10,22 @@ use Zend\View\Model\JsonModel;
  */
 class Json extends AbstractPlugin
 {
-    public function fail($key = 'success')
+    public function fail($additional_data = null)
     {
-        return new JsonModel([$key => false]);
+        $data = ['success' => false];
+        if(!empty($additional_data)) {
+            $data += $additional_data;
+        }
+        return new JsonModel($data);
     }
 
-    public function success($key = 'success')
+    public function success($additional_data = null)
     {
-        return new JsonModel([$key => true]);
+        $data = ['success' => true];
+        if(!empty($additional_data)) {
+            $data += $additional_data;
+        }
+        return new JsonModel($data);
     }
 
 

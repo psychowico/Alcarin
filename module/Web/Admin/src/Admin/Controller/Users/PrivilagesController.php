@@ -79,7 +79,7 @@ class PrivilagesController extends AbstractAlcarinRestfulController
         $player_priv = $players->get($userid)->admin()->privilages();
 
         foreach( Resource::$Descriptions as $group => $privilages ) {
-            $form = $builder->createForm( new PrivilagesGroupForm(), 'Confirm' );
+            $form = $builder->createForm( new PrivilagesGroupForm(), true, 'Confirm' );
             $form->setName('privilages-' . strtolower($group));
 
             $content = $form;

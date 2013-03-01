@@ -35,7 +35,7 @@ namespace 'Alcarin.JQueryPlugins', (exports, Alcarin) ->
                     'dataType': 'json',
                     'type'    : method
                 }
-                _ajax( settings ).done ondone
+                _ajax( settings ).done(ondone).fail(ondone)
 
         $put    : _method('PUT')
         $delete : _method('DELETE')

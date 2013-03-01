@@ -38,7 +38,7 @@ You can control this behaviour by *createForm* arguments:
     $submit_button_caption = 'Confirm';
     $use_default_fields = true;
     $form_ann = new \Module\Form\MyFormName();
-    $form = $builder->createForm($form_ann, $submit_button_caption, $use_default_fields);
+    $form = $builder->createForm($form_ann, $use_default_fields, $submit_button_caption);
 
 
 Registration custom validators

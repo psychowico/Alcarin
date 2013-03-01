@@ -43,7 +43,7 @@ namespace('Alcarin.JQueryPlugins', function(exports, Alcarin) {
           'dataType': 'json',
           'type': method
         };
-        return _ajax(settings).done(ondone);
+        return _ajax(settings).done(ondone).fail(ondone);
       };
     };
 

@@ -8,7 +8,7 @@ class OrbisGateways extends \Core\GameObject
 
     public function find($grouped = true)
     {
-        $gateways = $this->mongo()->{static::COLLECTION}->find()->sort(['name'=> 1]);
+        $gateways = $this->mongo()->{static::COLLECTION}->find()->sort(['group' => 1, 'name'=> 1]);
         if($grouped) {
             $gateways = $gateways->toArray();
             $grouped_gateways = [];
@@ -46,6 +46,7 @@ class OrbisGateways extends \Core\GameObject
 
     public function delete_group($group_name)
     {
+        if($group_name === 0 || $group_name == 'Ungrouped') return false;
         $all = $this->find();
 
         if(empty($all[$group_name])) return false;
@@ -58,16 +59,32 @@ class OrbisGateways extends \Core\GameObject
         return true;
     }
 
-    public function update($id, $gateway_data)
+    public function update($id, $name, $description, $x, $y, $group = null)
     {
-        return $this->mongo()->{static::COLLECTION}->updateById($id, $gateway_data);
+        if($group == 'Ungrouped') $group = 0;
+
+        return $this->mongo()->{static::COLLECTION}->updateById($id, [
+            'name'        => $name,
+            'description' => $description,
+            'x'           => $x,
+            'y'           => $y,
+            'group'       => $group,
+        ]);
     }
 
-    public function insert($gateway_name, $group = null)
+    public function insert($name, $description, $x, $y, $group = null)
     {
-        return $this->mongo()->{static::COLLECTION}->insert([
-            'name'  => $gateway_name,
-            'group' => $group
-        ]);
+        if($group == 'Ungrouped') $group = 0;
+
+        $data = [
+            'name'        => $name,
+            'description' => $description,
+            'x'           => $x,
+            'y'           => $y,
+            'group'       => $group === null ? 0 : $group,
+        ];
+        $result = $this->mongo()->{static::COLLECTION}->insert($data);
+        if($result) return $data['_id']->{'$id'};
+        return false;
     }
 }

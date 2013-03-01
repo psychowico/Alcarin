@@ -42,6 +42,15 @@ namespace('Alcarin', function(exports, Alcarin) {
       return _results;
     };
 
+    ActiveList.prototype.clear = function() {
+      var _results;
+      _results = [];
+      while (this.length > 0) {
+        _results.push(this.pop());
+      }
+      return _results;
+    };
+
     ActiveList.prototype.push = function() {
       var dom_obj, el, elements, _i, _len;
       elements = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
@@ -123,7 +132,7 @@ namespace('Alcarin', function(exports, Alcarin) {
         dom_obj.remove();
         obj = this.source[index];
         if (obj instanceof exports.ActiveView) {
-          obj.unbind(dom_obj);
+          obj.unbind();
         }
       }
       return this.source.splice(index, 1);

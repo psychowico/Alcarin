@@ -39,6 +39,9 @@ $(function() {
     dataType: 'json'
   };
   $('.x-editable').editable();
+  $('.ajax-form').ajaxForm(function(response, a, b, form) {
+    return $(form).trigger('ajax-submit', response);
+  });
   $('input[type="text"]:first').focus();
   return $('body').disableSelection();
 });

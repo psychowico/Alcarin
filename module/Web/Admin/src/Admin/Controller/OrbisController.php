@@ -14,6 +14,13 @@ class OrbisController extends AbstractAlcarinRestfulController
     {
         if($this->isJson()) {
             $grouped_gateways = $this->orbis()->gateways()->find();
+            foreach($grouped_gateways as $key => $group) {
+                $grouped_gateways[$key] = array_map( function($gateway) {
+                    $gateway['id'] = $gateway['_id']->{'$id'};
+                    unset($gateway['_id']);
+                    return $gateway;
+                }, $group );
+            }
 
             return $this->json(['gateways' => $grouped_gateways]);
         }
@@ -26,49 +33,51 @@ class OrbisController extends AbstractAlcarinRestfulController
 
     public function create($data)
     {
-        $filter = $this->gatewayGroupInputFilter();
-        $filter->setData($data);
+        $with_defaults = empty($data['creating_group']);
 
-        if($filter->isValid()) {
-            $data = $filter->getValues();
+        $form = $this->getForm($with_defaults);
+        $form->setData($data);
+
+        if($form->isValid()) {
+            $data = $form->getData();
             $gateway_name  = $data['name'];
             $gateway_group = empty($data['group']) ? null : $data['group'];
 
-            $this->orbis()->gateways()->insert($gateway_name, $gateway_group);
-            return $this->json()->success();
+
+            $gateway_desc  = empty($data['description']) ? null : $data['description'];
+            $x             = empty($data['x']) ? 0 : $data['x'];
+            $y             = empty($data['y']) ? 0 : $data['y'];
+
+            $result_id = $this->orbis()->gateways()->insert(
+                $gateway_name, $gateway_desc,
+                $x, $y, $gateway_group);
+            if($result_id !== false) {
+                $data['id'] = $result_id;
+                return $this->json()->success(['data'=>$data]);
+            }
+            return $this->json()->fail();
         }
         else {
-            return $this->json(['success' => false, 'errors' => $filter->getMessages()]);
+            return $this->json()->fail(['errors' => $form->getMessages()]);
         }
     }
 
     public function update($id, $data)
     {
-        $mode = empty($data['name']) ? 'gateway' : $data['name'];
+        $mode = empty($data['mode']) ? 'gateway' : $data['mode'];
 
-        if($mode == 'group-name') {
+        if($mode == 'group') {
             if(!empty($data['value'])) {
-                $filter = $this->gatewayGroupInputFilter();
-                $group_filter = $filter->get('group');
-
                 $group_name = $id;
                 $new_name = $data['value'];
 
-                if($group_filter->setValue($group_name)->isValid()
-                    && $group_filter->setValue($new_name)->isValid($new_name)) {
-                    //validated value
-                    $new_name = $group_filter->getValue();
-                    $result = $this->orbis()->gateways()->rename_group($group_name, $new_name);
-                    if(is_string($result)) {
-                        return $this->json([
-                            'success' => false,
-                            'error'   => $result,
-                        ]);
-                    }
-                    else {
-                        return $this->json()->success();
-                    }
-
+                //validated value
+                $result = $this->orbis()->gateways()->rename_group($group_name, $new_name);
+                if(is_string($result)) {
+                    return $this->fail(['error'   => $result]);
+                }
+                else {
+                    return $this->json()->success();
                 }
             }
         }
@@ -78,14 +87,13 @@ class OrbisController extends AbstractAlcarinRestfulController
             $form->setData($data);
             if($form->isValid()) {
                 $new_data = $form->getData();
-                $this->orbis()->gateways()->update($id, $form->getData());
-                return $this->json([
-                    'success' => true,
-                    'data'    => $new_data,
-                ]);
+
+                $this->orbis()->gateways()->update($id,
+                    $new_data['name'], $new_data['description'],
+                    $new_data['x'], $new_data['y'], $new_data['group'] );
+                return $this->json()->success(['data' => $new_data]);
             }
         }
-
 
         return $this->json()->fail();
     }
@@ -109,58 +117,11 @@ class OrbisController extends AbstractAlcarinRestfulController
         return $this->gameServices()->get('orbis');
     }
 
-    protected function gatewayGroupInputFilter()
-    {
-        $inputFilter = new InputFilter();
-
-        $filters = [
-            [
-                'name'     => 'name',
-                'filters'  => [
-                    ['name' => 'StripTags'],
-                    ['name' => 'StringTrim'],
-                ],
-                'validators' => [ [
-                        'name'    => 'StringLength',
-                        'options' => [
-                            'encoding' => 'UTF-8',
-                            'min'      => 1,
-                            'max'      => 50,
-                        ],
-                ]],
-            ],
-            [
-                'name'     => 'group',
-                'allow_empty' => true,
-                'filters'  => [
-                    ['name' => 'StripTags'],
-                    ['name' => 'StringTrim'],
-                ],
-                'validators' => [
-                    [
-                        'name'    => 'StringLength',
-                        'options' => [
-                            'encoding' => 'UTF-8',
-                            'min'      => 1,
-                            'max'      => 50,
-                        ],
-                    ],
-                ],
-            ]
-        ];
-
-        foreach( $filters as $filter ) {
-            $inputFilter->add( $filter );
-        }
-
-        return $inputFilter;
-    }
-
-    protected function getForm()
+    protected function getForm($with_defaults = true)
     {
         $form_prototype = new \Admin\Form\EditGatewayForm();
         $builder = new \Core\Service\AnnotationBuilderService();
-        return $builder->createForm($form_prototype, 'Save');
+        return $builder->createForm($form_prototype, $with_defaults, 'Save');
     }
 
 }

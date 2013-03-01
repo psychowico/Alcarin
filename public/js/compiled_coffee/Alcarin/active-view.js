@@ -19,8 +19,10 @@ namespace('Alcarin', function(exports, Alcarin) {
     ActiveView.prototype.properties_container = {};
 
     function ActiveView() {
+      var defaults;
       $.merge(exports.ActiveView.global_list, [this]);
-      this.properties_container = jQuery.extend({}, this.properties_container);
+      defaults = this.constructor.default_properties || {};
+      this.properties_container = jQuery.extend({}, defaults);
       this.active_list_container = {};
       this.initialized = false;
       this.bindings = {};
@@ -63,7 +65,10 @@ namespace('Alcarin', function(exports, Alcarin) {
 
     ActiveView.dependencyProperty = function(name, default_value, onChange) {
       if (default_value != null) {
-        this.__super__.properties_container[name] = default_value;
+        if (!(this.default_properties != null)) {
+          this.default_properties = {};
+        }
+        this.default_properties[name] = default_value;
       }
       return function(val) {
         if (!(val != null)) {
@@ -201,9 +206,8 @@ namespace('Alcarin', function(exports, Alcarin) {
       return true;
     };
 
-    ActiveView.prototype.unbind = function(e) {
-      var $e, $el, index, key, list, obj, _ref, _results;
-      $e = $(e);
+    ActiveView.prototype.unbind = function() {
+      var $el, index, key, list, obj, _ref, _results;
       this.rel.removeData('active-view');
       this.rel = null;
       _ref = this.bindings;
@@ -224,14 +228,14 @@ namespace('Alcarin', function(exports, Alcarin) {
                 $el.prop(obj.attr, obj.original);
                 $el.attr(obj.attr, obj.original);
             }
-            if (obj != null ? obj.root.is($e) : void 0) {
+            if (obj != null ? obj.root.is(this.rel) : void 0) {
               _results1.push(list.splice(index, 1));
             } else {
               _results1.push(void 0);
             }
           }
           return _results1;
-        })());
+        }).call(this));
       }
       return _results;
     };

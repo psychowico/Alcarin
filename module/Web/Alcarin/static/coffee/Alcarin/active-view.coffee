@@ -28,7 +28,9 @@ namespace 'Alcarin', (exports, Alcarin) ->
         constructor: ->
             $.merge exports.ActiveView.global_list, [@]
 
-            @properties_container  = jQuery.extend({}, @.properties_container)
+            defaults = @.constructor.default_properties or {}
+
+            @properties_container  = jQuery.extend({}, defaults)
 
             @active_list_container = {}
             @initialized           = false
@@ -61,8 +63,11 @@ namespace 'Alcarin', (exports, Alcarin) ->
         #it return function, should be used to preparing view properties.
         #check sample view below
         @dependencyProperty: (name, default_value, onChange)->
-            if default_value? then @.__super__.properties_container[name] = default_value
-            #this method will be called in specific object context
+            if default_value?
+                #save static, for full type
+                @.default_properties = {} if not @.default_properties?
+                @.default_properties[name] = default_value
+            #this method will be called in specific object instance context
             (val) ->
                 if not val? then return @properties_container[name]
                 @properties_container[name] = val
@@ -85,9 +90,11 @@ namespace 'Alcarin', (exports, Alcarin) ->
         #called automaticaly when class is full initialized and
         #property value will change.
         propertyChanged : (prop_name) ->
+
             if not @bindings[prop_name]?
                 return
             bindings = @bindings[prop_name]
+
             for data in bindings
                 $el = data.element
                 new_val = org = data.original
@@ -113,6 +120,7 @@ namespace 'Alcarin', (exports, Alcarin) ->
             checked = {}
             while result = ActiveView.regex.exec content
                 property_name = result[1]
+
                 if property_name?
                     if checked[property_name]? then continue
                     checked[property_name] = true
@@ -173,8 +181,7 @@ namespace 'Alcarin', (exports, Alcarin) ->
             true
 
         #unbind not needed view relation
-        unbind: (e) ->
-            $e = $ e
+        unbind: ->
             @rel.removeData 'active-view'
             @rel = null
             for key, list of @bindings
@@ -187,7 +194,7 @@ namespace 'Alcarin', (exports, Alcarin) ->
                             $el.prop obj.attr, obj.original
                             $el.attr obj.attr, obj.original
 
-                    if obj?.root.is $e
+                    if obj?.root.is @rel
                         list.splice(index, 1)
 
         #shouldn't be called directly, rather by initializeAll static method.

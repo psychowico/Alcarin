@@ -100,9 +100,7 @@ class AnnotationBuilderService
      * @param  string|object $entity
      * @return \Zend\Form\Form
      */
-    public function createForm($entity,
-                               $submit_button_caption = null,
-                               $add_default_fieldset = true)
+    public function createForm($entity, $add_default_fieldset = true, $submit_button_caption = null)
     {
         $form = $this->builder()->createForm($entity);
 

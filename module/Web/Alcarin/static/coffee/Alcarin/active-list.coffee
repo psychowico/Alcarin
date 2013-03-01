@@ -36,6 +36,10 @@ namespace 'Alcarin', (exports, Alcarin) ->
                 @parent.append dom_obj
 
 
+        clear: ->
+            while @length > 0
+                @pop()
+
         #insert elements at list end, and update related view
         push: (elements...)->
             for el in elements
@@ -98,7 +102,7 @@ namespace 'Alcarin', (exports, Alcarin) ->
                 obj = @source[index]
 
                 if obj instanceof exports.ActiveView
-                    obj.unbind dom_obj
+                    obj.unbind()
 
             @source.splice index, 1
 

@@ -19,7 +19,20 @@
   position: absolute;
   width: 100%;
 }
+.gateways-list .gateway .description {
+  font-style: italic;
+  color: gray;
+}
 .gateway-edit .accordion-inner {
   padding-top: 20px;
   padding-bottom: 0;
+}
+.gateway-edit .controls input,
+.gateway-edit .controls textarea {
+  width: 310px;
+}
+.gateway-edit .controls input[type="submit"] {
+  width: 100px;
+  float: right;
+  margin-right: 35px;
 }

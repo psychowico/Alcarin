@@ -28,10 +28,11 @@
                 <div class="accordion-inner navbar-inverse">
                     <ul class="nav nav-list items">
                         {# js active list prototype #}
-                        <li class="gateway" title="{item.description}" data-gateway-id="{item.id}">
-                            <a href="#">
-                                <i class="icon-flag"></i><span>{item.name}</span>
+                        <li class="gateway" data-gateway-id="{item.id}">
+                            <a href="#" style="display:inline" title="{item.description}">
+                                <i class="icon-flag"></i><span class="name">{item.name}</span>
                             </a>
+                            <span class="description">, {item.description}</span>
                         </li>
                     </ul>
                     <ul class="nav nav-list">

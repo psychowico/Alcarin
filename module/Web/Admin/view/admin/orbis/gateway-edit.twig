@@ -6,6 +6,7 @@
     </div>
     <div class="accordion-inner">
         {% do form.setAttribute('action', uri() ~ '/{item.id}') %}
+
         {{ bootstrap(form, 'horizontal') }}
     </div>
 </div>
