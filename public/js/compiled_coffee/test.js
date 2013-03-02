@@ -81,7 +81,6 @@ namespace('Alcarin', function(exports, Alcarin) {
             data = $(this).data();
             for (key in data) {
               obj = data[key];
-              console.log(key);
               if (/^hash[A-Z]/.test(key)) {
                 new_key = key.replace(/^hash/, '');
                 target_state[new_key.toLowerCase()] = obj;

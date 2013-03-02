@@ -77,6 +77,7 @@ class GatewaysController extends AbstractAlcarinRestfulController
             //gateways
             $form = $this->getForm();
             $form->setData($data);
+
             if($form->isValid()) {
                 $new_data = $form->getData();
 
@@ -84,6 +85,9 @@ class GatewaysController extends AbstractAlcarinRestfulController
                     $new_data['name'], $new_data['description'],
                     $new_data['x'], $new_data['y'], $new_data['group'] );
                 return $this->json()->success(['data' => $new_data]);
+            }
+            else {
+                return $this->json()->fail(['errors' => $form->getMessages()]);
             }
         }
 
@@ -116,7 +120,13 @@ class GatewaysController extends AbstractAlcarinRestfulController
     protected function getForm($with_defaults = true)
     {
         $form_prototype = new \Admin\Form\EditGatewayForm();
-        $builder = new \Core\Service\AnnotationBuilderService();
-        return $builder->createForm($form_prototype, $with_defaults, 'Save');
+        $builder = $this->getServiceLocator()->get('AnnotationBuilderService');
+        $form = $builder->createForm($form_prototype, $with_defaults, 'Save');
+
+        # let disable default InArray select validator for groups - they are dynamic
+        # and not needed this validator.
+        $form->get('group')->disableValidation();
+        return $form;
+
     }
 }

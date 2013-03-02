@@ -19,9 +19,9 @@ class EditGatewayForm
     public $id;
 
     /**
-     * @Annotation\Type("hidden")
-     * @Annotation\Required(false)
-     * @Annotation\Attributes({"value":"{item.group}"})
+     * @Annotation\Type("select")
+     * @Annotation\Required(true)
+     * @Annotation\Attributes({"class": "active-group", "options":{"{item.group_name}":"{item.group_name}"}})
      */
     public $group;
 

@@ -55,7 +55,6 @@ namespace 'Alcarin', (exports, Alcarin ) ->
                         target_state = {}
                         data = $(@).data()
                         for key, obj of data
-                            console.log key
                             if /^hash[A-Z]/.test key
                                 new_key = key.replace /^hash/, ''
                                 target_state[new_key.toLowerCase()] = obj

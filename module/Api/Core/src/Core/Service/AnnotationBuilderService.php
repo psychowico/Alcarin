@@ -10,8 +10,10 @@ use Zend\Stdlib\ArrayUtils;
  * input filter definition. it is wrapper to make much easier to use default
  * annotation builder
  */
-class AnnotationBuilderService
+class AnnotationBuilderService implements \Zend\ServiceManager\ServiceLocatorAwareInterface
 {
+    use \Zend\ServiceManager\ServiceLocatorAwareTrait;
+
     protected $builder;
     protected $default_fieldset;
 
@@ -19,6 +21,12 @@ class AnnotationBuilderService
     {
         if( $this->builder == null ) {
             $this->builder = new \Zend\Form\Annotation\AnnotationBuilder();
+
+            # thanks for this custom form elements (from our configuration) will
+            # work with annotation builder
+            $formElementsManager = $form_factory = $this->getServiceLocator()->get('FormElementManager');
+            $factory = new \Zend\Form\Factory($formElementsManager);
+            $this->builder->setFormFactory($factory);
         }
 
         return $this->builder;

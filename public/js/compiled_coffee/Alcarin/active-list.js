@@ -1,6 +1,4 @@
-var __slice = [].slice,
-  __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+var __slice = [].slice;
 
 namespace('Alcarin', function(exports, Alcarin) {
   return exports.ActiveList = (function() {
@@ -216,47 +214,4 @@ namespace('Alcarin', function(exports, Alcarin) {
   true
   */
 
-});
-
-$(function() {
-  var TestView, el, i, list, view;
-  TestView = (function(_super) {
-
-    __extends(TestView, _super);
-
-    function TestView() {
-      return TestView.__super__.constructor.apply(this, arguments);
-    }
-
-    TestView.prototype.a = TestView.dependencyProperty('a', '133');
-
-    TestView.prototype.b = TestView.dependencyProperty('b', 0);
-
-    return TestView;
-
-  })(Alcarin.ActiveView);
-  el = $('div.test, div.test2');
-  i = 3;
-  view = new TestView;
-  view.a('dupa');
-  view.b(i++);
-  list = new Alcarin.ActiveList;
-  list.setAnims('slideDown', 'slideUp');
-  list.push(view);
-  list.bind(el);
-  $('body').on('click', function() {});
-  $('strong').on('click', function() {
-    view = new TestView;
-    view.a('dupa');
-    view.b(i++);
-    list.push(view);
-    console.log(list.length());
-    return false;
-  });
-  return $('.container').on('click', 'a.prototype', function() {
-    view = $(this).data('active-view');
-    list.remove(view);
-    console.log(list.length());
-    return false;
-  });
 });

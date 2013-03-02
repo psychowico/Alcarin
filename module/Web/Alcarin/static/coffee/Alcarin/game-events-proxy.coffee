@@ -40,7 +40,7 @@ namespace 'Alcarin', (exports, Alcarin) ->
             proxy.on 'test.test', this.onTest
 
         onTest: (data)=>
-            console.log @japko
+            #console.log @japko
 
     $ ->
         proxy = new Alcarin.GameEventsProxy()

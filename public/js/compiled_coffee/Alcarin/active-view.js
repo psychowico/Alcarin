@@ -84,12 +84,15 @@ namespace('Alcarin', function(exports, Alcarin) {
     };
 
     ActiveView.dependencyList = function(query) {
-      return function(val) {
-        var activelist;
+      return function() {
+        var $bind_target, activelist;
         if (!(this.active_list_container[query] != null)) {
           activelist = this.active_list_container[query] = new Alcarin.ActiveList;
           if (this.rel != null) {
-            activelist.bind(this.rel.find(query));
+            $bind_target = this.rel.find(query);
+            if ($bind_target.length > 0) {
+              activelist.bind($bind_target);
+            }
           }
         }
         return this.active_list_container[query];
@@ -158,7 +161,7 @@ namespace('Alcarin', function(exports, Alcarin) {
     };
 
     ActiveView.prototype.bind = function(e) {
-      var $e, activelist, query, _ref,
+      var $e,
         _this = this;
       $e = $(e);
       if ($e.is(this.rel)) {
@@ -198,14 +201,18 @@ namespace('Alcarin', function(exports, Alcarin) {
         }
         return true;
       });
-      _ref = this.active_list_container;
-      for (query in _ref) {
-        activelist = _ref[query];
-        activelist.bind($e.find(query));
-      }
       if (ActiveView.auto_update) {
         this.update();
       }
+      this.onbind($e);
+      return true;
+    };
+
+    ActiveView.prototype.onbind = function($target) {
+      return true;
+    };
+
+    ActiveView.prototype.onunbind = function($target) {
       return true;
     };
 
@@ -235,7 +242,8 @@ namespace('Alcarin', function(exports, Alcarin) {
         this.bindings[key] = new_list;
       }
       $el.removeData('active-view');
-      return this.rel = this.rel.not($el);
+      this.rel = this.rel.not($el);
+      return this.onunbind($el);
     };
 
     ActiveView.prototype.update = function() {
