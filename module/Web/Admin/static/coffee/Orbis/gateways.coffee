@@ -1,8 +1,12 @@
 namespace 'Alcarin.Orbis', (exports, Alcarin) ->
 
+    dragg_object = null
+
     class GatewayGroup extends Alcarin.ActiveView
+
         group_name: @dependencyProperty('group_name', '', (new_name)->
             @group_href new_name.replace(/\s+/g, '-').toLowerCase()
+            @debug = new_name
         )
         group_class: @dependencyProperty 'group_class', ''
         group_href : @dependencyProperty 'group_href', ''
@@ -11,13 +15,14 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
         gateways   : @dependencyList '.items'
 
         constructor : (@parent, group_name)->
+            @debug = ''
             super()
             @group_name group_name if group_name?
 
-        init : ->
+        onbind : ($target)->
             super()
             @gateways()
-            @edit_btn = @rel.find '.group-name.editable'
+            @edit_btn = $target.find '.group-name.editable'
             @edit_btn.editable({
                 success: (response, value) =>
                     if response.success
@@ -29,9 +34,9 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
                 $input = $(e.currentTarget).data('editable').input.$input
                 $input?.val @group_name()
             )
-            @rel.on 'click', '.create-gateway', @create_gateway
-            @rel.on 'click', '.edit-group', @edit_group
-            @rel.on 'click', 'button.close.delete-group', @delete_group
+            $target.on 'click', '.create-gateway', @create_gateway
+            $target.on 'click', '.edit-group', @edit_group
+            $target.on 'click', 'button.close.delete-group', @delete_group
 
         edit_group : =>
             @edit_btn.editable('show')
@@ -44,7 +49,6 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
             @group_class if val then 'in' else ''
 
         create_gateway: (e)=>
-
             edition_gateway  = new Gateway undefined, 'new_gateway'
             edition_gateway.bind @parent.$edit_pane
             edition_gateway.group @group_name()
@@ -92,6 +96,7 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
             edit_copy.bind @parent.parent.$edit_pane
 
             $form.one 'ajax-submit', (e, response)=>
+                console.log response
                 if response.success
                     @copy response.data
                     @parent.parent.cancel_gateway_edit()
@@ -108,18 +113,16 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
                     if response.success
                         @parent.gateways().remove @
                         if @parent.gateways().length() == 0
-                            console.log @parent.parent.groups
                             @parent.parent.groups.remove @parent
 
-        init: ->
-            super()
+        onbind: ($target)->
             if @parent?
                 group = @parent.group_name()
                 if group == 'Ungrouped'
                     group = 0
                 @group group
-                @rel.on 'click', 'a', @edit
-                @rel.on 'click', '.close', @delete
+                $target.on 'click', 'a', @edit
+                $target.on 'click', '.close', @delete
 
         constructor : (@parent, _name)->
             super()
@@ -175,13 +178,18 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
                     @groups.push new_group
                     @$groups_pane.find('.collapse').collapse 'hide'
                     new_group.rel.find("##{group_name}").collapse 'toggle'
+                else
+                    console.log response.errors
 
         init_groups : ->
 
             #preparing groups active lists
             @groups  = new Alcarin.ActiveList()
             @groups.setAnims 'show', 'slideUp'
-            @groups.bind @$groups_pane.find('.active-group')
+
+            $list = @$groups_pane.parent().find('.active-group')
+
+            @groups.bind $list
 
             #default "ungrouped" group
             ungrouped = new GatewayGroup @, 'Ungrouped'

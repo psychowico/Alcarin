@@ -81,11 +81,14 @@ namespace 'Alcarin', (exports, Alcarin) ->
         # inside object
         @dependencyList: (query)->
             #this method will be called in specific object context
-            (val) ->
+            () ->
                 if not @active_list_container[query]?
                     activelist = @active_list_container[query] = new Alcarin.ActiveList
                     if @rel?
-                        activelist.bind @rel.find query
+                        $bind_target = @rel.find query
+                        activelist.bind $bind_target if $bind_target.length > 0
+
+                        #console.log $bind_target
                 return @active_list_container[query]
 
         #called automaticaly when class is full initialized and
@@ -143,6 +146,7 @@ namespace 'Alcarin', (exports, Alcarin) ->
             return false if $e.is @rel
 
             @rel = @rel.add $e
+
             $e.each (index, val) =>
 
                 $el = $ val
@@ -175,11 +179,23 @@ namespace 'Alcarin', (exports, Alcarin) ->
 
                 true
 
-            for query, activelist of @active_list_container
-                activelist.bind $e.find query
+            # for query, activelist of @active_list_container
+            #     activelist.bind $e.find query
 
             if ActiveView.auto_update
                 @update()
+
+            @onbind($e)
+            true
+
+        # this method can be override, will be automatically called when new target has been
+        # binded to current active-view
+        onbind: ($target) ->
+            true
+
+        # this method can be override, will be automatically called when target element has been
+        # unbinded from current active-view
+        onunbind: ($target) ->
             true
 
         #unbind not needed view relation
@@ -203,6 +219,7 @@ namespace 'Alcarin', (exports, Alcarin) ->
 
             $el.removeData 'active-view'
             @rel = @rel.not $el
+            @onunbind $el
 
         #shouldn't be called directly, rather by initializeAll static method.
         update : ->
