@@ -19,19 +19,20 @@ class EditGatewayForm
     public $id;
 
     /**
-     * @Annotation\Type("select")
-     * @Annotation\Required(true)
-     * @Annotation\Attributes({"class": "active-group", "options":{"{item.group_name}":"{item.group_name}"}})
-     */
-    public $group;
-
-    /**
      * @Annotation\Type("text")
      * @Annotation\Options({"label":"Gateway name:"})
      * @Annotation\Required(true)
      * @Annotation\Attributes({"value":"{item.name}"})
      */
     public $name;
+
+    /**
+     * @Annotation\Type("select")
+     * @Annotation\Required(true)
+     * @Annotation\Options({"label":"Gateway group:"})
+     * @Annotation\Attributes({"class": "active-group", "options":{"{item.group_name}":"{item.group_name}"}})
+     */
+    public $group;
 
     /**
      * @Annotation\Type("text")

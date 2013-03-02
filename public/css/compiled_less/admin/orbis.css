@@ -31,6 +31,9 @@
 .gateway-edit .controls textarea {
   width: 310px;
 }
+.gateway-edit .controls select {
+  width: 325px;
+}
 .gateway-edit .controls input[type="submit"] {
   width: 100px;
   float: right;

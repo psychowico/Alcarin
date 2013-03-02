@@ -42,8 +42,16 @@ namespace('Alcarin', function(exports, Alcarin) {
         _results = [];
         for (key in source) {
           val = source[key];
-          this.properties_container[key] = val;
-          _results.push(this.propertyChanged(key));
+          if ($.isFunction(this[key])) {
+            _results.push(this[key](val));
+          } else {
+            this.properties_container[key] = val;
+            if (this.initalized) {
+              _results.push(this.propertyChanged(key));
+            } else {
+              _results.push(void 0);
+            }
+          }
         }
         return _results;
       } else {
@@ -71,15 +79,20 @@ namespace('Alcarin', function(exports, Alcarin) {
         }
         this.default_properties[name] = default_value;
       }
-      return function(val) {
-        if (!(val != null)) {
+      return function(new_value) {
+        var old_value;
+        if (!(new_value != null)) {
           return this.properties_container[name];
         }
-        this.properties_container[name] = val;
+        old_value = this.properties_container[name];
+        if (new_value === old_value) {
+          return false;
+        }
+        this.properties_container[name] = new_value;
         if (this.initialized) {
           this.propertyChanged(name);
         }
-        return onChange != null ? onChange.call(this, val) : void 0;
+        return onChange != null ? onChange.call(this, old_value, new_value) : void 0;
       };
     };
 

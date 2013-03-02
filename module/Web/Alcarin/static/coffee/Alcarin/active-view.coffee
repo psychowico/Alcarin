@@ -45,8 +45,12 @@ namespace 'Alcarin', (exports, Alcarin) ->
         copy: (source)->
             if $.isPlainObject source
                 for key, val of source
-                    @properties_container[key] = val
-                    @propertyChanged key
+                    if $.isFunction @[key]
+                        @[key] val
+                    else
+                        @properties_container[key] = val
+                        if @initalized
+                            @propertyChanged key
             else
                 if @.constructor is source.constructor
                     $.extend(@properties_container, source.properties_container)
@@ -69,12 +73,17 @@ namespace 'Alcarin', (exports, Alcarin) ->
                 @.default_properties = {} if not @.default_properties?
                 @.default_properties[name] = default_value
             #this method will be called in specific object instance context
-            (val) ->
-                if not val? then return @properties_container[name]
-                @properties_container[name] = val
+            (new_value) ->
+                if not new_value? then return @properties_container[name]
+
+                old_value = @properties_container[name]
+                return false if new_value == old_value
+
+                @properties_container[name] = new_value
+
                 if @initialized
                     @propertyChanged name
-                onChange?.call @, val
+                onChange?.call @, old_value, new_value
 
 
         # it return function, should be used to updating activelist's
