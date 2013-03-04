@@ -3,7 +3,7 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 namespace('Alcarin.Orbis', function(exports, Alcarin) {
-  var Gateway, GatewayGroup, root;
+  var Gateway, GatewayEditor, GatewayGroup, root;
   root = null;
   GatewayGroup = (function(_super) {
 
@@ -16,8 +16,7 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
         root.groups.list[new_name] = this;
       }
       if (this.initialized) {
-        gateways = this.gateways().iterator().slice(0);
-        this.gateways().clear();
+        gateways = this.gateways().iterator();
         for (_i = 0, _len = gateways.length; _i < _len; _i++) {
           gateway = gateways[_i];
           gateway.group(new_name);
@@ -102,26 +101,17 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
     };
 
     GatewayGroup.prototype.create_gateway = function(e) {
-      var $form, edition_gateway,
+      var edition_gateway, editor,
         _this = this;
       edition_gateway = new Gateway(false);
-      edition_gateway.name('Empty gateway');
-      edition_gateway.group(this.group_name());
-      edition_gateway.description('Please, add description to this gateway!', edition_gateway.bind(root.$edit_pane));
-      $form = root.$edit_pane_form;
-      $form._method('post');
-      $form.find('[name="group"]').val(this.group_name());
-      $form.one('ajax-submit', function(e, response) {
+      edition_gateway.name('Empty gateway').group(this.group_name()).description('Please, add description to this gateway!', editor = root.gateway_editor());
+      return editor.mode('post').show(edition_gateway, function(response) {
         var gateway;
         if (response.success) {
           gateway = new Gateway;
-          gateway.copy(response.data);
-          return root.cancel_gateway_edit();
+          return gateway.copy(response.data);
         }
       });
-      root.$edit_pane.fadeIn();
-      root.$groups_pane.fadeOut();
-      return false;
     };
 
     GatewayGroup.prototype.delete_group = function() {
@@ -135,7 +125,7 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
         }, function(response) {
           var gateway, _i, _len, _ref;
           if (response.success) {
-            _ref = _this.gateways().iterator().slice(0);
+            _ref = _this.gateways().iterator();
             for (_i = 0, _len = _ref.length; _i < _len; _i++) {
               gateway = _ref[_i];
               gateway.group(0);
@@ -185,22 +175,15 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
     };
 
     Gateway.prototype.edit = function() {
-      var $form, edit_copy,
+      var edit_copy, editor,
         _this = this;
-      $form = root.$edit_pane_form;
-      $form._method('put');
-      $form.find('[name="group"]').val(this.group());
       edit_copy = this.clone();
-      edit_copy.bind(root.$edit_pane);
-      $form.one('ajax-submit', function(e, response) {
+      editor = root.gateway_editor();
+      return editor.mode('put').show(edit_copy, function(response) {
         if (response.success) {
-          _this.copy(response.data);
-          return root.cancel_gateway_edit();
+          return _this.copy(response.data);
         }
       });
-      root.$edit_pane.fadeIn();
-      root.$groups_pane.fadeOut();
-      return false;
     };
 
     Gateway.prototype["delete"] = function() {
@@ -242,12 +225,51 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
     return Gateway;
 
   })(Alcarin.ActiveView);
+  GatewayEditor = (function() {
+
+    function GatewayEditor(edit_pane, groups_pane) {
+      this.edit_pane = edit_pane;
+      this.groups_pane = groups_pane;
+      this.cancel = __bind(this.cancel, this);
+
+      this.form = this.edit_pane.find('form');
+      this.edit_pane.on('click', '.close', this.cancel);
+    }
+
+    GatewayEditor.prototype.mode = function(_mode) {
+      this.form._method(_mode);
+      return this;
+    };
+
+    GatewayEditor.prototype.show = function(gateway, on_done) {
+      var _this = this;
+      this.gateway = gateway;
+      gateway.bind(this.edit_pane);
+      this.form.find('[name="group"]').val(gateway.group());
+      this.form.one('ajax-submit', function(e, response) {
+        if (typeof on_done === "function") {
+          on_done(response);
+        }
+        return _this.cancel();
+      });
+      this.groups_pane.fadeOut();
+      return this.edit_pane.fadeIn();
+    };
+
+    GatewayEditor.prototype.cancel = function() {
+      this.gateway = null;
+      this.groups_pane.fadeIn();
+      this.edit_pane.fadeOut();
+      return this.form.unbind('ajax-submit');
+    };
+
+    return GatewayEditor;
+
+  })();
   return exports.Gateways = (function() {
 
     function Gateways($gateways) {
       this.create_group = __bind(this.create_group, this);
-
-      this.cancel_gateway_edit = __bind(this.cancel_gateway_edit, this);
       this.groups = {};
       this.$gateways = $gateways;
       this.$groups_pane = $gateways.find('.gateways-groups');
@@ -255,10 +277,11 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
       this.$edit_pane_form = this.$edit_pane.find('form');
     }
 
-    Gateways.prototype.cancel_gateway_edit = function() {
-      this.$groups_pane.fadeIn();
-      this.$edit_pane.fadeOut();
-      return this.$edit_pane_form.unbind('ajax-submit');
+    Gateways.prototype.gateway_editor = function() {
+      if (!(this.editor != null)) {
+        this.editor = new GatewayEditor(this.$edit_pane, this.$groups_pane);
+      }
+      return this.editor;
     };
 
     Gateways.prototype.create_group = function() {
@@ -285,7 +308,6 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
           new_group = new GatewayGroup(group_name);
           new_gateway = new Gateway;
           new_gateway.copy(response.data);
-          _this.$groups_pane.find('.collapse').collapse('hide');
           return new_group.rel.find("#" + group_name).collapse('toggle');
         } else {
           return console.log(response.errors);
@@ -333,7 +355,6 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
     Gateways.prototype.init = function() {
       root = this;
       this.$groups_pane.on('click', '.add-group', this.create_group);
-      this.$edit_pane.on('click', '.close', this.cancel_gateway_edit);
       $('[name="description"]').attr('value', '{item.description}');
       return this.init_groups();
     };

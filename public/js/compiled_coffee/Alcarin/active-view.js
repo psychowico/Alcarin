@@ -92,7 +92,10 @@ namespace('Alcarin', function(exports, Alcarin) {
         if (this.initialized) {
           this.propertyChanged(name);
         }
-        return onChange != null ? onChange.call(this, old_value, new_value) : void 0;
+        if (onChange != null) {
+          onChange.call(this, old_value, new_value);
+        }
+        return this;
       };
     };
 

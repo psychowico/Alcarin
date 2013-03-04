@@ -71,25 +71,14 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
         create_gateway: (e)=>
             edition_gateway  = new Gateway false
 
-            edition_gateway.name 'Empty gateway'
-            edition_gateway.group @group_name()
-            edition_gateway.description 'Please, add description to this gateway!',
-            edition_gateway.bind root.$edit_pane
+            edition_gateway.name('Empty gateway').group(@group_name())
+               .description 'Please, add description to this gateway!',
 
-            $form = root.$edit_pane_form
-            $form._method 'post'
-            $form.find('[name="group"]').val @group_name()
-
-            $form.one 'ajax-submit', (e, response)=>
+            editor = root.gateway_editor()
+            editor.mode('post').show edition_gateway, (response)=>
                 if response.success
                     gateway = new Gateway
                     gateway.copy response.data
-                    root.cancel_gateway_edit()
-
-            root.$edit_pane.fadeIn()
-            root.$groups_pane.fadeOut()
-
-            false
 
         delete_group: ()=>
             Alcarin.Dialogs.Confirms.admin 'Really deleting? Gateways will be moved to "ungrouped" group.', =>
@@ -126,22 +115,12 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
             root.groups.list[@group()]
 
         edit: =>
-            $form = root.$edit_pane_form
-            $form._method 'put'
-
-            $form.find('[name="group"]').val @group()
-
             edit_copy = @clone()
-            edit_copy.bind root.$edit_pane
 
-            $form.one 'ajax-submit', (e, response)=>
+            editor = root.gateway_editor()
+            editor.mode('put').show edit_copy, (response)=>
                 if response.success
                     @copy response.data
-                    root.cancel_gateway_edit()
-
-            root.$edit_pane.fadeIn()
-            root.$groups_pane.fadeOut()
-            false
 
         delete: =>
             Alcarin.Dialogs.Confirms.admin 'Really deleting this gateway?', =>
@@ -162,6 +141,33 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
             @debug = ''
             super()
 
+    class GatewayEditor
+        constructor: (@edit_pane, @groups_pane)->
+            @form = @edit_pane.find('form')
+            @edit_pane.on 'click', '.close', @cancel
+
+        mode: (_mode)->
+            @form._method _mode
+            @
+
+        show: (gateway, on_done)->
+            @gateway = gateway
+            gateway.bind @edit_pane
+
+            @form.find('[name="group"]').val gateway.group()
+            @form.one 'ajax-submit', (e, response)=>
+                on_done?(response)
+                @cancel()
+
+            @groups_pane.fadeOut()
+            @edit_pane.fadeIn()
+
+        cancel: =>
+            @gateway = null
+            @groups_pane.fadeIn()
+            @edit_pane.fadeOut()
+            @form.unbind 'ajax-submit'
+
     class exports.Gateways
 
         constructor : ( $gateways )->
@@ -171,10 +177,10 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
             @$edit_pane   = $gateways.find('.gateway-edit')
             @$edit_pane_form = @$edit_pane.find('form')
 
-        cancel_gateway_edit : =>
-            @$groups_pane.fadeIn()
-            @$edit_pane.fadeOut()
-            @$edit_pane_form.unbind 'ajax-submit'
+        gateway_editor: ->
+            if not @editor?
+                @editor = new GatewayEditor @$edit_pane, @$groups_pane
+            @editor
 
         create_group : =>
 
@@ -235,7 +241,6 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
             #register event
             root = @
             @$groups_pane.on 'click', '.add-group', @create_group
-            @$edit_pane.on 'click', '.close', @cancel_gateway_edit
             # fix problem with google chrome, not deleting this.
             $('[name="description"]').attr('value', '{item.description}')
 
