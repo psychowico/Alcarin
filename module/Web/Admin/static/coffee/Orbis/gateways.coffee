@@ -4,7 +4,11 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
 
     class GatewayGroup extends Alcarin.ActiveView
 
-        group_name : @dependencyProperty('group_name', '', (old_name, new_name)->
+        group_name: (name)->
+            name = 'Ungrouped' if name == 0
+            @group_name_dep name
+
+        group_name_dep : @dependencyProperty('group_name', '', (old_name, new_name)->
             # when group name is changed we need update global groups object
             if root.groups.list[old_name]?
                 delete root.groups.list[old_name]
@@ -97,7 +101,12 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
         description: @dependencyProperty 'description', ' '
         x          : @dependencyProperty 'x', '0'
         y          : @dependencyProperty 'y', '0'
-        group      : @dependencyProperty('group', '', (old_name, new_name)->
+
+        group      : (group_name)->
+            # group 0 mean ungrouped always
+            group_name = 'Ungrouped' if group_name == 0
+            @group_dep group_name
+        group_dep  : @dependencyProperty('group', '', (old_name, new_name)->
             # when group string is changed we find old GatewayGroup object and remove
             # this Gateway from it. next we add this Gateway to new GatewayGroup
             @debug = @name()
@@ -121,6 +130,9 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
             editor.mode('put').show edit_copy, (response)=>
                 if response.success
                     @copy response.data
+                else
+                    console.log response.errors
+                    return false
 
         delete: =>
             Alcarin.Dialogs.Confirms.admin 'Really deleting this gateway?', =>
@@ -133,40 +145,87 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
                         if gg.gateways().length() == 0 and gg.editable
                             root.groups.remove gg
 
+        mouse_enter: =>
+            if not @tmp_flag?
+                @tmp_flag = root.minimap().create_flag @x(), @y()
+                @tmp_flag.show()
+
+        mouse_leave: =>
+            @tmp_flag?.destroy()
+            delete @tmp_flag
+
         onbind: ($target)->
-            $target.on 'click', 'a', @edit
-            $target.on 'click', '.delete-gateway', @delete
+            $target.on('click', 'a', @edit)
+                   .on('click', '.delete-gateway', @delete)
+                   .on('mouseenter', @mouse_enter)
+                   .on('mouseleave', @mouse_leave)
+
+        onunbind: ($target)->
+            $target.off('click', 'a', @edit)
+                   .off('click', '.delete-gateway', @delete)
+                   .off('mouseenter', @mouse_enter)
+                   .off('mouseleave', @mouse_leave)
+            @tmp_flag?.destroy()
 
         constructor : (@auto_bind = true)->
             @debug = ''
             super()
 
     class GatewayEditor
+
         constructor: (@edit_pane, @groups_pane)->
             @form = @edit_pane.find('form')
             @edit_pane.on 'click', '.close', @cancel
+            @minimap = root.minimap()
+
+            @flag_mode = false
 
         mode: (_mode)->
             @form._method _mode
             @
 
+        flag_drop: (drop_event)=>
+            p      = drop_event.position
+            coords = @minimap.to_coords p.left, p.top
+            @gateway.x coords.x
+            @gateway.y coords.y
+
+        edit_flag_mode: (val)->
+            if not @flag_mode and val
+                @flag = @minimap.create_flag @gateway.x(), @gateway.y()
+                @flag.drop @flag_drop
+                @flag.show()
+                @flag_mode = true
+            else if @flag_mode and not val
+                @flag?.release_drop()
+                @flag.destroy()
+                delete @flag
+                @flag_mode = false
+
         show: (gateway, on_done)->
+
             @gateway = gateway
             gateway.bind @edit_pane
 
+            @edit_flag_mode true
+
             @form.find('[name="group"]').val gateway.group()
-            @form.one 'ajax-submit', (e, response)=>
-                on_done?(response)
-                @cancel()
+            @form.on 'ajax-submit', (e, response)=>
+                result = on_done?(response)
+                @cancel() if result != false
 
             @groups_pane.fadeOut()
             @edit_pane.fadeIn()
+            false
 
         cancel: =>
-            @gateway = null
+            @edit_flag_mode false
+            @form.off 'ajax-submit'
+
             @groups_pane.fadeIn()
-            @edit_pane.fadeOut()
-            @form.unbind 'ajax-submit'
+            @edit_pane.fadeOut =>
+                @gateway.unbind @edit_pane
+                @gateway = null
 
     class exports.Gateways
 
@@ -176,6 +235,11 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
             @$groups_pane = $gateways.find('.gateways-groups')
             @$edit_pane   = $gateways.find('.gateway-edit')
             @$edit_pane_form = @$edit_pane.find('form')
+
+        minimap: ->
+            if not @_minimap
+                @_minimap    = $('.minimap > canvas').data 'minimap'
+            @_minimap
 
         gateway_editor: ->
             if not @editor?

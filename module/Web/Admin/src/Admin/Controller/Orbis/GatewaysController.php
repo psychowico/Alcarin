@@ -25,9 +25,13 @@ class GatewaysController extends AbstractAlcarinRestfulController
 
     public function create($data)
     {
-        $with_defaults = empty($data['creating_group']);
+        $creating_group = !empty($data['creating_group']);
 
-        $form = $this->getForm($with_defaults);
+        $form = $this->getServiceLocator()->get('gateways-form');
+        if($creating_group) {
+            $form->remove('CSRF');
+        }
+
         $form->setData($data);
 
         if($form->isValid()) {
@@ -75,7 +79,9 @@ class GatewaysController extends AbstractAlcarinRestfulController
         }
         else {
             //gateways
-            $form = $this->getForm();
+            #
+
+            $form = $this->getServiceLocator()->get('gateways-form');
             $form->setData($data);
 
             if($form->isValid()) {
@@ -115,18 +121,5 @@ class GatewaysController extends AbstractAlcarinRestfulController
     protected function orbis()
     {
         return $this->gameServices()->get('orbis');
-    }
-
-    protected function getForm($with_defaults = true)
-    {
-        $form_prototype = new \Admin\Form\EditGatewayForm();
-        $builder = $this->getServiceLocator()->get('AnnotationBuilderService');
-        $form = $builder->createForm($form_prototype, $with_defaults, 'Save');
-
-        # let disable default InArray select validator for groups - they are dynamic
-        # and not needed this validator.
-        $form->get('group')->disableValidation();
-        return $form;
-
     }
 }

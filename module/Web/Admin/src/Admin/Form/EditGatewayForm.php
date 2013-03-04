@@ -31,6 +31,7 @@ class EditGatewayForm
      * @Annotation\Required(true)
      * @Annotation\Options({"label":"Gateway group:"})
      * @Annotation\Attributes({"class": "active-group", "options":{"{item.group_name}":"{item.group_name}"}})
+     * @Annotation\Filter({"name": "UngroupedFilter"})
      */
     public $group;
 
@@ -39,7 +40,7 @@ class EditGatewayForm
      * @Annotation\Options({"label":"X:"})
      * @Annotation\Required(true)
      * @Annotation\Attributes({"value":"{item.x}"})
-     * @Annotation\Validator({"name": "Float"})
+     * @Annotation\Validator({"name": "Int"})
      */
     public $x;
 
@@ -48,7 +49,7 @@ class EditGatewayForm
      * @Annotation\Options({"label":"Y:"})
      * @Annotation\Required(true)
      * @Annotation\Attributes({"value":"{item.y}"})
-     * @Annotation\Validator({"name": "Float"})
+     * @Annotation\Validator({"name": "Int"})
      */
     public $y;
 

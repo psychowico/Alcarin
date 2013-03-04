@@ -98,7 +98,7 @@ class AnnotationBuilderService implements \Zend\ServiceManager\ServiceLocatorAwa
         //adding service directly
         $filter_plugins->setService($key, $filter);
 
-        $input_factory->setDefaultValidatorChain( $filter_chain );
+        $input_factory->setDefaultFilterChain( $filter_chain );
         return $this;
     }
 

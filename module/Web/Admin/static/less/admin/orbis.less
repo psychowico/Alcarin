@@ -1,5 +1,31 @@
 @import 'core';
 
+.minimap {
+    position: relative;
+    .flag {
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        div {
+            .circle();
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            position: relative;
+            left: -15px;
+            top: -15px;
+
+            border: 2px dashed red;
+            &:hover, &.ui-draggable-dragging {
+                border-style: solid dashed
+            }
+
+            text-align: center;
+        }
+    }
+}
+
 .gateways-groups {
     .edit-btn {
         margin-left:5px;

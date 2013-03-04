@@ -12,15 +12,8 @@ class OrbisController extends AbstractAlcarinRestfulController
     public function getList()
     {
         return [
-            'gateway_form' => $this->getForm()
+            'gateway_form' => $this->getServiceLocator()->get('gateways-form')
         ];
-    }
-
-    protected function getForm($with_defaults = true)
-    {
-        $form_prototype = new \Admin\Form\EditGatewayForm();
-        $builder = $this->getServiceLocator()->get('AnnotationBuilderService');
-        return $builder->createForm($form_prototype, $with_defaults, 'Save');
     }
 
 }

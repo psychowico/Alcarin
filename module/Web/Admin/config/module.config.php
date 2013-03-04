@@ -17,6 +17,13 @@ return array(
         ),
     ),
 
+
+    'service_manager' => array(
+        'factories'    => array(
+            'gateways-form' => 'Admin\Factory\GatewaysFormFactory'
+        ),
+    ),
+
     'view_helpers' => array(
         'invokables'   => array(
             'uri'          => 'Admin\View\Helper\Uri',

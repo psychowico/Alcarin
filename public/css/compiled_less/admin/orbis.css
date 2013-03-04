@@ -1,3 +1,31 @@
+.minimap {
+  position: relative;
+}
+.minimap .flag {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+}
+.minimap .flag div {
+  -webkit-border-radius: 50px;
+  -moz-border-radius: 50px;
+  -ms-border-radius: 50px;
+  -o-border-radius: 50px;
+  border-radius: 50px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  position: relative;
+  left: -15px;
+  top: -15px;
+  border: 2px dashed red;
+  text-align: center;
+}
+.minimap .flag div:hover,
+.minimap .flag div.ui-draggable-dragging {
+  border-style: solid dashed;
+}
 .gateways-groups .edit-btn {
   margin-left: 5px;
 }

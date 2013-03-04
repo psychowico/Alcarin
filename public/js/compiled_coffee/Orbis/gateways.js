@@ -9,7 +9,14 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
 
     __extends(GatewayGroup, _super);
 
-    GatewayGroup.prototype.group_name = GatewayGroup.dependencyProperty('group_name', '', function(old_name, new_name) {
+    GatewayGroup.prototype.group_name = function(name) {
+      if (name === 0) {
+        name = 'Ungrouped';
+      }
+      return this.group_name_dep(name);
+    };
+
+    GatewayGroup.prototype.group_name_dep = GatewayGroup.dependencyProperty('group_name', '', function(old_name, new_name) {
       var gateway, gateways, _i, _len;
       if (root.groups.list[old_name] != null) {
         delete root.groups.list[old_name];
@@ -154,7 +161,14 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
 
     Gateway.prototype.y = Gateway.dependencyProperty('y', '0');
 
-    Gateway.prototype.group = Gateway.dependencyProperty('group', '', function(old_name, new_name) {
+    Gateway.prototype.group = function(group_name) {
+      if (group_name === 0) {
+        group_name = 'Ungrouped';
+      }
+      return this.group_dep(group_name);
+    };
+
+    Gateway.prototype.group_dep = Gateway.dependencyProperty('group', '', function(old_name, new_name) {
       var old_group, target_group;
       this.debug = this.name();
       if (this.auto_bind) {
@@ -182,6 +196,9 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
       return editor.mode('put').show(edit_copy, function(response) {
         if (response.success) {
           return _this.copy(response.data);
+        } else {
+          console.log(response.errors);
+          return false;
         }
       });
     };
@@ -207,13 +224,37 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
       });
     };
 
+    Gateway.prototype.mouse_enter = function() {
+      if (!(this.tmp_flag != null)) {
+        this.tmp_flag = root.minimap().create_flag(this.x(), this.y());
+        return this.tmp_flag.show();
+      }
+    };
+
+    Gateway.prototype.mouse_leave = function() {
+      var _ref;
+      if ((_ref = this.tmp_flag) != null) {
+        _ref.destroy();
+      }
+      return delete this.tmp_flag;
+    };
+
     Gateway.prototype.onbind = function($target) {
-      $target.on('click', 'a', this.edit);
-      return $target.on('click', '.delete-gateway', this["delete"]);
+      return $target.on('click', 'a', this.edit).on('click', '.delete-gateway', this["delete"]).on('mouseenter', this.mouse_enter).on('mouseleave', this.mouse_leave);
+    };
+
+    Gateway.prototype.onunbind = function($target) {
+      var _ref;
+      $target.off('click', 'a', this.edit).off('click', '.delete-gateway', this["delete"]).off('mouseenter', this.mouse_enter).off('mouseleave', this.mouse_leave);
+      return (_ref = this.tmp_flag) != null ? _ref.destroy() : void 0;
     };
 
     function Gateway(auto_bind) {
       this.auto_bind = auto_bind != null ? auto_bind : true;
+      this.mouse_leave = __bind(this.mouse_leave, this);
+
+      this.mouse_enter = __bind(this.mouse_enter, this);
+
       this["delete"] = __bind(this["delete"], this);
 
       this.edit = __bind(this.edit, this);
@@ -232,8 +273,12 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
       this.groups_pane = groups_pane;
       this.cancel = __bind(this.cancel, this);
 
+      this.flag_drop = __bind(this.flag_drop, this);
+
       this.form = this.edit_pane.find('form');
       this.edit_pane.on('click', '.close', this.cancel);
+      this.minimap = root.minimap();
+      this.flag_mode = false;
     }
 
     GatewayEditor.prototype.mode = function(_mode) {
@@ -241,26 +286,58 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
       return this;
     };
 
+    GatewayEditor.prototype.flag_drop = function(drop_event) {
+      var coords, p;
+      p = drop_event.position;
+      coords = this.minimap.to_coords(p.left, p.top);
+      this.gateway.x(coords.x);
+      return this.gateway.y(coords.y);
+    };
+
+    GatewayEditor.prototype.edit_flag_mode = function(val) {
+      var _ref;
+      if (!this.flag_mode && val) {
+        this.flag = this.minimap.create_flag(this.gateway.x(), this.gateway.y());
+        this.flag.drop(this.flag_drop);
+        this.flag.show();
+        return this.flag_mode = true;
+      } else if (this.flag_mode && !val) {
+        if ((_ref = this.flag) != null) {
+          _ref.release_drop();
+        }
+        this.flag.destroy();
+        delete this.flag;
+        return this.flag_mode = false;
+      }
+    };
+
     GatewayEditor.prototype.show = function(gateway, on_done) {
       var _this = this;
       this.gateway = gateway;
       gateway.bind(this.edit_pane);
+      this.edit_flag_mode(true);
       this.form.find('[name="group"]').val(gateway.group());
-      this.form.one('ajax-submit', function(e, response) {
-        if (typeof on_done === "function") {
-          on_done(response);
+      this.form.on('ajax-submit', function(e, response) {
+        var result;
+        result = typeof on_done === "function" ? on_done(response) : void 0;
+        if (result !== false) {
+          return _this.cancel();
         }
-        return _this.cancel();
       });
       this.groups_pane.fadeOut();
-      return this.edit_pane.fadeIn();
+      this.edit_pane.fadeIn();
+      return false;
     };
 
     GatewayEditor.prototype.cancel = function() {
-      this.gateway = null;
+      var _this = this;
+      this.edit_flag_mode(false);
+      this.form.off('ajax-submit');
       this.groups_pane.fadeIn();
-      this.edit_pane.fadeOut();
-      return this.form.unbind('ajax-submit');
+      return this.edit_pane.fadeOut(function() {
+        _this.gateway.unbind(_this.edit_pane);
+        return _this.gateway = null;
+      });
     };
 
     return GatewayEditor;
@@ -276,6 +353,13 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
       this.$edit_pane = $gateways.find('.gateway-edit');
       this.$edit_pane_form = this.$edit_pane.find('form');
     }
+
+    Gateways.prototype.minimap = function() {
+      if (!this._minimap) {
+        this._minimap = $('.minimap > canvas').data('minimap');
+      }
+      return this._minimap;
+    };
 
     Gateways.prototype.gateway_editor = function() {
       if (!(this.editor != null)) {

@@ -17,8 +17,8 @@ return array(
                             '/js/jquery/jquery-1.9.1.js',
                             '/js/jquery/jquery.ba-bbq-1.4pre.js',
                             '/js/jquery/jquery.cookie-1.3.1.js',
-                            '/js/jquery/jcanvas-13.02.11.js',
                             '/js/jquery/jquery.form-3.27.0.js',
+                            '/js/jquery/jquery.ui.interactions-1.10.1.js',
                             '/js/bootstrap-2.3.0.js',
                             '/js/bootstrap-editable-1.4.1.js'
                         ),
@@ -33,6 +33,7 @@ return array(
                             '/js/compiled_coffee/Alcarin/active-list.js',
                             '/js/compiled_coffee/Alcarin/JQueryPlugins/RESTful.js',
                             '/js/compiled_coffee/Alcarin/JQueryPlugins/forms.js',
+                            '/js/compiled_coffee/Alcarin/JQueryPlugins/others.js',
                             '/js/compiled_coffee/Dialogs/confirms.js',
                         ),
                     ),
