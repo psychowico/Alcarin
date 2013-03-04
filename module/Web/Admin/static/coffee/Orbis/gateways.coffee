@@ -17,7 +17,6 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
             if @initialized
                 gateways = @gateways().iterator()
                 gateway.group new_name for gateway in gateways
-                #@gateways().clear()
 
             @debug = new_name
         )
@@ -157,6 +156,8 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
         onbind: ($target)->
             $target.on('click', 'a', @edit)
                    .on('click', '.delete-gateway', @delete)
+
+            $target.filter('li')
                    .on('mouseenter', @mouse_enter)
                    .on('mouseleave', @mouse_leave)
 
