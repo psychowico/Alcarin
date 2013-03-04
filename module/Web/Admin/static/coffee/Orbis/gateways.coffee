@@ -10,13 +10,17 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
                 delete root.groups.list[old_name]
                 root.groups.list[new_name] = @
 
-            @group_href new_name.replace(/\s+/g, '-').toLowerCase()
+            if @initialized
+                gateways = @gateways().iterator()
+                gateway.group new_name for gateway in gateways
+                #@gateways().clear()
+
             @debug = new_name
         )
 
-        group_href : @dependencyProperty 'group_href', ''
         edit_class : @dependencyProperty 'edit_btn_class', ''
         group_class: @dependencyProperty 'group_class', ''
+        css_id     : @dependencyProperty 'css_id'
 
         gateways   : @dependencyList '.items'
 
@@ -24,33 +28,38 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
             @debug = ''
             @editable = true
             super()
+            @css_id Alcarin.Randoms.id()
             @group_name group_name if group_name?
 
             root.groups.list[group_name] = @
             root.groups.push @
 
+            @gateways().setAnims 'slideDown', 'slideUp'
+
         onbind : ($target)->
             super()
-            @gateways().setAnims 'slideDown', 'slideUp'
-            @edit_btn = $target.find '.group-name.editable'
-            @edit_btn.editable({
-                success: (response, value) =>
-                    if response.success
-                        @group_name value
-                        #to stop auto-update
-                        return {newValue: undefined}
-                    if response.error? then response.error else 'Error occured.'
-            }).on('shown', (e)=>
-                $input = $(e.currentTarget).data('editable').input.$input
-                $input?.val @group_name()
-            )
+            edit_btn = $target.find '.group-name.editable'
+            if edit_btn.length > 0
+                @edit_btn = edit_btn
+                @edit_btn.editable({success: @edit_group})
+                .on('shown', (e)=>
+                    $input = $(e.currentTarget).data('editable').input.$input
+                    $input?.val @group_name()
+                )
+                $target.on 'click', '.edit-group', =>
+                    @edit_btn.editable('option', {url: urls.orbis.gateways + '/' + @group_name() })
+                    @edit_btn.editable('show')
+                    false
+
             $target.on 'click', '.create-gateway', @create_gateway
-            $target.on 'click', '.edit-group', @edit_group
             $target.on 'click', 'button.close.delete-group', @delete_group
 
-        edit_group : =>
-            @edit_btn.editable('show')
-            false
+        edit_group: (response, value) =>
+            if response.success
+                @group_name value
+                #to stop auto-update
+                return {newValue: undefined}
+            if response.error? then response.error else 'Error occured.'
 
         disable_edition: ->
             @edit_class 'hide'
@@ -90,7 +99,7 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
                     if response.success
                         gateway.group 0 for gateway in @gateways().iterator()
                         @gateways().clear()
-                        root.groups.remove @
+
             false
 
     class Gateway extends Alcarin.ActiveView
@@ -102,6 +111,7 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
         group      : @dependencyProperty('group', '', (old_name, new_name)->
             # when group string is changed we find old GatewayGroup object and remove
             # this Gateway from it. next we add this Gateway to new GatewayGroup
+            @debug = @name()
             if @auto_bind
                 if root.groups.list[old_name]?
                     old_group = root.groups.list[old_name]
@@ -118,6 +128,7 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
         edit: =>
             $form = root.$edit_pane_form
             $form._method 'put'
+
             $form.find('[name="group"]').val @group()
 
             edit_copy = @clone()
@@ -148,6 +159,7 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
             $target.on 'click', '.delete-gateway', @delete
 
         constructor : (@auto_bind = true)->
+            @debug = ''
             super()
 
     class exports.Gateways
@@ -188,7 +200,6 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
                     new_gateway = new Gateway
                     new_gateway.copy response.data
 
-                    @$groups_pane.find('.collapse').collapse 'hide'
                     new_group.rel.find("##{group_name}").collapse 'toggle'
                 else
                     console.log response.errors
@@ -229,4 +240,3 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
             $('[name="description"]').attr('value', '{item.description}')
 
             @init_groups()
-

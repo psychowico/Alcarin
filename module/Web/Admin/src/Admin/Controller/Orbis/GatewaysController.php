@@ -66,7 +66,7 @@ class GatewaysController extends AbstractAlcarinRestfulController
                 //validated value
                 $result = $this->orbis()->gateways()->rename_group($group_name, $new_name);
                 if(is_string($result)) {
-                    return $this->fail(['error'   => $result]);
+                    return $this->json()->fail(['error'   => $result]);
                 }
                 else {
                     return $this->json()->success();

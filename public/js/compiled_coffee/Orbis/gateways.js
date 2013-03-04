@@ -10,19 +10,27 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
     __extends(GatewayGroup, _super);
 
     GatewayGroup.prototype.group_name = GatewayGroup.dependencyProperty('group_name', '', function(old_name, new_name) {
+      var gateway, gateways, _i, _len;
       if (root.groups.list[old_name] != null) {
         delete root.groups.list[old_name];
         root.groups.list[new_name] = this;
       }
-      this.group_href(new_name.replace(/\s+/g, '-').toLowerCase());
+      if (this.initialized) {
+        gateways = this.gateways().iterator().slice(0);
+        this.gateways().clear();
+        for (_i = 0, _len = gateways.length; _i < _len; _i++) {
+          gateway = gateways[_i];
+          gateway.group(new_name);
+        }
+      }
       return this.debug = new_name;
     });
-
-    GatewayGroup.prototype.group_href = GatewayGroup.dependencyProperty('group_href', '');
 
     GatewayGroup.prototype.edit_class = GatewayGroup.dependencyProperty('edit_btn_class', '');
 
     GatewayGroup.prototype.group_class = GatewayGroup.dependencyProperty('group_class', '');
+
+    GatewayGroup.prototype.css_id = GatewayGroup.dependencyProperty('css_id');
 
     GatewayGroup.prototype.gateways = GatewayGroup.dependencyList('.items');
 
@@ -35,45 +43,53 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
       this.debug = '';
       this.editable = true;
       GatewayGroup.__super__.constructor.call(this);
+      this.css_id(Alcarin.Randoms.id());
       if (group_name != null) {
         this.group_name(group_name);
       }
       root.groups.list[group_name] = this;
       root.groups.push(this);
+      this.gateways().setAnims('slideDown', 'slideUp');
     }
 
     GatewayGroup.prototype.onbind = function($target) {
-      var _this = this;
+      var edit_btn,
+        _this = this;
       GatewayGroup.__super__.onbind.call(this);
-      this.gateways().setAnims('slideDown', 'slideUp');
-      this.edit_btn = $target.find('.group-name.editable');
-      this.edit_btn.editable({
-        success: function(response, value) {
-          if (response.success) {
-            _this.group_name(value);
-            return {
-              newValue: void 0
-            };
-          }
-          if (response.error != null) {
-            return response.error;
-          } else {
-            return 'Error occured.';
-          }
-        }
-      }).on('shown', function(e) {
-        var $input;
-        $input = $(e.currentTarget).data('editable').input.$input;
-        return $input != null ? $input.val(_this.group_name()) : void 0;
-      });
+      edit_btn = $target.find('.group-name.editable');
+      if (edit_btn.length > 0) {
+        this.edit_btn = edit_btn;
+        this.edit_btn.editable({
+          success: this.edit_group
+        }).on('shown', function(e) {
+          var $input;
+          $input = $(e.currentTarget).data('editable').input.$input;
+          return $input != null ? $input.val(_this.group_name()) : void 0;
+        });
+        $target.on('click', '.edit-group', function() {
+          _this.edit_btn.editable('option', {
+            url: urls.orbis.gateways + '/' + _this.group_name()
+          });
+          _this.edit_btn.editable('show');
+          return false;
+        });
+      }
       $target.on('click', '.create-gateway', this.create_gateway);
-      $target.on('click', '.edit-group', this.edit_group);
       return $target.on('click', 'button.close.delete-group', this.delete_group);
     };
 
-    GatewayGroup.prototype.edit_group = function() {
-      this.edit_btn.editable('show');
-      return false;
+    GatewayGroup.prototype.edit_group = function(response, value) {
+      if (response.success) {
+        this.group_name(value);
+        return {
+          newValue: void 0
+        };
+      }
+      if (response.error != null) {
+        return response.error;
+      } else {
+        return 'Error occured.';
+      }
     };
 
     GatewayGroup.prototype.disable_edition = function() {
@@ -119,13 +135,12 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
         }, function(response) {
           var gateway, _i, _len, _ref;
           if (response.success) {
-            _ref = _this.gateways().iterator();
+            _ref = _this.gateways().iterator().slice(0);
             for (_i = 0, _len = _ref.length; _i < _len; _i++) {
               gateway = _ref[_i];
               gateway.group(0);
             }
-            _this.gateways().clear();
-            return root.groups.remove(_this);
+            return _this.gateways().clear();
           }
         });
       });
@@ -151,6 +166,7 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
 
     Gateway.prototype.group = Gateway.dependencyProperty('group', '', function(old_name, new_name) {
       var old_group, target_group;
+      this.debug = this.name();
       if (this.auto_bind) {
         if (root.groups.list[old_name] != null) {
           old_group = root.groups.list[old_name];
@@ -219,6 +235,7 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
 
       this.edit = __bind(this.edit, this);
 
+      this.debug = '';
       Gateway.__super__.constructor.call(this);
     }
 

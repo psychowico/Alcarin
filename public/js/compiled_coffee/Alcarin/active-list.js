@@ -9,7 +9,7 @@ namespace('Alcarin', function(exports, Alcarin) {
     };
 
     ActiveList.prototype.iterator = function() {
-      return this.source;
+      return this.source.slice(0);
     };
 
     ActiveList.prototype.setAnims = function(adding, removing) {
@@ -153,6 +153,9 @@ namespace('Alcarin', function(exports, Alcarin) {
     ActiveList.prototype.removeAt = function(index, on_done) {
       var counter, dom_obj, parent, _context, _i, _len, _on_done, _ref,
         _this = this;
+      if (index < 0 || index >= this.source.length) {
+        return false;
+      }
       if (this.binded) {
         counter = this.parents.length;
         _ref = this.parents;

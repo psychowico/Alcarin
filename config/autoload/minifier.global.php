@@ -27,6 +27,7 @@ return array(
                         'sources' => array(
                             '/js/compiled_coffee/core.js',
                             '/js/compiled_coffee/urls.js',
+                            '/js/compiled_coffee/Alcarin/randoms.js',
                             '/js/compiled_coffee/Alcarin/Errors/errors-core.js',
                             '/js/compiled_coffee/Alcarin/active-view.js',
                             '/js/compiled_coffee/Alcarin/active-list.js',
