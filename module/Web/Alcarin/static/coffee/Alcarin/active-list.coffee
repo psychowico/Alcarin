@@ -102,10 +102,11 @@ namespace 'Alcarin', (exports, Alcarin) ->
 
         remove: (obj, on_done)->
             index = @source.indexOf obj
-            @removeAt index, on_done if index != -1
+            @removeAt index, on_done
 
         #remove one item and update related view
         removeAt: (index, on_done)->
+            return false if index < 0 or index >= @source.length
             if @binded
                 counter = @parents.length
                 for parent in @parents
