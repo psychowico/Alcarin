@@ -71,7 +71,7 @@ class PrivilagesController extends AbstractAlcarinRestfulController
 
     private function preparePrivilagesForms($userid)
     {
-        $builder = new \Core\Service\AnnotationBuilderService();
+        $builder = $this->getServiceLocator()->get('AnnotationBuilderService');
 
         $privilages_forms = [];
 

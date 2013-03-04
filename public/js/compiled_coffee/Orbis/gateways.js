@@ -240,7 +240,8 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
     };
 
     Gateway.prototype.onbind = function($target) {
-      return $target.on('click', 'a', this.edit).on('click', '.delete-gateway', this["delete"]).on('mouseenter', this.mouse_enter).on('mouseleave', this.mouse_leave);
+      $target.on('click', 'a', this.edit).on('click', '.delete-gateway', this["delete"]);
+      return $target.filter('li').on('mouseenter', this.mouse_enter).on('mouseleave', this.mouse_leave);
     };
 
     Gateway.prototype.onunbind = function($target) {

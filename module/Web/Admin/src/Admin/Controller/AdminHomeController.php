@@ -15,14 +15,16 @@ class AdminHomeController extends AbstractAlcarinRestfulController
 {
     protected $admin_pages = [
         [
-            'name' => 'users',
-            'title'  => 'Manage players',
-            'icon' => 'icon-search',
+            'page'  => 'users',
+            'controller' => 'Admin\Controller\Users',
+            'title' => 'Manage players',
+            'icon'  => 'icon-search',
         ],
         [
-            'name' => 'orbis',
-            'title'  => '"Orbis" Editor',
-            'icon' => 'icon-globe',
+            'page'  => 'orbis',
+            'controller' => 'Admin\Controller\Orbis\Orbis',
+            'title' => '"Orbis" Editor',
+            'icon'  => 'icon-globe',
         ],
     ];
 
@@ -31,8 +33,8 @@ class AdminHomeController extends AbstractAlcarinRestfulController
         $result = [];
         $authService = $this->isAllowed();
         foreach( $this->admin_pages as $data ) {
-            $page = $data['name'];
-            if( $authService->isAllowedToController( $page ) ) {
+            $page = $data['controller'];
+            if( $authService->isAllowedToController($page) ) {
                 $router = $this->getServiceLocator()->get('router');
                 $url = '#';//$router->assemble( ['controller' => $page], ['name' => 'admin']);
 
@@ -44,7 +46,7 @@ class AdminHomeController extends AbstractAlcarinRestfulController
 
     private function pageData( $data ) {
         return [
-            'href' => $this->url()->fromRoute( 'admin/default', [ 'controller' => $data['name'] ] ),
+            'href' => $this->url()->fromRoute( 'admin/default', [ 'controller' => $data['page'] ] ),
             'icon' => empty( $data['icon'] ) ? null : $data['icon'],
             'title'  => empty( $data['title'] ) ? null : $data['title'],
         ];
