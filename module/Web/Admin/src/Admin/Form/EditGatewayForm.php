@@ -36,7 +36,7 @@ class EditGatewayForm
     public $group;
 
     /**
-     * @Annotation\Type("text")
+     * @Annotation\Type("hidden")
      * @Annotation\Options({"label":"X:"})
      * @Annotation\Required(true)
      * @Annotation\Attributes({"value":"{item.x}"})
@@ -45,7 +45,7 @@ class EditGatewayForm
     public $x;
 
     /**
-     * @Annotation\Type("text")
+     * @Annotation\Type("hidden")
      * @Annotation\Options({"label":"Y:"})
      * @Annotation\Required(true)
      * @Annotation\Attributes({"value":"{item.y}"})
