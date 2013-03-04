@@ -84,6 +84,7 @@ namespace 'Alcarin', (exports, Alcarin) ->
                 if @initialized
                     @propertyChanged name
                 onChange?.call @, old_value, new_value
+                @
 
 
         # it return function, should be used to updating activelist's
