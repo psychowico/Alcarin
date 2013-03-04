@@ -11,7 +11,7 @@ namespace 'Alcarin', (exports, Alcarin) ->
             remove: 'hide'
         }
 
-        iterator: -> @source
+        iterator: -> @source[..]
 
         setAnims : (adding, removing = 'hide') ->
             @anim = {
@@ -102,7 +102,7 @@ namespace 'Alcarin', (exports, Alcarin) ->
 
         remove: (obj, on_done)->
             index = @source.indexOf obj
-            @removeAt index, on_done
+            @removeAt index, on_done if index != -1
 
         #remove one item and update related view
         removeAt: (index, on_done)->
