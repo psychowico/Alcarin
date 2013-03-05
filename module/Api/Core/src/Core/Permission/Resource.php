@@ -14,7 +14,7 @@ class Resource
     const ADMIN_MENU                = 1;
     const ADMIN_USERS               = 2;
     const ADMIN_PRIVILAGES_MANAGING = 3;
-    const ADMIN_ORBIS = 4;
+    const ADMIN_ORBIS               = 4;
 
     /**
      * useable on privilages managing panels

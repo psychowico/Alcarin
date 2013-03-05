@@ -23,7 +23,7 @@ class AuthService implements ServiceLocatorAwareInterface
         $sm = $this->getServiceLocator();
         $config = $sm->get('config');
 
-        if( empty( $config['controllers_access']['controllers'][$controller_alias] ) ) return false;
+        if( !isset( $config['controllers_access']['controllers'][$controller_alias] ) ) return false;
 
         $resources = $config['controllers_access']['controllers'][$controller_alias];
 
@@ -34,6 +34,7 @@ class AuthService implements ServiceLocatorAwareInterface
                 return false;
             }
         }
+
         return true;
     }
 

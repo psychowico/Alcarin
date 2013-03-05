@@ -24,11 +24,19 @@ return array(
         ),
         /* controllers and their required resources privilages */
         'controllers' => array(
+            //zfcuser module controller and guest controllers
+            //are public available - we need sign it by empty array
+            //because by default all controllers are unaccessible.
+            'zfcuser'                           => [],
+            'guest-home'                        => [],
+
+            'Guest\Controller\Index'            => Resource::PLAYER_PANEL,
             'Alcarin\Controller\Index'          => Resource::PLAYER_PANEL,
             'Admin\Controller\Home'             => Resource::ADMIN_MENU,
             'Admin\Controller\Users'            => Resource::ADMIN_USERS,
             'Admin\Controller\Users\Privilages' => [Resource::ADMIN_USERS, Resource::ADMIN_PRIVILAGES_MANAGING],
             'Admin\Controller\Orbis\Orbis'      => [Resource::ADMIN_ORBIS],
+            'Admin\Controller\Orbis\Gateways'   => [Resource::ADMIN_ORBIS],
         ),
     ),
 
