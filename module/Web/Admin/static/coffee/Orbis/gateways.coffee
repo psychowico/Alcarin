@@ -280,7 +280,7 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
             #preparing groups active lists
             @groups = groups = new Alcarin.ActiveList()
             groups.list = {}
-            groups.setAnims 'show', 'slideUp'
+            groups.setAnims 'slideDown', 'slideUp'
 
             $list = @$groups_pane.parent().find('.active-group')
 

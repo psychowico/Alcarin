@@ -405,7 +405,7 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
         _this = this;
       this.groups = groups = new Alcarin.ActiveList();
       groups.list = {};
-      groups.setAnims('show', 'slideUp');
+      groups.setAnims('slideDown', 'slideUp');
       $list = this.$groups_pane.parent().find('.active-group');
       groups.bind($list);
       ungrouped = new GatewayGroup('Ungrouped');
