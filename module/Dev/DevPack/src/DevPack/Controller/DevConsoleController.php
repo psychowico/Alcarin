@@ -58,4 +58,19 @@ class DevConsoleController extends AbstractActionController
         return implode( "\n", $messages ) . PHP_EOL;
     }
 
+    public function prepareDatabaseAction()
+    {
+        $messages = [];
+        $request = $this->getRequest();
+        // Make sure that we are running in a console and the user has not tricked our
+        // application into running this action from a public web server.
+        if (!$request instanceof ConsoleRequest){
+            throw new \RuntimeException('You can only use this action from a console!');
+        }
+
+        $map = $this->getServiceLocator()->get('mongo')->map->ensureIndex(['loc' => '2d']);
+        $messages []= 'Done indexing "map" collection.';
+
+        return implode( "\n", $messages ) . PHP_EOL;
+    }
 }

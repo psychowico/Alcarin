@@ -16,6 +16,7 @@ use Zend\View\Model\JsonModel;
 use Zend\View\Renderer\JsonRenderer;
 use Zend\Http\Request;
 use Zend\Stdlib\ArrayUtils;
+use Zend\Http\PhpEnvironment\Request as HttpRequest;
 
 /**
  * alcarin system core module, should contains classes that will be shared between
@@ -25,15 +26,16 @@ class Module
 {
     public function onBootstrap(MvcEvent $e)
     {
-        $eventManager = $e->getApplication()->getEventManager();
+        $sm = $e->getApplication()->getServiceManager();
 
         //before controller are choose
-        $eventManager->attach( MvcEvent::EVENT_ROUTE , array( $this, 'setupAccessSystem' ), -100 );
+        if( ($request = $e->getRequest()) instanceof HttpRequest) {
+            $eventManager = $e->getApplication()->getEventManager();
+            $eventManager->attach( MvcEvent::EVENT_ROUTE , array( $this, 'setupAccessSystem' ), -100 );
 
-        $sm = $e->getApplication()->getServiceManager();
-        $request = $e->getRequest();
+            $this->setupRestfulStandard($sm, $request);
+        }
 
-        $this->setupRestfulStandard($sm, $request);
         $this->setupGameModulesSystem($sm);
     }
 

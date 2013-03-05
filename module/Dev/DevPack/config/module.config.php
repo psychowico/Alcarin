@@ -63,6 +63,15 @@ return array(
                         ),
                     ),
                 ),
+                'init-db' => array(
+                    'options' => array(
+                        'route'    => 'init db',
+                        'defaults' => array(
+                            'controller' => 'DevPack\DevConsoleController',
+                            'action'     => 'prepareDatabase',
+                        ),
+                    ),
+                ),
             ),
         ),
     ),

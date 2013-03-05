@@ -27,6 +27,7 @@ class Module implements ConsoleUsageProviderInterface
     {
         return array(
             'create su <suemail> <supass>' => 'Create super user with specific email and password. SU will have all possible privilages.',
+            'init db'                      => 'Create db indexes.',
         );
     }
 
