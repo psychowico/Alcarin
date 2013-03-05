@@ -27,6 +27,7 @@ return array(
     'view_helpers' => array(
         'invokables'   => array(
             'uri'          => 'Admin\View\Helper\Uri',
+            'help'         => 'Admin\View\Helper\HelpButton',
         ),
     ),
 

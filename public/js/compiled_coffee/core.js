@@ -43,5 +43,6 @@ $(function() {
     return $(form).trigger('ajax-submit', response);
   });
   $('input[type="text"]:first').focus();
+  $('.popover-invoke').popover();
   return $('body').disableSelection();
 });

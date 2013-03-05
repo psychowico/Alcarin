@@ -19,7 +19,7 @@ return array(
                             '/js/jquery/jquery.cookie-1.3.1.js',
                             '/js/jquery/jquery.form-3.27.0.js',
                             '/js/jquery/jquery.ui.interactions-1.10.1.js',
-                            '/js/bootstrap-2.3.0.js',
+                            '/js/bootstrap-2.3.1.js',
                             '/js/bootstrap-editable-1.4.1.js'
                         ),
                     ),
@@ -67,8 +67,8 @@ return array(
                     'external'  => array(
                         'sources'   => array(
                             '/css/style.css',
-                            '/css/bootstrap.css',
-                            '/css/bootstrap-responsive.css',
+                            '/css/bootstrap-2.3.1.css',
+                            '/css/bootstrap-responsive-2.3.1.css',
                             '/css/bootstrap-editable-1.4.1.css',
                         ),
                     ),
@@ -88,6 +88,7 @@ return array(
                             '/css/compiled_less/admin/index.css',
                             '/css/compiled_less/admin/users.css',
                             '/css/compiled_less/admin/orbis.css',
+                            '/css/compiled_less/admin/help.css',
                         ),
                     ),
                     //files for regular players

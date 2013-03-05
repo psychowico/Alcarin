@@ -35,5 +35,7 @@ $ =>
     # focus first input on site
     $('input[type="text"]:first').focus()
 
+    # auto-init popover and tooltip
+    $('.popover-invoke').popover()
     # disable selection on site
     $('body').disableSelection()

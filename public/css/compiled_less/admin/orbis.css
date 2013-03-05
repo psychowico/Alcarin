@@ -32,8 +32,12 @@
 .gateways-groups .add {
   margin-bottom: 10px;
 }
-.gateways-groups .add button {
+.gateways-groups .add .add-group {
+  display: inline;
   width: 220px;
+  float: left;
+}
+.gateways-groups .add .admin-help {
   float: right;
 }
 .gateways-groups .edit-group {
