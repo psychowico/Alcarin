@@ -2,12 +2,13 @@
 
 namespace Core\Permission;
 
-use Zend\ServiceManager\ServiceManagerAwareInterface;
-use Zend\ServiceManager\ServiceManager;
+use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Core\Permission\Resource;
 
-class AuthService implements ServiceManagerAwareInterface
+class AuthService implements ServiceLocatorAwareInterface
 {
+    use \Zend\ServiceManager\ServiceLocatorAwareTrait;
+
     protected $serviceManager;
     protected $auth;
 
@@ -19,21 +20,18 @@ class AuthService implements ServiceManagerAwareInterface
      */
     public function isAllowedToController( $controller_alias )
     {
-        $sm = $this->getServiceManager();
+        $sm = $this->getServiceLocator();
         $config = $sm->get('config');
 
-        if( !isset( $config['controllers_access']['controllers'] ) ) return true;
-        $access_list = $config['controllers_access']['controllers'];
+        if( empty( $config['controllers_access']['controllers'][$controller_alias] ) ) return false;
 
-        if( isset( $access_list[$controller_alias] ) ) {
-            $resources = $access_list[$controller_alias];
+        $resources = $config['controllers_access']['controllers'][$controller_alias];
 
-            if( is_scalar( $resources ) ) $resources = [ $resources ];
+        if( is_scalar( $resources ) ) $resources = [ $resources ];
 
-            foreach( $resources as $resource ) {
-                if( !$this->isAllowed( $resource ) ) {
-                    return false;
-                }
+        foreach( $resources as $resource ) {
+            if( !$this->isAllowed( $resource ) ) {
+                return false;
             }
         }
         return true;
@@ -68,30 +66,8 @@ class AuthService implements ServiceManagerAwareInterface
     protected function auth()
     {
         if( $this->auth == null ) {
-            $this->auth = $this->getServiceManager()->get('zfcuser_auth_service');
+            $this->auth = $this->getServiceLocator()->get('zfcuser_auth_service');
         }
         return $this->auth;
-    }
-
-
-    /**
-     * Retrieve service manager instance
-     *
-     * @return ServiceManager
-     */
-    public function getServiceManager()
-    {
-        return $this->serviceManager;
-    }
-
-    /**
-     * Set service manager instance
-     *
-     * @param ServiceManager $locator
-     * @return void
-     */
-    public function setServiceManager(ServiceManager $serviceManager)
-    {
-        $this->serviceManager = $serviceManager;
     }
 }

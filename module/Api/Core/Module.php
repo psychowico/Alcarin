@@ -125,6 +125,7 @@ class Module
         $route_match = $event->getRouteMatch();
         $choosed = $route_match->getParam('controller');
 
+
         $logger->debug(sprintf('Checking access for "%s".', $choosed));
 
         //if logged user not have privilages to any of needed

@@ -21,13 +21,13 @@ class Resource
      */
     public static $Descriptions = [
         'General'   => [
-            Resource::PLAYER_PANEL => ["Public", "Public data acessible for all logged users."],
+            Resource::PLAYER_PANEL => ["Public", "Public data acessible for all logged users"],
         ],
         'Administrative' => [
-            Resource::ADMIN_MENU => ["Admin menu", "Administrative menu."],
-            Resource::ADMIN_USERS => ["Users menu", "Users administration menu."],
-            Resource::ADMIN_PRIVILAGES_MANAGING => ["Administration of privileges", "Viewing and managing users privilages."],
-            Resource::ADMIN_ORBIS => ["Orbis Editor Access", "Global map editor."],
+            Resource::ADMIN_MENU => ["Admin menu", "Administrative menu"],
+            Resource::ADMIN_USERS => ["Users menu", "Users administration menu"],
+            Resource::ADMIN_PRIVILAGES_MANAGING => ["Administration of privileges", "Viewing and managing users privilages"],
+            Resource::ADMIN_ORBIS => ["Orbis Editor Access", "Global map editor"],
         ],
     ];
 
@@ -35,14 +35,4 @@ class Resource
     {
         return static::PLAYER_PANEL;
     }
-
-     /*$refl = new \ReflectionClass('Core\Permission\Resource');
-        $result = 0;
-        foreach( $refl->getConstants() as $name => $value ) {
-            if( strpos($name, 'ADMIN') === 0 ) {
-                $result |= (1 << $value);
-            }
-        }
-        return $result;
-    */
 }

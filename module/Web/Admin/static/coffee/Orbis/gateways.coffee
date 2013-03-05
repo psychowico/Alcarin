@@ -230,7 +230,7 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
 
     class exports.Gateways
 
-        constructor : ( $gateways )->
+        constructor : ($gateways)->
             @groups       = {}
             @$gateways    = $gateways
             @$groups_pane = $gateways.find('.gateways-groups')

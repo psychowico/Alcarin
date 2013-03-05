@@ -10,21 +10,21 @@
 namespace Admin\Controller;
 
 use Core\Controller\AbstractAlcarinRestfulController;
+use Zend\Mvc\Router\RouteMatch;
 
 class AdminHomeController extends AbstractAlcarinRestfulController
 {
     protected $admin_pages = [
         [
-            'page'  => 'users',
-            'controller' => 'Admin\Controller\Users',
-            'title' => 'Manage players',
-            'icon'  => 'icon-search',
+            'controller' => 'users',
+            'title'      => 'Manage players',
+            'icon'       => 'icon-search',
         ],
         [
-            'page'  => 'orbis',
-            'controller' => 'Admin\Controller\Orbis\Orbis',
-            'title' => '"Orbis" Editor',
-            'icon'  => 'icon-globe',
+            'controller' => 'orbis',
+            'namespace'  => 'Admin\Controller\Orbis',
+            'title'      => '"Orbis" Editor',
+            'icon'       => 'icon-globe',
         ],
     ];
 
@@ -33,12 +33,12 @@ class AdminHomeController extends AbstractAlcarinRestfulController
         $result = [];
         $authService = $this->isAllowed();
         foreach( $this->admin_pages as $data ) {
-            $page = $data['controller'];
-            if( $authService->isAllowedToController($page) ) {
-                $router = $this->getServiceLocator()->get('router');
-                $url = '#';//$router->assemble( ['controller' => $page], ['name' => 'admin']);
+            $controller = $data['controller'];
+            $namespace = empty($data['namespace']) ? 'Admin\\Controller' : $data['namespace'];
+            $full_controller = $namespace . '\\' . ucfirst($controller);
 
-                $result[$page] = $this->pageData( $data );
+            if( $authService->isAllowedToController($full_controller) ) {
+                $result[$controller] = $this->pageData( $data );
             }
         }
         return [ 'pages' => $result ];
@@ -46,7 +46,7 @@ class AdminHomeController extends AbstractAlcarinRestfulController
 
     private function pageData( $data ) {
         return [
-            'href' => $this->url()->fromRoute( 'admin/default', [ 'controller' => $data['page'] ] ),
+            'href' => $this->url()->fromRoute( 'admin/default', [ 'controller' => $data['controller'] ] ),
             'icon' => empty( $data['icon'] ) ? null : $data['icon'],
             'title'  => empty( $data['title'] ) ? null : $data['title'],
         ];

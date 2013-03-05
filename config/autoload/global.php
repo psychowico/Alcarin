@@ -24,11 +24,11 @@ return array(
         ),
         /* controllers and their required resources privilages */
         'controllers' => array(
-            'Alcarin\Controller\Index'    => Resource::PLAYER_PANEL,
-            'Admin\Controller\Home'       => Resource::ADMIN_MENU,
-            'Admin\Controller\Users'      => Resource::ADMIN_USERS,
+            'Alcarin\Controller\Index'          => Resource::PLAYER_PANEL,
+            'Admin\Controller\Home'             => Resource::ADMIN_MENU,
+            'Admin\Controller\Users'            => Resource::ADMIN_USERS,
             'Admin\Controller\Users\Privilages' => [Resource::ADMIN_USERS, Resource::ADMIN_PRIVILAGES_MANAGING],
-            'Admin\Controller\Orbis\Orbis' => [Resource::ADMIN_ORBIS],
+            'Admin\Controller\Orbis\Orbis'      => [Resource::ADMIN_ORBIS],
         ),
     ),
 
