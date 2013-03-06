@@ -10,13 +10,13 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
 
         group_name_dep : @dependencyProperty('group_name', '', (old_name, new_name)->
             # when group name is changed we need update global groups object
-            if root.groups.list[old_name]?
-                delete root.groups.list[old_name]
-                root.groups.list[new_name] = @
+            root.groups.list[new_name] = @
 
             if @initialized
-                gateways = @gateways().iterator()
-                gateway.group new_name for gateway in gateways
+                gateway.group new_name for gateway in @gateways().iterator()
+
+            if root.groups.list[old_name]?
+                delete root.groups.list[old_name]
 
             @debug = new_name
         )
@@ -44,7 +44,10 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
             edit_btn = $target.find '.group-name.editable'
             if edit_btn.length > 0
                 @edit_btn = edit_btn
-                @edit_btn.editable({success: @edit_group})
+                @edit_btn.editable({
+                    success: @edit_group,
+                    validate: (val)-> 'Forbidden group name.' if val == 'Ungrouped'
+                })
                 .on('shown', (e)=>
                     $input = $(e.currentTarget).data('editable').input.$input
                     $input?.val @group_name()
@@ -96,7 +99,8 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
 
     class Gateway extends Alcarin.ActiveView
         id         : @dependencyProperty 'id'
-        name       : @dependencyProperty 'name'
+        name       : @dependencyProperty('name', '', (o, val) => @debug = val)
+
         description: @dependencyProperty 'description', ' '
         x          : @dependencyProperty 'x', '0'
         y          : @dependencyProperty 'y', '0'
@@ -105,18 +109,20 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
             # group 0 mean ungrouped always
             group_name = 'Ungrouped' if group_name == 0
             @group_dep group_name
+
         group_dep  : @dependencyProperty('group', '', (old_name, new_name)->
             # when group string is changed we find old GatewayGroup object and remove
             # this Gateway from it. next we add this Gateway to new GatewayGroup
-            @debug = @name()
             if @auto_bind
-                if root.groups.list[old_name]?
-                    old_group = root.groups.list[old_name]
-                    old_group.gateways().remove @
-                    if old_group.gateways().length() == 0 and old_group.editable
-                        root.groups.remove old_group
                 target_group = root.groups.list[new_name]
-                target_group.gateways().push @
+                old_group    = root.groups.list[old_name]
+                if old_group?
+                    old_group = root.groups.list[old_name]
+                    if old_group != target_group
+                        old_group.gateways().remove @
+                        if old_group.gateways().length() == 0 and old_group.editable
+                            root.groups.remove old_group
+                target_group.gateways().push @ unless old_group == target_group
         )
 
         gateway_group: ->

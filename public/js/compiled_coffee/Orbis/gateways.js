@@ -17,17 +17,17 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
     };
 
     GatewayGroup.prototype.group_name_dep = GatewayGroup.dependencyProperty('group_name', '', function(old_name, new_name) {
-      var gateway, gateways, _i, _len;
-      if (root.groups.list[old_name] != null) {
-        delete root.groups.list[old_name];
-        root.groups.list[new_name] = this;
-      }
+      var gateway, _i, _len, _ref;
+      root.groups.list[new_name] = this;
       if (this.initialized) {
-        gateways = this.gateways().iterator();
-        for (_i = 0, _len = gateways.length; _i < _len; _i++) {
-          gateway = gateways[_i];
+        _ref = this.gateways().iterator();
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          gateway = _ref[_i];
           gateway.group(new_name);
         }
+      }
+      if (root.groups.list[old_name] != null) {
+        delete root.groups.list[old_name];
       }
       return this.debug = new_name;
     });
@@ -66,7 +66,12 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
       if (edit_btn.length > 0) {
         this.edit_btn = edit_btn;
         this.edit_btn.editable({
-          success: this.edit_group
+          success: this.edit_group,
+          validate: function(val) {
+            if (val === 'Ungrouped') {
+              return 'Forbidden group name.';
+            }
+          }
         }).on('shown', function(e) {
           var $input;
           $input = $(e.currentTarget).data('editable').input.$input;
@@ -148,12 +153,15 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
 
   })(Alcarin.ActiveView);
   Gateway = (function(_super) {
+    var _this = this;
 
     __extends(Gateway, _super);
 
     Gateway.prototype.id = Gateway.dependencyProperty('id');
 
-    Gateway.prototype.name = Gateway.dependencyProperty('name');
+    Gateway.prototype.name = Gateway.dependencyProperty('name', '', function(o, val) {
+      return Gateway.debug = val;
+    });
 
     Gateway.prototype.description = Gateway.dependencyProperty('description', ' ');
 
@@ -170,17 +178,21 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
 
     Gateway.prototype.group_dep = Gateway.dependencyProperty('group', '', function(old_name, new_name) {
       var old_group, target_group;
-      this.debug = this.name();
       if (this.auto_bind) {
-        if (root.groups.list[old_name] != null) {
+        target_group = root.groups.list[new_name];
+        old_group = root.groups.list[old_name];
+        if (old_group != null) {
           old_group = root.groups.list[old_name];
-          old_group.gateways().remove(this);
-          if (old_group.gateways().length() === 0 && old_group.editable) {
-            root.groups.remove(old_group);
+          if (old_group !== target_group) {
+            old_group.gateways().remove(this);
+            if (old_group.gateways().length() === 0 && old_group.editable) {
+              root.groups.remove(old_group);
+            }
           }
         }
-        target_group = root.groups.list[new_name];
-        return target_group.gateways().push(this);
+        if (old_group !== target_group) {
+          return target_group.gateways().push(this);
+        }
       }
     });
 
@@ -266,7 +278,7 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
 
     return Gateway;
 
-  })(Alcarin.ActiveView);
+  }).call(this, Alcarin.ActiveView);
   GatewayEditor = (function() {
 
     function GatewayEditor(edit_pane, groups_pane) {
