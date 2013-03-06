@@ -6,6 +6,7 @@ namespace 'Alcarin.Errors', (exports, Alcarin) ->
     ###
     day_limit   = 5
 
+    # autolog unexcepted js errors
     @onerror = (msg, url, line) ->
         $.cookie.raw = true
 
@@ -18,9 +19,31 @@ namespace 'Alcarin.Errors', (exports, Alcarin) ->
             return false if cookie >= day_limit
             $.cookie cookie_name, cookie + 1, { expires: 1 }
 
-        if _.post
-            data = {'msg': msg, 'url': url, 'line': line }
-            _.post '/api/errors/external', data
+        # let get only url path
+        url = url.split('/')[3..].join '/'
+        data = {'msg': msg, 'url': url, 'line': line }
+
+        Rest().$create urls.api.errors, data
 
         $.cookie.raw = false
         false
+
+    space = ->
+        _console = window.console or {
+            debug: ->
+            log  : ->
+            info : ->
+            warn : ->
+            error: ->
+        }
+        _console._error = _console.error
+
+        _console.error = (msg)->
+            caller_stack = printStackTrace()[4]
+            data = {mode: 'manual', stack: caller_stack, msg: msg}
+            Rest().$create urls.api.errors, data, (response)=>
+                @warn response.errors unless response.success
+            @_error msg
+
+        window.console = _console
+    space()

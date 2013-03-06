@@ -8,5 +8,8 @@ Hrefs shouldn't have '/' symbol at end.
 this.urls = {
   orbis: {
     gateways: '/admin/orbis/gateways'
+  },
+  api: {
+    errors: '/api/errors/external'
   }
 };

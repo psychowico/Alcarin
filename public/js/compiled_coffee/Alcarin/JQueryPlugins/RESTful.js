@@ -43,7 +43,17 @@ namespace('Alcarin.JQueryPlugins', function(exports, Alcarin) {
           'dataType': 'json',
           'type': method
         };
+        ondone = this.ondone(ondone);
         return _ajax(settings).done(ondone).fail(ondone);
+      };
+    };
+
+    RESTful.prototype.ondone = function(_ondone) {
+      return function(response) {
+        if (response.success === false && (response.errors != null)) {
+          console.error(response.errors);
+        }
+        return _ondone(response);
       };
     };
 

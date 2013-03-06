@@ -204,9 +204,9 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
       editor = root.gateway_editor();
       return editor.mode('put').show(edit_copy, function(response) {
         if (response.success) {
-          return _this.copy(response.data);
-        } else {
-          console.log(response.errors);
+          _this.copy(response.data);
+        }
+        if (!response.success) {
           return false;
         }
       });
@@ -403,8 +403,6 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
           new_gateway = new Gateway;
           new_gateway.copy(response.data);
           return new_group.rel.find("#" + group_name).collapse('toggle');
-        } else {
-          return console.log(response.errors);
         }
       });
     };

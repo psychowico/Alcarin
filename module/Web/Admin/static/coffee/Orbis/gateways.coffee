@@ -133,9 +133,7 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
             editor.mode('put').show edit_copy, (response)=>
                 if response.success
                     @copy response.data
-                else
-                    console.log response.errors
-                    return false
+                return false unless response.success
 
         delete: =>
             Alcarin.Dialogs.Confirms.admin 'Really deleting this gateway?', =>
@@ -276,8 +274,6 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
                     new_gateway.copy response.data
 
                     new_group.rel.find("##{group_name}").collapse 'toggle'
-                else
-                    console.log response.errors
 
         init_groups : ->
 

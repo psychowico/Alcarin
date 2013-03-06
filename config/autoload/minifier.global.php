@@ -20,7 +20,8 @@ return array(
                             '/js/jquery/jquery.form-3.27.0.js',
                             '/js/jquery/jquery.ui.interactions-1.10.1.js',
                             '/js/bootstrap-2.3.1.js',
-                            '/js/bootstrap-editable-1.4.1.js'
+                            '/js/bootstrap-editable-1.4.1.js',
+                            '/js/stacktrace-0.5.js',
                         ),
                     ),
                     'common'    => array(

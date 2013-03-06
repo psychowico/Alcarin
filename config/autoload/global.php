@@ -29,6 +29,7 @@ return array(
             //because by default all controllers are unaccessible.
             'zfcuser'                           => [],
             'guest-home'                        => [],
+            'external'                          => [],
 
             'Guest\Controller\Index'            => Resource::PLAYER_PANEL,
             'Alcarin\Controller\Index'          => Resource::PLAYER_PANEL,
