@@ -181,17 +181,14 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
       if (this.auto_bind) {
         target_group = root.groups.list[new_name];
         old_group = root.groups.list[old_name];
-        if (old_group != null) {
-          old_group = root.groups.list[old_name];
-          if (old_group !== target_group) {
-            old_group.gateways().remove(this);
-            if (old_group.gateways().length() === 0 && old_group.editable) {
-              root.groups.remove(old_group);
-            }
-          }
-        }
         if (old_group !== target_group) {
-          return target_group.gateways().push(this);
+          if (old_group != null) {
+            old_group.gateways().remove(this);
+          }
+          if ((old_group != null ? old_group.gateways().length() : void 0) === 0 && (old_group != null ? old_group.editable : void 0)) {
+            root.groups.remove(old_group);
+          }
+          return target_group != null ? target_group.gateways().push(this) : void 0;
         }
       }
     });

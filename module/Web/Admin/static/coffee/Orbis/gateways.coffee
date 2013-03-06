@@ -116,13 +116,11 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
             if @auto_bind
                 target_group = root.groups.list[new_name]
                 old_group    = root.groups.list[old_name]
-                if old_group?
-                    old_group = root.groups.list[old_name]
-                    if old_group != target_group
-                        old_group.gateways().remove @
-                        if old_group.gateways().length() == 0 and old_group.editable
-                            root.groups.remove old_group
-                target_group.gateways().push @ unless old_group == target_group
+                if old_group != target_group
+                    old_group?.gateways().remove @
+                    if old_group?.gateways().length() == 0 and old_group?.editable
+                        root.groups.remove old_group
+                    target_group?.gateways().push @
         )
 
         gateway_group: ->
