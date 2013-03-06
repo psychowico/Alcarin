@@ -33,7 +33,7 @@ return array(
 
     'game-modules' => array(
         'Admin' => array(
-            'discription'  => 'Administrative module',
+            'description'  => 'Administrative module',
             'game-objects' => array(
                 'orbis' => 'Admin\GameObject\Orbis',
             ),
