@@ -11,8 +11,6 @@ body {
   font-family: "Helvetica";
   font-size: 12.5px;
   margin: 0px auto;
-  padding: 0 8px 0 8px;
-  background: rgba(42, 42, 42, 0.3);
 }
 #game-events {
   width: 38.2%;

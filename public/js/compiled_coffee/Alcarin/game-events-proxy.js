@@ -60,9 +60,7 @@ namespace('Alcarin', function(exports, Alcarin) {
       proxy.on('test.test', this.onTest);
     }
 
-    Test1.prototype.onTest = function(data) {
-      return console.log(this.japko);
-    };
+    Test1.prototype.onTest = function(data) {};
 
     return Test1;
 

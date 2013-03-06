@@ -6,26 +6,67 @@ namespace 'Alcarin', (exports, Alcarin) ->
     #corresponding part of the html template.
     class exports.ActiveList
 
-        constructor: (el)->
-            @parent = $ el
-            console.log @parent
+        anim : {
+            add: 'show',
+            remove: 'hide'
+        }
 
-            pr = @parent[0].firstChild
-            while pr && pr.nodeType != 1
-                pr = pr.nextSibling
-            @prototype = $ pr
-            @prototype.remove()
+        iterator: -> @source[..]
 
+        setAnims : (adding, removing = 'hide') ->
+            @anim = {
+                add: adding,
+                remove: removing
+            }
+
+        constructor: ->
             @source = []
+            @binded = false
+
+        bind: (el)->
+            @parents = $ el
+            @parents.data 'active-list', @
+
+            @prototypes = []
+            for pr, ind in @parents.children()
+                while pr && pr.nodeType != 1
+                    pr = pr.nextSibling
+                @prototypes[ind] = $ pr
+                #delete prototype from DOM
+                @prototypes[ind].remove()
+
+            for view, ind in @source
+                for parent, ind in @parents
+                    dom_obj = @prototypes[ind].clone(true)
+                    if view instanceof exports.ActiveView
+                        view.bind dom_obj
+                    $(parent).append dom_obj
+
+            @binded = true
+
+
+
+        clear: ->
+            while @source.length > 0
+                @pop()
 
         #insert elements at list end, and update related view
         push: (elements...)->
             for el in elements
                 @source.push el
-                dom_obj = @prototype.clone(true)
-                el.bind dom_obj
-                @parent.append dom_obj
+                if @binded
+                    for parent, ind in @parents
+                        dom_obj = @prototypes[ind].clone(true)
+                        if el instanceof exports.ActiveView
+                            el.bind dom_obj
+
+                        dom_obj.hide()
+                        $(parent).append dom_obj
+                        dom_obj[@anim.add]()
             true
+
+        concat: (arrays...)->
+            @push element for element in array for array in arrays
 
         pop: ->
             @removeAt @source.length - 1
@@ -42,37 +83,55 @@ namespace 'Alcarin', (exports, Alcarin) ->
         insert: (index, obj)->
             #update list
             @source.splice index, 0, obj
-            #prepare prototype
-            dom_obj = @prototype.clone(true)
+            if @binded
+                #prepare prototype
+                for parent, ind in @parens
+                    dom_obj = @prototype[ind].clone(true)
 
-            #auto bind if this is a activeview
-            if obj instanceof exports.ActiveView
-                obj.bind dom_obj
+                    #auto bind if this is a activeview
+                    if obj instanceof exports.ActiveView
+                        obj.bind dom_obj
 
-            #insert it in DOM
-            children = @parent.children()
-            if index >= children.length
-                children.last().after dom_obj
-            else
-                children.eq(index).before dom_obj
-            true
+                    #insert it in DOM
+                    children = $(parent).children()
+                    if index >= children.length
+                        children.last().after dom_obj
+                    else
+                        children.eq(index).before dom_obj
+                    true
 
-        remove: (obj)->
+        remove: (obj, on_done)->
             index = @source.indexOf obj
-            @removeAt index
+            @removeAt index, on_done
 
         #remove one item and update related view
-        removeAt: (index)->
-            dom_obj = @parent.children().eq index
-            dom_obj.remove()
+        removeAt: (index, on_done)->
+            return false if index < 0 or index >= @source.length
+            if @binded
+                counter = @parents.length
+                for parent in @parents
+                    dom_obj = $(parent).children().eq index
+                    _on_done = (_index, _obj)=>
+                        _obj.remove()
+                        if counter == 0
+                            on_done?()
+                            obj = @source[_index]
+                            if obj instanceof exports.ActiveView
+                                obj.unbind()
 
-            obj = @source[index]
+                    if @anim.remove == 'hide'
+                        dom_obj[@anim.remove]()
+                        _on_done.apply @, [index, dom_obj]
+                    else
+                        _context = (index, dom_obj) =>
+                            dom_obj[@anim.remove] =>
+                                _on_done.apply @, [index, dom_obj]
+                        # run it with own name context, because vars
+                        # can change to time, when anim will end
+                        _context(index, dom_obj)
 
-            if obj instanceof exports.ActiveView
-                obj.unbind dom_obj
 
             @source.splice index, 1
-            obj
 
         toString: ->
             @source.toString()
@@ -81,11 +140,10 @@ namespace 'Alcarin', (exports, Alcarin) ->
             @source.valueOf()
 
 
-    class exports.TestView extends Alcarin.ActiveView
-        name    : @dependencyProperty('name', 'test')
-        val     : @dependencyProperty('value', 0)
+    # class exports.TestView extends Alcarin.ActiveView
+    #     name    : @dependencyProperty('name', 'test')
+    #     val     : @dependencyProperty('value', 0)
 
-$ ->
     ###list = new Alcarin.ActiveList('#active-select')
 
     v = new Alcarin.TestView()

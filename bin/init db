@@ -1,0 +1,7 @@
+#!/usr/bin/php
+<?php
+
+$_SERVER['argv'] = $argv = array($argv[0], 'init',  'db');
+$_SERVER['argc'] = $argc = count($argv) ;
+
+require __DIR__ . '/../public/index.php';

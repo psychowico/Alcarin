@@ -10,8 +10,10 @@ use Zend\Stdlib\ArrayUtils;
  * input filter definition. it is wrapper to make much easier to use default
  * annotation builder
  */
-class AnnotationBuilderService
+class AnnotationBuilderService implements \Zend\ServiceManager\ServiceLocatorAwareInterface
 {
+    use \Zend\ServiceManager\ServiceLocatorAwareTrait;
+
     protected $builder;
     protected $default_fieldset;
 
@@ -19,6 +21,12 @@ class AnnotationBuilderService
     {
         if( $this->builder == null ) {
             $this->builder = new \Zend\Form\Annotation\AnnotationBuilder();
+
+            # thanks for this custom form elements (from our configuration) will
+            # work with annotation builder
+            $formElementsManager = $form_factory = $this->getServiceLocator()->get('FormElementManager');
+            $factory = new \Zend\Form\Factory($formElementsManager);
+            $this->builder->setFormFactory($factory);
         }
 
         return $this->builder;
@@ -90,7 +98,7 @@ class AnnotationBuilderService
         //adding service directly
         $filter_plugins->setService($key, $filter);
 
-        $input_factory->setDefaultValidatorChain( $filter_chain );
+        $input_factory->setDefaultFilterChain( $filter_chain );
         return $this;
     }
 
@@ -100,9 +108,7 @@ class AnnotationBuilderService
      * @param  string|object $entity
      * @return \Zend\Form\Form
      */
-    public function createForm($entity,
-                               $submit_button_caption = null,
-                               $add_default_fieldset = true)
+    public function createForm($entity, $add_default_fieldset = true, $submit_button_caption = null)
     {
         $form = $this->builder()->createForm($entity);
 
@@ -110,8 +116,10 @@ class AnnotationBuilderService
             $default = $this->generateDefaultFieldset($submit_button_caption);
             //I just added fieldset elements to form, because simple adding full fieldset
             //generate some problems when rendering. (ZF2.2.0)
-            foreach( $default->getElements() as $el ) {
-                $form->add($el);
+            foreach( $default->getElements() as $name => $el ) {
+                if(!$form->has($name)) {
+                    $form->add($el);
+                }
             }
         }
 

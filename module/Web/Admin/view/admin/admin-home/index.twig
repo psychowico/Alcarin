@@ -1,13 +1,24 @@
 {% extends "admin-layout" %}
 
 {% block content %}
-    <ul id="admin-pages">
+<div>
+    <ul class="tiles-list">
         {% for page, data in pages %}
         <li class="page-{{page}}">
-            <a href="{{ data['href'] }}" title="{{ data['alt'] }}" >
-                <img src="{{ data['icon'] }}">
+            <a href="{{ data['href'] }}" title="{{ data['title'] }}" >
+                <span>
+                    {{ data['title'] }}
+                    <i class="{{ data['icon'] }}"></i>
+                </span>
             </a>
         </li>
         {% endfor %}
     </ul>
+</div>
+{% endblock %}
+
+{% block userbar_left %}
+<li class="active">
+    <a href="{{ url('admin/default') }}">Admin</a>
+</li>
 {% endblock %}

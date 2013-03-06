@@ -10,19 +10,26 @@
 namespace Admin\Controller;
 
 use Core\Controller\AbstractAlcarinRestfulController;
+use Zend\Mvc\Router\RouteMatch;
 
 class AdminHomeController extends AbstractAlcarinRestfulController
 {
     protected $admin_pages = [
         [
-            'name' => 'users',
-            'icon' => 'http://img.weather.weatherbug.com/forecast/icons/localized/500x420/en/trans/cond000.png',
-            'alt'  => 'Manage users.',
+            'controller' => 'users',
+            'title'      => 'Manage players',
+            'icon'       => 'icon-search',
         ],
         [
-            'name' => 'modules',
-            'icon' =>' http://img.weather.weatherbug.com/forecast/icons/localized/500x420/en/trans/cond000.png',
-            'alt'  => 'Manage modules.',
+            'controller' => 'orbis',
+            'namespace'  => 'Admin\Controller\Orbis',
+            'title'      => '"Orbis" Editor',
+            'icon'       => 'icon-globe',
+        ],
+        [
+            'controller' => 'modules',
+            'title'      => 'Manage modules',
+            'icon'       => 'icon-search',
         ]
     ];
 
@@ -31,12 +38,12 @@ class AdminHomeController extends AbstractAlcarinRestfulController
         $result = [];
         $authService = $this->isAllowed();
         foreach( $this->admin_pages as $data ) {
-            $page = $data['name'];
-            if( $authService->isAllowedToController( $page ) ) {
-                $router = $this->getServiceLocator()->get('router');
-                $url = '#';//$router->assemble( ['controller' => $page], ['name' => 'admin']);
+            $controller = $data['controller'];
+            $namespace = empty($data['namespace']) ? 'Admin\\Controller' : $data['namespace'];
+            $full_controller = $namespace . '\\' . ucfirst($controller);
 
-                $result[$page] = $this->pageData( $data );
+            if( $authService->isAllowedToController($full_controller) || true ) {
+                $result[$controller] = $this->pageData( $data );
             }
         }
         return [ 'pages' => $result ];
@@ -44,9 +51,9 @@ class AdminHomeController extends AbstractAlcarinRestfulController
 
     private function pageData( $data ) {
         return [
-            'href' => $this->url()->fromRoute( 'admin/default', [ 'controller' => $data['name'] ] ),
+            'href' => $this->url()->fromRoute( 'admin/default', [ 'controller' => $data['controller'] ] ),
             'icon' => empty( $data['icon'] ) ? null : $data['icon'],
-            'alt'  => empty( $data['alt'] ) ? null : $data['alt'],
+            'title'  => empty( $data['title'] ) ? null : $data['title'],
         ];
     }
 }

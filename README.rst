@@ -72,3 +72,11 @@ by using console script, in project main directory:
 
 First argument will be super user email address, second - password. You can use any
 email and password you want.
+
+At last you should run script which will initalize mongo db instance (indexes and similar).
+
+.. code-block:: bash
+
+    bin/init\ db alcarin@test.com test321
+
+On linux you will probably need run above commands as system administrator.

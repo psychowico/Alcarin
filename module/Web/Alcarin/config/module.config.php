@@ -20,6 +20,7 @@ return array(
     'view_helpers' => array(
         'aliases'   => array(
             '_'         => 'translate',
+            'bootstrap'  => 'form',
         ),
     ),
 

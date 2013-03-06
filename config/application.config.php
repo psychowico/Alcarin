@@ -2,14 +2,15 @@
 
 return array(
     'modules' => array(
-        //external libraries
+        'Core',
+
         'AssetsCompiler',
         'ZfcTwig',
         'ZfcBase',
         'ZfcUser',
+        'TwbBundle',
         'EdpModuleLayouts',
-        //game api modules
-        'Core',
+
         'EngineBase',
         'Errors',
         'DevPack',

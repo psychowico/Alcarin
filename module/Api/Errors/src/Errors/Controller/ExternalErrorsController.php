@@ -2,7 +2,7 @@
 
 namespace Errors\Controller;
 
-use Core\Mvc\Controller\AbstractAlcarinController;
+use Core\Controller\AbstractAlcarinRestfulController;
 use Zend\View\Model\ViewModel;
 
 use Zend\InputFilter\InputFilter;
@@ -10,11 +10,11 @@ use Zend\InputFilter\InputFilter;
 /**
  * manager external errors, probably only for debug purposes, when game will be in beta,
  * it can log players JAVASCRIPT errors from most browsers for sample.
- * it saving incoming errors in "ext_logs" and storing requests callers ips
- * in "ext_logs_limit" table, to make requests limit per day
+ * it saving incoming errors in "logs.js" and storing requests callers ips
+ * in "logs.js.limit" table, to make requests limit per day
  * ( to ExternalErrorsController::LOGS_DAY_LIMIT_PER_IP )
  */
-class ExternalErrorsController extends AbstractAlcarinController
+class ExternalErrorsController extends AbstractAlcarinRestfulController
 {
     const LOGS_DAY_LIMIT_PER_IP = 5;
 
@@ -69,54 +69,89 @@ class ExternalErrorsController extends AbstractAlcarinController
         return $inputFilter;
     }
 
-    public function create( $data )
+    public function create($data)
     {
-        //echo json_encode($data);exit;
+        if( $this->aboveDayLimit() ) return $this->json()->fail();
+
+        $mode = empty($data['mode']) ? 'auto' : $data['mode'];
+
+        if($mode == 'auto') {
+            return $this->autoJsError($data);
+        }
+        else {
+            return $this->manualJsError($data);
+        }
+    }
+
+    private function autoJsError($data)
+    {
         $inputFilter = $this->errorInputFilter();
         $inputFilter->setData( $data );
         if( $inputFilter->isValid() ) {
             $data = $inputFilter->getValues();
-            $user_ip = $this->getRequest()->getServer('REMOTE_ADDR');
 
-            $mongo = $this->gameService('mongo');
+            //store additional information about user
+            $data = $this->addErrorSourceInfo($data);
 
-            $limitQ = $mongo->ext_logs_limit->findOne( ['ip' => $user_ip ] );
-            if( $limitQ == null ) {
-                $limit = 0;
-            }
-            else {
-                $limit = isset( $limitQ['count'] ) ? $limitQ['count'] : 0;
-                if( $limit > 0 && $limitQ['last_time'] instanceof \MongoDate ) {
-                    $time = $limitQ['last_time']->sec;
-                    if( (time() - $time) > ( 60 * 60 * 24 ) ) {
-                        //old limit, can be ommited
-                        $limit = 0;
-                    }
-                }
-            }
+            $this->mongo()->{'logs.js'}->insert( $data );
+            $this->updateLogsLimit();
 
-            if( $limit < static::LOGS_DAY_LIMIT_PER_IP ) {
-                //store additional information about user
-                $data['user-ip'] = $user_ip;
-
-                $auth    = $this->getServiceLocator()->get('zfcuser_auth_service');
-                if( $auth->hasIdentity() ) {
-                    $user_id = new \MongoId( $auth->getIdentity()->getId() );
-                    $data['user-id'] = \MongoDBRef::create( 'users', $user_id );
-                }
-
-                $mongo->ext_logs->insert( $data );
-                $this->updateLogsLimit( $user_ip, $limit + 1 );
-                return ['ok' => 1];
-            }
+            return $this->json()->success();
         }
-        return ['ok' => 0];
+        return $this->json()->fail();
     }
 
-    private function updateLogsLimit( $ip, $limit )
+    private function manualJsError($data)
     {
-        $this->gameService('mongo')->ext_logs_limit->update( ['ip' => $ip],
-                ['ip' => $ip, 'count' => $limit, 'last_time' => new \MongoDate() ],
+        if(empty($data['stack']) || empty($data['msg']) ) return $this->json()->fail();
+
+        $data = [ 'stack' => $data['stack'], 'msg' => $data['msg'], 'mode'=> 'manual' ];
+        $data = $this->addErrorSourceInfo($data);
+
+        $this->mongo()->{'logs.js'}->insert( $data );
+        $this->updateLogsLimit();
+
+        return $this->json()->success();
+    }
+
+    private function addErrorSourceInfo($data)
+    {
+        $data['ip'] = $this->getRequest()->getServer('REMOTE_ADDR');
+        $auth    = $this->getServiceLocator()->get('zfcuser_auth_service');
+        if( $auth->hasIdentity() ) {
+            $user_id = new \MongoId( $auth->getIdentity()->getId() );
+            $data['user-id'] = \MongoDBRef::create( 'users', $user_id );
+        }
+        return $data;
+    }
+
+    private function aboveDayLimit()
+    {
+        $user_ip = $this->getRequest()->getServer('REMOTE_ADDR');
+
+        $limitQ = $this->mongo()->{'logs.js.limit'}->findOne( ['ip' => $user_ip ] );
+        if( $limitQ == null ) {
+            $limit = 0;
+        }
+        else {
+            $limit = isset( $limitQ['count'] ) ? $limitQ['count'] : 0;
+            if( $limit > 0 && $limitQ['last_time'] instanceof \MongoDate ) {
+                $time = $limitQ['last_time']->sec;
+                if( (time() - $time) > ( 60 * 60 * 24 ) ) {
+                    //old limit, can be ommited
+                    $limit = 0;
+                }
+            }
+        }
+
+        return ( $limit >= static::LOGS_DAY_LIMIT_PER_IP );
+    }
+
+    private function updateLogsLimit()
+    {
+        $ip = $this->getRequest()->getServer('REMOTE_ADDR');
+        $this->mongo()->{'logs.js.limit'}->update( ['ip' => $ip],
+                ['last_time' => new \MongoDate(), '$inc' => ['count' => 1] ],
                 ['upsert' => true] );
     }
 }

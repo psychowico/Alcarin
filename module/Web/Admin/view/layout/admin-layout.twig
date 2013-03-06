@@ -9,8 +9,14 @@
 
 {% block userbar_left %}
 <li>
-    <a href="{{ url('admin/default') }}">
-        Home
+    <a href="{{ url('admin/default') }}">Admin</a>
+</li>
+{% endblock %}
+
+{% block userbar_right %}
+<li class="pull-right">
+    <a href="{{ uri().parent() }}">
+        Up
     </a>
 </li>
 {% endblock %}

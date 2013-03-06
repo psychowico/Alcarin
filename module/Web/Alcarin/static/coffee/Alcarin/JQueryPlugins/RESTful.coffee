@@ -14,10 +14,18 @@ namespace 'Alcarin.JQueryPlugins', (exports, Alcarin) ->
         constructor: ->
             _ajax = jQuery.ajax
 
+        @getInstance: ->
+            if not exports.RESTful.instance?
+                exports.RESTful.instance = new exports.RESTful()
+            exports.RESTful.instance
+
         _method = (meth) =>
-            ( url, data, dataType ) ->
-                dataType = dataType or 'json'
-                data = $.extend ( data or {} ), {'_method': meth}
+            ( url, data, ondone ) ->
+                if $.isFunction data
+                    ondone = data
+                    data = {}
+
+                data = $.extend ( data or {} ), {'_method': meth} if meth != 'POST' and meth != 'GET'
 
                 method = if meth == 'GET' then 'GET' else 'POST'
 
@@ -27,35 +35,34 @@ namespace 'Alcarin.JQueryPlugins', (exports, Alcarin) ->
                     'dataType': 'json',
                     'type'    : method
                 }
-                _ajax( settings )
+                ondone = @ondone(ondone)
+                _ajax( settings ).done(ondone).fail(ondone)
 
-        put    : _method('PUT')
-        delete : _method('DELETE')
-        post   : ( url, data, dataType ) ->
-            settings = {
-                'url'     : url,
-                'data'    : data,
-                'dataType': 'json',
-                'type'    : 'POST'
-            }
-            _ajax( settings )
-        get    : ( url, data, dataType ) ->
-            settings = {
-                'url'     : url,
-                'data'    : data,
-                'dataType': 'json',
-                'type'    : 'GET'
-            }
-            _ajax( settings )
+        ondone: (_ondone)->
+            (response)->
+                if response.success == false and response.errors?
+                    console.error response.errors
+                _ondone(response)
 
-    RESTfulInstance = new Alcarin.JQueryPlugins.RESTful()
+        $put    : _method('PUT')
+        $delete : _method('DELETE')
+        $post   : _method('POST')
+        $get    : _method('GET')
 
-    _caller = (method) =>
-        (url, data, dataType) =>
-            RESTfulInstance[method] url, data, dataType
+        #aliases
+        $update : _method('PUT')
+        $create : _method('POST')
 
-    Alcarin.put    = _caller 'put'
-    Alcarin.delete = _caller 'delete'
-    Alcarin.post   = _caller 'post'
-    Alcarin.get    = _caller 'get'
-    true
+    #let polute global namespace = this class will be really often use
+    window.Rest = ()->
+        return Alcarin.JQueryPlugins.RESTful.getInstance()
+
+    ###_caller = (method) =>
+        (url, data, ondone) =>
+            RESTfulInstance[method] url, data, ondone
+
+    Alcarin.$put    = _caller '$put'
+    Alcarin.$delete = _caller '$delete'
+    Alcarin.$post   = _caller '$post'
+    Alcarin.$get    = _caller '$get'
+    true###

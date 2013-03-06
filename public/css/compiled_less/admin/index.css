@@ -1,0 +1,70 @@
+ul.tiles-list {
+  font: 15px Helvetica, arial, freesans, clean, sans-serif;
+  width: 800px;
+  height: 600px;
+  margin: 0 auto;
+  padding: 0;
+  list-style-type: none;
+  -webkit-border-radius: 17px;
+  -moz-border-radius: 17px;
+  -ms-border-radius: 17px;
+  -o-border-radius: 17px;
+  border-radius: 17px;
+}
+ul.tiles-list li {
+  width: 90px;
+  height: 90px;
+  margin: 18px 0 0 28px;
+  float: left;
+}
+ul.tiles-list li a,
+ul.tiles-list li a:visited {
+  width: 100%;
+  height: 100%;
+  background: #191919;
+  -webkit-border-radius: 17px;
+  -moz-border-radius: 17px;
+  -ms-border-radius: 17px;
+  -o-border-radius: 17px;
+  border-radius: 17px;
+  border: 1px solid #0f0f0f;
+  display: block;
+  position: relative;
+  text-decoration: none;
+  -webkit-transition: all 0.1s linear;
+  -moz-transition: all 0.1s linear;
+  -ms-transition: all 0.1s linear;
+  -o-transition: all 0.1s linear;
+  transition: all 0.1s linear;
+  height: 100%;
+  width: 100%;
+  display: block;
+  display: -webkit-box;
+  display: -moz-box;
+  display: box;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  box-align: center;
+}
+ul.tiles-list li a span,
+ul.tiles-list li a:visited span {
+  display: block;
+  margin: 0 auto;
+  text-align: center;
+  padding: 10px;
+}
+ul.tiles-list li a span i,
+ul.tiles-list li a:visited span i {
+  position: absolute;
+  -moz-transform: scale(1.1);
+  -webkit-transform: scale(1.1);
+  -o-transform: scale(1.1);
+  left: 70px;
+  top: 67px;
+}
+ul.tiles-list li a:hover,
+ul.tiles-list li a:visited:hover {
+  -moz-transform: scale(1.2);
+  -webkit-transform: scale(1.2);
+  -o-transform: scale(1.2);
+}

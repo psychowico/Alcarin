@@ -18,5 +18,31 @@ namespace = function(target, name, block) {
 };
 
 $(function() {
-  return $('input[type="text"]:first').focus();
+  $('[data-instance]').each(function() {
+    var class_str, instance, splitted, str, _class, _i, _len;
+    class_str = $(this).data('instance');
+    splitted = class_str.split('.');
+    _class = window;
+    for (_i = 0, _len = splitted.length; _i < _len; _i++) {
+      str = splitted[_i];
+      if (_class[str] != null) {
+        _class = _class[str];
+      } else {
+        throw "Can not find instance of '" + class_str + "' class.";
+      }
+    }
+    instance = new _class($(this));
+    return typeof instance.init === "function" ? instance.init() : void 0;
+  });
+  $.fn.editable.defaults.ajaxOptions = {
+    type: 'put',
+    dataType: 'json'
+  };
+  $('.x-editable').editable();
+  $('.ajax-form').ajaxForm(function(response, a, b, form) {
+    return $(form).trigger('ajax-submit', response);
+  });
+  $('input[type="text"]:first').focus();
+  $('.popover-invoke').popover();
+  return $('body').disableSelection();
 });

@@ -1,0 +1,10 @@
+.admin-help {
+  display: inline-block;
+  margin: 3px;
+}
+.admin-help .popover {
+  max-width: 450px;
+}
+.admin-help .popover .popover-content {
+  text-indent: 20px;
+}

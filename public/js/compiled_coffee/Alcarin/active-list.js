@@ -1,34 +1,111 @@
-var __slice = [].slice,
-  __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+var __slice = [].slice;
 
 namespace('Alcarin', function(exports, Alcarin) {
-  exports.ActiveList = (function() {
+  return exports.ActiveList = (function() {
 
-    function ActiveList(el) {
-      var pr;
-      this.parent = $(el);
-      console.log(this.parent);
-      pr = this.parent[0].firstChild;
-      while (pr && pr.nodeType !== 1) {
-        pr = pr.nextSibling;
+    ActiveList.prototype.anim = {
+      add: 'show',
+      remove: 'hide'
+    };
+
+    ActiveList.prototype.iterator = function() {
+      return this.source.slice(0);
+    };
+
+    ActiveList.prototype.setAnims = function(adding, removing) {
+      if (removing == null) {
+        removing = 'hide';
       }
-      this.prototype = $(pr);
-      this.prototype.remove();
+      return this.anim = {
+        add: adding,
+        remove: removing
+      };
+    };
+
+    function ActiveList() {
       this.source = [];
+      this.binded = false;
     }
 
+    ActiveList.prototype.bind = function(el) {
+      var dom_obj, ind, parent, pr, view, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2;
+      this.parents = $(el);
+      this.parents.data('active-list', this);
+      this.prototypes = [];
+      _ref = this.parents.children();
+      for (ind = _i = 0, _len = _ref.length; _i < _len; ind = ++_i) {
+        pr = _ref[ind];
+        while (pr && pr.nodeType !== 1) {
+          pr = pr.nextSibling;
+        }
+        this.prototypes[ind] = $(pr);
+        this.prototypes[ind].remove();
+      }
+      _ref1 = this.source;
+      for (ind = _j = 0, _len1 = _ref1.length; _j < _len1; ind = ++_j) {
+        view = _ref1[ind];
+        _ref2 = this.parents;
+        for (ind = _k = 0, _len2 = _ref2.length; _k < _len2; ind = ++_k) {
+          parent = _ref2[ind];
+          dom_obj = this.prototypes[ind].clone(true);
+          if (view instanceof exports.ActiveView) {
+            view.bind(dom_obj);
+          }
+          $(parent).append(dom_obj);
+        }
+      }
+      return this.binded = true;
+    };
+
+    ActiveList.prototype.clear = function() {
+      var _results;
+      _results = [];
+      while (this.source.length > 0) {
+        _results.push(this.pop());
+      }
+      return _results;
+    };
+
     ActiveList.prototype.push = function() {
-      var dom_obj, el, elements, _i, _len;
+      var dom_obj, el, elements, ind, parent, _i, _j, _len, _len1, _ref;
       elements = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
       for (_i = 0, _len = elements.length; _i < _len; _i++) {
         el = elements[_i];
         this.source.push(el);
-        dom_obj = this.prototype.clone(true);
-        el.bind(dom_obj);
-        this.parent.append(dom_obj);
+        if (this.binded) {
+          _ref = this.parents;
+          for (ind = _j = 0, _len1 = _ref.length; _j < _len1; ind = ++_j) {
+            parent = _ref[ind];
+            dom_obj = this.prototypes[ind].clone(true);
+            if (el instanceof exports.ActiveView) {
+              el.bind(dom_obj);
+            }
+            dom_obj.hide();
+            $(parent).append(dom_obj);
+            dom_obj[this.anim.add]();
+          }
+        }
       }
       return true;
+    };
+
+    ActiveList.prototype.concat = function() {
+      var array, arrays, element, _i, _len, _results;
+      arrays = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+      _results = [];
+      for (_i = 0, _len = arrays.length; _i < _len; _i++) {
+        array = arrays[_i];
+        _results.push((function() {
+          var _j, _len1, _results1;
+          _results1 = [];
+          for (_j = 0, _len1 = array.length; _j < _len1; _j++) {
+            element = array[_j];
+            _results1.push(this.push(element));
+          }
+          return _results1;
+        }).call(this));
+      }
+      return _results;
     };
 
     ActiveList.prototype.pop = function() {
@@ -44,37 +121,74 @@ namespace('Alcarin', function(exports, Alcarin) {
     };
 
     ActiveList.prototype.insert = function(index, obj) {
-      var children, dom_obj;
+      var children, dom_obj, ind, parent, _i, _len, _ref, _results;
       this.source.splice(index, 0, obj);
-      dom_obj = this.prototype.clone(true);
-      if (obj instanceof exports.ActiveView) {
-        obj.bind(dom_obj);
+      if (this.binded) {
+        _ref = this.parens;
+        _results = [];
+        for (ind = _i = 0, _len = _ref.length; _i < _len; ind = ++_i) {
+          parent = _ref[ind];
+          dom_obj = this.prototype[ind].clone(true);
+          if (obj instanceof exports.ActiveView) {
+            obj.bind(dom_obj);
+          }
+          children = $(parent).children();
+          if (index >= children.length) {
+            children.last().after(dom_obj);
+          } else {
+            children.eq(index).before(dom_obj);
+          }
+          _results.push(true);
+        }
+        return _results;
       }
-      children = this.parent.children();
-      if (index >= children.length) {
-        children.last().after(dom_obj);
-      } else {
-        children.eq(index).before(dom_obj);
-      }
-      return true;
     };
 
-    ActiveList.prototype.remove = function(obj) {
+    ActiveList.prototype.remove = function(obj, on_done) {
       var index;
       index = this.source.indexOf(obj);
-      return this.removeAt(index);
+      return this.removeAt(index, on_done);
     };
 
-    ActiveList.prototype.removeAt = function(index) {
-      var dom_obj, obj;
-      dom_obj = this.parent.children().eq(index);
-      dom_obj.remove();
-      obj = this.source[index];
-      if (obj instanceof exports.ActiveView) {
-        obj.unbind(dom_obj);
+    ActiveList.prototype.removeAt = function(index, on_done) {
+      var counter, dom_obj, parent, _context, _i, _len, _on_done, _ref,
+        _this = this;
+      if (index < 0 || index >= this.source.length) {
+        return false;
       }
-      this.source.splice(index, 1);
-      return obj;
+      if (this.binded) {
+        counter = this.parents.length;
+        _ref = this.parents;
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          parent = _ref[_i];
+          dom_obj = $(parent).children().eq(index);
+          _on_done = function(_index, _obj) {
+            var obj;
+            _obj.remove();
+            if (counter === 0) {
+              if (typeof on_done === "function") {
+                on_done();
+              }
+              obj = _this.source[_index];
+              if (obj instanceof exports.ActiveView) {
+                return obj.unbind();
+              }
+            }
+          };
+          if (this.anim.remove === 'hide') {
+            dom_obj[this.anim.remove]();
+            _on_done.apply(this, [index, dom_obj]);
+          } else {
+            _context = function(index, dom_obj) {
+              return dom_obj[_this.anim.remove](function() {
+                return _on_done.apply(_this, [index, dom_obj]);
+              });
+            };
+            _context(index, dom_obj);
+          }
+        }
+      }
+      return this.source.splice(index, 1);
     };
 
     ActiveList.prototype.toString = function() {
@@ -88,24 +202,6 @@ namespace('Alcarin', function(exports, Alcarin) {
     return ActiveList;
 
   })();
-  return exports.TestView = (function(_super) {
-
-    __extends(TestView, _super);
-
-    function TestView() {
-      return TestView.__super__.constructor.apply(this, arguments);
-    }
-
-    TestView.prototype.name = TestView.dependencyProperty('name', 'test');
-
-    TestView.prototype.val = TestView.dependencyProperty('value', 0);
-
-    return TestView;
-
-  })(Alcarin.ActiveView);
-});
-
-$(function() {
   /*list = new Alcarin.ActiveList('#active-select')
   
   v = new Alcarin.TestView()

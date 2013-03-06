@@ -91,7 +91,27 @@ abstract class AbstractAlcarinRestfulController extends AbstractRestfulControlle
         $routeMatch = $e->getRouteMatch();
         $action  = $routeMatch->getParam('action', false);
 
-        $result = parent::onDispatch( $e );
+        try {
+            $result = parent::onDispatch($e);
+        }
+        catch( \Exception $exc ) {
+            if($this->isJson()) {
+                $excrrors = [];
+                while($exc !== null) {
+                    $errors []= $exc->getMessage();
+                    $exc = $exc->getPrevious();
+                }
+                if(count($errors) == 1) {
+                    $errors = $errors[0];
+                }
+
+                $result = $this->json()->fail(['errors' => $errors]);
+                $e->setResult($result);
+            }
+            else {
+                throw $e;
+            }
+        }
 
         if (!$action) {
             $routeMatch->setParam( 'action', 'index' );

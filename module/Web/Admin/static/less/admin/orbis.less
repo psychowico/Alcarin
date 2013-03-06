@@ -1,0 +1,80 @@
+@import 'core';
+
+.minimap {
+    position: relative;
+    .flag {
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        div {
+            .circle();
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            position: relative;
+            left: -15px;
+            top: -15px;
+
+            border: 2px dashed red;
+            &:hover, &.ui-draggable-dragging {
+                border-style: solid dashed
+            }
+
+            text-align: center;
+        }
+    }
+}
+
+.gateways-groups {
+    .edit-btn {
+        margin-left:5px;
+    }
+    .add {
+        .add-group {
+            display: inline;
+            width: 220px;
+            float: left;
+        }
+        .admin-help {
+            float: right;
+        }
+        margin-bottom: 10px;
+    }
+    .edit-group {
+        float:left;
+        margin: 5px;
+    }
+}
+
+.gateways-list {
+    position: relative;
+    &>div {
+        position: absolute;
+        width: 100%;
+    }
+    .gateway .description {
+        font-style:italic;
+        color: gray;
+    }
+}
+
+.gateway-edit {
+    .accordion-inner {
+        padding-top: 20px;
+        padding-bottom: 0;
+    }
+    .controls {
+        input, textarea {
+            width: 310px;
+        }
+        select {
+            width: 325px;
+        }
+        input[type="submit"] {
+            width: 100px;
+            float: right;
+            margin-right: 35px;
+        }
+    }
+}

@@ -18,11 +18,28 @@ class MongoCollection extends \Mongo_Collection
 
   public function updateById($_id, $dataset, $safe = true)
   {
+    if(!$_id instanceof \MongoId) {
+      $_id = new \MongoId($_id);
+    }
     if($safe) {
-      return $this->update_safe(['_id' => new \MongoId($_id)], $dataset);
+      return $this->update_safe(['_id' => $_id], $dataset);
     }
     else {
-      return $this->update(['_id' => new \MongoId($_id)], $dataset);
+      return $this->update(['_id' => new $_id], $dataset);
+    }
+  }
+
+  public function removeById($_id, $safe = true)
+  {
+    if(!$_id instanceof \MongoId) {
+      $_id = new \MongoId($_id);
+    }
+
+    if($safe) {
+      return $this->remove_safe(['_id' => $_id]);
+    }
+    else {
+      return $this->remove(['_id' => new $_id]);
     }
   }
 
@@ -39,6 +56,11 @@ class MongoCollection extends \Mongo_Collection
       $this->db()->profiler_stop( $this->_bm );
       unset( $this->_bm );
     }
+  }
+
+  public function toArray()
+  {
+    return $this->as_array();
   }
 
   /**

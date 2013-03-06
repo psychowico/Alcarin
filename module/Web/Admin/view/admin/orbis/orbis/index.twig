@@ -1,0 +1,21 @@
+{% extends "admin-layout" %}
+
+{% block content %}
+<div id="orbis" data-instance="Alcarin.Orbis.Orbis">
+    <div class="row">
+        <div class="span6">
+            <h2>{{ _('Minimap') }}</h2>
+            <div class="minimap">
+                <canvas data-instance="Alcarin.Orbis.MinimapRenderer" width="500" height="500">
+                    You browser don't support canvas, can not continue.
+                </canvas>
+            </div>
+        </div>
+        <div class="span6 gateways-list">
+            <h2>{{ _('Gateways') }}</h2>
+            {{ partial('/admin/orbis/gateways-list', {}) }}
+            {{ partial('/admin/orbis/gateway-edit', {form: gateway_form}) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

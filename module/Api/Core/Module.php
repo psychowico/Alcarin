@@ -16,6 +16,7 @@ use Zend\View\Model\JsonModel;
 use Zend\View\Renderer\JsonRenderer;
 use Zend\Http\Request;
 use Zend\Stdlib\ArrayUtils;
+use Zend\Http\PhpEnvironment\Request as HttpRequest;
 
 /**
  * alcarin system core module, should contains classes that will be shared between
@@ -25,16 +26,16 @@ class Module
 {
     public function onBootstrap(MvcEvent $e)
     {
-        $eventManager = $e->getApplication()->getEventManager();
-
-        $eventManager->attach( MvcEvent::EVENT_RENDER, array( $this, 'onRender' ), -100 );
-        //before controller are choose
-        $eventManager->attach( MvcEvent::EVENT_ROUTE , array( $this, 'setupAccessSystem' ), -100 );
-
         $sm = $e->getApplication()->getServiceManager();
-        $request = $e->getRequest();
 
-        $this->setupRestfulStandard($sm, $request);
+        //before controller are choose
+        if( ($request = $e->getRequest()) instanceof HttpRequest) {
+            $eventManager = $e->getApplication()->getEventManager();
+            $eventManager->attach( MvcEvent::EVENT_ROUTE , array( $this, 'setupAccessSystem' ), -100 );
+
+            $this->setupRestfulStandard($sm, $request);
+        }
+
         $this->setupGameModulesSystem($sm);
     }
 
@@ -126,6 +127,7 @@ class Module
         $route_match = $event->getRouteMatch();
         $choosed = $route_match->getParam('controller');
 
+
         $logger->debug(sprintf('Checking access for "%s".', $choosed));
 
         //if logged user not have privilages to any of needed
@@ -139,13 +141,6 @@ class Module
             //let set redirect value
             $original_uri = $event->getRequest()->getServer( 'REQUEST_URI' );
             $event->getRequest()->getQuery()->set('redirect', $original_uri);
-        }
-    }
-
-    public function onRender( MvcEvent $e )
-    {
-        if( $e->getRequest() instanceof \Zend\Http\Request ) {
-            $this->turnOffJsonNest( $e );
         }
     }
 
@@ -180,26 +175,6 @@ class Module
 
             $debug_msg = sprintf('%s, %s', $_method, $request->getRequestUri() );
             $log->debug( $debug_msg );
-        }
-    }
-
-    /**
-     * automatically turning off layouts for JSON requests.
-     */
-    private function turnOffJsonNest( MvcEvent $e )
-    {
-        $accept  = $e->getRequest()->getHeaders()->get('Accept');
-
-        if (($match = $accept->match('application/json, application/javascript')) == false) {
-            return;
-        }
-
-        if ($match->getTypeString() == 'application/json' ||
-            $match->getTypeString() == 'application/javascript' ) {
-            // application/json Accept header found
-            foreach( $e->getViewModel()->getChildren() as $child ) {
-                $child->setCaptureTo( null );
-            }
         }
     }
 

@@ -8,9 +8,19 @@ class AlcarinTwigExtensions extends \Twig_Extension
 {
     public function getFilters()
     {
-        $filter = new \Twig_SimpleFilter('class', array($this, 'class_filter'));
+        $filters = [
+            //return object class name
+            'class' => 'class_filter',
+            //shorter text to max length and adding '...'
+            //default max is 20 chars.
+            'short' => 'text_shorter_filter',
+        ];
+        foreach($filters as $key => $method) {
+            $filters[$key] = new \Twig_SimpleFilter($key, array($this, $method));
+        }
 
-        return ['class' => $filter];
+
+        return $filters;
     }
 
     public function getFunctions()
@@ -30,6 +40,15 @@ class AlcarinTwigExtensions extends \Twig_Extension
 
     public function class_filter($obj) {
             return get_class($obj);
+    }
+
+    public function text_shorter_filter($text, $max = 20)
+    {
+        if(strlen($text) > $max) {
+            $text = substr($text, 0, $max - 3) . '...';
+        }
+
+        return $text;
     }
 
     public function throw_function($exception)

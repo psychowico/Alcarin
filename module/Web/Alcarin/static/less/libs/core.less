@@ -1,5 +1,34 @@
 //some basic function that we used frequently in another less files
 
+.clearfix()
+{
+  &:after {
+    visibility: hidden;
+    display:block;
+    clear:both;
+    height:0;
+    *zoom:1;
+  }
+}
+
+.v-center() {
+  height:100%;
+  width: 100%;
+  display: block;
+  display: -webkit-box;
+  display: -moz-box;
+  display: box;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  box-align: center;
+}
+
+.h-center() {
+  display: block;
+  margin: 0 auto;
+  text-align: center;
+}
+
 .transition(@time: 0.1s, @type: linear) {
   -webkit-transition: all @time @type;
   -moz-transition: all @time @type;
