@@ -10,12 +10,15 @@ return array(
             'Admin\Controller\Users' => 'Admin\Controller\UsersController',
 
             'Admin\Controller\Users\Privilages' => 'Admin\Controller\Users\PrivilagesController',
+
+
+            'Admin\Controller\Modules' => 'Admin\Controller\ModulesController'
         ),
     ),
 
     'game-modules' => array(
         'Admin' => array(
-            'discription'  => 'Administrative module',
+            'description'  => 'Administrative module',
             'game-objects-ext' => array(
                 'EngineBase\GameObject\Player' => array(
                     'admin' => 'Admin\GameObject\Extension\PlayerAdmin'
@@ -24,6 +27,9 @@ return array(
                     'privilages' => 'Admin\GameObject\Extension\AdminPrivilages',
                 ),
             ),
+        ),
+        'TestModule' => array(
+            'description'  => "This is not the test you are looking for, move along",
         ),
     ),
 
@@ -45,6 +51,7 @@ return array(
         'namespaces' => array(
             'admin/subdefault' => array(
                 'users' => 'Admin\Controller\Users',
+                'modules' => 'Admin\Controller\Modules'
             ),
         ),
     ),

@@ -19,6 +19,11 @@ class AdminHomeController extends AbstractAlcarinRestfulController
             'icon' => 'http://img.weather.weatherbug.com/forecast/icons/localized/500x420/en/trans/cond000.png',
             'alt'  => 'Manage users.',
         ],
+        [
+            'name' => 'modules',
+            'icon' =>' http://img.weather.weatherbug.com/forecast/icons/localized/500x420/en/trans/cond000.png',
+            'alt'  => 'Manage modules.',
+        ]
     ];
 
     public function getList()
