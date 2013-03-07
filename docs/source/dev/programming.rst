@@ -67,6 +67,8 @@ ZendDeveloperTools_.
 
 Remember to read samples code before writing anything.
 
+.. _`guard-configuration`:
+
 Guard configuration
 ===================
 
