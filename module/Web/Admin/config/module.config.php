@@ -41,7 +41,7 @@ return array(
                 'orbis' => 'Admin\GameObject\Orbis',
             ),
             'game-objects-ext' => array(
-                'Admin\GameObject\Extension\OrbisGateways' => array(
+                'Admin\GameObject\Extension\OrbisMinimap' => array(
                     'properties' => 'EngineBase\GameObject\Extension\MapProperties',
                 ),
                 'Admin\GameObject\Orbis' => array(

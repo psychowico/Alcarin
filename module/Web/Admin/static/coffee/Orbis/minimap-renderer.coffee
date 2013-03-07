@@ -1,42 +1,12 @@
 namespace 'Alcarin.Orbis', (exports, Alcarin) ->
 
-    class Flag
-        constructor: (@renderer)->
-            @id = Alcarin.Randoms.id()
-            @rel = $('<div>', {class: 'flag', id: @id}).append(
-                $('<div>').append $ '<i>', {class: 'icon-flag'}
-            ).data('minimap-flag', @).hide()
-            @rel.appendTo @renderer.rel.parent()
-            @rel.draggable {revert: 'invalid'}
-
-        drop: (_method)->
-            @renderer.register_drop @, _method
-
-        release_drop: ->
-            @renderer.release_drop @
-
-        position: (x, y)->
-            @rel.position @renderer.to_pixels x, y
-
-        show: (anim_speed='fast')->
-            @rel.fadeIn(anim_speed)
-
-        hide: (anim_speed='fast')->
-            @rel.fadeOut(anim_speed)
-
-        destroy: (with_anim=true, anim_speed='fast')->
-            if with_anim
-                @rel.fadeOut anim_speed, =>
-                    @rel.remove()
-                    @rel = null
-            else
-                @rel.remove()
-                @rel = null
-
     class exports.MinimapRenderer
 
-        radius: 5000
+        _radius: 10000
         flags_drop : {}
+
+        radius: ()->
+            @_radius
 
         constructor : ( _minimap )->
             @rel = _minimap
@@ -68,14 +38,14 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
 
         to_pixels: (x, y)->
             {
-                left: Math.round @pixel_radius + x * (@pixel_radius / @radius)
-                top: Math.round @pixel_radius + y * (@pixel_radius / @radius)
+                left: Math.round @pixel_radius + x * (@pixel_radius / @radius())
+                top: Math.round @pixel_radius + y * (@pixel_radius / @radius())
             }
 
         to_coords: (px, py)->
             {
-                x: Math.round (px - @pixel_radius) * ( @radius / @pixel_radius)
-                y: Math.round (py - @pixel_radius) * ( @radius / @pixel_radius)
+                x: Math.round (px - @pixel_radius) * ( @radius() / @pixel_radius)
+                y: Math.round (py - @pixel_radius) * ( @radius() / @pixel_radius)
             }
 
         fill_by_sea : ->
@@ -122,3 +92,36 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
             image.attr('original-src', image.attr('src'));
             imgObj.src = canvas.toDataURL();
             ###
+
+    class Flag
+        constructor: (@renderer)->
+            @id = Alcarin.Randoms.id()
+            @rel = $('<div>', {class: 'flag', id: @id}).append(
+                $('<div>').append $ '<i>', {class: 'icon-flag'}
+            ).data('minimap-flag', @).hide()
+            @rel.appendTo @renderer.rel.parent()
+            @rel.draggable {revert: 'invalid'}
+
+        drop: (_method)->
+            @renderer.register_drop @, _method
+
+        release_drop: ->
+            @renderer.release_drop @
+
+        position: (x, y)->
+            @rel.position @renderer.to_pixels x, y
+
+        show: (anim_speed='fast')->
+            @rel.fadeIn(anim_speed)
+
+        hide: (anim_speed='fast')->
+            @rel.fadeOut(anim_speed)
+
+        destroy: (with_anim=true, anim_speed='fast')->
+            if with_anim
+                @rel.fadeOut anim_speed, =>
+                    @rel.remove()
+                    @rel = null
+            else
+                @rel.remove()
+                @rel = null

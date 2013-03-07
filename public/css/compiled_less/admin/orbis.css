@@ -26,6 +26,10 @@
 .minimap .flag div.ui-draggable-dragging {
   border-style: solid dashed;
 }
+.map-info .popover {
+  max-width: 400px;
+  width: 400px;
+}
 .gateways-groups .edit-btn {
   margin-left: 5px;
 }

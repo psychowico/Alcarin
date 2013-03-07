@@ -13,6 +13,7 @@ Contents:
     story
     mechanic/index
     dev/installation instructions
+    dev/how to
     dev/programming
     dev/core
     dev/game objects
