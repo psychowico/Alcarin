@@ -21,7 +21,11 @@ namespace 'Alcarin.JQueryPlugins', (exports, Alcarin) ->
 
         _method = (meth) =>
             ( url, data, ondone ) ->
-                if $.isFunction data
+                if $.isFunction url
+                    ondone = url
+                    data   = {}
+                    url    = null
+                else if $.isFunction data
                     ondone = data
                     data = {}
 
@@ -42,6 +46,7 @@ namespace 'Alcarin.JQueryPlugins', (exports, Alcarin) ->
             (response)->
                 if response.success == false and response.errors?
                     console.error response.errors
+
                 _ondone(response)
 
         $put    : _method('PUT')

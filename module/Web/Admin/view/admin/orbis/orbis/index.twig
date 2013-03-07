@@ -4,7 +4,16 @@
 <div id="orbis" data-instance="Alcarin.Orbis.Orbis">
     <div class="row">
         <div class="span6">
-            <h2>{{ _('Minimap') }}</h2>
+            <div class="map-info">
+                <h2 class="h2">
+                    {{ _('Minimap') }}
+                    <button class="btn btn-inverse">
+                        Info
+                    </button>
+                </h2>
+                <div class="info-popover" data-placement="bottom" data-title="Global map information" data-content="">
+                </div>
+            </div>
             <div class="minimap">
                 <canvas data-instance="Alcarin.Orbis.MinimapRenderer" width="500" height="500">
                     You browser don't support canvas, can not continue.

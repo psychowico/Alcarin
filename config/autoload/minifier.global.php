@@ -22,6 +22,7 @@ return array(
                             '/js/bootstrap-2.3.1.js',
                             '/js/bootstrap-editable-1.4.1.js',
                             '/js/stacktrace-0.5.js',
+                            '/js/spin-1.2.8.js',
                         ),
                     ),
                     'common'    => array(

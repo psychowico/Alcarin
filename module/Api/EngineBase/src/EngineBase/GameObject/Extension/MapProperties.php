@@ -4,6 +4,8 @@ namespace EngineBase\GameObject\Extension;
 
 class MapProperties extends \Core\GameObject
 {
+    const DEFAULT_RADIUS = 10000;
+
     public function radius()
     {
         return $this->get('radius');
@@ -24,7 +26,11 @@ class MapProperties extends \Core\GameObject
             $property_path => ['$exists'=> true],
         ], [$property_path]);
 
-        return empty($value['properties'][$key]) ? null : $value['properties'][$key];
+        $result = empty($value['properties'][$key]) ? null : $value['properties'][$key];
+        if($key == 'radius' && $result == null) {
+            return static::DEFAULT_RADIUS;
+        }
+        return $result;
     }
     public function set($key, $value)
     {

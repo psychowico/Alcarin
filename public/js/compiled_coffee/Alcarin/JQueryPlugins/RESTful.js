@@ -27,7 +27,11 @@ namespace('Alcarin.JQueryPlugins', function(exports, Alcarin) {
     _method = function(meth) {
       return function(url, data, ondone) {
         var method, settings;
-        if ($.isFunction(data)) {
+        if ($.isFunction(url)) {
+          ondone = url;
+          data = {};
+          url = null;
+        } else if ($.isFunction(data)) {
           ondone = data;
           data = {};
         }
