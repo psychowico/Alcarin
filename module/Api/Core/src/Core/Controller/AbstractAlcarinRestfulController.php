@@ -109,7 +109,7 @@ abstract class AbstractAlcarinRestfulController extends AbstractRestfulControlle
                 $e->setResult($result);
             }
             else {
-                throw $e;
+                throw $exc;
             }
         }
 
