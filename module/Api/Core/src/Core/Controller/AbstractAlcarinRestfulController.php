@@ -120,6 +120,17 @@ abstract class AbstractAlcarinRestfulController extends AbstractRestfulControlle
         return $result;
     }
 
+    public function onAction()
+    {
+        $data       = $this->params()->fromPost();
+        $event_name = $data['__id'];
+
+        if(method_exists($this, 'on')) {
+            return $this->on($event_name, $data);
+        }
+        return $this->json()->fail();
+    }
+
     protected function mongo()
     {
         if( $this->mongo == null ) {

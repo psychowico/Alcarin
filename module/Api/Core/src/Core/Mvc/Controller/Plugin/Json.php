@@ -28,6 +28,13 @@ class Json extends AbstractPlugin
         return new JsonModel($data);
     }
 
+    public function emit($event_name, $data)
+    {
+        return new JsonModel([
+            'id'   => $event_name,
+            'data' => $data,
+        ]);
+    }
 
     public function __invoke( $array = null )
     {

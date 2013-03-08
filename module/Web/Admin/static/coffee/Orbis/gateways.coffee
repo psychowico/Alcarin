@@ -2,6 +2,96 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
 
     root = null
 
+    class exports.Gateways
+
+        constructor : ($gateways)->
+            @groups       = {}
+            @$gateways    = $gateways
+            @$groups_pane = $gateways.find('.gateways-groups')
+            @$edit_pane   = $gateways.find('.gateway-edit')
+            @$edit_pane_form = @$edit_pane.find('form')
+            @proxy = new Alcarin.EventProxy urls.orbis.gateways
+
+        minimap: ->
+            if not @_minimap
+                @_minimap    = $('.minimap > canvas').data 'minimap'
+            @_minimap
+
+        gateway_editor: ->
+            if not @editor?
+                @editor = new GatewayEditor @$edit_pane, @$groups_pane
+            @editor
+
+        create_group : =>
+
+            name  = 'new_group_'
+            index = 0
+            index++ while @groups.list["#{name}#{index}"]?
+
+            group_name = "#{name}#{index}"
+            gateway_name = 'Empty Gateway'
+
+            data = {
+                creating_group: true,
+                name : gateway_name,
+                group: group_name,
+                description: 'Please, add description to this gateway!',
+                x: 0, y: 0,
+            }
+
+            @proxy.emit 'group.create', data
+
+        on_group_created: (response)=>
+            if response.success
+                new_group = new GatewayGroup response.name
+
+                new_gateway = new Gateway
+                new_gateway.copy response
+
+                new_group.rel.find("##{response.name}").collapse 'toggle'
+
+        init_groups : ->
+
+            #preparing groups active lists
+            @groups = groups = new Alcarin.ActiveList()
+            groups.list = {}
+            groups.setAnims 'slideDown', 'slideUp'
+
+            $list = @$groups_pane.parent().find('.active-group')
+
+            groups.bind $list
+
+            #default "ungrouped" group
+            ungrouped = new GatewayGroup 'Ungrouped'
+            groups.list[0] = ungrouped
+
+            ungrouped.toggle true
+            ungrouped.disable_edition()
+
+            # let fetch all gateways
+            @proxy.emit 'gateways.fetch'
+
+        reload_gateways: (response)=>
+            for group_name, gateways of response.gateways
+                if not @groups.list[group_name]?
+                    group = new GatewayGroup group_name
+                    @groups.list[group_name] = group
+                for gateway in gateways
+                    new_gateway = new Gateway
+                    new_gateway.copy gateway
+
+        init : ->
+            #register event
+            root = @
+            @$groups_pane.on 'click', '.add-group', @create_group
+
+            # fix problem with google chrome, not deleting this.
+            $('[name="description"]').attr('value', '{item.description}')
+
+            @proxy.on 'gateways.all', @reload_gateways
+            @proxy.on 'group.created', @on_group_created
+            @init_groups()
+
     class GatewayGroup extends Alcarin.ActiveView
 
         group_name: (name)->
@@ -229,84 +319,3 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
             @edit_pane.fadeOut =>
                 @gateway.unbind @edit_pane
                 @gateway = null
-
-    class exports.Gateways
-
-        constructor : ($gateways)->
-            @groups       = {}
-            @$gateways    = $gateways
-            @$groups_pane = $gateways.find('.gateways-groups')
-            @$edit_pane   = $gateways.find('.gateway-edit')
-            @$edit_pane_form = @$edit_pane.find('form')
-
-        minimap: ->
-            if not @_minimap
-                @_minimap    = $('.minimap > canvas').data 'minimap'
-            @_minimap
-
-        gateway_editor: ->
-            if not @editor?
-                @editor = new GatewayEditor @$edit_pane, @$groups_pane
-            @editor
-
-        create_group : =>
-
-            name  = 'new_group_'
-            index = 0
-            index++ while @groups.list["#{name}#{index}"]?
-
-            group_name = "#{name}#{index}"
-            gateway_name = 'Empty Gateway'
-
-            data = {
-                creating_group: true,
-                name : gateway_name,
-                group: group_name,
-                description: 'Please, add description to this gateway!',
-                x: 0, y: 0,
-            }
-
-            Rest().$create urls.orbis.gateways, data, (response)=>
-                if response.success
-                    new_group = new GatewayGroup group_name
-
-                    new_gateway = new Gateway
-                    new_gateway.copy response.data
-
-                    new_group.rel.find("##{group_name}").collapse 'toggle'
-
-        init_groups : ->
-
-            #preparing groups active lists
-            @groups = groups = new Alcarin.ActiveList()
-            groups.list = {}
-            groups.setAnims 'slideDown', 'slideUp'
-
-            $list = @$groups_pane.parent().find('.active-group')
-
-            groups.bind $list
-
-            #default "ungrouped" group
-            ungrouped = new GatewayGroup 'Ungrouped'
-            groups.list[0] = ungrouped
-
-            ungrouped.toggle true
-            ungrouped.disable_edition()
-
-            Rest().$get urls.orbis.gateways, (response)=>
-                for group_name, gateways of response.gateways
-                    if not groups.list[group_name]?
-                        group = new GatewayGroup group_name
-                        groups.list[group_name] = group
-                    for gateway in gateways
-                        new_gateway = new Gateway
-                        new_gateway.copy gateway
-
-        init : ->
-            #register event
-            root = @
-            @$groups_pane.on 'click', '.add-group', @create_group
-            # fix problem with google chrome, not deleting this.
-            $('[name="description"]').attr('value', '{item.description}')
-
-            @init_groups()

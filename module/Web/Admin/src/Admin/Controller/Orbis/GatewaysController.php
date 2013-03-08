@@ -5,11 +5,11 @@
 
 namespace Admin\Controller\Orbis;
 
-use Core\Controller\AbstractAlcarinRestfulController;
+use Core\Controller\AbstractAlcarinEventController;
 
-class GatewaysController extends AbstractAlcarinRestfulController
+class GatewaysController extends AbstractAlcarinEventController
 {
-    public function getList()
+    private function all()
     {
         $grouped_gateways = $this->orbis()->gateways()->find();
         foreach($grouped_gateways as $key => $group) {
@@ -20,7 +20,38 @@ class GatewaysController extends AbstractAlcarinRestfulController
             }, $group );
         }
 
-        return $this->json(['gateways' => $grouped_gateways]);
+        return ['gateways' => $grouped_gateways];
+    }
+
+    private function create_group($data)
+    {
+        $form = $this->getServiceLocator()->get('gateways-form');
+        $form->remove('CSRF');
+
+        $form->setData($data);
+
+        if($form->isValid()) {
+            $data = $form->getData();
+            $gateway_name  = $data['name'];
+            $gateway_group = empty($data['group']) ? null : $data['group'];
+
+
+            $gateway_desc  = empty($data['description']) ? null : $data['description'];
+            $x             = empty($data['x']) ? 0 : $data['x'];
+            $y             = empty($data['y']) ? 0 : $data['y'];
+
+            $result_id = $this->orbis()->gateways()->insert(
+                $gateway_name, $gateway_desc,
+                $x, $y, $gateway_group);
+            if($result_id !== false) {
+                $data['id'] = $result_id;
+                return $this->success($data);
+            }
+            return $this->fail();
+        }
+        else {
+            return $this->fail(['errors' => $form->getMessages()]);
+        }
     }
 
     public function create($data)
@@ -121,5 +152,17 @@ class GatewaysController extends AbstractAlcarinRestfulController
     protected function orbis()
     {
         return $this->gameServices()->get('orbis');
+    }
+
+    public function on($event, $data)
+    {
+        switch($event) {
+            case 'gateways.fetch':
+                return $this->emit('gateways.all', $this->all());
+            case 'group.create':
+                return $this->emit('group.created', $this->create_group($data));
+        }
+
+        return $this->emit('response.empty');
     }
 }

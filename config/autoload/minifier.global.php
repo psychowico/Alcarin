@@ -29,8 +29,10 @@ return array(
                         'sources' => array(
                             '/js/compiled_coffee/core.js',
                             '/js/compiled_coffee/urls.js',
+                            '/js/compiled_coffee/Alcarin/path.js',
                             '/js/compiled_coffee/Alcarin/randoms.js',
                             '/js/compiled_coffee/Alcarin/Errors/errors-core.js',
+                            '/js/compiled_coffee/Alcarin/event-proxy.js',
                             '/js/compiled_coffee/Alcarin/active-view.js',
                             '/js/compiled_coffee/Alcarin/active-list.js',
                             '/js/compiled_coffee/Alcarin/JQueryPlugins/RESTful.js',
@@ -42,7 +44,6 @@ return array(
                     //files enough for guest users
                     'guest' => array(
                         'sources' => array(
-                            '/js/compiled_coffee/Alcarin/game-events-proxy.js',
                             '/js/compiled_coffee/test.js',
                         ),
                     ),
