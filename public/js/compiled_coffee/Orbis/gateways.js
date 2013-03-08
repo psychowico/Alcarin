@@ -8,7 +8,9 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
   exports.Gateways = (function() {
 
     function Gateways($gateways) {
-      this.reload_gateways = __bind(this.reload_gateways, this);
+      this.on_group_deleted = __bind(this.on_group_deleted, this);
+
+      this.on_reload_gateways = __bind(this.on_reload_gateways, this);
 
       this.on_group_created = __bind(this.on_group_created, this);
 
@@ -79,7 +81,7 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
       return this.proxy.emit('gateways.fetch');
     };
 
-    Gateways.prototype.reload_gateways = function(response) {
+    Gateways.prototype.on_reload_gateways = function(response) {
       var gateway, gateways, group, group_name, new_gateway, _ref, _results;
       _ref = response.gateways;
       _results = [];
@@ -103,12 +105,30 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
       return _results;
     };
 
+    Gateways.prototype.on_group_deleted = function(response) {
+      var gateway, group, name, _i, _len, _ref, _results;
+      if (response.success) {
+        name = response.id;
+        if (this.groups.list[name] != null) {
+          group = this.groups.list[name];
+          _ref = group.gateways().iterator();
+          _results = [];
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            gateway = _ref[_i];
+            _results.push(gateway.group(0));
+          }
+          return _results;
+        }
+      }
+    };
+
     Gateways.prototype.init = function() {
       root = this;
       this.$groups_pane.on('click', '.add-group', this.create_group);
       $('[name="description"]').attr('value', '{item.description}');
-      this.proxy.on('gateways.all', this.reload_gateways);
+      this.proxy.on('gateways.all', this.on_reload_gateways);
       this.proxy.on('group.created', this.on_group_created);
+      this.proxy.on('group.deleted', this.on_group_deleted);
       return this.init_groups();
     };
 
@@ -239,21 +259,10 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
     GatewayGroup.prototype.delete_group = function() {
       var _this = this;
       Alcarin.Dialogs.Confirms.admin('Really deleting? Gateways will be moved to "ungrouped" group.', function() {
-        var group_name, uri;
-        uri = urls.orbis.gateways;
+        var group_name;
         group_name = _this.group_name();
-        return Rest().$delete("" + uri + "/" + group_name, {
-          mode: 'group'
-        }, function(response) {
-          var gateway, _i, _len, _ref;
-          if (response.success) {
-            _ref = _this.gateways().iterator();
-            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-              gateway = _ref[_i];
-              gateway.group(0);
-            }
-            return _this.gateways().clear();
-          }
+        return root.proxy.emit('group.delete', {
+          id: group_name
         });
       });
       return false;

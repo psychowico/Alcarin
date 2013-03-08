@@ -11,15 +11,24 @@ use Zend\Mvc\Controller\AbstractActionController,
 /***
  * @author Wiktor Obrębski
  */
-abstract class AbstractAlcarinEventController extends AbstractActionController
+abstract class AbstractEventController extends AbstractActionController
 {
     protected $mongo;
     protected $game_services;
 
     public function onDispatch(MvcEvent $e)
     {
-        $routeMatch = $e->getRouteMatch();
-        $action  = $routeMatch->getParam('action', false);
+        $route_match = $e->getRouteMatch();
+        $action  = $route_match->getParam('action', false);
+
+        $params = $e->getRequest()->getPost();
+
+        $event_id = !empty($params['__id']) ? $params['__id'] : $route_match->getParam('id');
+        if($event_id !== null){
+            $params['__event'] = $event_id;
+            unset($params['__id']);
+            $route_match->setParam('action', 'on');
+        }
 
         //auto format json errors
         try {
@@ -47,15 +56,28 @@ abstract class AbstractAlcarinEventController extends AbstractActionController
         return $result;
     }
 
+    protected function on($event, $data)
+    {
+        return $this->emit('response.empty', ['event' => $event]);
+    }
+
     public function onAction()
     {
         $data       = $this->params()->fromPost();
-        $event_name = $data['__id'];
+        $event_name = $data['__event'];
 
-        if(method_exists($this, 'on')) {
+        $parts = array_map(function($part) { return ucfirst($part); },
+                    explode('.', $event_name));
+        $method_name = implode('', $parts);
+
+        if(method_exists($this, 'on' . $method_name)) {
+            unset($data['__event']);
+            return $this->{'on'.$method_name}($data);
+        }
+        else if(method_exists($this, 'on')) {
             return $this->on($event_name, $data);
         }
-        return $this->json()->fail();
+        return $this->fail();
     }
 
     public function emit($event_name, $data = [])

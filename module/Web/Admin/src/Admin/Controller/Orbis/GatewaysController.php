@@ -5,11 +5,11 @@
 
 namespace Admin\Controller\Orbis;
 
-use Core\Controller\AbstractAlcarinEventController;
+use Core\Controller\AbstractEventController;
 
-class GatewaysController extends AbstractAlcarinEventController
+class GatewaysController extends AbstractEventController
 {
-    private function all()
+    protected function onGatewaysFetch($data)
     {
         $grouped_gateways = $this->orbis()->gateways()->find();
         foreach($grouped_gateways as $key => $group) {
@@ -20,16 +20,18 @@ class GatewaysController extends AbstractAlcarinEventController
             }, $group );
         }
 
-        return ['gateways' => $grouped_gateways];
+        $response = $this->success(['gateways' => $grouped_gateways]);
+        return $this->emit('gateways.all', $response );
     }
 
-    private function create_group($data)
+    protected function onGroupCreate($data)
     {
         $form = $this->getServiceLocator()->get('gateways-form');
         $form->remove('CSRF');
 
         $form->setData($data);
 
+        $result = null;
         if($form->isValid()) {
             $data = $form->getData();
             $gateway_name  = $data['name'];
@@ -45,13 +47,23 @@ class GatewaysController extends AbstractAlcarinEventController
                 $x, $y, $gateway_group);
             if($result_id !== false) {
                 $data['id'] = $result_id;
-                return $this->success($data);
+                $result = $this->success($data);
             }
-            return $this->fail();
+            else {
+                $result = $this->fail();
+            }
         }
         else {
-            return $this->fail(['errors' => $form->getMessages()]);
+            $result = $this->fail(['errors' => $form->getMessages()]);
         }
+        return $this->emit('group.created', $result);
+    }
+
+    protected function onGroupDelete($data)
+    {
+        $this->orbis()->gateways()->delete_group($data['id']);
+        $result = $this->success($data);
+        return $this->emit('group.deleted', $result);
     }
 
     public function create($data)
@@ -135,13 +147,7 @@ class GatewaysController extends AbstractAlcarinEventController
     {
         $mode = $this->params()->fromPost('mode', 'gateway');
 
-        if($mode == 'group') {
-            $group_name = $id;
-            $this->orbis()->gateways()->delete_group($group_name);
-
-            return $this->json()->success();
-        }
-        elseif($mode == 'gateway') {
+        if($mode == 'gateway') {
             $this->orbis()->gateways()->delete($id);
             return $this->json()->success();
         }
@@ -152,17 +158,5 @@ class GatewaysController extends AbstractAlcarinEventController
     protected function orbis()
     {
         return $this->gameServices()->get('orbis');
-    }
-
-    public function on($event, $data)
-    {
-        switch($event) {
-            case 'gateways.fetch':
-                return $this->emit('gateways.all', $this->all());
-            case 'group.create':
-                return $this->emit('group.created', $this->create_group($data));
-        }
-
-        return $this->emit('response.empty');
     }
 }

@@ -41,7 +41,6 @@ namespace('Alcarin', function(exports, Alcarin) {
         data = {};
       }
       data['__id'] = event_name;
-      data['__action'] = 'emit';
       return Rest().$create(this.url, data, this._onStateChanged);
     };
 
@@ -99,6 +98,9 @@ namespace('Alcarin', function(exports, Alcarin) {
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         _event = _ref[_i];
         _callbacks = this.register_events[_event.id];
+        if (!(_event.data.success != null)) {
+          console.error("Fail response: '" + _event.id + "',", _event.data);
+        }
         if (_callbacks != null) {
           _callbacks.fire(_event.data);
         }

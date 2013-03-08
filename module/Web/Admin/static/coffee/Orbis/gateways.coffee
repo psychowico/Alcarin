@@ -71,7 +71,7 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
             # let fetch all gateways
             @proxy.emit 'gateways.fetch'
 
-        reload_gateways: (response)=>
+        on_reload_gateways: (response)=>
             for group_name, gateways of response.gateways
                 if not @groups.list[group_name]?
                     group = new GatewayGroup group_name
@@ -79,6 +79,13 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
                 for gateway in gateways
                     new_gateway = new Gateway
                     new_gateway.copy gateway
+
+        on_group_deleted: (response)=>
+            if response.success
+                name = response.id
+                if @groups.list[name]?
+                    group = @groups.list[name]
+                    gateway.group 0 for gateway in group.gateways().iterator()
 
         init : ->
             #register event
@@ -88,8 +95,9 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
             # fix problem with google chrome, not deleting this.
             $('[name="description"]').attr('value', '{item.description}')
 
-            @proxy.on 'gateways.all', @reload_gateways
+            @proxy.on 'gateways.all', @on_reload_gateways
             @proxy.on 'group.created', @on_group_created
+            @proxy.on 'group.deleted', @on_group_deleted
             @init_groups()
 
     class GatewayGroup extends Alcarin.ActiveView
@@ -178,13 +186,8 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
 
         delete_group: ()=>
             Alcarin.Dialogs.Confirms.admin 'Really deleting? Gateways will be moved to "ungrouped" group.', =>
-                uri = urls.orbis.gateways
                 group_name = @group_name()
-                Rest().$delete "#{uri}/#{group_name}", {mode: 'group'}, (response)=>
-                    if response.success
-                        gateway.group 0 for gateway in @gateways().iterator()
-                        @gateways().clear()
-
+                root.proxy.emit 'group.delete', {id: group_name}
             false
 
     class Gateway extends Alcarin.ActiveView

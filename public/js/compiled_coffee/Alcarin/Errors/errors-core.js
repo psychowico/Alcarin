@@ -1,3 +1,4 @@
+var __slice = [].slice;
 
 namespace('Alcarin.Errors', function(exports, Alcarin) {
   var cookie_name, day_limit, space;
@@ -45,9 +46,11 @@ namespace('Alcarin.Errors', function(exports, Alcarin) {
       error: function() {}
     };
     _console._error = _console.error;
-    _console.error = function(msg) {
-      var caller_stack, data,
+    _console.error = function() {
+      var caller_stack, data, msg, _i, _len, _msg, _results,
         _this = this;
+      _msg = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+      msg = _msg[0];
       caller_stack = printStackTrace()[4];
       data = {
         mode: 'manual',
@@ -59,7 +62,12 @@ namespace('Alcarin.Errors', function(exports, Alcarin) {
           return _this.warn(response.errors);
         }
       });
-      return this._error(msg);
+      _results = [];
+      for (_i = 0, _len = _msg.length; _i < _len; _i++) {
+        msg = _msg[_i];
+        _results.push(this._error(msg));
+      }
+      return _results;
     };
     return window.console = _console;
   };

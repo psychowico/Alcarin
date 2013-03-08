@@ -26,7 +26,6 @@ namespace 'Alcarin', (exports, Alcarin) ->
 
         emit: (event_name, data = {})->
             data['__id']     = event_name
-            data['__action'] = 'emit'
             Rest().$create @url, data, @_onStateChanged
 
         _$wrapper: (method, url, data, on_done)->
@@ -60,6 +59,7 @@ namespace 'Alcarin', (exports, Alcarin) ->
             state = {_events: [state]} if not state._events?
             for _event in state._events
                 _callbacks = @register_events[_event.id]
+                console.error "Fail response: '#{_event.id}',", _event.data if not _event.data.success?
                 _callbacks?.fire _event.data
             true
 

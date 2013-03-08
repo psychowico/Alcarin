@@ -27,24 +27,6 @@ class Module
         $eventManager        = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
-
-        if( ($request = $e->getRequest()) instanceof HttpRequest) {
-            $eventManager->attach( MvcEvent::EVENT_ROUTE , array( $this, 'setupEventsProxySystem' ), -100 );
-        }
-    }
-
-    public function setupEventsProxySystem(MvcEvent $e)
-    {
-        $route_match = $e->getRouteMatch();
-
-        $params = $e->getRequest()->getPost();
-        $__action = $params->get('__action', null);
-
-        if($__action == 'emit' && isset($params['__id'])) {
-            $route_match = $e->getRouteMatch();
-            unset($params['__action']);
-            $route_match->setParam('action', 'on');
-        }
     }
 
     public function getViewHelperConfig()
