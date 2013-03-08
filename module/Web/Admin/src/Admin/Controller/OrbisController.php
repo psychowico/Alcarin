@@ -6,6 +6,7 @@
 namespace Admin\Controller;
 
 use Core\Controller\AbstractAlcarinRestfulController;
+use Zend\View\Model\ViewModel;
 
 class OrbisController extends AbstractAlcarinRestfulController
 {
@@ -20,10 +21,49 @@ class OrbisController extends AbstractAlcarinRestfulController
         ];
     }
 
-    public function mapInfo()
+    public function get($id)
     {
-        $orbis = $this->gameServices()->get('orbis');
-        $properties = $orbis->minimap()->properties();
+        $args = explode(',', $id);
+        if(count($args) >= 2) {
+            list($x, $y) = $args;
+            $x = floatval($x);
+            $y = floatval($y);
+            $range = empty($args[2]) ? null : $args[2];
+            if($this->isJson()) {
+                return $this->json()->success([
+                    'map' => $this->getMapAtRange($x, $y, $range)
+                ]);
+            }
+
+            $map = $this->orbis()->minimap();
+            $radius = $map->properties()->radius();
+            if($x <= $radius && $y <= $radius ) {
+                $model = new ViewModel([
+                    'x' => $x,
+                    'y' => $y,
+                    'range' => $range
+                ]);
+                return $model->setTemplate('admin/orbis/orbis/editor');
+            }
+        }
+
+        return $this->redirect()->toParent();
+    }
+
+    private function orbis()
+    {
+        return $this->gameServices()->get('orbis');
+    }
+
+    private function getMapAtRange($x, $y, $range = null)
+    {
+        return ['test'];
+
+    }
+
+    private function mapInfo()
+    {
+        $properties = $this->orbis()->minimap()->properties();
 
         $radius = $properties->radius();
         $radius_km = $radius / 10;
@@ -34,7 +74,7 @@ class OrbisController extends AbstractAlcarinRestfulController
         //I assume that man can move 50km at day
         $travel_time_days = ($radius_km / 50);
 
-        $htmlViewPart = new \Zend\View\Model\ViewModel([
+        $htmlViewPart = new ViewModel([
             'radius' => $radius,
             'radius_km' => $radius_km,
             'area'  => $area,

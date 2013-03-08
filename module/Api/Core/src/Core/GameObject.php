@@ -73,6 +73,10 @@ class GameObject implements GameServiceAwareInterface
             $plugin = $this->plugins[$plugin_name];
         }
 
+        if(method_exists($plugin, '__invoke')) {
+            return call_user_func_array($plugin, $args);
+        }
+
         return $plugin;
     }
 

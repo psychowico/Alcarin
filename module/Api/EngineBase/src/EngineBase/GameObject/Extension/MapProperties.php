@@ -41,4 +41,11 @@ class MapProperties extends \Core\GameObject
             ['upsert' => true]
         );
     }
+
+    public function __invoke($key = null, $value = null)
+    {
+        if($key == null) return $this;
+        if($value == null) return $this->get($key);
+        $this->set($key, $value);
+    }
 }
