@@ -16,8 +16,16 @@ abstract class AbstractEventController extends AbstractActionController
     protected $mongo;
     protected $game_services;
 
+    //we want throw notices and warnings as exceptions
+    //so we can easly debuging ajax controllers
+    public function custom_warning_handler($errno, $errstr) {
+        throw new \Exception($errstr);
+    }
+
     public function onDispatch(MvcEvent $e)
     {
+        set_error_handler([$this, 'custom_warning_handler'], E_NOTICE | E_WARNING);
+
         $route_match = $e->getRouteMatch();
         $action  = $route_match->getParam('action', false);
 
@@ -26,7 +34,7 @@ abstract class AbstractEventController extends AbstractActionController
         $event_id = !empty($params['__id']) ? $params['__id'] : $route_match->getParam('id');
         if($event_id !== null){
             $params['__event'] = $event_id;
-            unset($params['__id']);
+            if(isset($params['__id'])) unset($params['__id']);
             $route_match->setParam('action', 'on');
         }
 
@@ -45,7 +53,7 @@ abstract class AbstractEventController extends AbstractActionController
                     $errors = $errors[0];
                 }
 
-                $result = $this->emit('errors', [$errors]);
+                $result = $this->emit('system.exception', [$errors]);
                 $e->setResult($result);
             }
             else {

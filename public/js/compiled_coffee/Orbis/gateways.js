@@ -8,6 +8,8 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
   exports.Gateways = (function() {
 
     function Gateways($gateways) {
+      this.on_gateway_deleted = __bind(this.on_gateway_deleted, this);
+
       this.on_group_deleted = __bind(this.on_group_deleted, this);
 
       this.on_reload_gateways = __bind(this.on_reload_gateways, this);
@@ -60,25 +62,11 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
     Gateways.prototype.on_group_created = function(response) {
       var new_gateway, new_group;
       if (response.success) {
-        new_group = new GatewayGroup(response.name);
+        new_group = new GatewayGroup(response.gateway.group);
         new_gateway = new Gateway;
-        new_gateway.copy(response);
+        new_gateway.copy(response.gateway);
         return new_group.rel.find("#" + response.name).collapse('toggle');
       }
-    };
-
-    Gateways.prototype.init_groups = function() {
-      var $list, groups, ungrouped;
-      this.groups = groups = new Alcarin.ActiveList();
-      groups.list = {};
-      groups.setAnims('slideDown', 'slideUp');
-      $list = this.$groups_pane.parent().find('.active-group');
-      groups.bind($list);
-      ungrouped = new GatewayGroup('Ungrouped');
-      groups.list[0] = ungrouped;
-      ungrouped.toggle(true);
-      ungrouped.disable_edition();
-      return this.proxy.emit('gateways.fetch');
     };
 
     Gateways.prototype.on_reload_gateways = function(response) {
@@ -122,6 +110,31 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
       }
     };
 
+    Gateways.prototype.on_gateway_deleted = function(response) {
+      var gg;
+      if (response.success) {
+        gg = this.groups.list[response.group];
+        gg.remove_by_id(response.id);
+        if (gg.gateways().length() === 0 && gg.editable) {
+          return this.groups.remove(gg);
+        }
+      }
+    };
+
+    Gateways.prototype.init_groups = function() {
+      var $list, groups, ungrouped;
+      this.groups = groups = new Alcarin.ActiveList();
+      groups.list = {};
+      groups.setAnims('slideDown', 'slideUp');
+      $list = this.$groups_pane.parent().find('.active-group');
+      groups.bind($list);
+      ungrouped = new GatewayGroup('Ungrouped');
+      groups.list[0] = ungrouped;
+      ungrouped.toggle(true);
+      ungrouped.disable_edition();
+      return this.proxy.emit('gateways.fetch');
+    };
+
     Gateways.prototype.init = function() {
       root = this;
       this.$groups_pane.on('click', '.add-group', this.create_group);
@@ -129,6 +142,7 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
       this.proxy.on('gateways.all', this.on_reload_gateways);
       this.proxy.on('group.created', this.on_group_created);
       this.proxy.on('group.deleted', this.on_group_deleted);
+      this.proxy.on('gateway.deleted', this.on_gateway_deleted);
       return this.init_groups();
     };
 
@@ -176,6 +190,8 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
       this.create_gateway = __bind(this.create_gateway, this);
 
       this.edit_group = __bind(this.edit_group, this);
+
+      this.remove_by_id = __bind(this.remove_by_id, this);
       this.debug = '';
       this.editable = true;
       GatewayGroup.__super__.constructor.call(this);
@@ -187,6 +203,22 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
       root.groups.push(this);
       this.gateways().setAnims('slideDown', 'slideUp');
     }
+
+    GatewayGroup.prototype.remove_by_id = function(id) {
+      var gateway, _i, _len, _ref, _results;
+      _ref = this.gateways().iterator();
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        gateway = _ref[_i];
+        if (gateway.id() === id) {
+          this.gateways().remove(gateway);
+          break;
+        } else {
+          _results.push(void 0);
+        }
+      }
+      return _results;
+    };
 
     GatewayGroup.prototype.onbind = function($target) {
       var edit_btn,
@@ -247,12 +279,10 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
         _this = this;
       edition_gateway = new Gateway(false);
       edition_gateway.name('Empty gateway').group(this.group_name()).description('Please, add description to this gateway!', editor = root.gateway_editor());
-      return editor.mode('post').show(edition_gateway, function(response) {
+      return editor.show(edition_gateway, 'gateway.create', 'gateway.created', function(response) {
         var gateway;
-        if (response.success) {
-          gateway = new Gateway;
-          return gateway.copy(response.data);
-        }
+        gateway = new Gateway;
+        return gateway.copy(response.gateway);
       });
     };
 
@@ -321,33 +351,17 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
         _this = this;
       edit_copy = this.clone();
       editor = root.gateway_editor();
-      return editor.mode('put').show(edit_copy, function(response) {
-        if (response.success) {
-          _this.copy(response.data);
-        }
-        if (!response.success) {
-          return false;
-        }
+      return editor.show(edit_copy, 'gateway.update', 'gateway.updated', function(response) {
+        return _this.copy(response.gateway);
       });
     };
 
     Gateway.prototype["delete"] = function() {
       var _this = this;
       return Alcarin.Dialogs.Confirms.admin('Really deleting this gateway?', function() {
-        var id, uri;
-        uri = urls.orbis.gateways;
-        id = _this.id();
-        return Rest().$delete("" + uri + "/" + id, {
-          mode: 'gateway'
-        }, function(response) {
-          var gg;
-          if (response.success) {
-            gg = _this.gateway_group();
-            gg.gateways().remove(_this);
-            if (gg.gateways().length() === 0 && gg.editable) {
-              return root.groups.remove(gg);
-            }
-          }
+        return root.proxy.emit('gateway.delete', {
+          id: _this.id(),
+          group: _this.group()
         });
       });
     };
@@ -402,18 +416,17 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
       this.groups_pane = groups_pane;
       this.cancel = __bind(this.cancel, this);
 
+      this.on_success = __bind(this.on_success, this);
+
       this.flag_drop = __bind(this.flag_drop, this);
 
-      this.form = this.edit_pane.find('form');
+      this.form = this.edit_pane.find('form').alcForm();
+      this.form.enable_proxy(root.proxy);
+      this.form.on_success(this.on_success);
       this.edit_pane.on('click', '.close', this.cancel);
       this.minimap = root.minimap();
       this.flag_mode = false;
     }
-
-    GatewayEditor.prototype.mode = function(_mode) {
-      this.form._method(_mode);
-      return this;
-    };
 
     GatewayEditor.prototype.flag_drop = function(drop_event) {
       var coords, p;
@@ -421,6 +434,13 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
       coords = this.minimap.to_coords(p.left, p.top);
       this.gateway.x(coords.x);
       return this.gateway.y(coords.y);
+    };
+
+    GatewayEditor.prototype.on_success = function(response) {
+      if (typeof this.callback === "function") {
+        this.callback(response);
+      }
+      return this.cancel();
     };
 
     GatewayEditor.prototype.edit_flag_mode = function(val) {
@@ -440,32 +460,26 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
       }
     };
 
-    GatewayEditor.prototype.show = function(gateway, on_done) {
-      var _this = this;
+    GatewayEditor.prototype.show = function(gateway, _emit_order, _response_event, callback) {
       this.gateway = gateway;
+      this.callback = callback;
       gateway.bind(this.edit_pane);
       this.edit_flag_mode(true);
-      this.form.find('[name="group"]').val(gateway.group());
-      this.form.on('ajax-submit', function(e, response) {
-        var result;
-        result = typeof on_done === "function" ? on_done(response) : void 0;
-        if (result !== false) {
-          return _this.cancel();
-        }
-      });
+      this.form.base.find('[name="group"]').val(gateway.group());
+      this.form.set_emit_order(_emit_order);
+      this.form.set_response_event(_response_event);
       this.groups_pane.fadeOut();
-      this.edit_pane.fadeIn();
-      return false;
+      return this.edit_pane.fadeIn();
     };
 
     GatewayEditor.prototype.cancel = function() {
       var _this = this;
       this.edit_flag_mode(false);
-      this.form.off('ajax-submit');
       this.groups_pane.fadeIn();
       return this.edit_pane.fadeOut(function() {
         _this.gateway.unbind(_this.edit_pane);
-        return _this.gateway = null;
+        _this.gateway = null;
+        return _this.form.reset();
       });
     };
 

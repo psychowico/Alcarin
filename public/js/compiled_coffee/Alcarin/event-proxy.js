@@ -88,7 +88,8 @@ namespace('Alcarin', function(exports, Alcarin) {
     };
 
     EventProxy.prototype._onStateChanged = function(state) {
-      var _callbacks, _event, _i, _len, _ref;
+      var _callbacks, _event, _i, _len, _ref, _ref1;
+      console.log(state);
       if (!(state._events != null)) {
         state = {
           _events: [state]
@@ -98,7 +99,7 @@ namespace('Alcarin', function(exports, Alcarin) {
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         _event = _ref[_i];
         _callbacks = this.register_events[_event.id];
-        if (!(_event.data.success != null)) {
+        if (!((_ref1 = _event.data) != null ? _ref1.success : void 0)) {
           console.error("Fail response: '" + _event.id + "',", _event.data);
         }
         if (_callbacks != null) {

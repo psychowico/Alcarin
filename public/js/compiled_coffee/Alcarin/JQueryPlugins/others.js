@@ -1,6 +1,31 @@
 
 namespace('Alcarin.JQueryPlugins', function(exports, Alcarin) {
   var def_spin, _old_position;
+  $.fn.disable = function() {
+    return this.each(function() {
+      return $(this).attr('disabled', 'disabled');
+    });
+  };
+  $.fn.enable = function(value) {
+    return this.each(function() {
+      if (value === false) {
+        return $(this).attr('disabled', 'disabled');
+      } else {
+        return $(this).removeAttr('disabled');
+      }
+    });
+  };
+  $.fn.enabled = function() {
+    return this.first().attr('disabled') === void 0;
+  };
+  $.fn.disabled = function() {
+    return this.first().attr('disabled') !== void 0;
+  };
+  $.fn.reset = function() {
+    return this.each(function() {
+      return this.reset();
+    });
+  };
   $.fn.center = function() {
     var _;
     _ = $(this);
@@ -8,6 +33,9 @@ namespace('Alcarin.JQueryPlugins', function(exports, Alcarin) {
       left: _.width() / 2,
       top: _.height() / 2
     };
+  };
+  $.fn.disableSelection = function() {
+    return this.attr('unselectable', 'on').css('user-select', 'none').on('selectstart', false);
   };
   _old_position = $.fn.position;
   $.fn.position = function(arg) {

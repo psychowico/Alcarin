@@ -56,10 +56,11 @@ namespace 'Alcarin', (exports, Alcarin) ->
             @_$wrapper '$delete', url, data, on_done
 
         _onStateChanged: (state) =>
+            console.log state
             state = {_events: [state]} if not state._events?
             for _event in state._events
                 _callbacks = @register_events[_event.id]
-                console.error "Fail response: '#{_event.id}',", _event.data if not _event.data.success?
+                console.error "Fail response: '#{_event.id}',", _event.data if not _event.data?.success
                 _callbacks?.fire _event.data
             true
 

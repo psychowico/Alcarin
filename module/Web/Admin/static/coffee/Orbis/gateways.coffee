@@ -43,12 +43,34 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
 
         on_group_created: (response)=>
             if response.success
-                new_group = new GatewayGroup response.name
+                new_group = new GatewayGroup response.gateway.group
 
                 new_gateway = new Gateway
-                new_gateway.copy response
+                new_gateway.copy response.gateway
 
                 new_group.rel.find("##{response.name}").collapse 'toggle'
+
+        on_reload_gateways: (response)=>
+            for group_name, gateways of response.gateways
+                if not @groups.list[group_name]?
+                    group = new GatewayGroup group_name
+                    @groups.list[group_name] = group
+                for gateway in gateways
+                    new_gateway = new Gateway
+                    new_gateway.copy gateway
+
+        on_group_deleted: (response)=>
+            if response.success
+                name = response.id
+                if @groups.list[name]?
+                    group = @groups.list[name]
+                    gateway.group 0 for gateway in group.gateways().iterator()
+
+        on_gateway_deleted: (response)=>
+            if response.success
+                gg = @groups.list[response.group]
+                gg.remove_by_id response.id
+                @groups.remove gg if gg.gateways().length() == 0 and gg.editable
 
         init_groups : ->
 
@@ -71,22 +93,6 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
             # let fetch all gateways
             @proxy.emit 'gateways.fetch'
 
-        on_reload_gateways: (response)=>
-            for group_name, gateways of response.gateways
-                if not @groups.list[group_name]?
-                    group = new GatewayGroup group_name
-                    @groups.list[group_name] = group
-                for gateway in gateways
-                    new_gateway = new Gateway
-                    new_gateway.copy gateway
-
-        on_group_deleted: (response)=>
-            if response.success
-                name = response.id
-                if @groups.list[name]?
-                    group = @groups.list[name]
-                    gateway.group 0 for gateway in group.gateways().iterator()
-
         init : ->
             #register event
             root = @
@@ -98,6 +104,9 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
             @proxy.on 'gateways.all', @on_reload_gateways
             @proxy.on 'group.created', @on_group_created
             @proxy.on 'group.deleted', @on_group_deleted
+            @proxy.on 'gateway.deleted', @on_gateway_deleted
+            #@proxy.on 'gateway.created', @on_gateway_created
+
             @init_groups()
 
     class GatewayGroup extends Alcarin.ActiveView
@@ -136,6 +145,12 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
             root.groups.push @
 
             @gateways().setAnims 'slideDown', 'slideUp'
+
+        remove_by_id: (id)=>
+            for gateway in @gateways().iterator()
+                if gateway.id() == id
+                    @gateways().remove gateway
+                    break
 
         onbind : ($target)->
             super()
@@ -179,10 +194,9 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
                .description 'Please, add description to this gateway!',
 
             editor = root.gateway_editor()
-            editor.mode('post').show edition_gateway, (response)=>
-                if response.success
-                    gateway = new Gateway
-                    gateway.copy response.data
+            editor.show edition_gateway, 'gateway.create', 'gateway.created', (response)=>
+                gateway = new Gateway
+                gateway.copy response.gateway
 
         delete_group: ()=>
             Alcarin.Dialogs.Confirms.admin 'Really deleting? Gateways will be moved to "ungrouped" group.', =>
@@ -223,21 +237,12 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
             edit_copy = @clone()
 
             editor = root.gateway_editor()
-            editor.mode('put').show edit_copy, (response)=>
-                if response.success
-                    @copy response.data
-                return false unless response.success
+            editor.show edit_copy, 'gateway.update', 'gateway.updated', (response)=>
+                @copy response.gateway
 
         delete: =>
             Alcarin.Dialogs.Confirms.admin 'Really deleting this gateway?', =>
-                uri = urls.orbis.gateways
-                id  = @id()
-                Rest().$delete "#{uri}/#{id}", {mode: 'gateway'}, (response)=>
-                    if response.success
-                        gg = @gateway_group()
-                        gg.gateways().remove @
-                        if gg.gateways().length() == 0 and gg.editable
-                            root.groups.remove gg
+                root.proxy.emit 'gateway.delete', {id: @id(), group: @group()}
 
         mouse_enter: =>
             if not @tmp_flag?
@@ -270,21 +275,24 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
     class GatewayEditor
 
         constructor: (@edit_pane, @groups_pane)->
-            @form = @edit_pane.find('form')
+            @form = @edit_pane.find('form').alcForm()
+            @form.enable_proxy root.proxy
+            @form.on_success @on_success
+
             @edit_pane.on 'click', '.close', @cancel
             @minimap = root.minimap()
 
             @flag_mode = false
-
-        mode: (_mode)->
-            @form._method _mode
-            @
 
         flag_drop: (drop_event)=>
             p      = drop_event.position
             coords = @minimap.to_coords p.left, p.top
             @gateway.x coords.x
             @gateway.y coords.y
+
+        on_success: (response)=>
+            @callback? response
+            @cancel()
 
         edit_flag_mode: (val)->
             if not @flag_mode and val
@@ -298,27 +306,26 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
                 delete @flag
                 @flag_mode = false
 
-        show: (gateway, on_done)->
+        show: (gateway, _emit_order, _response_event, callback)->
 
-            @gateway = gateway
+            @gateway  = gateway
+            @callback = callback
+
             gateway.bind @edit_pane
-
             @edit_flag_mode true
 
-            @form.find('[name="group"]').val gateway.group()
-            @form.on 'ajax-submit', (e, response)=>
-                result = on_done?(response)
-                @cancel() if result != false
+            @form.base.find('[name="group"]').val gateway.group()
+            @form.set_emit_order _emit_order
+            @form.set_response_event _response_event
 
             @groups_pane.fadeOut()
             @edit_pane.fadeIn()
-            false
 
         cancel: =>
             @edit_flag_mode false
-            @form.off 'ajax-submit'
 
             @groups_pane.fadeIn()
             @edit_pane.fadeOut =>
                 @gateway.unbind @edit_pane
                 @gateway = null
+                @form.reset()

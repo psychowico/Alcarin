@@ -9,7 +9,7 @@ use Core\Controller\AbstractEventController;
 
 class GatewaysController extends AbstractEventController
 {
-    protected function onGatewaysFetch($data)
+    protected function onGatewaysFetch()
     {
         $grouped_gateways = $this->orbis()->gateways()->find();
         foreach($grouped_gateways as $key => $group) {
@@ -47,6 +47,9 @@ class GatewaysController extends AbstractEventController
                 $x, $y, $gateway_group);
             if($result_id !== false) {
                 $data['id'] = $result_id;
+                $data = [
+                  'gateway' => $data
+                ];
                 $result = $this->success($data);
             }
             else {
@@ -66,22 +69,21 @@ class GatewaysController extends AbstractEventController
         return $this->emit('group.deleted', $result);
     }
 
-    public function create($data)
+    protected function onGatewayDelete($data)
     {
-        $creating_group = !empty($data['creating_group']);
+        $this->orbis()->gateways()->delete($data['id']);
+        return $this->emit('gateway.deleted', $this->success($data));
+    }
 
+    protected function onGatewayCreate($data)
+    {
         $form = $this->getServiceLocator()->get('gateways-form');
-        if($creating_group) {
-            $form->remove('CSRF');
-        }
-
         $form->setData($data);
 
         if($form->isValid()) {
             $data = $form->getData();
             $gateway_name  = $data['name'];
             $gateway_group = empty($data['group']) ? null : $data['group'];
-
 
             $gateway_desc  = empty($data['description']) ? null : $data['description'];
             $x             = empty($data['x']) ? 0 : $data['x'];
@@ -90,69 +92,41 @@ class GatewaysController extends AbstractEventController
             $result_id = $this->orbis()->gateways()->insert(
                 $gateway_name, $gateway_desc,
                 $x, $y, $gateway_group);
+
+            $result = $this->fail();
             if($result_id !== false) {
                 $data['id'] = $result_id;
-                return $this->json()->success(['data'=>$data]);
-            }
-            return $this->json()->fail();
-        }
-        else {
-            return $this->json()->fail(['errors' => $form->getMessages()]);
-        }
-    }
-
-    public function update($id, $data)
-    {
-        $mode = empty($data['mode']) ? 'gateway' : $data['mode'];
-
-        if($mode == 'group') {
-            if(!empty($data['value'])) {
-                $group_name = $id;
-                $new_name = $data['value'];
-
-                //validated value
-                $result = $this->orbis()->gateways()->rename_group($group_name, $new_name);
-                if(is_string($result)) {
-                    return $this->json()->fail(['error'   => $result]);
-                }
-                else {
-                    return $this->json()->success();
-                }
+                $data = [
+                  'gateway' => $data
+                ];
+                $result = $this->success($data);
             }
         }
         else {
-            //gateways
-            #
-
-            $form = $this->getServiceLocator()->get('gateways-form');
-            $form->setData($data);
-
-            if($form->isValid()) {
-                $new_data = $form->getData();
-
-                $this->orbis()->gateways()->update($id,
-                    $new_data['name'], $new_data['description'],
-                    $new_data['x'], $new_data['y'], $new_data['group'] );
-                return $this->json()->success(['data' => $new_data]);
-            }
-            else {
-                return $this->json()->fail(['errors' => $form->getMessages()]);
-            }
+            $result = $this->fail(['errors' => $form->getMessages()]);
         }
 
-        return $this->json()->fail();
+        return $this->emit('gateway.created', $result);
     }
 
-    public function delete($id)
+    protected function onGatewayUpdate($data)
     {
-        $mode = $this->params()->fromPost('mode', 'gateway');
+        $form = $this->getServiceLocator()->get('gateways-form');
+        $form->setData($data);
 
-        if($mode == 'gateway') {
-            $this->orbis()->gateways()->delete($id);
-            return $this->json()->success();
+        if($form->isValid()) {
+            $new_data = $form->getData();
+
+            $this->orbis()->gateways()->update($new_data['id'],
+                $new_data['name'], $new_data['description'],
+                $new_data['x'], $new_data['y'], $new_data['group'] );
+            $result = $this->success(['gateway' => $new_data]);
+        }
+        else {
+            $result = $this->fail(['errors' => $form->getMessages()]);
         }
 
-        return $this->json()->fail();
+        return $this->emit('gateway.updated', $result);
     }
 
     protected function orbis()
