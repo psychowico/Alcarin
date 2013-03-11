@@ -4,11 +4,14 @@
 <div id="orbis" data-instance="Alcarin.Orbis.Orbis">
     <div class="row">
         <div class="span6">
-            <div class="map-info">
+            <div class="info-container">
                 <h2 class="h2">
                     {{ _('Minimap') }}
-                    <button class="btn btn-inverse">
+                    <button class="map-info btn btn-inverse">
                         Info
+                    </button>
+                    <button href="#change-radius-modal" data-toggle="modal" class="btn btn-inverse">
+                        Change radius
                     </button>
                 </h2>
                 <div class="info-popover" data-placement="bottom" data-title="Global map information" data-content="">
@@ -26,5 +29,14 @@
             {{ partial('/admin/orbis/gateway-edit', {form: gateway_form}) }}
         </div>
     </div>
+
+    {% embed "alcarin-modal" with {id: 'change-radius-modal' } %}
+        {% block header %}Change world radius{% endblock %}
+        {% block body %}
+            <p>Be sure what you doing. You can only increase world radius - if you make a mistake you
+            will be forced to contact alcarin developers team.</p>
+        {% endblock %}
+    {% endembed %}
+
 </div>
 {% endblock %}

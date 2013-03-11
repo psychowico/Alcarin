@@ -66,6 +66,7 @@ return array(
         'not_found_template'       => 'error/404',
         'exception_template'       => 'error/index',
         'template_map' => array(
+            'alcarin-modal'  => __DIR__ . '/../view/alcarin/modal.twig',
             'common-layout'  => __DIR__ . '/../view/layout/common-layout.twig',
             'alcarin-layout' => __DIR__ . '/../view/layout/alcarin-layout.twig',
             'error/404'      => __DIR__ . '/../view/error/404.phtml',

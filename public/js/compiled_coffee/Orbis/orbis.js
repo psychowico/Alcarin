@@ -11,7 +11,7 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
     Orbis.prototype.load_map_info = function() {
       var btn,
         _this = this;
-      btn = this.map_info.parent().find('button');
+      btn = this.map_info.parent().find('.map-info');
       btn.spin();
       return Rest().$get(function(response) {
         if (response.success) {
@@ -27,12 +27,12 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
       $gateways = this.orbis.find('.gateways-list');
       this.gateways = new Alcarin.Orbis.Gateways($gateways);
       this.gateways.init();
-      this.map_info = this.orbis.find('.map-info > .info-popover');
+      this.map_info = this.orbis.find('.info-popover');
       this.map_info.popover({
         html: true,
         trigger: 'manual'
       });
-      return this.map_info.parent().find('button').one('mouseover', this.load_map_info).on('click', function() {
+      return this.map_info.parent().find('.map-info').one('mouseover', this.load_map_info).on('click', function() {
         return _this.map_info.popover('toggle');
       });
     };

@@ -26,7 +26,7 @@
 .minimap .flag div.ui-draggable-dragging {
   border-style: solid dashed;
 }
-.map-info .popover {
+.info-container .popover {
   max-width: 400px;
   width: 400px;
 }

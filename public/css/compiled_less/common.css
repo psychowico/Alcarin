@@ -3,6 +3,10 @@ html,
 .container {
   height: 100%;
 }
+h2 {
+  font-family: dosissemibold;
+  font-size: 34.5px;
+}
 .game-container {
   height: 95%;
 }
