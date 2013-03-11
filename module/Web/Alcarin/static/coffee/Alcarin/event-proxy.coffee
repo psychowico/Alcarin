@@ -28,33 +28,6 @@ namespace 'Alcarin', (exports, Alcarin) ->
             data['__id']     = event_name
             Rest().$create @url, data, @_onStateChanged
 
-        _$wrapper: (method, url, data, on_done)->
-            if $.isFunction data
-                on_done = data
-                data = {}
-            Rest()[method] url, data, (response)=>
-                on_done?(response)
-                @_onStateChanged response
-
-
-        $getList: (data, on_done)->
-            @_$wrapper '$get', @url, data, on_done
-
-        $get: (id, data, on_done)->
-            url = Alcarin.Path.combine @url, id
-            @_$wrapper '$get', url, data, on_done
-
-        $create: (data, on_done)->
-            @_$wrapper '$create', @url, data, on_done
-
-        $update: (id, data, on_done)->
-            url = Alcarin.Path.combine @url, id
-            @_$wrapper '$update', url, data, on_done
-
-        $delete: (id, data = {}, on_done)->
-            url = Alcarin.Path.combine @url, id
-            @_$wrapper '$delete', url, data, on_done
-
         _onStateChanged: (state) =>
             console.log state
             state = {_events: [state]} if not state._events?

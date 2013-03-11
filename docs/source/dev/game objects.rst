@@ -1,3 +1,5 @@
+.. _`plugable-game-services`:
+
 ======================
 Plugable game services
 ======================

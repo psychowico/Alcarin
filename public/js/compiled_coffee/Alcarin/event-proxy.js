@@ -44,49 +44,6 @@ namespace('Alcarin', function(exports, Alcarin) {
       return Rest().$create(this.url, data, this._onStateChanged);
     };
 
-    EventProxy.prototype._$wrapper = function(method, url, data, on_done) {
-      var _this = this;
-      if ($.isFunction(data)) {
-        on_done = data;
-        data = {};
-      }
-      return Rest()[method](url, data, function(response) {
-        if (typeof on_done === "function") {
-          on_done(response);
-        }
-        return _this._onStateChanged(response);
-      });
-    };
-
-    EventProxy.prototype.$getList = function(data, on_done) {
-      return this._$wrapper('$get', this.url, data, on_done);
-    };
-
-    EventProxy.prototype.$get = function(id, data, on_done) {
-      var url;
-      url = Alcarin.Path.combine(this.url, id);
-      return this._$wrapper('$get', url, data, on_done);
-    };
-
-    EventProxy.prototype.$create = function(data, on_done) {
-      return this._$wrapper('$create', this.url, data, on_done);
-    };
-
-    EventProxy.prototype.$update = function(id, data, on_done) {
-      var url;
-      url = Alcarin.Path.combine(this.url, id);
-      return this._$wrapper('$update', url, data, on_done);
-    };
-
-    EventProxy.prototype.$delete = function(id, data, on_done) {
-      var url;
-      if (data == null) {
-        data = {};
-      }
-      url = Alcarin.Path.combine(this.url, id);
-      return this._$wrapper('$delete', url, data, on_done);
-    };
-
     EventProxy.prototype._onStateChanged = function(state) {
       var _callbacks, _event, _i, _len, _ref, _ref1;
       console.log(state);

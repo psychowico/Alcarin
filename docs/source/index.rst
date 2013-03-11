@@ -15,6 +15,7 @@ Contents:
     dev/installation instructions
     dev/how to
     dev/programming
+    dev/ajax
     dev/core
     dev/game objects
     dev/log
