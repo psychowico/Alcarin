@@ -11,7 +11,7 @@ return array(
             'Admin\Controller\Users' => 'Admin\Controller\UsersController',
             'Admin\Controller\Orbis\Orbis' => 'Admin\Controller\OrbisController',
 
-            'Admin\Controller\Orbis\Minimap' => 'Admin\Controller\Orbis\MinimapController',
+            'Admin\Controller\Orbis\Map' => 'Admin\Controller\Orbis\OrbisMapController',
             'Admin\Controller\Orbis\Gateways' => 'Admin\Controller\Orbis\GatewaysController',
             'Admin\Controller\Users\Privilages' => 'Admin\Controller\Users\PrivilagesController',
         ),
@@ -76,18 +76,6 @@ return array(
                     'restmode' => true,
                     'defaults' => array(
                         'controller' => 'Orbis',
-                    ),
-                ),
-            ),
-            'minimap'   => array(
-                'type' => 'literal',
-                'options' => array(
-                    // Change this to something specific to your module
-                    'route'    => '/admin/orbis/minimap',
-                    'defaults' => array(
-                        // Change this value to reflect the namespace in which
-                        // the controllers for your module are found
-                        'controller'    => 'Admin\Controller\Orbis\Minimap',
                     ),
                 ),
             ),

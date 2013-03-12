@@ -18,7 +18,7 @@
                 </div>
             </div>
             <div class="minimap">
-                <canvas data-instance="Alcarin.Orbis.MinimapRenderer" width="500" height="500">
+                <canvas data-instance="Alcarin.Orbis.MinimapRenderer" data-radius="{{ radius }}" width="500" height="500">
                     You browser don't support canvas, can not continue.
                 </canvas>
             </div>
@@ -30,13 +30,16 @@
         </div>
     </div>
 
-    {% embed "alcarin-modal" with {id: 'change-radius-modal' } %}
+        {% embed "alcarin-modal" with {id: 'change-radius-modal' } %}
         {% block header %}Change world radius{% endblock %}
         {% block body %}
             <p>Be sure what you doing. You can only increase world radius - if you make a mistake you
-            will be forced to contact alcarin developers team.</p>
+            will be forced to contact alcarin developers team. Current radius is {{radius}}.</p>
+            {{ bootstrap(radius_form, 'horizontal') }}
+            <div class="radius-info-container">
+            </div>
         {% endblock %}
     {% endembed %}
-
+    </div>
 </div>
 {% endblock %}

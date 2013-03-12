@@ -43,6 +43,15 @@ $(function() {
     return e.preventDefault();
   });
   $('input[type="text"]:first').focus();
+  $('.modal-footer .btn-primary').on('click', function(e) {
+    var result;
+    return result = $(this).trigger('success', e);
+  });
+  $('.modal').on('success', function(e) {
+    if (!e.isDefaultPrevented()) {
+      return $(this).modal('hide');
+    }
+  });
   $('.popover-invoke').popover();
   return $('body').disableSelection();
 });

@@ -239,6 +239,7 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
             editor = root.gateway_editor()
             editor.show edit_copy, 'gateway.update', 'gateway.updated', (response)=>
                 @copy response.gateway
+            false
 
         delete: =>
             Alcarin.Dialogs.Confirms.admin 'Really deleting this gateway?', =>

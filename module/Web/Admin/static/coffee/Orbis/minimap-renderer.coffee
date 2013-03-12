@@ -2,16 +2,17 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
 
     class exports.MinimapRenderer
 
-        _radius: 10000
+        _radius: 100
         flags_drop : {}
 
         radius: ()->
             @_radius
 
-        constructor : ( _minimap )->
+        constructor : (_minimap)->
             @rel = _minimap
             @rel.on 'drop', @_on_drop
             @context = _minimap[0].getContext('2d')
+            @_radius = _minimap.data 'radius'
 
             _minimap.data('minimap', @)
                     .droppable { 'accept': (drop)=>

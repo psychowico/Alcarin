@@ -38,6 +38,7 @@ return array(
             'Admin\Controller\Users\Privilages' => [Resource::ADMIN_USERS, Resource::ADMIN_PRIVILAGES_MANAGING],
             'Admin\Controller\Orbis\Orbis'      => [Resource::ADMIN_ORBIS],
             'Admin\Controller\Orbis\Gateways'   => [Resource::ADMIN_ORBIS],
+            'Admin\Controller\Orbis\Map'        => [Resource::ADMIN_ORBIS],
         ),
     ),
 

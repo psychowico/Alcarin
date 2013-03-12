@@ -35,6 +35,11 @@ $ =>
     # focus first input on site
     $('input[type="text"]:first').focus()
 
+    $('.modal-footer .btn-primary').on 'click', (e)->
+        result = $(@).trigger 'success', e
+    $('.modal').on 'success', (e)->
+        $(@).modal 'hide' if not e.isDefaultPrevented()
+
     # auto-init popover and tooltip
     $('.popover-invoke').popover()
     # disable selection on site

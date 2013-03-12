@@ -4,7 +4,7 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
   var Flag;
   exports.MinimapRenderer = (function() {
 
-    MinimapRenderer.prototype._radius = 10000;
+    MinimapRenderer.prototype._radius = 100;
 
     MinimapRenderer.prototype.flags_drop = {};
 
@@ -19,6 +19,7 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
       this.rel = _minimap;
       this.rel.on('drop', this._on_drop);
       this.context = _minimap[0].getContext('2d');
+      this._radius = _minimap.data('radius');
       _minimap.data('minimap', this).droppable({
         'accept': function(drop) {
           var p, r;

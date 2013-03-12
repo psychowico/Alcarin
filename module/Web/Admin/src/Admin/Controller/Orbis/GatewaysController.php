@@ -1,7 +1,4 @@
 <?php
-/**
- * users administration
- */
 
 namespace Admin\Controller\Orbis;
 

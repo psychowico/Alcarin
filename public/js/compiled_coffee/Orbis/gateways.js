@@ -351,9 +351,10 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
         _this = this;
       edit_copy = this.clone();
       editor = root.gateway_editor();
-      return editor.show(edit_copy, 'gateway.update', 'gateway.updated', function(response) {
+      editor.show(edit_copy, 'gateway.update', 'gateway.updated', function(response) {
         return _this.copy(response.gateway);
       });
+      return false;
     };
 
     Gateway.prototype["delete"] = function() {
