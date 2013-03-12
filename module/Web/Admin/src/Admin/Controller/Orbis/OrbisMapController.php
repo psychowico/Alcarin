@@ -8,7 +8,8 @@ use Zend\View\Model\ViewModel;
 
 class OrbisMapController extends AbstractEventController
 {
-    public function onGetInfo($data)
+    const EDIT_RANGE = 15;
+    protected function onGetInfo($data)
     {
         $tmp = !empty($data['radius']);
         if($tmp) {
@@ -48,6 +49,28 @@ class OrbisMapController extends AbstractEventController
             'map-info.generated', $response);
     }
 
+    protected function onFieldsFetch($data)
+    {
+        if(!isset($data['x']) || !isset($data['y'])) {
+            return $this->emit('fields.loaded', $this->fail());
+        }
+
+        $x = 0;//$data['x'];
+        $y = 0;//$data['y'];
+
+        $data = $this->orbis()->map()->fetchTerrainFields($x, $y, static::EDIT_RANGE);
+        // $data = array_map( function($field) {
+        //     # decode integer colors
+        //     $hex = dechex($field['land']['color']);
+        //     $field['land']['color'] = "#" . substr("000000" . $hex, -6);
+        //     return $field;
+        // }, $data);
+        $result = $this->success([
+            'size'   => 2 * static::EDIT_RANGE,
+            'fields' => array_values($data)
+        ]);
+        return $this->emit('fields.loaded', $result);
+    }
 
     private function orbis()
     {

@@ -53,6 +53,8 @@ return array(
                             '/js/compiled_coffee/Orbis/gateways.js',
                             '/js/compiled_coffee/Orbis/minimap-renderer.js',
                             '/js/compiled_coffee/Orbis/orbis.js',
+                            '/js/compiled_coffee/Orbis/Editor/editor.js',
+                            '/js/compiled_coffee/Orbis/Editor/map-renderer.js',
                         ),
                     ),
                     //files for regular players

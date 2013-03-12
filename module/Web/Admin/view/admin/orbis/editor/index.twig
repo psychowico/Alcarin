@@ -1,0 +1,17 @@
+{% extends "admin-layout" %}
+
+{% block content %}
+<div class="map-editor" data-instance="Alcarin.Orbis.Editor.Editor"
+  data-center-x="{{ x }}" data-center-y="{{ y }}">
+    <div class="row">
+        <div class="span6">
+            <h2>Map Editor</h2>
+            <div class="map-viewport">
+                <canvas width="500" height="500">
+                    You browser don't support canvas, can not continue.
+                </canvas>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

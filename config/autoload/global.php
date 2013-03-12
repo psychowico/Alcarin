@@ -36,9 +36,10 @@ return array(
             'Admin\Controller\Home'             => Resource::ADMIN_MENU,
             'Admin\Controller\Users'            => Resource::ADMIN_USERS,
             'Admin\Controller\Users\Privilages' => [Resource::ADMIN_USERS, Resource::ADMIN_PRIVILAGES_MANAGING],
-            'Admin\Controller\Orbis\Orbis'      => [Resource::ADMIN_ORBIS],
-            'Admin\Controller\Orbis\Gateways'   => [Resource::ADMIN_ORBIS],
-            'Admin\Controller\Orbis\Map'        => [Resource::ADMIN_ORBIS],
+            'Admin\Controller\Orbis\Orbis'    => [Resource::ADMIN_ORBIS],
+            'Admin\Controller\Orbis\Gateways' => [Resource::ADMIN_ORBIS],
+            'Admin\Controller\Orbis\Map'      => [Resource::ADMIN_ORBIS],
+            'Admin\Controller\Orbis\Editor'   => [Resource::ADMIN_ORBIS],
         ),
     ),
 

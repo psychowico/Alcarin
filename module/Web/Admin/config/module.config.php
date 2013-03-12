@@ -9,11 +9,12 @@ return array(
             'Admin\Controller\Home'  => 'Admin\Controller\AdminHomeController',
 
             'Admin\Controller\Users' => 'Admin\Controller\UsersController',
-            'Admin\Controller\Orbis\Orbis' => 'Admin\Controller\OrbisController',
+            'Admin\Controller\Users\Privilages' => 'Admin\Controller\Users\PrivilagesController',
 
+            'Admin\Controller\Orbis\Orbis' => 'Admin\Controller\OrbisController',
             'Admin\Controller\Orbis\Map' => 'Admin\Controller\Orbis\OrbisMapController',
             'Admin\Controller\Orbis\Gateways' => 'Admin\Controller\Orbis\GatewaysController',
-            'Admin\Controller\Users\Privilages' => 'Admin\Controller\Users\PrivilagesController',
+            'Admin\Controller\Orbis\Editor' => 'Admin\Controller\Orbis\EditorController',
         ),
     ),
 
@@ -43,7 +44,8 @@ return array(
                 ),
                 'Admin\GameObject\Orbis' => array(
                     'gateways' => 'Admin\GameObject\Extension\OrbisGateways',
-                    'minimap' => 'Admin\GameObject\Extension\OrbisMinimap',
+                    'minimap'  => 'Admin\GameObject\Extension\OrbisMinimap',
+                    'map'      => 'Admin\GameObject\Extension\OrbisMap',
                 ),
                 'EngineBase\GameObject\Player' => array(
                     'admin' => 'Admin\GameObject\Extension\PlayerAdmin'
