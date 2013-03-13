@@ -46,7 +46,6 @@ namespace('Alcarin', function(exports, Alcarin) {
 
     EventProxy.prototype._onStateChanged = function(state) {
       var _callbacks, _event, _i, _len, _ref, _ref1;
-      console.log(state);
       if (!(state._events != null)) {
         state = {
           _events: [state]

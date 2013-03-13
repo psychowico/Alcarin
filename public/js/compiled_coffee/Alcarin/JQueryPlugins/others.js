@@ -1,6 +1,11 @@
 
 namespace('Alcarin.JQueryPlugins', function(exports, Alcarin) {
   var def_spin, _old_position;
+  $.fn.disableSmoothing = function() {
+    var context;
+    context = this[0];
+    return context.webkitImageSmoothingEnabled = context.mozImageSmoothingEnabled = false;
+  };
   $.fn.disable = function() {
     return this.each(function() {
       return $(this).attr('disabled', 'disabled');
@@ -73,18 +78,22 @@ namespace('Alcarin.JQueryPlugins', function(exports, Alcarin) {
       $el = $(this);
       spinner = $el.data('spinner');
       if (spinner != null) {
-        spinner.stop();
-        return $el.removeData('spinner');
-      } else {
-        options = jQuery.extend(def_spin, {
-          color: $el.css('color')
-        });
-        if (opts === !false) {
-          options = jQuery.extend(options, opts);
+        if (opts !== true) {
+          spinner.stop();
+          return $el.removeData('spinner');
         }
-        spinner = new Spinner(options);
-        spinner.spin(this);
-        return $el.data('spinner', spinner);
+      } else {
+        if (opts !== false) {
+          options = jQuery.extend(def_spin, {
+            color: $el.css('color')
+          });
+          if (opts === !false) {
+            options = jQuery.extend(options, opts);
+          }
+          spinner = new Spinner(options);
+          spinner.spin(this);
+          return $el.data('spinner', spinner);
+        }
       }
     });
     return this;

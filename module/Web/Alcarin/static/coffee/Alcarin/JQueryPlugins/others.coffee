@@ -1,5 +1,10 @@
 namespace 'Alcarin.JQueryPlugins', (exports, Alcarin) ->
 
+    # disabling canvas contexts smoothing
+    $.fn.disableSmoothing = ->
+        context = @[0]
+        context.webkitImageSmoothingEnabled = context.mozImageSmoothingEnabled = false
+
     $.fn.disable = ->
         @each ->
             $(@).attr 'disabled', 'disabled'
@@ -67,15 +72,17 @@ namespace 'Alcarin.JQueryPlugins', (exports, Alcarin) ->
             spinner  = $el.data 'spinner'
 
             if spinner?
-                spinner.stop()
-                $el.removeData 'spinner'
+                if opts != true
+                    spinner.stop()
+                    $el.removeData 'spinner'
             else
-                options =  jQuery.extend def_spin, {color: $el.css('color')}
-                if opts is not false
-                    options = jQuery.extend options, opts
-                spinner = new Spinner options
-                spinner.spin @
-                $el.data 'spinner', spinner
+                if opts != false
+                    options =  jQuery.extend def_spin, {color: $el.css('color')}
+                    if opts is not false
+                        options = jQuery.extend options, opts
+                    spinner = new Spinner options
+                    spinner.spin @
+                    $el.data 'spinner', spinner
         @
 
     # just simple shortcuts

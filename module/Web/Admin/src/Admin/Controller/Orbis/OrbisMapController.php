@@ -10,6 +10,52 @@ class OrbisMapController extends AbstractEventController
 {
     const EDIT_RANGE = 50;
 
+    protected function onFieldsFetch($data)
+    {
+        if(!isset($data['x']) || !isset($data['y'])) {
+            return $this->emit('fields.loaded', $this->fail());
+        }
+
+        $x = $data['x'];
+        $y = $data['y'];
+
+        $data = $this->orbis()->map()->fetchTerrainFields($x, $y, static::EDIT_RANGE);
+
+        $result = $this->success([
+            'size'   => 2 * static::EDIT_RANGE,
+            'fields' => array_values($data)
+        ]);
+        return $this->emit('fields.loaded', $result);
+    }
+
+    protected function onFieldsUpdate($data)
+    {
+        $fields = array_values($data['fields']);
+
+        array_filter($fields, function($field) {
+            return isset($field['x']) && isset($field['y'])
+                    && isset($field['field']);
+        });
+
+        $fields = array_map(function($field){
+            return [
+                'loc' => [
+                    'x' => intval($field['x']),
+                    'y' => intval($field['y']),
+                ],
+                'land' => [
+                    'color' => intval($field['field']['color']),
+                ],
+            ];
+        }, $fields);
+
+        $this->orbis()->map()->upsertFields($fields);
+
+        $result = $this->success(['count' => count($fields)]);
+        return $this->emit('fields.updated', $result);
+    }
+
+
     protected function onGetInfo($data)
     {
         $tmp = !empty($data['radius']);
@@ -48,29 +94,6 @@ class OrbisMapController extends AbstractEventController
 
         return $this->emit( $tmp ? 'tmp-map-info.generated' :
             'map-info.generated', $response);
-    }
-
-    protected function onFieldsFetch($data)
-    {
-        if(!isset($data['x']) || !isset($data['y'])) {
-            return $this->emit('fields.loaded', $this->fail());
-        }
-
-        $x = $data['x'];
-        $y = $data['y'];
-
-        $data = $this->orbis()->map()->fetchTerrainFields($x, $y, static::EDIT_RANGE);
-        // $data = array_map( function($field) {
-        //     # decode integer colors
-        //     $hex = dechex($field['land']['color']);
-        //     $field['land']['color'] = "#" . substr("000000" . $hex, -6);
-        //     return $field;
-        // }, $data);
-        $result = $this->success([
-            'size'   => 2 * static::EDIT_RANGE,
-            'fields' => array_values($data)
-        ]);
-        return $this->emit('fields.loaded', $result);
     }
 
     private function orbis()

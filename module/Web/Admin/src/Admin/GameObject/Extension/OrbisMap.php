@@ -20,4 +20,19 @@ class OrbisMap extends \Core\GameObject
             'land' => [ '$exists' => 1],
         ])->fields(['land' => 1, 'loc' => 1])->toArray();
     }
+
+    public function upsertFields($fields)
+    {
+        $map = $this->mongo()->map;
+        foreach($fields as $field) {
+            $loc = $field['loc'];
+            $this->mongo()->map->update(
+                ['loc' => $loc],
+                $field,
+                ['upsert' => true]
+            );
+        }
+
+        return true;
+    }
 }

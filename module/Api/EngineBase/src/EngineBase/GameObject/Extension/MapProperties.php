@@ -4,7 +4,7 @@ namespace EngineBase\GameObject\Extension;
 
 class MapProperties extends \Core\GameObject
 {
-    const DEFAULT_RADIUS = 10000;
+    const DEFAULT_RADIUS = 150000;
 
     public function radius()
     {

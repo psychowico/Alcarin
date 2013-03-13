@@ -29,7 +29,6 @@ namespace 'Alcarin', (exports, Alcarin) ->
             Rest().$create @url, data, @_onStateChanged
 
         _onStateChanged: (state) =>
-            console.log state
             state = {_events: [state]} if not state._events?
             for _event in state._events
                 _callbacks = @register_events[_event.id]

@@ -45,12 +45,11 @@ namespace('Alcarin', function(exports, Alcarin) {
     hashchange = function(e) {
       var state;
       state = $.bbq.getState() || {};
-      window.scrollTo(0, 0);
       $('.pages-container > .current').removeClass('current').fadeOut();
       $('.pages-container > .page-' + state.href).addClass('current').fadeIn();
       $('#main-nav > nav > ul > .current').removeClass('current');
       $('#main-nav a[data-hash-href="' + state.href + '"]').closest('li').addClass('current');
-      return true;
+      return false;
     };
 
     TestClass.prototype.init = function() {
