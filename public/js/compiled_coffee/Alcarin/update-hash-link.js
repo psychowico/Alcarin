@@ -25,7 +25,7 @@ namespace('Alcarin', function(exports, Alcarin) {
 
     function UpdateHashLink(el, options) {
       this._activate = __bind(this._activate, this);
-      this.id = exports.UpdateHashLink.maxid++;
+      this.id = UpdateHashLink.maxid++;
       this._options = $.extend({}, exports.UpdateHashLink.default_options, options);
       this._el = $(el);
       this._el.on(this._options.event, this._activate);
@@ -70,30 +70,28 @@ namespace('Alcarin', function(exports, Alcarin) {
   })();
   return $(function() {
     var test;
-    $.fn.extend({
-      hashLink: function(_target_state, _options) {
-        return this.each(function() {
-          var data, key, link, new_key, obj, options, target_state;
-          target_state = _target_state;
-          options = _options;
-          if (!(target_state != null)) {
-            target_state = {};
-            data = $(this).data();
-            for (key in data) {
-              obj = data[key];
-              if (/^hash[A-Z]/.test(key)) {
-                new_key = key.replace(/^hash/, '');
-                target_state[new_key.toLowerCase()] = obj;
-              }
+    $.fn.hashLink = function(_target_state, _options) {
+      return this.each(function() {
+        var data, key, link, new_key, obj, options, target_state;
+        target_state = _target_state;
+        options = _options;
+        if (!(target_state != null)) {
+          target_state = {};
+          data = $(this).data();
+          for (key in data) {
+            obj = data[key];
+            if (/^hash[A-Z]/.test(key)) {
+              new_key = key.replace(/^hash/, '');
+              target_state[new_key.toLowerCase()] = obj;
             }
           }
-          options = options || {};
-          options.target_state = target_state;
-          link = new Alcarin.UpdateHashLink(this, options);
-          return $(this).data('hashLink', link);
-        });
-      }
-    });
+        }
+        options = options || {};
+        options.target_state = target_state;
+        link = new Alcarin.UpdateHashLink(this, options);
+        return $(this).data('hashLink', link);
+      });
+    };
     $('.active-link').hashLink();
     $('#active-select').data('hash-test', 313).hashLink();
     test = new Alcarin.TestClass();

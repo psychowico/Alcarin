@@ -20,21 +20,29 @@ class OrbisController extends AbstractAlcarinRestfulController
         ];
     }
 
-    public function create($data)
-    {
-        $form = $this->getRadiusForm();
-        $form->setData($data);
-
-        if($form->isValid()) {
-            $new_radius = $form->getData()['radius'];
-            $this->orbis()->minimap()->properties()->set('radius', $new_radius);
-        }
-        return $this->redirect()->toSelf();
-    }
 
     private function orbis()
     {
         return $this->gameServices()->get('orbis');
+    }
+
+    public function create($data)
+    {
+        //we block option for changing global map radius.
+        //changing radius is related with global mongo geo indexes
+        //min and max coords values. it shouldn't be easly done, without
+        //programmers support - because it can give our much troubles.
+        //changing indexes, when we will have many fields, can be very
+        //time-consuming.
+
+        // $form = $this->getRadiusForm();
+        // $form->setData($data);
+
+        // if($form->isValid()) {
+        //     $new_radius = $form->getData()['radius'];
+        //     $this->orbis()->minimap()->properties()->set('radius', $new_radius);
+        // }
+        return $this->redirect()->toSelf();
     }
 
     private function getRadiusForm()

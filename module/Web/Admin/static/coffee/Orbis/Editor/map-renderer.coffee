@@ -3,6 +3,9 @@ namespace 'Alcarin.Orbis.Editor', (exports, Alcarin) ->
     class exports.MapRenderer
 
         constructor: (@canvas, c_x, c_y)->
+            @set_center c_x, c_y
+
+        set_center: (c_x, c_y)->
             @center = {x: c_x, y: c_y}
 
         init: ->
@@ -38,6 +41,8 @@ namespace 'Alcarin.Orbis.Editor', (exports, Alcarin) ->
             @context.save()
             @context.drawImage @backbuffer_canvas, 0, 0, size, size, 0, 0, @canvas.width(), @canvas.height()
             @context.restore()
+
+        draw_fields: (fields)->
 
         _prepare_empty_canvas: (sizeW, sizeH)->
             if not @backbuffer_canvas?

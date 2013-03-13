@@ -66,7 +66,7 @@ abstract class AbstractEventController extends AbstractActionController
 
     protected function on($event, $data)
     {
-        return $this->emit('response.empty', ['event' => $event]);
+        return $this->emit('response.empty', ['event' => $event, 'data' => $data]);
     }
 
     public function onAction()

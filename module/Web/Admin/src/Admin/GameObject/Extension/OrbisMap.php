@@ -9,8 +9,12 @@ class OrbisMap extends \Core\GameObject
         # typical mongo geo-2d query
         return $this->mongo()->map->find([
             'loc' => [
-                '$near'        => [$center_x, $center_y],
-                '$maxDistance' => $range
+                '$within'        => [
+                    '$box' => [
+                        [$center_x - $range, $center_y - $range],
+                        [$center_x + $range - 1, $center_y + $range - 1],
+                    ]
+                ],
             ],
             # only fields with information about territory ("land")
             'land' => [ '$exists' => 1],

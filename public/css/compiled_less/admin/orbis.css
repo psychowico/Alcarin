@@ -5,12 +5,6 @@ canvas {
   image-rendering: optimize-contrast;
   -ms-interpolation-mode: nearest-neighbor;
 }
-.map-viewport canvas {
-  /* Start http://www.cursors-4u.com */
-
-  cursor: url(http://www.useragentman.com/examples/cursor/canvasPainter/canvas_painter_v0.1/images/gimpBrush.png) 0 32, url(http://cur.cursors-4u.net/others/oth-2/oth198.cur), pointer /* End http://www.cursors-4u.com */
-;
-}
 .minimap {
   position: relative;
 }

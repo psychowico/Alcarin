@@ -1,15 +1,39 @@
 {% extends "admin-layout" %}
 
 {% block content %}
-<div class="map-editor" data-instance="Alcarin.Orbis.Editor.Editor"
-  data-center-x="{{ x }}" data-center-y="{{ y }}">
+<div class="map-editor" data-instance="Alcarin.Orbis.Editor.Editor">
     <div class="row">
         <div class="span6">
             <h2>Map Editor</h2>
+
             <div class="map-viewport">
+                <button data-diff-y="-1" class="active-link btn btn-block btn-inverse top">
+                    <i class="icon-chevron-up"></i>
+                </button>
+                <button data-diff-x="1" class="btn btn-block btn-inverse right">
+                    <i class="icon-chevron-right"></i>
+                </button>
+                <button data-diff-y="1" class="btn btn-block btn-inverse bottom">
+                    <i class="icon-chevron-down"></i>
+                </button>
+                <button data-diff-x="-1" class="btn btn-block btn-inverse left">
+                    <i class="icon-chevron-left"></i>
+                </button>
                 <canvas width="500" height="500">
                     You browser don't support canvas, can not continue.
                 </canvas>
+            </div>
+        </div>
+        <div class="span6">
+            <h2>Toolbar</h2>
+            <div class="toolbar">
+                <div class="brushes">
+                    <h4>Current</h4>
+                    <div class="well well-inverse current">
+                        <a href="#" class="brush-color color-picker" data-color="rgb(0, 128, 0)" data-color-format="rgb">
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

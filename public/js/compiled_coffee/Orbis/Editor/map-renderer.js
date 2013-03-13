@@ -4,11 +4,15 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
 
     function MapRenderer(canvas, c_x, c_y) {
       this.canvas = canvas;
-      this.center = {
+      this.set_center(c_x, c_y);
+    }
+
+    MapRenderer.prototype.set_center = function(c_x, c_y) {
+      return this.center = {
         x: c_x,
         y: c_y
       };
-    }
+    };
 
     MapRenderer.prototype.init = function() {
       this.context = this.canvas[0].getContext('2d');
@@ -43,6 +47,8 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
       this.context.drawImage(this.backbuffer_canvas, 0, 0, size, size, 0, 0, this.canvas.width(), this.canvas.height());
       return this.context.restore();
     };
+
+    MapRenderer.prototype.draw_fields = function(fields) {};
 
     MapRenderer.prototype._prepare_empty_canvas = function(sizeW, sizeH) {
       if (!(this.backbuffer_canvas != null)) {

@@ -21,6 +21,8 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
 
             @proxy().emit 'get.info'
 
+        ### disabled code, not in use now.
+
         change_radius: (e)=>
             @radius_form.submit()
             false
@@ -59,13 +61,15 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
             @proxy().on 'tmp-map-info.generated', (response)=>
                 $radius_info.html response.info
 
+        ###
+
         init : ->
             $gateways = @orbis.find '.gateways-list'
 
             @gateways = new Alcarin.Orbis.Gateways $gateways
             @gateways.init()
 
-            @init_radius_modal()
+            # @init_radius_modal()
 
             @map_info = @orbis.find '.info-popover'
             @map_info.popover {html: true, trigger: 'manual'}

@@ -67,7 +67,7 @@ namespace('Alcarin.JQueryPlugins', function(exports, Alcarin) {
     top: 'auto',
     left: 'auto'
   };
-  return $.fn.spin = function(opts) {
+  $.fn.spin = function(opts) {
     this.each(function() {
       var $el, options, spinner;
       $el = $(this);
@@ -89,4 +89,6 @@ namespace('Alcarin.JQueryPlugins', function(exports, Alcarin) {
     });
     return this;
   };
+  $.bbq.push = $.bbq.pushState;
+  return $.bbq.get = $.bbq.getState;
 });

@@ -30,14 +30,19 @@
         </div>
     </div>
 
-        {% embed "alcarin-modal" with {id: 'change-radius-modal' } %}
+    {% embed "alcarin-modal" with {id: 'change-radius-modal' } %}
         {% block header %}Change world radius{% endblock %}
         {% block body %}
-            <p>Be sure what you doing. You can only increase world radius - if you make a mistake you
-            will be forced to contact alcarin developers team. Current radius is {{radius}}.</p>
-            {{ bootstrap(radius_form, 'horizontal') }}
+            <p>You can only increase world radius - but this is very time-consuming and dangerous
+            thing. You need contact alcarin developers team to do this. Current world radius is {{radius}}<b>u.</b> .</p>
+            {# bootstrap(radius_form, 'horizontal') #}
+            {#
             <div class="radius-info-container">
             </div>
+            #}
+        {% endblock %}
+        {% block footer %}
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
         {% endblock %}
     {% endembed %}
     </div>

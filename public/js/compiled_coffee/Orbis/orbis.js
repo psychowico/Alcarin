@@ -4,12 +4,6 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
   return exports.Orbis = (function() {
 
     function Orbis($orbis) {
-      this.init_radius_modal = __bind(this.init_radius_modal, this);
-
-      this.radius_real_time_change = __bind(this.radius_real_time_change, this);
-
-      this.change_radius = __bind(this.change_radius, this);
-
       this.load_map_info = __bind(this.load_map_info, this);
 
       this.on_info_loaded = __bind(this.on_info_loaded, this);
@@ -36,45 +30,47 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
       return this.proxy().emit('get.info');
     };
 
-    Orbis.prototype.change_radius = function(e) {
-      this.radius_form.submit();
-      return false;
-    };
+    /* disabled code, not in use now.
+    
+    change_radius: (e)=>
+        @radius_form.submit()
+        false
+    
+    radius_real_time_change: (e)=>
+    
+        $sender = $(e.currentTarget)
+        val = $sender.val() / 10
+    
+        $help = $sender.parent().find('.help-inline')
+        if isNaN val
+            $help.text 'Wrong value!'
+            $sender.closest('.control-group').addClass 'error'
+        else
+            # we match map information on server to avoid redundant code
+            @proxy().emit 'get.info', {radius: val}
+            $sender.closest('.control-group').removeClass 'error'
+            $help.text "#{val}km"
+    
+    init_radius_modal: =>
+    
+        @radius_form = $ '#radius-form'
+        radius_field = @radius_form.find('[name="radius"]')
+        radius_field.on 'keyup change', @radius_real_time_change
+    
+        $radius_modal = $('#change-radius-modal')
+        $radius_modal.on('success', @change_radius)
+                     .on 'show', =>
+                        @radius_form.reset()
+                        radius_field.trigger 'change'
+    
+    
+        @help_text = radius_field.parent().find('.help-inline')
+    
+        $radius_info = $radius_modal.find '.radius-info-container'
+        @proxy().on 'tmp-map-info.generated', (response)=>
+            $radius_info.html response.info
+    */
 
-    Orbis.prototype.radius_real_time_change = function(e) {
-      var $help, $sender, val;
-      $sender = $(e.currentTarget);
-      val = $sender.val() / 10;
-      $help = $sender.parent().find('.help-inline');
-      if (isNaN(val)) {
-        $help.text('Wrong value!');
-        return $sender.closest('.control-group').addClass('error');
-      } else {
-        this.proxy().emit('get.info', {
-          radius: val
-        });
-        $sender.closest('.control-group').removeClass('error');
-        return $help.text("" + val + "km");
-      }
-    };
-
-    Orbis.prototype.init_radius_modal = function() {
-      var $radius_info, $radius_modal, radius_field,
-        _this = this;
-      this.radius_form = $('#radius-form');
-      radius_field = this.radius_form.find('[name="radius"]');
-      radius_field.on('keyup change', this.radius_real_time_change);
-      $radius_modal = $('#change-radius-modal');
-      $radius_modal.on('success', this.change_radius).on('show', function() {
-        _this.radius_form.reset();
-        return radius_field.trigger('change');
-      });
-      this.help_text = radius_field.parent().find('.help-inline');
-      $radius_info = $radius_modal.find('.radius-info-container');
-      return this.proxy().on('tmp-map-info.generated', function(response) {
-        return $radius_info.html(response.info);
-      });
-    };
 
     Orbis.prototype.init = function() {
       var $gateways,
@@ -82,7 +78,6 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
       $gateways = this.orbis.find('.gateways-list');
       this.gateways = new Alcarin.Orbis.Gateways($gateways);
       this.gateways.init();
-      this.init_radius_modal();
       this.map_info = this.orbis.find('.info-popover');
       this.map_info.popover({
         html: true,

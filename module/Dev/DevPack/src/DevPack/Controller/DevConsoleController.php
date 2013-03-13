@@ -67,8 +67,13 @@ class DevConsoleController extends AbstractActionController
         if (!$request instanceof ConsoleRequest){
             throw new \RuntimeException('You can only use this action from a console!');
         }
+        $mongo = $this->getServiceLocator()->get('mongo');
 
-        $map = $this->getServiceLocator()->get('mongo')->map->ensureIndex(['loc' => '2d']);
+        $game_services = $this->getServiceLocator()->get('game-services');
+        $radius = $game_services->get('orbis')->map()->properties()->radius();
+
+        $mongo->command( ['deleteIndexes' => 'map', 'index' => 'geo_world_index']);
+        $mongo->map->ensureIndex(['loc' => '2d'], ['name'=> 'geo_world_index', 'min' => -$radius, 'max' => $radius]);
         $messages []= 'Done indexing "map" collection.';
 
         return implode( "\n", $messages ) . PHP_EOL;

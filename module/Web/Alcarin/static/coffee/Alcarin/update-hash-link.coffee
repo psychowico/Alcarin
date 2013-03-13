@@ -17,12 +17,11 @@ namespace 'Alcarin', (exports, Alcarin ) ->
             false
 
         constructor : ( el, options )->
-            @id = exports.UpdateHashLink.maxid++
+            @id = UpdateHashLink.maxid++
             @_options = $.extend {}, exports.UpdateHashLink.default_options, options
             @_el = $ el
             #update href when clicked
             @_el.on @_options.event, @_activate
-
 
     class exports.TestClass
         hashchange = (e)->
@@ -46,25 +45,23 @@ namespace 'Alcarin', (exports, Alcarin ) ->
             false
 
     $ =>
-        $.fn.extend {
-            hashLink: (_target_state, _options)->
-                @.each ->
-                    target_state = _target_state
-                    options = _options
-                    if not target_state?
-                        target_state = {}
-                        data = $(@).data()
-                        for key, obj of data
-                            if /^hash[A-Z]/.test key
-                                new_key = key.replace /^hash/, ''
-                                target_state[new_key.toLowerCase()] = obj
+        $.fn.hashLink = (_target_state, _options)->
+            @each ->
+                target_state = _target_state
+                options = _options
+                if not target_state?
+                    target_state = {}
+                    data = $(@).data()
+                    for key, obj of data
+                        if /^hash[A-Z]/.test key
+                            new_key = key.replace /^hash/, ''
+                            target_state[new_key.toLowerCase()] = obj
 
-                    options = options or {}
-                    options.target_state = target_state
+                options = options or {}
+                options.target_state = target_state
 
-                    link = new Alcarin.UpdateHashLink @, options
-                    $(@).data 'hashLink', link
-        }
+                link = new Alcarin.UpdateHashLink @, options
+                $(@).data 'hashLink', link
 
         $('.active-link').hashLink()
         $('#active-select').data('hash-test', 313).hashLink()

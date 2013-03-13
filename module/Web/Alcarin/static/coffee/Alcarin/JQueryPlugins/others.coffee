@@ -77,3 +77,7 @@ namespace 'Alcarin.JQueryPlugins', (exports, Alcarin) ->
                 spinner.spin @
                 $el.data 'spinner', spinner
         @
+
+    # just simple shortcuts
+    $.bbq.push = $.bbq.pushState
+    $.bbq.get = $.bbq.getState
