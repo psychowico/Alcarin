@@ -7,7 +7,19 @@ namespace 'Alcarin.Orbis.Editor', (exports, Alcarin) ->
             @set_center c_x, c_y
 
         set_center: (c_x, c_y)->
+            @rect  = undefined
             @center = {x: c_x, y: c_y}
+
+        in_view_rect: (x, y)->
+            _rect = @rect or {
+                left: @center.x - @size / 2
+                right: @center.x + @size / 2
+                top: @center.y - @size / 2
+                bottom: @center.y + @size / 2
+            }
+            @rect = _rect
+            return _rect.left <= x < _rect.right and
+                    _rect.top <= y < _rect.bottom
 
         init_backbuffer: (sizeW, sizeH)->
             if not @backbuffer_canvas?
@@ -57,7 +69,7 @@ namespace 'Alcarin.Orbis.Editor', (exports, Alcarin) ->
             }
 
         put_field: (x, y, field_brush)->
-            if x? and y?
+            if x? and y? and @in_view_rect x, y
                 color = field_brush.color
 
                 bb_pos = @_coords_to_backbuffer_pixels x, y
@@ -66,10 +78,6 @@ namespace 'Alcarin.Orbis.Editor', (exports, Alcarin) ->
                 @image_data.data[offset] = color.r
                 @image_data.data[offset + 1] = color.g
                 @image_data.data[offset + 2] = color.b
-
-                @_buffer_to_front true
-
-                @unsaved_changes = true
 
                 _data = $.extend {}, field_brush
 
@@ -80,7 +88,13 @@ namespace 'Alcarin.Orbis.Editor', (exports, Alcarin) ->
                     y: y
                     field: _data
                 }
-                @canvas.trigger 'mapchange'
+
+        confirm_changes: ->
+            @_buffer_to_front true
+
+            @unsaved_changes = true
+            @canvas.trigger 'mapchange'
+
 
         _buffer_to_front: (with_swap = false)->
             @backbuffer.putImageData @image_data, 0, 0 if with_swap

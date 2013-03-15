@@ -31,6 +31,7 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
       state.x = parseInt(state.x || 0);
       state.y = parseInt(state.y || 0);
       if (state.x !== ((_ref = this.center) != null ? _ref.x : void 0) || state.y !== ((_ref1 = this.center) != null ? _ref1.y : void 0)) {
+        this.renderer.unsaved_changes = {};
         this.center = {
           x: state.x,
           y: state.y
@@ -48,20 +49,21 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
       var btn_click,
         _this = this;
       btn_click = function() {
-        var btn, diff_x, diff_y, step;
+        var btn, diff_x, diff_y, new_center, step;
         btn = $(e.currentTarget);
         step = _this.step_size - 1;
         diff_x = btn.data('diff-x');
-        if (diff_x != null) {
-          _this.center.x += step * parseInt(diff_x);
-        }
         diff_y = btn.data('diff-y');
+        new_center = $.extend({}, _this.center);
+        if (diff_x != null) {
+          new_center.x += step * parseInt(diff_x);
+        }
         if (diff_y != null) {
-          _this.center.y += step * parseInt(diff_y);
+          new_center.y += step * parseInt(diff_y);
         }
         return $.bbq.pushState({
-          x: _this.center.x,
-          y: _this.center.y
+          x: new_center.x,
+          y: new_center.y
         });
       };
       if (this.renderer.unsaved_changes) {

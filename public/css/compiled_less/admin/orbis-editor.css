@@ -14,6 +14,18 @@
   background-color: green;
   cursor: pointer;
 }
+.map-editor .toolbar .brushes .current .size {
+  line-height: 50px;
+}
+.map-editor .toolbar .brushes .current .size label {
+  margin: 2px 0 0 -15px;
+  float: left;
+  display: inline;
+  vertical-align: middle;
+}
+.map-editor .toolbar .brushes .current .size .slider {
+  margin: 5px 0 0 40px;
+}
 .map-editor .map-viewport {
   position: relative;
   width: 550px;

@@ -10,10 +10,23 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
     }
 
     MapManager.prototype.set_center = function(c_x, c_y) {
+      this.rect = void 0;
       return this.center = {
         x: c_x,
         y: c_y
       };
+    };
+
+    MapManager.prototype.in_view_rect = function(x, y) {
+      var _rect;
+      _rect = this.rect || {
+        left: this.center.x - this.size / 2,
+        right: this.center.x + this.size / 2,
+        top: this.center.y - this.size / 2,
+        bottom: this.center.y + this.size / 2
+      };
+      this.rect = _rect;
+      return (_rect.left <= x && x < _rect.right) && (_rect.top <= y && y < _rect.bottom);
     };
 
     MapManager.prototype.init_backbuffer = function(sizeW, sizeH) {
@@ -76,24 +89,27 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
 
     MapManager.prototype.put_field = function(x, y, field_brush) {
       var bb_pos, color, offset, _data;
-      if ((x != null) && (y != null)) {
+      if ((x != null) && (y != null) && this.in_view_rect(x, y)) {
         color = field_brush.color;
         bb_pos = this._coords_to_backbuffer_pixels(x, y);
         offset = 4 * (bb_pos.y * this.size + bb_pos.x);
         this.image_data.data[offset] = color.r;
         this.image_data.data[offset + 1] = color.g;
         this.image_data.data[offset + 2] = color.b;
-        this._buffer_to_front(true);
-        this.unsaved_changes = true;
         _data = $.extend({}, field_brush);
         _data.color = (color.r << 16) + (color.g << 8) + color.b;
-        this.changes["" + x + "," + y] = {
+        return this.changes["" + x + "," + y] = {
           x: x,
           y: y,
           field: _data
         };
-        return this.canvas.trigger('mapchange');
       }
+    };
+
+    MapManager.prototype.confirm_changes = function() {
+      this._buffer_to_front(true);
+      this.unsaved_changes = true;
+      return this.canvas.trigger('mapchange');
     };
 
     MapManager.prototype._buffer_to_front = function(with_swap) {

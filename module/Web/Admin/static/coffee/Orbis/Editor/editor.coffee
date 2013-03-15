@@ -14,8 +14,8 @@ namespace 'Alcarin.Orbis.Editor', (exports, Alcarin) ->
             state = $.bbq.getState()
             state.x = parseInt state.x or 0
             state.y = parseInt state.y or 0
-
             if state.x != @center?.x or state.y != @center?.y
+                @renderer.unsaved_changes = {}
                 @center = {
                     x: state.x
                     y: state.y
@@ -31,12 +31,16 @@ namespace 'Alcarin.Orbis.Editor', (exports, Alcarin) ->
                 btn = $ e.currentTarget
                 # cauze we want see a fragment of now editing fields
                 step = @step_size - 1
-                diff_x = btn.data 'diff-x'
-                @center.x += step * parseInt(diff_x) if diff_x?
-                diff_y = btn.data 'diff-y'
-                @center.y += step * parseInt(diff_y) if diff_y?
 
-                $.bbq.pushState {x: @center.x, y: @center.y}
+                diff_x = btn.data 'diff-x'
+                diff_y = btn.data 'diff-y'
+
+                new_center = $.extend {}, @center
+
+                new_center.x += step * parseInt(diff_x) if diff_x?
+                new_center.y += step * parseInt(diff_y) if diff_y?
+
+                $.bbq.pushState {x: new_center.x, y: new_center.y}
 
             if @renderer.unsaved_changes
                 Alcarin.Dialogs.Confirms.admin 'You will lost all unsaved changes. Are you sure you want to continue?', =>

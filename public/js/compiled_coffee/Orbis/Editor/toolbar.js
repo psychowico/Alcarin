@@ -16,6 +16,8 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
       this.renderer = renderer;
       this.onhashchange = __bind(this.onhashchange, this);
 
+      this.size_changed = __bind(this.size_changed, this);
+
       this.map_change = __bind(this.map_change, this);
 
       this.canvas_mouse_painting = __bind(this.canvas_mouse_painting, this);
@@ -24,6 +26,7 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
 
       this.canvas_mouse_down = __bind(this.canvas_mouse_down, this);
 
+      this.brush_size = 1;
     }
 
     Toolbar.prototype.canvas_mouse_down = function(e) {
@@ -36,13 +39,30 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
     };
 
     Toolbar.prototype.canvas_mouse_painting = function(e) {
-      var coords;
+      var coords, ox, oy, range, range_2, _i, _j;
       coords = this.renderer.pixels_to_coords(e.offsetX, e.offsetY);
-      return this.renderer.put_field(coords.x, coords.y, this.Current);
+      if (this.brush_size > 1) {
+        range = this.brush_size - 1;
+        range_2 = range * range;
+        for (oy = _i = -range; -range <= range ? _i <= range : _i >= range; oy = -range <= range ? ++_i : --_i) {
+          for (ox = _j = -range; -range <= range ? _j <= range : _j >= range; ox = -range <= range ? ++_j : --_j) {
+            if (oy * oy + ox * ox <= range_2) {
+              this.renderer.put_field(coords.x + ox, coords.y + oy, this.Current);
+            }
+          }
+        }
+      } else {
+        this.renderer.put_field(coords.x, coords.y, this.Current);
+      }
+      return this.renderer.confirm_changes();
     };
 
     Toolbar.prototype.map_change = function() {
       return this.base.find('.alert').fadeIn();
+    };
+
+    Toolbar.prototype.size_changed = function(e, ui) {
+      return this.brush_size = ui.value;
     };
 
     Toolbar.prototype.onhashchange = function() {
@@ -58,6 +78,12 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
       var _this = this;
       this.base.find('.alert .close').click(function() {
         return $(this).parent().fadeOut();
+      });
+      this.base.find('.slider').slider({
+        min: 1,
+        max: 10,
+        value: 1,
+        slide: this.size_changed
       });
       this.save_btn = this.base.find('.alert .btn');
       this.renderer.canvas.on('mousedown', this.canvas_mouse_down).on('mouseup', this.canvas_mouse_up).on('mapchange', this.map_change);
