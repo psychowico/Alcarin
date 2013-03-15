@@ -5,16 +5,19 @@ namespace 'Alcarin.JQueryPlugins', (exports, Alcarin) ->
         context = @[0]
         context.webkitImageSmoothingEnabled = context.mozImageSmoothingEnabled = false
 
-    $.fn.disable = ->
+    $.fn.disable = (recursive = false)->
         @each ->
             $(@).attr 'disabled', 'disabled'
+            $(@).find('*').attr 'disabled', 'disabled' if recursive
 
-    $.fn.enable = (value)->
+    $.fn.enable = (value, recursive = false)->
         @each ->
             if value == false
                 $(@).attr 'disabled', 'disabled'
+                $(@).find('*').attr 'disabled', 'disabled' if recursive
             else
                 $(@).removeAttr 'disabled'
+                $(@).find('*').removeAttr 'disabled' if recursive
 
     $.fn.enabled = ->
         @first().attr('disabled') == undefined

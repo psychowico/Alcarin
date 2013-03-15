@@ -6,17 +6,32 @@ namespace('Alcarin.JQueryPlugins', function(exports, Alcarin) {
     context = this[0];
     return context.webkitImageSmoothingEnabled = context.mozImageSmoothingEnabled = false;
   };
-  $.fn.disable = function() {
+  $.fn.disable = function(recursive) {
+    if (recursive == null) {
+      recursive = false;
+    }
     return this.each(function() {
-      return $(this).attr('disabled', 'disabled');
+      $(this).attr('disabled', 'disabled');
+      if (recursive) {
+        return $(this).find('*').attr('disabled', 'disabled');
+      }
     });
   };
-  $.fn.enable = function(value) {
+  $.fn.enable = function(value, recursive) {
+    if (recursive == null) {
+      recursive = false;
+    }
     return this.each(function() {
       if (value === false) {
-        return $(this).attr('disabled', 'disabled');
+        $(this).attr('disabled', 'disabled');
+        if (recursive) {
+          return $(this).find('*').attr('disabled', 'disabled');
+        }
       } else {
-        return $(this).removeAttr('disabled');
+        $(this).removeAttr('disabled');
+        if (recursive) {
+          return $(this).find('*').removeAttr('disabled');
+        }
       }
     });
   };

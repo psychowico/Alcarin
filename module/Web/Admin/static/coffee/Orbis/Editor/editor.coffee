@@ -61,29 +61,33 @@ namespace 'Alcarin.Orbis.Editor', (exports, Alcarin) ->
                 @renderer.redraw response.size, response.fields
 
         save_map: (e)=>
+            map_c = @renderer.canvas.closest '.map-viewport'
+            map_c.disable(true).spin true
+
+            @toolbar.save_btn.disable()
             # cast to array, object are bigger (when sending)
             changes = $.map @renderer.changes, (value, key) -> value
-            @toolbar.save_btn.spin true
             # we sending changes as json coded string, because if we send big
             # number of fields, we will have problems with servers vars count limits
             @proxy.emit 'fields.update', { fields: JSON.stringify changes }
 
         on_fields_updated: (response)=>
             if response.success
-                @toolbar.save_btn.spin false
+                map_c = @renderer.canvas.closest '.map-viewport'
+                map_c.spin(false).enable true, true
                 @toolbar.save_btn.closest('.alert').fadeOut()
                 @renderer.unsaved_changes = false
                 @renderer.changes = {}
 
         init: ->
+            $(window).on('hashchange', @onhashchange)
+                     .on 'beforeunload', @on_before_unload
+
             @renderer.init()
 
             @proxy.on 'fields.loaded', @on_fields_loaded
             $('.map-viewport .btn').on 'click', @move_btn_click
             @proxy.on 'fields.updated', @on_fields_updated
-
-            $(window).on('hashchange', @onhashchange)
-                     .on 'beforeunload', @on_before_unload
 
             @toolbar.init()
             @toolbar.save_btn.click @save_map

@@ -7,20 +7,30 @@ namespace 'Alcarin.Orbis.Editor', (exports, Alcarin) ->
         }
 
         constructor: (@base, @renderer)->
-            @brush_size = 1
+            @brush_size 1
+
+        brush_size: (val)->
+            if val
+                @_brush_size = val
+                #@renderer.shadow @brush_size()
+            else
+                return @_brush_size
 
         canvas_mouse_down: (e)=>
-            @renderer.canvas.on 'mousemove', @canvas_mouse_painting
-            # @renderer.begin_line e.offsetX, e.offsetY, @Current.color
+            return false if $(e.currentTarget).disabled()
+            @renderer.canvas.parent().on 'mousemove', @canvas_mouse_painting
             @canvas_mouse_painting(e)
 
         canvas_mouse_up: =>
-            @renderer.canvas.off 'mousemove', @canvas_mouse_painting
+            @renderer.canvas.parent().off 'mousemove', @canvas_mouse_painting
+
+        canvas_mouse_move: (e)=>
+            @renderer.draw_shadow {x: e.offsetX, y: e.offsetY}, @brush_size()
 
         canvas_mouse_painting: (e)=>
             coords = @renderer.pixels_to_coords e.offsetX, e.offsetY
-            if @brush_size > 1
-                range   = @brush_size - 1
+            if @brush_size() > 1
+                range   = @brush_size() - 1
                 range_2 = range * range
                 for oy in [-range..range]
                     for ox in [-range..range]
@@ -33,6 +43,7 @@ namespace 'Alcarin.Orbis.Editor', (exports, Alcarin) ->
 
 
         map_change: =>
+            @save_btn.enable()
             @base.find('.alert').fadeIn()
 
         size_changed: (e, ui)=>
@@ -44,8 +55,9 @@ namespace 'Alcarin.Orbis.Editor', (exports, Alcarin) ->
                 @Current.color = Alcarin.Color.hexToRGB state.color
                 @color_picker.css 'background-color', state.color
             if state.size?
-                @brush_slider.slider 'value', state.size
-                @brush_size = state.size
+                size = parseInt state.size
+                @brush_slider.slider 'value', size
+                @brush_size size
 
         init: ->
             @base.find('.alert .close').click -> $(@).parent().fadeOut()
@@ -58,8 +70,10 @@ namespace 'Alcarin.Orbis.Editor', (exports, Alcarin) ->
             }
             @save_btn = @base.find('.alert .btn')
 
-            @renderer.canvas.on('mousedown', @canvas_mouse_down)
-                            .on('mapchange', @map_change)
+            @renderer.canvas.on('mapchange', @map_change)
+                            .parent()
+                                .on('mousedown', @canvas_mouse_down)
+                                .on('mousemove', @canvas_mouse_move)
             $(document).on 'mouseup', @canvas_mouse_up
             @color_picker = @base.find('a.color-picker')
             @color_picker.colorpicker()

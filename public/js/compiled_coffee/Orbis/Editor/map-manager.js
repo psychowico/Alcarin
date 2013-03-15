@@ -17,6 +17,26 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
       };
     };
 
+    MapManager.prototype.draw_shadow = function(p, size) {
+      var c, up, x, y, _size;
+      if (!(this.foreground != null)) {
+        return false;
+      }
+      c = this.foreground_canvas[0];
+      this.foreground.clearRect(0, 0, c.width, c.height);
+      up = this.unit_pixel_size();
+      _size = up * (-0.5 + size);
+      if (_size > 0) {
+        this.foreground.beginPath();
+        x = p.x;
+        y = p.y;
+        this.foreground.arc(x, y, _size, 0, 360);
+        this.foreground.lineWidth = 2;
+        this.foreground.strokeStyle = 'rgba(255, 0, 0, 0.3)';
+        return this.foreground.stroke();
+      }
+    };
+
     MapManager.prototype.in_view_rect = function(x, y) {
       var _rect;
       _rect = this.rect || {
@@ -32,17 +52,31 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
     MapManager.prototype.init_backbuffer = function(sizeW, sizeH) {
       var _canvas;
       if (!(this.backbuffer_canvas != null)) {
-        this.backbuffer_canvas = $('<canvas>', {
-          width: sizeW,
-          height: sizeH
-        });
+        this.backbuffer_canvas = $('<canvas>');
         _canvas = this.backbuffer_canvas[0];
+        _canvas.width = sizeW;
+        _canvas.height = sizeH;
         this.backbuffer = _canvas.getContext('2d');
         $(this.backbuffer).disableSmoothing();
       }
       this.backbuffer.fillStyle = "rgb(0, 0, 255)";
       this.backbuffer.fillRect(0, 0, sizeW, sizeH);
       return this.backbuffer;
+    };
+
+    MapManager.prototype.init_foreground = function() {
+      var _canvas;
+      if (!(this.foreground != null)) {
+        this.foreground_canvas = $('<canvas>', {
+          "class": 'foreground'
+        });
+        _canvas = this.foreground_canvas[0];
+        _canvas.width = this.canvas.width();
+        _canvas.height = this.canvas.height();
+        this.foreground = _canvas.getContext('2d');
+        this.foreground_canvas.appendTo(this.canvas.parent());
+      }
+      return this.foreground;
     };
 
     MapManager.prototype.init = function() {
@@ -72,7 +106,12 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
         }
       }
       this._buffer_to_front(true);
+      this.init_foreground();
       return this.unsaved_changes = false;
+    };
+
+    MapManager.prototype.unit_pixel_size = function() {
+      return this.canvas[0].width / this.backbuffer_canvas[0].width;
     };
 
     MapManager.prototype.pixels_to_coords = function(x, y) {
@@ -82,8 +121,8 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
         y: this.center.y - this.size / 2
       };
       return {
-        x: offset.x + Math.round(x * this.backbuffer_canvas.width() / this.canvas.width()),
-        y: offset.y + Math.round(y * this.backbuffer_canvas.height() / this.canvas.height())
+        x: offset.x + Math.round(x * this.backbuffer_canvas[0].width / this.canvas[0].width),
+        y: offset.y + Math.round(y * this.backbuffer_canvas[0].height / this.canvas[0].height)
       };
     };
 

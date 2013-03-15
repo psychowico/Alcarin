@@ -31,6 +31,32 @@
   width: 550px;
   height: 550px;
 }
+.map-editor .map-viewport .canvas-container {
+  margin: 25px;
+  /* Start http://www.cursors-4u.com */
+
+  cursor: url(http://www.useragentman.com/examples/cursor/canvasPainter/canvas_painter_v0.1/images/gimpBrush.png) 5 25, url(http://cur.cursors-4u.net/others/oth-2/oth198.cur), pointer;
+  /* End http://www.cursors-4u.com */
+
+  position: absolute;
+}
+.map-editor .map-viewport .canvas-container .foreground {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.map-editor .map-viewport .canvas-container .cursor-shadow {
+  position: absolute;
+  left: 0;
+  top: 0;
+  position: absolute;
+  border: 1px solid red;
+  -webkit-border-radius: 50px;
+  -moz-border-radius: 50px;
+  -ms-border-radius: 50px;
+  -o-border-radius: 50px;
+  border-radius: 50px;
+}
 .map-editor .map-viewport .right {
   position: absolute;
   left: 525px;
@@ -102,11 +128,4 @@
   height: 25px;
   left: 25px;
   width: 300px;
-}
-.map-editor .map-viewport canvas {
-  margin: 25px;
-  /* Start http://www.cursors-4u.com */
-
-  cursor: url(http://www.useragentman.com/examples/cursor/canvasPainter/canvas_painter_v0.1/images/gimpBrush.png) 5 25, url(http://cur.cursors-4u.net/others/oth-2/oth198.cur), pointer /* End http://www.cursors-4u.com */
-;
 }

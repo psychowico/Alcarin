@@ -92,19 +92,23 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
     };
 
     Editor.prototype.save_map = function(e) {
-      var changes;
+      var changes, map_c;
+      map_c = this.renderer.canvas.closest('.map-viewport');
+      map_c.disable(true).spin(true);
+      this.toolbar.save_btn.disable();
       changes = $.map(this.renderer.changes, function(value, key) {
         return value;
       });
-      this.toolbar.save_btn.spin(true);
       return this.proxy.emit('fields.update', {
         fields: JSON.stringify(changes)
       });
     };
 
     Editor.prototype.on_fields_updated = function(response) {
+      var map_c;
       if (response.success) {
-        this.toolbar.save_btn.spin(false);
+        map_c = this.renderer.canvas.closest('.map-viewport');
+        map_c.spin(false).enable(true, true);
         this.toolbar.save_btn.closest('.alert').fadeOut();
         this.renderer.unsaved_changes = false;
         return this.renderer.changes = {};
@@ -112,11 +116,11 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
     };
 
     Editor.prototype.init = function() {
+      $(window).on('hashchange', this.onhashchange).on('beforeunload', this.on_before_unload);
       this.renderer.init();
       this.proxy.on('fields.loaded', this.on_fields_loaded);
       $('.map-viewport .btn').on('click', this.move_btn_click);
       this.proxy.on('fields.updated', this.on_fields_updated);
-      $(window).on('hashchange', this.onhashchange).on('beforeunload', this.on_before_unload);
       this.toolbar.init();
       return this.toolbar.save_btn.click(this.save_map);
     };

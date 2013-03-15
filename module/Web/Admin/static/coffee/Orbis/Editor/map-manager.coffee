@@ -10,6 +10,26 @@ namespace 'Alcarin.Orbis.Editor', (exports, Alcarin) ->
             @rect  = undefined
             @center = {x: c_x, y: c_y}
 
+        draw_shadow: (p, size)->
+            return false if not @foreground?
+
+            c = @foreground_canvas[0]
+            @foreground.clearRect 0, 0, c.width, c.height
+
+            up = @unit_pixel_size()
+            _size = up * (-0.5 + size )
+
+            if _size > 0
+                @foreground.beginPath();
+
+                x = p.x #up * Math.round (p.x / up)
+                y = p.y #up * Math.round (p.y / up)
+                @foreground.arc x, y, _size, 0, 360
+                @foreground.lineWidth = 2
+
+                @foreground.strokeStyle = 'rgba(255, 0, 0, 0.3)'
+                @foreground.stroke()
+
         in_view_rect: (x, y)->
             _rect = @rect or {
                 left: @center.x - @size / 2
@@ -23,14 +43,32 @@ namespace 'Alcarin.Orbis.Editor', (exports, Alcarin) ->
 
         init_backbuffer: (sizeW, sizeH)->
             if not @backbuffer_canvas?
-                @backbuffer_canvas = $('<canvas>', {width: sizeW, height: sizeH})
+                @backbuffer_canvas = $ '<canvas>'
+
                 _canvas = @backbuffer_canvas[0]
+                _canvas.width = sizeW
+                _canvas.height = sizeH
+
                 @backbuffer = _canvas.getContext '2d'
                 $(@backbuffer).disableSmoothing()
 
             @backbuffer.fillStyle = "rgb(0, 0, 255)";
             @backbuffer.fillRect 0, 0, sizeW, sizeH
             @backbuffer
+
+        init_foreground: ->
+            if not @foreground?
+                @foreground_canvas = $ '<canvas>', {class: 'foreground'}
+
+                _canvas = @foreground_canvas[0]
+                _canvas.width = @canvas.width()
+                _canvas.height = @canvas.height()
+
+                @foreground = _canvas.getContext '2d'
+                @foreground_canvas.appendTo @canvas.parent()
+                #$(@backbuffer).disableSmoothing()
+
+            @foreground
 
         init: ->
             @context = @canvas[0].getContext '2d'
@@ -59,13 +97,17 @@ namespace 'Alcarin.Orbis.Editor', (exports, Alcarin) ->
                     image_data.data[_offset + i] = (color >> (8 * (2 - i) ) ) & 0xFF
 
             @_buffer_to_front true
+            @init_foreground()
             @unsaved_changes = false
+
+        unit_pixel_size: ()->
+            @canvas[0].width / @backbuffer_canvas[0].width
 
         pixels_to_coords: (x, y)->
             offset = {x: @center.x - @size / 2, y: @center.y - @size / 2}
             return {
-                x: offset.x + Math.round x * @backbuffer_canvas.width() / @canvas.width()
-                y: offset.y + Math.round y * @backbuffer_canvas.height() / @canvas.height()
+                x: offset.x + Math.round x * @backbuffer_canvas[0].width / @canvas[0].width
+                y: offset.y + Math.round y * @backbuffer_canvas[0].height / @canvas[0].height
             }
 
         put_field: (x, y, field_brush)->

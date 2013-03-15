@@ -22,27 +22,47 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
 
       this.canvas_mouse_painting = __bind(this.canvas_mouse_painting, this);
 
+      this.canvas_mouse_move = __bind(this.canvas_mouse_move, this);
+
       this.canvas_mouse_up = __bind(this.canvas_mouse_up, this);
 
       this.canvas_mouse_down = __bind(this.canvas_mouse_down, this);
 
-      this.brush_size = 1;
+      this.brush_size(1);
     }
 
+    Toolbar.prototype.brush_size = function(val) {
+      if (val) {
+        return this._brush_size = val;
+      } else {
+        return this._brush_size;
+      }
+    };
+
     Toolbar.prototype.canvas_mouse_down = function(e) {
-      this.renderer.canvas.on('mousemove', this.canvas_mouse_painting);
+      if ($(e.currentTarget).disabled()) {
+        return false;
+      }
+      this.renderer.canvas.parent().on('mousemove', this.canvas_mouse_painting);
       return this.canvas_mouse_painting(e);
     };
 
     Toolbar.prototype.canvas_mouse_up = function() {
-      return this.renderer.canvas.off('mousemove', this.canvas_mouse_painting);
+      return this.renderer.canvas.parent().off('mousemove', this.canvas_mouse_painting);
+    };
+
+    Toolbar.prototype.canvas_mouse_move = function(e) {
+      return this.renderer.draw_shadow({
+        x: e.offsetX,
+        y: e.offsetY
+      }, this.brush_size());
     };
 
     Toolbar.prototype.canvas_mouse_painting = function(e) {
       var coords, ox, oy, range, range_2, _i, _j;
       coords = this.renderer.pixels_to_coords(e.offsetX, e.offsetY);
-      if (this.brush_size > 1) {
-        range = this.brush_size - 1;
+      if (this.brush_size() > 1) {
+        range = this.brush_size() - 1;
         range_2 = range * range;
         for (oy = _i = -range; -range <= range ? _i <= range : _i >= range; oy = -range <= range ? ++_i : --_i) {
           for (ox = _j = -range; -range <= range ? _j <= range : _j >= range; ox = -range <= range ? ++_j : --_j) {
@@ -58,6 +78,7 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
     };
 
     Toolbar.prototype.map_change = function() {
+      this.save_btn.enable();
       return this.base.find('.alert').fadeIn();
     };
 
@@ -68,15 +89,16 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
     };
 
     Toolbar.prototype.onhashchange = function() {
-      var state;
+      var size, state;
       state = $.bbq.get();
       if (state.color != null) {
         this.Current.color = Alcarin.Color.hexToRGB(state.color);
         this.color_picker.css('background-color', state.color);
       }
       if (state.size != null) {
-        this.brush_slider.slider('value', state.size);
-        return this.brush_size = state.size;
+        size = parseInt(state.size);
+        this.brush_slider.slider('value', size);
+        return this.brush_size(size);
       }
     };
 
@@ -93,7 +115,7 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
         change: this.size_changed
       });
       this.save_btn = this.base.find('.alert .btn');
-      this.renderer.canvas.on('mousedown', this.canvas_mouse_down).on('mapchange', this.map_change);
+      this.renderer.canvas.on('mapchange', this.map_change).parent().on('mousedown', this.canvas_mouse_down).on('mousemove', this.canvas_mouse_move);
       $(document).on('mouseup', this.canvas_mouse_up);
       this.color_picker = this.base.find('a.color-picker');
       this.color_picker.colorpicker().on('hide', function(e) {

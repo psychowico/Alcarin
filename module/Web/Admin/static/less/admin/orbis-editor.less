@@ -38,6 +38,25 @@
         width: @canvas_size + 2 * @btn_size;
         height: @canvas_size + 2 * @btn_size;
 
+        .canvas-container {
+            .foreground {
+                position: absolute;
+                left: 0; top: 0;
+            }
+            margin: @btn_size;
+            /* Start http://www.cursors-4u.com */
+            cursor: url(http://www.useragentman.com/examples/cursor/canvasPainter/canvas_painter_v0.1/images/gimpBrush.png) 5 25, url(http://cur.cursors-4u.net/others/oth-2/oth198.cur), pointer;
+            /* End http://www.cursors-4u.com */
+            position: absolute;
+            .cursor-shadow {
+                position: absolute;
+                left: 0;top:0;
+                position: absolute;
+                border: 1px solid red;
+                .circle();
+            }
+        }
+
         .right {
             position: absolute;
             left: @canvas_size + @btn_size;
@@ -118,12 +137,6 @@
                 left: @btn_size;
                 width: 0.6 * @canvas_size;
             }
-        }
-        canvas {
-            margin: @btn_size;
-            /* Start http://www.cursors-4u.com */
-            cursor: url(http://www.useragentman.com/examples/cursor/canvasPainter/canvas_painter_v0.1/images/gimpBrush.png) 5 25, url(http://cur.cursors-4u.net/others/oth-2/oth198.cur), pointer
-            /* End http://www.cursors-4u.com */
         }
     }
 }
