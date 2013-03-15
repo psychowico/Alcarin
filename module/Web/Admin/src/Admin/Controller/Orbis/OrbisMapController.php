@@ -30,21 +30,24 @@ class OrbisMapController extends AbstractEventController
 
     protected function onFieldsUpdate($data)
     {
-        $fields = array_values($data['fields']);
+        $json_serialized_fields = empty($data['fields']) ? '' : $data['fields'];
+
+        # we deserialize fields that are sending as json
+        $fields = json_decode($json_serialized_fields);
 
         array_filter($fields, function($field) {
-            return isset($field['x']) && isset($field['y'])
-                    && isset($field['field']);
+            return isset($field->x) && isset($field->y)
+                    && isset($field->field);
         });
 
         $fields = array_map(function($field){
             return [
                 'loc' => [
-                    'x' => intval($field['x']),
-                    'y' => intval($field['y']),
+                    'x' => intval($field->x),
+                    'y' => intval($field->y),
                 ],
                 'land' => [
-                    'color' => intval($field['field']['color']),
+                    'color' => intval($field->field->color),
                 ],
             ];
         }, $fields);

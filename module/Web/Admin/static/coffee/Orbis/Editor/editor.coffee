@@ -12,13 +12,13 @@ namespace 'Alcarin.Orbis.Editor', (exports, Alcarin) ->
 
         onhashchange: =>
             state = $.bbq.getState()
-            state.x = state.x or 0
-            state.y = state.y or 0
+            state.x = parseInt state.x or 0
+            state.y = parseInt state.y or 0
 
             if state.x != @center?.x or state.y != @center?.y
                 @center = {
-                    x: parseInt state.x
-                    y: parseInt state.y
+                    x: state.x
+                    y: state.y
                 }
                 # let redraw map
                 @renderer.canvas.parent().spin true
@@ -57,16 +57,19 @@ namespace 'Alcarin.Orbis.Editor', (exports, Alcarin) ->
                 @renderer.redraw response.size, response.fields
 
         save_map: (e)=>
-            changes = @renderer.changes
-            @renderer.changes = {}
-            @toolbar.save_btn.spin()
-            @proxy.emit 'fields.update', {fields: changes}
+            # cast to array, object are bigger (when sending)
+            changes = $.map @renderer.changes, (value, key) -> value
+            @toolbar.save_btn.spin true
+            # we sending changes as json coded string, because if we send big
+            # number of fields, we will have problems with servers vars count limits
+            @proxy.emit 'fields.update', { fields: JSON.stringify changes }
 
         on_fields_updated: (response)=>
             if response.success
-                @toolbar.save_btn.spin()
+                @toolbar.save_btn.spin false
                 @toolbar.save_btn.closest('.alert').fadeOut()
                 @renderer.unsaved_changes = false
+                @renderer.changes = {}
 
         init: ->
             @renderer.init()

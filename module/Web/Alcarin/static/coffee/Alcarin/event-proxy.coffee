@@ -25,7 +25,8 @@ namespace 'Alcarin', (exports, Alcarin) ->
             @
 
         emit: (event_name, data = {})->
-            data['__id']     = event_name
+            #data = $.extend {__id: event_name}, data
+            data['__id'] = event_name
             Rest().$create @url, data, @_onStateChanged
 
         _onStateChanged: (state) =>

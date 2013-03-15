@@ -26,10 +26,11 @@ abstract class AbstractEventController extends AbstractActionController
     {
         set_error_handler([$this, 'custom_warning_handler'], E_NOTICE | E_WARNING);
 
+        $arr = ['test'];
         $route_match = $e->getRouteMatch();
         $action  = $route_match->getParam('action', false);
 
-        $params = $e->getRequest()->getPost();
+        $params = $this->getRequest()->getPost();
 
         $event_id = !empty($params['__id']) ? $params['__id'] : $route_match->getParam('id');
         if($event_id !== null){

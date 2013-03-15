@@ -28,12 +28,12 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
     Editor.prototype.onhashchange = function() {
       var state, _ref, _ref1;
       state = $.bbq.getState();
-      state.x = state.x || 0;
-      state.y = state.y || 0;
+      state.x = parseInt(state.x || 0);
+      state.y = parseInt(state.y || 0);
       if (state.x !== ((_ref = this.center) != null ? _ref.x : void 0) || state.y !== ((_ref1 = this.center) != null ? _ref1.y : void 0)) {
         this.center = {
-          x: parseInt(state.x),
-          y: parseInt(state.y)
+          x: state.x,
+          y: state.y
         };
         this.renderer.canvas.parent().spin(true);
         this.proxy.emit('fields.fetch', {
@@ -91,19 +91,21 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
 
     Editor.prototype.save_map = function(e) {
       var changes;
-      changes = this.renderer.changes;
-      this.renderer.changes = {};
-      this.toolbar.save_btn.spin();
+      changes = $.map(this.renderer.changes, function(value, key) {
+        return value;
+      });
+      this.toolbar.save_btn.spin(true);
       return this.proxy.emit('fields.update', {
-        fields: changes
+        fields: JSON.stringify(changes)
       });
     };
 
     Editor.prototype.on_fields_updated = function(response) {
       if (response.success) {
-        this.toolbar.save_btn.spin();
+        this.toolbar.save_btn.spin(false);
         this.toolbar.save_btn.closest('.alert').fadeOut();
-        return this.renderer.unsaved_changes = false;
+        this.renderer.unsaved_changes = false;
+        return this.renderer.changes = {};
       }
     };
 
