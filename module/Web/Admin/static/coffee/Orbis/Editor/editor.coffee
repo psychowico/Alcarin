@@ -37,8 +37,8 @@ namespace 'Alcarin.Orbis.Editor', (exports, Alcarin) ->
 
                 new_center = $.extend {}, @center
 
-                new_center.x += step * parseInt(diff_x) if diff_x?
-                new_center.y += step * parseInt(diff_y) if diff_y?
+                new_center.x += Math.round step * parseFloat diff_x if diff_x?
+                new_center.y += Math.round step * parseFloat diff_y if diff_y?
 
                 $.bbq.pushState {x: new_center.x, y: new_center.y}
 

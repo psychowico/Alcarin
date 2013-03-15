@@ -56,10 +56,10 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
         diff_y = btn.data('diff-y');
         new_center = $.extend({}, _this.center);
         if (diff_x != null) {
-          new_center.x += step * parseInt(diff_x);
+          new_center.x += Math.round(step * parseFloat(diff_x));
         }
         if (diff_y != null) {
-          new_center.y += step * parseInt(diff_y);
+          new_center.y += Math.round(step * parseFloat(diff_y));
         }
         return $.bbq.pushState({
           x: new_center.x,

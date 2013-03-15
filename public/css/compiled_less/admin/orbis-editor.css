@@ -31,31 +31,77 @@
   width: 550px;
   height: 550px;
 }
+.map-editor .map-viewport .right {
+  position: absolute;
+  left: 525px;
+}
+.map-editor .map-viewport .bottom {
+  position: absolute;
+  top: 525px;
+}
 .map-editor .map-viewport .btn {
   position: absolute;
   margin: 0;
 }
-.map-editor .map-viewport .btn.left {
+.map-editor .map-viewport .btn.left10 {
   width: 25px;
-  height: 500px;
+  height: 50px;
   top: 25px;
 }
-.map-editor .map-viewport .btn.right {
+.map-editor .map-viewport .btn.left40 {
   width: 25px;
-  height: 500px;
+  height: 150px;
+  top: 75px;
+}
+.map-editor .map-viewport .btn.left100 {
+  top: 225px;
+  width: 25px;
+  height: 300px;
+}
+.map-editor .map-viewport .btn.right10 {
+  top: 475px;
+  width: 25px;
+  height: 50px;
+}
+.map-editor .map-viewport .btn.right40 {
+  width: 25px;
+  height: 150px;
+  top: 325px;
+}
+.map-editor .map-viewport .btn.right100 {
   top: 25px;
-  left: 525px;
+  width: 25px;
+  height: 300px;
 }
-.map-editor .map-viewport .btn.top {
+.map-editor .map-viewport .btn.top10 {
   height: 25px;
-  width: 500px;
   left: 25px;
+  width: 50px;
 }
-.map-editor .map-viewport .btn.bottom {
+.map-editor .map-viewport .btn.top40 {
   height: 25px;
-  width: 500px;
+  left: 75px;
+  width: 150px;
+}
+.map-editor .map-viewport .btn.top100 {
+  height: 25px;
+  left: 225px;
+  width: 300px;
+}
+.map-editor .map-viewport .btn.bottom10 {
+  height: 25px;
+  width: 50px;
+  left: 475px;
+}
+.map-editor .map-viewport .btn.bottom40 {
+  height: 25px;
+  left: 325px;
+  width: 150px;
+}
+.map-editor .map-viewport .btn.bottom100 {
+  height: 25px;
   left: 25px;
-  top: 525px;
+  width: 300px;
 }
 .map-editor .map-viewport canvas {
   margin: 25px;

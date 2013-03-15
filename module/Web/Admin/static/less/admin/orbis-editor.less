@@ -32,34 +32,92 @@
 
     @btn_size: 25px;
     @canvas_size: 500px;
-     .map-viewport {
+
+    .map-viewport {
         position: relative;
         width: @canvas_size + 2 * @btn_size;
         height: @canvas_size + 2 * @btn_size;
+
+        .right {
+            position: absolute;
+            left: @canvas_size + @btn_size;
+        }
+        .bottom {
+            position: absolute;
+            top: @canvas_size + @btn_size;
+        }
+
         .btn {
             position: absolute;
             margin: 0;
-            &.left {
+            &.left10 {
                 width: @btn_size;
-                height: @canvas_size;
+                height: 0.1 * @canvas_size;
                 top: @btn_size;
             }
-            &.right {
+            &.left40 {
                 width: @btn_size;
-                height: @canvas_size;
+                height: 0.3 * @canvas_size;
+                top: @btn_size + 0.1 * @canvas_size;
+            }
+            &.left100 {
+                top: @btn_size + 0.4 * @canvas_size;
+                width: @btn_size;
+                height: 0.6 * @canvas_size;
+            }
+
+
+            &.right10 {
+                top: @btn_size + 0.9 * @canvas_size;
+                width: @btn_size;
+                height: 0.1 * @canvas_size;
+            }
+            &.right40 {
+                width: @btn_size;
+                height: 0.3 * @canvas_size;
+                top: @btn_size + 0.6 * @canvas_size;
+            }
+            &.right100 {
                 top: @btn_size;
-                left: @canvas_size + @btn_size;
+                width: @btn_size;
+                height: 0.6 * @canvas_size;
             }
-            &.top {
+
+            &.top10 {
                 height: @btn_size;
-                width: @canvas_size;
                 left: @btn_size;
+                width: 0.1 * @canvas_size;
+
             }
-            &.bottom {
+            &.top40 {
                 height: @btn_size;
-                width: @canvas_size;
+                left: @btn_size + 0.1 * @canvas_size;
+                width: 0.3 * @canvas_size;
+
+            }
+            &.top100 {
+                height: @btn_size;
+                left: @btn_size + 0.4 * @canvas_size;
+                width: 0.6 * @canvas_size;
+            }
+
+
+            &.bottom10 {
+                height: @btn_size;
+                width: 0.1 * @canvas_size;
+                left: @btn_size + 0.9 * @canvas_size;
+
+            }
+            &.bottom40 {
+                height: @btn_size;
+                left: @btn_size + 0.6 * @canvas_size;
+                width: 0.3 * @canvas_size;
+
+            }
+            &.bottom100 {
+                height: @btn_size;
                 left: @btn_size;
-                top: @canvas_size + @btn_size;
+                width: 0.6 * @canvas_size;
             }
         }
         canvas {

@@ -7,18 +7,65 @@
             <h2>Map Editor</h2>
 
             <div class="map-viewport">
-                <button data-diff-y="-1" class="active-link btn btn-block btn-inverse top">
-                    <i class="icon-chevron-up"></i>
-                </button>
-                <button data-diff-x="1" class="btn btn-block btn-inverse right">
-                    <i class="icon-chevron-right"></i>
-                </button>
-                <button data-diff-y="1" class="btn btn-block btn-inverse bottom">
-                    <i class="icon-chevron-down"></i>
-                </button>
-                <button data-diff-x="-1" class="btn btn-block btn-inverse left">
-                    <i class="icon-chevron-left"></i>
-                </button>
+                <div class="top">
+                    <button data-diff-y="-0.1" class="btn btn-block btn-inverse top10">
+                        <i class="icon-chevron-up"></i>
+                    </button>
+                    <button data-diff-y="-0.4" class="btn btn-block btn-inverse top40">
+                        <i class="icon-chevron-up"></i>
+                        <i class="icon-chevron-up"></i>
+                    </button>
+                    <button data-diff-y="-1" class="active-link btn btn-block btn-inverse top100">
+                        <i class="icon-chevron-up"></i>
+                        <i class="icon-chevron-up"></i>
+                        <i class="icon-chevron-up"></i>
+                    </button>
+                </div>
+
+                <div class="right">
+                    <button data-diff-x="0.1" class="btn btn-block btn-inverse right10">
+                        <i class="icon-chevron-right"></i>
+                    </button>
+                    <button data-diff-x="0.4" class="btn btn-block btn-inverse right40">
+                        <i class="icon-chevron-right"></i>
+                        <i class="icon-chevron-right"></i>
+                    </button>
+                    <button data-diff-x="1" class="btn btn-block btn-inverse right100">
+                        <i class="icon-chevron-right"></i>
+                        <i class="icon-chevron-right"></i>
+                        <i class="icon-chevron-right"></i>
+                    </button>
+                </div>
+
+                <div class="bottom">
+                    <button data-diff-y="0.1" class="btn btn-block btn-inverse bottom10">
+                        <i class="icon-chevron-down"></i>
+                    </button>
+                    <button data-diff-y="0.4" class="btn btn-block btn-inverse bottom40">
+                        <i class="icon-chevron-down"></i>
+                        <i class="icon-chevron-down"></i>
+                    </button>
+                    <button data-diff-y="1" class="btn btn-block btn-inverse bottom100">
+                        <i class="icon-chevron-down"></i>
+                        <i class="icon-chevron-down"></i>
+                        <i class="icon-chevron-down"></i>
+                    </button>
+                </div>
+
+                <div class="left">
+                    <button data-diff-x="-0.1" class="btn btn-block btn-inverse left10">
+                        <i class="icon-chevron-left"></i>
+                    </button>
+                    <button data-diff-x="-0.4" class="btn btn-block btn-inverse left40">
+                        <i class="icon-chevron-left"></i>
+                        <i class="icon-chevron-left"></i>
+                    </button>
+                    <button data-diff-x="-1" class="btn btn-block btn-inverse left100">
+                        <i class="icon-chevron-left"></i>
+                        <i class="icon-chevron-left"></i>
+                        <i class="icon-chevron-left"></i>
+                    </button>
+                </div>
                 <canvas width="500" height="500">
                     You browser don't support canvas, can not continue.
                 </canvas>
