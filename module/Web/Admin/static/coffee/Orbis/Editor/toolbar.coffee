@@ -36,27 +36,31 @@ namespace 'Alcarin.Orbis.Editor', (exports, Alcarin) ->
             @base.find('.alert').fadeIn()
 
         size_changed: (e, ui)=>
-            @brush_size = ui.value
+            $.bbq.push {'size': ui.value}
 
         onhashchange: =>
             state = $.bbq.get()
             if state.color?
                 @Current.color = Alcarin.Color.hexToRGB state.color
                 @color_picker.css 'background-color', state.color
+            if state.size?
+                @brush_slider.slider 'value', state.size
+                @brush_size = state.size
 
         init: ->
             @base.find('.alert .close').click -> $(@).parent().fadeOut()
-            @base.find('.slider').slider {
+            @brush_slider = @base.find('.slider')
+            @brush_slider.slider {
                 min: 1
                 max: 10
                 value: 1
-                slide: @size_changed
+                change: @size_changed
             }
             @save_btn = @base.find('.alert .btn')
 
             @renderer.canvas.on('mousedown', @canvas_mouse_down)
-                            .on('mouseup', @canvas_mouse_up)
                             .on('mapchange', @map_change)
+            $(document).on 'mouseup', @canvas_mouse_up
             @color_picker = @base.find('a.color-picker')
             @color_picker.colorpicker()
                 .on 'hide', (e)=> $.bbq.push {'color': e.color.toHex()}

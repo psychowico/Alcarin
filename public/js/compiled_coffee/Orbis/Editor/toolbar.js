@@ -62,7 +62,9 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
     };
 
     Toolbar.prototype.size_changed = function(e, ui) {
-      return this.brush_size = ui.value;
+      return $.bbq.push({
+        'size': ui.value
+      });
     };
 
     Toolbar.prototype.onhashchange = function() {
@@ -70,7 +72,11 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
       state = $.bbq.get();
       if (state.color != null) {
         this.Current.color = Alcarin.Color.hexToRGB(state.color);
-        return this.color_picker.css('background-color', state.color);
+        this.color_picker.css('background-color', state.color);
+      }
+      if (state.size != null) {
+        this.brush_slider.slider('value', state.size);
+        return this.brush_size = state.size;
       }
     };
 
@@ -79,14 +85,16 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
       this.base.find('.alert .close').click(function() {
         return $(this).parent().fadeOut();
       });
-      this.base.find('.slider').slider({
+      this.brush_slider = this.base.find('.slider');
+      this.brush_slider.slider({
         min: 1,
         max: 10,
         value: 1,
-        slide: this.size_changed
+        change: this.size_changed
       });
       this.save_btn = this.base.find('.alert .btn');
-      this.renderer.canvas.on('mousedown', this.canvas_mouse_down).on('mouseup', this.canvas_mouse_up).on('mapchange', this.map_change);
+      this.renderer.canvas.on('mousedown', this.canvas_mouse_down).on('mapchange', this.map_change);
+      $(document).on('mouseup', this.canvas_mouse_up);
       this.color_picker = this.base.find('a.color-picker');
       this.color_picker.colorpicker().on('hide', function(e) {
         return $.bbq.push({
