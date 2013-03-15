@@ -23,7 +23,7 @@ class OrbisMapController extends AbstractEventController
 
         $result = $this->success([
             'size'   => 2 * static::EDIT_RANGE,
-            'fields' => array_values($data)
+            'fields' => array_values($data),
         ]);
         return $this->emit('fields.loaded', $result);
     }

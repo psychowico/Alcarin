@@ -39,6 +39,7 @@ class Module
         $this->setupGameModulesSystem($sm);
     }
 
+
     protected function setupGameModulesSystem($sm)
     {
         //let register all gameobject and gameobject extensions

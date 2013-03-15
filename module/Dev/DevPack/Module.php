@@ -19,6 +19,22 @@ use Zend\ModuleManager\Feature\ConsoleUsageProviderInterface;
  */
 class Module implements ConsoleUsageProviderInterface
 {
+    public function onBootstrap(MvcEvent $e)
+    {
+        if( defined('REQUEST_MICROTIME') ) {
+            $e->getApplication()->getEventManager()->attach( MvcEvent::EVENT_RENDER , array( $this, 'jsonProfileTime' ), -100 );
+        }
+    }
+
+    public function jsonProfileTime($event)
+    {
+        $vm = $event->getViewModel();
+        if($vm->getVariable('request_time') === null) {
+            $time = microtime(true) - REQUEST_MICROTIME;
+            $event->getViewModel()->setVariable('request_time', $time);
+        }
+    }
+
     /**
      * @param ConsoleAdapterInterface $console
      * @return array|string|null
