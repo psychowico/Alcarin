@@ -255,7 +255,7 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
             delete @tmp_flag
 
         onbind: ($target)->
-            $target.on('click', 'a', @edit)
+            $target.on('click', 'a.edit', @edit)
                    .on('click', '.delete-gateway', @delete)
 
             $target.filter('li')

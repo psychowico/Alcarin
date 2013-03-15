@@ -32,10 +32,11 @@
                         {# js active list prototype #}
                         <li class="gateway" data-gateway-id="{item.id}">
                             <button class="close delete-gateway">&times;</button>
-                            <a href="#" style="display:inline" title="{item.description}">
+                            <a href="#" class="edit btn-mini btn btn-inverse">EDIT</a>
+                            <a href="{{ url('orbis/default', {controller: 'editor'}) }}#x={item.x}&y={item.y}" title="{item.description}">
                                 <i class="icon-flag"></i><span class="name">{item.name}</span>
+                                <span class="description">, {item.description}</span>
                             </a>
-                            <span class="description">, {item.description}</span>
                         </li>
                     </ul>
                     <ul class="unstyled">
