@@ -2,6 +2,8 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
 
     root = null
 
+    console.log 'sex'
+    
     class GatewayGroup extends Alcarin.ActiveView
 
         group_name: (name)->
