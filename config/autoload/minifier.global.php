@@ -23,6 +23,7 @@ return array(
                             '/js/stacktrace-0.5.js',
                             '/js/spin-1.2.8.js',
                             '/js/bootstrap-colorpicker.js',
+                            '/js/rot-0.4.js'
                         ),
                     ),
                     'common'    => array(

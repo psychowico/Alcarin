@@ -4,10 +4,21 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
 
     MapManager.prototype.changes = {};
 
+    MapManager.prototype.background = [0, 0, 255];
+
+    MapManager.prototype.noise_density = 27;
+
     function MapManager(canvas, c_x, c_y) {
       this.canvas = canvas;
       this.set_center(c_x, c_y);
     }
+
+    MapManager.prototype.noise = function() {
+      if (!(this._noise != null)) {
+        this._noise = new ROT.Noise.Simplex;
+      }
+      return this._noise;
+    };
 
     MapManager.prototype.set_center = function(c_x, c_y) {
       this.rect = void 0;
@@ -80,14 +91,17 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
     };
 
     MapManager.prototype.init = function() {
+      var bg;
       this.context = this.canvas[0].getContext('2d');
-      this.context.fillStyle = "rgb(0, 0, 255)";
+      bg = this.background;
+      this.context.fillStyle = "rgb(" + bg[0] + ", " + bg[1] + ", " + bg[2] + ")";
       this.context.fillRect(0, 0, this.canvas.width(), this.canvas.height());
       return $(this.context).disableSmoothing();
     };
 
     MapManager.prototype.redraw = function(size, fields) {
-      var backbuffer, color, field, i, image_data, offset, _i, _j, _len, _offset, _x, _y;
+      var backbuffer, c, color, field, i, image_data, mod, offset, _i, _j, _len, _offset, _x, _y;
+      this.plain_colors = [];
       this.size = size;
       backbuffer = this.init_backbuffer(size, size);
       this.image_data = image_data = backbuffer.getImageData(0, 0, size, size);
@@ -100,9 +114,13 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
         color = field.land.color;
         _x = field.loc.x - offset.x;
         _y = field.loc.y - offset.y;
+        mod = Math.abs(this.noise().get(field.loc.x / this.noise_density, field.loc.y / this.noise_density));
         _offset = 4 * (_y * size + _x);
         for (i = _j = 0; _j <= 2; i = ++_j) {
-          image_data.data[_offset + i] = (color >> (8 * (2 - i))) & 0xFF;
+          c = (color >> (8 * (2 - i))) & 0xFF;
+          this.plain_colors[_offset + i] = c;
+          c *= 0.75 + mod * 0.25;
+          image_data.data[_offset + i] = ~~c;
         }
       }
       this._buffer_to_front(true);
@@ -127,16 +145,22 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
     };
 
     MapManager.prototype.put_field = function(x, y, field_brush) {
-      var bb_pos, color, offset, _data;
+      var bb_pos, color, current, i, mod, offset, rgb, target, _data, _i;
       if ((x != null) && (y != null) && this.in_view_rect(x, y)) {
+        mod = Math.abs(this.noise().get(x / this.noise_density, y / this.noise_density));
         color = field_brush.color;
         bb_pos = this._coords_to_backbuffer_pixels(x, y);
         offset = 4 * (bb_pos.y * this.size + bb_pos.x);
-        this.image_data.data[offset] = color.r;
-        this.image_data.data[offset + 1] = color.g;
-        this.image_data.data[offset + 2] = color.b;
+        rgb = [color.r, color.g, color.b];
+        for (i = _i = 0; _i <= 2; i = ++_i) {
+          current = this.plain_colors[offset + i] || this.background[i];
+          rgb[i] = 0.7 * current + 0.3 * rgb[i];
+          this.plain_colors[offset + i] = rgb[i];
+          target = rgb[i] * (0.75 + mod * 0.25);
+          this.image_data.data[offset + i] = ~~target;
+        }
         _data = $.extend({}, field_brush);
-        _data.color = (color.r << 16) + (color.g << 8) + color.b;
+        _data.color = (rgb[0] << 16) + (rgb[1] << 8) + rgb[2];
         return this.changes["" + x + "," + y] = {
           x: x,
           y: y,

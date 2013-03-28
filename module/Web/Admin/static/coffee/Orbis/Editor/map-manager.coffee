@@ -2,9 +2,15 @@ namespace 'Alcarin.Orbis.Editor', (exports, Alcarin) ->
 
     class exports.MapManager
         changes: {}
+        background: [0, 0, 255]
+        noise_density: 27
 
         constructor: (@canvas, c_x, c_y)->
             @set_center c_x, c_y
+
+        noise: ->
+            @_noise = new ROT.Noise.Simplex if not @_noise?
+            @_noise
 
         set_center: (c_x, c_y)->
             @rect  = undefined
@@ -73,12 +79,15 @@ namespace 'Alcarin.Orbis.Editor', (exports, Alcarin) ->
         init: ->
             @context = @canvas[0].getContext '2d'
 
-            @context.fillStyle = "rgb(0, 0, 255)";
+            bg = @background
+            @context.fillStyle = "rgb(#{bg[0]}, #{bg[1]}, #{bg[2]})";
             @context.fillRect 0, 0, @canvas.width(), @canvas.height()
 
             $(@context).disableSmoothing()
 
         redraw: (size, fields)->
+            @plain_colors = []
+
             @size = size
             backbuffer = @init_backbuffer size, size
             @image_data = image_data = backbuffer.getImageData 0, 0, size, size
@@ -91,10 +100,16 @@ namespace 'Alcarin.Orbis.Editor', (exports, Alcarin) ->
                 _x = field.loc.x - offset.x
                 _y = field.loc.y - offset.y
 
+                mod = Math.abs @noise().get field.loc.x / @noise_density, field.loc.y / @noise_density
+
                 _offset = 4 * (_y * size + _x)
 
                 for i in [0..2]
-                    image_data.data[_offset + i] = (color >> (8 * (2 - i) ) ) & 0xFF
+                    c = ((color >> (8 * (2 - i) ) ) & 0xFF)
+                    @plain_colors[_offset + i] = c
+
+                    c *= (0.75 + mod * 0.25)
+                    image_data.data[_offset + i] = ~~c
 
             @_buffer_to_front true
             @init_foreground()
@@ -112,18 +127,27 @@ namespace 'Alcarin.Orbis.Editor', (exports, Alcarin) ->
 
         put_field: (x, y, field_brush)->
             if x? and y? and @in_view_rect x, y
+                mod = Math.abs @noise().get x / @noise_density, y / @noise_density
+
                 color = field_brush.color
 
                 bb_pos = @_coords_to_backbuffer_pixels x, y
                 offset = 4 * (bb_pos.y * @size + bb_pos.x)
 
-                @image_data.data[offset] = color.r
-                @image_data.data[offset + 1] = color.g
-                @image_data.data[offset + 2] = color.b
+                rgb = [color.r, color.g, color.b]
+                for i in [0..2]
+                    current = @plain_colors[offset + i] or @background[i]
+
+                    rgb[i] = 0.7 * current + 0.3 * rgb[i]
+                    @plain_colors[offset + i] = rgb[i]
+
+                    target = rgb[i] * (0.75 + mod * 0.25)
+                    @image_data.data[offset + i] = ~~ target
+                #@image_data.data[offset + 3] = 255
 
                 _data = $.extend {}, field_brush
 
-                _data.color = (color.r << 16) + (color.g << 8) + color.b
+                _data.color = (rgb[0] << 16) + (rgb[1] << 8) + rgb[2]
 
                 @changes["#{x},#{y}"] = {
                     x: x

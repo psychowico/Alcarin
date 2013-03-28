@@ -4,7 +4,7 @@ namespace('Alcarin.JQueryPlugins', function(exports, Alcarin) {
   $.fn.disableSmoothing = function() {
     var context;
     context = this[0];
-    return context.webkitImageSmoothingEnabled = context.mozImageSmoothingEnabled = false;
+    return context.webkitImageSmoothingEnabled = context.mozImageSmoothingEnabled = true;
   };
   $.fn.disable = function(recursive) {
     if (recursive == null) {
