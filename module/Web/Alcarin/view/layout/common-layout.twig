@@ -26,11 +26,37 @@
           <div class="navbar-inner">
             <a class="brand" href="/">Alcarin</a>
             <ul class="nav pull-left">
+
+                {% if isAllowed('ADMIN_MENU') %}
+                <li class="{{ uri().isAdmin() ? 'active' : null }}">
+                    <a href="{{ url('admin/default') }}">Admin</a>
+                </li>
+                {% endif %}
+
                 {% block userbar_left %}{% endblock %}
             </ul>
             <ul class="nav pull-right">
                 {% block userbar_right %}{% endblock %}
-                {% if zfcUserIdentity() %}
+
+                {% if isAllowed('PLAYER_PANEL') %}
+                <li class="dropdown {{ uri().isGame() ? 'active' : null }}">
+                    <a id="chars-list" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">
+                        Wybierz postać <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="chars-list">
+                        {% set test = ["Wielki Janusz", "Chudy Bolek", "Nieznany z imienia"] %}
+
+                        {% for t in test %}
+                        <li><a href="{{ url('alcarin/default') }}">{{ t }}</a></li>
+                        {% endfor %}
+
+                        <li class="divider"></li>
+                        <li><a href="{{ url('alcarin/default', {controller: 'create-char'}) }}">Nowa postać</a></li>
+                    </ul>
+                </li>
+                {% endif %}
+
+                {% if isLogged() %}
                 <li class="divider-vertical"></li>
                 <li>
                     <a href="{{ url('zfcuser/logout') }}">Wyloguj się</a>

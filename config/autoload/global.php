@@ -33,6 +33,8 @@ return array(
 
             'Guest\Controller\Index'            => Resource::PLAYER_PANEL,
             'Alcarin\Controller\Index'          => Resource::PLAYER_PANEL,
+            'Alcarin\Controller\CreateChar'          => Resource::PLAYER_PANEL,
+
             'Admin\Controller\Home'             => Resource::ADMIN_MENU,
             'Admin\Controller\Users'            => Resource::ADMIN_USERS,
             'Admin\Controller\Users\Privilages' => [Resource::ADMIN_USERS, Resource::ADMIN_PRIVILAGES_MANAGING],

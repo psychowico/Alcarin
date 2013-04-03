@@ -18,6 +18,7 @@ return array(
                             '/js/jquery/jquery.ba-bbq-1.4pre.js',
                             '/js/jquery/jquery.cookie-1.3.1.js',
                             '/js/jquery/jquery.ui-1.10.2.js',
+                            '/js/jquery/chosen.jquery-0.9.12.js',
                             '/js/bootstrap-2.3.1.js',
                             '/js/bootstrap-editable-1.4.1.js',
                             '/js/stacktrace-0.5.js',
@@ -78,6 +79,7 @@ return array(
                             '/css/bootstrap-editable-1.4.1.css',
                             '/css/bootstrap-colorpicker.css',
                             '/css/jquery.ui-1.10.2.css',
+                            '/css/chosen-0.9.12.css',
                         ),
                     ),
                     'common' => array(

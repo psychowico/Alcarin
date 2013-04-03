@@ -5,6 +5,13 @@ return array(
         'Alcarin' => 'alcarin-layout',
     ),
 
+    'controllers' => array(
+        'invokables' => array(
+            'Alcarin\Controller\Index' => 'Alcarin\Controller\IndexController',
+            'Alcarin\Controller\CreateChar' => 'Alcarin\Controller\CreateCharController',
+        ),
+    ),
+
     'zfctwig' => array(
         'extensions' => array(
             'alcarin-twig' => '\Alcarin\Twig\Extension\AlcarinTwigExtensions',
@@ -19,8 +26,9 @@ return array(
 
     'view_helpers' => array(
         'aliases'   => array(
+            'isLogged'  => 'zfcUserIdentity',
             '_'         => 'translate',
-            'bootstrap'  => 'form',
+            'bootstrap' => 'form',
         ),
     ),
 
@@ -50,11 +58,6 @@ return array(
                 'base_dir' => __DIR__ . '/../language',
                 'pattern'  => '%s.mo',
             ),
-        ),
-    ),
-    'controllers' => array(
-        'invokables' => array(
-            'Alcarin\Controller\Index' => 'Alcarin\Controller\IndexController'
         ),
     ),
 

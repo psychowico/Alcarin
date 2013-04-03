@@ -46,6 +46,9 @@ return array(
         'aliases' => array(
             'annotation-builder' => 'AnnotationBuilderService',
         ),
+        'initializers' => array(
+            'Core\Service\GameServicesInitializer',
+        ),
     ),
 
     'view_manager' => array(

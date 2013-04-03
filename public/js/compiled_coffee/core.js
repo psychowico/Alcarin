@@ -53,5 +53,9 @@ $(function() {
     }
   });
   $('.popover-invoke').popover();
-  return $('body').disableSelection();
+  $('body').disableSelection();
+  $('select.chosen').chosen({
+    disable_search: true
+  });
+  return $('select.chosen-search').chosen({});
 });

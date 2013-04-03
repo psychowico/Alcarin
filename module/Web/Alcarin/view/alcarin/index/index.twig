@@ -1,16 +1,12 @@
 {% extends "alcarin-layout" %}
 
-{% block content %}
-    <section id="game-events">
-        <div class="events">
-            <div class="events-container">
-                <select id="active-select">
-                    <option value="{item.value}">{item.name}</option>
-                </select>
-            </div>
-        </div>
-    </section>
+{% block leftcontent %}
+<select id="active-select">
+    <option value="{item.value}">{item.name}</option>
+</select>
+{% endblock %}
 
+{% block middlecontent %}
     <div id="main-nav">
         <nav>
             <ul class="nav-bar">
@@ -24,19 +20,12 @@
             </ul>
         </nav>
     </div>
+{% endblock %}
 
-    <section id="game-pages">
-        <div class="pages">
-            <div class="pages-container">
-                {% for class in ['home', 'glass', 'plane', 'eye-close', 'circle-arrow-up', 'calendar'] %}
-                <div class="page-{{class}} {% if class != href %} hide{% endif %}">
-                    {% for i in 0..118 %} {{class}}.. {% endfor %}
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-    </section>
-
-    <div style="clear: both"></div>
-
+{% block rightcontent %}
+    {% for class in ['home', 'glass', 'plane', 'eye-close', 'circle-arrow-up', 'calendar'] %}
+    <div class="page-{{class}} {% if class != href %} hide{% endif %}">
+        {% for i in 0..118 %} {{class}}.. {% endfor %}
+    </div>
+    {% endfor %}
 {% endblock %}
