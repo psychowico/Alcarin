@@ -51,6 +51,9 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
                 new_group.rel.find("##{response.name}").collapse 'toggle'
 
         on_reload_gateways: (response)=>
+            # fixing php/json communication problem. when we send object {0: 'something'}
+            # we goting array instead of object
+            response.gateways = {0: response.gateways[0]} if $.isArray response.gateways
             for group_name, gateways of response.gateways
                 if not @groups.list[group_name]?
                     group = new GatewayGroup group_name

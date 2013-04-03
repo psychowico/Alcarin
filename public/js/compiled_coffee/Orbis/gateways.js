@@ -71,6 +71,11 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
 
     Gateways.prototype.on_reload_gateways = function(response) {
       var gateway, gateways, group, group_name, new_gateway, _ref, _results;
+      if ($.isArray(response.gateways)) {
+        response.gateways = {
+          0: response.gateways[0]
+        };
+      }
       _ref = response.gateways;
       _results = [];
       for (group_name in _ref) {
