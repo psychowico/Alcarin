@@ -3,7 +3,8 @@ namespace 'Alcarin.Orbis.Editor', (exports, Alcarin) ->
     class exports.MapManager
         changes: {}
         background: [0, 0, 255]
-        noise_density: 27
+        noise_density: 25
+        noise_impact: 0.22
 
         constructor: (@canvas, c_x, c_y)->
             @set_center c_x, c_y
@@ -108,7 +109,7 @@ namespace 'Alcarin.Orbis.Editor', (exports, Alcarin) ->
                     c = ((color >> (8 * (2 - i) ) ) & 0xFF)
                     @plain_colors[_offset + i] = c
 
-                    c *= (0.75 + mod * 0.25)
+                    c *= 1 - @noise_impact * ( 1 - mod )
                     image_data.data[_offset + i] = ~~c
 
             @_buffer_to_front true
@@ -136,14 +137,15 @@ namespace 'Alcarin.Orbis.Editor', (exports, Alcarin) ->
 
                 rgb = [color.r, color.g, color.b]
                 for i in [0..2]
-                    current = @plain_colors[offset + i] or @background[i]
+                    current = @background[i]
+                    current = @plain_colors[offset + i] if @plain_colors[offset + i]?
 
                     rgb[i] = 0.7 * current + 0.3 * rgb[i]
+
                     @plain_colors[offset + i] = rgb[i]
 
-                    target = rgb[i] * (0.75 + mod * 0.25)
+                    target = rgb[i] * (1 - @noise_impact * (1 - mod))
                     @image_data.data[offset + i] = ~~ target
-                #@image_data.data[offset + 3] = 255
 
                 _data = $.extend {}, field_brush
 

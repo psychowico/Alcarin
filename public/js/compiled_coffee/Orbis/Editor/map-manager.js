@@ -6,7 +6,9 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
 
     MapManager.prototype.background = [0, 0, 255];
 
-    MapManager.prototype.noise_density = 27;
+    MapManager.prototype.noise_density = 25;
+
+    MapManager.prototype.noise_impact = 0.22;
 
     function MapManager(canvas, c_x, c_y) {
       this.canvas = canvas;
@@ -119,7 +121,7 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
         for (i = _j = 0; _j <= 2; i = ++_j) {
           c = (color >> (8 * (2 - i))) & 0xFF;
           this.plain_colors[_offset + i] = c;
-          c *= 0.75 + mod * 0.25;
+          c *= 1 - this.noise_impact * (1 - mod);
           image_data.data[_offset + i] = ~~c;
         }
       }
@@ -153,10 +155,13 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
         offset = 4 * (bb_pos.y * this.size + bb_pos.x);
         rgb = [color.r, color.g, color.b];
         for (i = _i = 0; _i <= 2; i = ++_i) {
-          current = this.plain_colors[offset + i] || this.background[i];
+          current = this.background[i];
+          if (this.plain_colors[offset + i] != null) {
+            current = this.plain_colors[offset + i];
+          }
           rgb[i] = 0.7 * current + 0.3 * rgb[i];
           this.plain_colors[offset + i] = rgb[i];
-          target = rgb[i] * (0.75 + mod * 0.25);
+          target = rgb[i] * (1 - this.noise_impact * (1 - mod));
           this.image_data.data[offset + i] = ~~target;
         }
         _data = $.extend({}, field_brush);
