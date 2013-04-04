@@ -66,8 +66,8 @@ class AlcarinRoute extends Literal
             'default' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route' => sprintf('[/:controller]%s[/:action]',
-                                $restmode ? '[/:id]' : null ),
+                    'route' => $restmode ? '[/:controller][/:id][/:action]' :
+                                '[/:controller][/:action][/:id]',
                     'defaults' => $defaults,
                 ),
                 'constraints' => array(
