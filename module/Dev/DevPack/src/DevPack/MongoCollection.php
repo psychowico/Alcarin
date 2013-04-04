@@ -69,7 +69,15 @@ class MongoCollection extends \Mongo_Collection
    */
   public function as_array( $objects = null )
   {
-    return parent::as_array( $objects ?: $this->db()->profiling );
+    $result = parent::as_array( $objects ?: $this->db()->profiling );
+
+    foreach($result as $key => $element) {
+      if(isset($element['_id'])) {
+        $result[$key]['id'] = $element['_id']->{'$id'};
+      }
+    }
+
+    return $result;
   }
   /**
    * Implement MongoCursor#hasNext to ensure that the cursor is loaded
