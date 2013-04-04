@@ -56,11 +56,16 @@
                 </li>
                 {% endif %}
 
-                {% if isLogged() %}
                 <li class="divider-vertical"></li>
+                {% if isLogged() %}
                 <li>
                     <a href="{{ url('zfcuser/logout') }}">Wyloguj się</a>
                 </li>
+                {% else %}
+                <li>
+                    <a href="{{ url('zfcuser/login') }}">Zaloguj się</a>
+                </li>
+
                 {% endif %}
             </ul>
           </div>
