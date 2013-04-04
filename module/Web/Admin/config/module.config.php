@@ -59,6 +59,9 @@ return array(
         'TestModule' => array(
             'description'  => "This is not the test you are looking for, move along",
         ),
+        'TestModule2' => array(
+            'description'  => "This is not the test you are looking for, move along",
+        ),
     ),
 
     'router' => array(
