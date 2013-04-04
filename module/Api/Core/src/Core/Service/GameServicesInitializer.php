@@ -17,7 +17,14 @@ class GameServicesInitializer implements InitializerInterface
     public function initialize($instance, ServiceLocatorInterface $serviceLocator)
     {
         if ($instance instanceof GameServiceAwareInterface) {
-            $instance->setServicesContainer($serviceLocator->get('game-services'));
+            if( $serviceLocator instanceof \Zend\ServiceManager\AbstractPluginManager) {
+                $gServices = $serviceLocator->getServiceLocator()->get('game-services');
+            }
+            else {
+                $gServices = $serviceLocator->get('game-services');
+            }
+
+            $instance->setServicesContainer($gServices);
         }
     }
 }

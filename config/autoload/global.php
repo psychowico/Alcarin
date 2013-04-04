@@ -31,8 +31,7 @@ return array(
             'guest-home'                        => [],
             'external'                          => [],
 
-            'Guest\Controller\Index'            => Resource::PLAYER_PANEL,
-            'Alcarin\Controller\Index'          => Resource::PLAYER_PANEL,
+            'Alcarin\Controller\Panel'          => Resource::PLAYER_PANEL,
             'Alcarin\Controller\CreateChar'          => Resource::PLAYER_PANEL,
 
             'Admin\Controller\Home'             => Resource::ADMIN_MENU,

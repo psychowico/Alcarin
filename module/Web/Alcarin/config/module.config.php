@@ -7,7 +7,7 @@ return array(
 
     'controllers' => array(
         'invokables' => array(
-            'Alcarin\Controller\Index' => 'Alcarin\Controller\IndexController',
+            'Alcarin\Controller\Panel' => 'Alcarin\Controller\GamePanelController',
             'Alcarin\Controller\CreateChar' => 'Alcarin\Controller\CreateCharController',
         ),
     ),
@@ -25,6 +25,9 @@ return array(
     ),
 
     'view_helpers' => array(
+        'invokables' => array(
+            'player' => 'Alcarin\View\Helper\CurrentPlayer',
+        ),
         'aliases'   => array(
             'isLogged'  => 'zfcUserIdentity',
             '_'         => 'translate',
@@ -40,10 +43,9 @@ return array(
                 'options' => array(
                     'route'    => '/game',
                     'namespace'=> 'Alcarin\Controller',
-                    'restmode' => false,
+                    'restmode' => true,
                     'defaults' => array(
-                        'controller' => 'Index',
-                        'action'     => 'index',
+                        'controller' => 'Panel',
                     ),
                 ),
             ),

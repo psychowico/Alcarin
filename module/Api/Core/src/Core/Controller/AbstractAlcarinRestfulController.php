@@ -137,4 +137,9 @@ abstract class AbstractAlcarinRestfulController extends AbstractRestfulControlle
 
         return $this->game_services;
     }
+
+    public function player()
+    {
+        return $this->gameServices()->get('players')->current();
+    }
 }

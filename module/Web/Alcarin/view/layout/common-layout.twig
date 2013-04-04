@@ -40,21 +40,30 @@
 
                 {% if isAllowed('PLAYER_PANEL') %}
                 <li class="dropdown {{ uri().isGame() ? 'active' : null }}">
+
+                    {% if player().chars().all()|length == 0 %}
+                    <a class="first-char-link" href="{{ url('alcarin/default', {controller: 'create-char'}) }}">
+                        <span>Stwórz pierwszą postać</span>
+                    </a>
+                    {% else %}
                     <a id="chars-list" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">
-                        Wybierz postać <b class="caret"></b>
+                        {{ current_char is defined ? current_char : 'Wybierz postać' }}
+                        <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="chars-list">
-                        {% set test = ["Wielki Janusz", "Chudy Bolek", "Nieznany z imienia"] %}
-
-                        {% for t in test %}
-                        <li><a href="{{ url('alcarin/default') }}">{{ t }}</a></li>
+                        {% for char in player().chars().all() %}
+                        {% set char_url = url('alcarin/default', { controller: 'panel', id: char['id']}) %}
+                        <li><a href="{{ char_url }}">{{ char['name'] }}</a></li>
                         {% endfor %}
 
                         <li class="divider"></li>
                         <li><a href="{{ url('alcarin/default', {controller: 'create-char'}) }}">Nowa postać</a></li>
                     </ul>
+                    {% endif %}
                 </li>
                 {% endif %}
+
+                {% do player().chars().all()%}
 
                 <li class="divider-vertical"></li>
                 {% if isLogged() %}

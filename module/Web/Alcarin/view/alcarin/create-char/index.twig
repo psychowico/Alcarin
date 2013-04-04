@@ -5,6 +5,14 @@
     <div>
         Tu będziemy mieć tekst o tworzeniu postaci, wybór ras, ograniczenia ilościowe,
         ostrzeżenia o blokowaniu slotów etc. Musi być dużo informacji.
+        Aktulnie tworzenie postaci o podanym nicku.
     </div>
 </div>
+{% endblock %}
+
+{% block rightcontent %}
+<form method="post" action="{{uri() }}/create" class="form-inline">
+    <input type="text" name="name" value="Nowy">
+    <input type="submit" value="Stwórz postać">
+</form>
 {% endblock %}

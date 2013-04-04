@@ -27,6 +27,12 @@ return array(
         ),
     ),
 
+    'view_helpers' => array(
+        'initializers' => array(
+            'Core\Service\GameServicesInitializer',
+        ),
+    ),
+
     'service_manager' => array(
         'invokables'   => array(
             'ext-manager'   => 'Core\GameObjectExtManager',

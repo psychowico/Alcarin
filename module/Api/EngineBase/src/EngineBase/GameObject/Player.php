@@ -33,6 +33,6 @@ class Player extends \Core\GameObject
         if($new_data != null) {
             $this->data = $new_data;
         }
-        $this->mongo()->users->updateById($this->id(), $this->data);
+        $this->mongo()->users->updateById($this->id, $this->data);
     }
 }
