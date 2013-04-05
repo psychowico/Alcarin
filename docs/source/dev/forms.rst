@@ -9,12 +9,12 @@ system.
 
 Alcarin code has prepared some facilities to make working with annotations forms easier.
 First, you should use *\\Core\\Service\\AnnotationBuilderService* builder class instead of
-zf2 default *AnnotationBuilder* class. You can use it like normal *AnnotationBuilder*:
+zf2 default *AnnotationBuilder* class. You can use it similar normal *AnnotationBuilder*:
 
 .. code-block:: php
 
     <?php
-    $builder = new \Core\Service\AnnotationBuilderService();
+    $builder = $this->getServiceLocator()->get('AnnotationBuilderService');
     $form    = $builder->createForm(new \Module\Form\MyFormName());
 
 
