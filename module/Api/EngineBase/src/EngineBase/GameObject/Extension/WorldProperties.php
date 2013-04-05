@@ -2,7 +2,7 @@
 
 namespace EngineBase\GameObject\Extension;
 
-class MapProperties extends \Core\GameObject
+class WorldProperties extends \Core\GameObject
 {
     const DEFAULT_RADIUS = 150000;
 

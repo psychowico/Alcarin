@@ -37,13 +37,14 @@ return array(
             'description'  => 'Administrative module',
             'game-objects' => array(
                 'orbis' => 'Admin\GameObject\Orbis',
+                'properties' => 'EngineBase\GameObject\Extension\WorldProperties',
             ),
             'game-objects-ext' => array(
                 'Admin\GameObject\Extension\OrbisMinimap' => array(
-                    'properties' => 'EngineBase\GameObject\Extension\MapProperties',
+                    'properties' => 'EngineBase\GameObject\Extension\WorldProperties',
                 ),
                 'Admin\GameObject\Extension\OrbisMap' => array(
-                    'properties' => 'EngineBase\GameObject\Extension\MapProperties',
+                    'properties' => 'EngineBase\GameObject\Extension\WorldProperties',
                 ),
                 'Admin\GameObject\Orbis' => array(
                     'gateways' => 'Admin\GameObject\Extension\OrbisGateways',
