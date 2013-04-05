@@ -32,6 +32,26 @@ class Time extends \Core\GameObject
         return $time;
     }
 
+    public function freeze()
+    {
+        $time_struct = [
+            'last_game_timestamp' => $this->timestamp(),
+            'last_real_timestamp' => time(),
+            'freeze' => true,
+        ];
+        $this->getServicesContainer()->get('properties')->set('time', $time_struct);
+    }
+
+    public function unfreeze()
+    {
+        $time_struct = [
+            'last_game_timestamp' => $this->timestamp(),
+            'last_real_timestamp' => time(),
+            'freeze' => false,
+        ];
+        $this->getServicesContainer()->get('properties')->set('time', $time_struct);
+    }
+
     public function fetchDay()
     {
         //sec * min * {hours in day}
