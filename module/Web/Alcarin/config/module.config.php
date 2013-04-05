@@ -5,6 +5,13 @@ return array(
         'Alcarin' => 'alcarin-layout',
     ),
 
+    'controllers' => array(
+        'invokables' => array(
+            'Alcarin\Controller\Panel' => 'Alcarin\Controller\GamePanelController',
+            'Alcarin\Controller\CreateChar' => 'Alcarin\Controller\CreateCharController',
+        ),
+    ),
+
     'zfctwig' => array(
         'extensions' => array(
             'alcarin-twig' => '\Alcarin\Twig\Extension\AlcarinTwigExtensions',
@@ -18,9 +25,13 @@ return array(
     ),
 
     'view_helpers' => array(
+        'invokables' => array(
+            'player' => 'Alcarin\View\Helper\CurrentPlayer',
+        ),
         'aliases'   => array(
+            'isLogged'  => 'zfcUserIdentity',
             '_'         => 'translate',
-            'bootstrap'  => 'form',
+            'bootstrap' => 'form',
         ),
     ),
 
@@ -32,10 +43,9 @@ return array(
                 'options' => array(
                     'route'    => '/game',
                     'namespace'=> 'Alcarin\Controller',
-                    'restmode' => false,
+                    'restmode' => true,
                     'defaults' => array(
-                        'controller' => 'Index',
-                        'action'     => 'index',
+                        'controller' => 'Panel',
                     ),
                 ),
             ),
@@ -52,11 +62,6 @@ return array(
             ),
         ),
     ),
-    'controllers' => array(
-        'invokables' => array(
-            'Alcarin\Controller\Index' => 'Alcarin\Controller\IndexController'
-        ),
-    ),
 
     'view_manager' => array(
         'doctype'               => 'HTML5',
@@ -66,6 +71,7 @@ return array(
         'not_found_template'       => 'error/404',
         'exception_template'       => 'error/index',
         'template_map' => array(
+            'alcarin-modal'  => __DIR__ . '/../view/alcarin/modal.twig',
             'common-layout'  => __DIR__ . '/../view/layout/common-layout.twig',
             'alcarin-layout' => __DIR__ . '/../view/layout/alcarin-layout.twig',
             'error/404'      => __DIR__ . '/../view/error/404.phtml',

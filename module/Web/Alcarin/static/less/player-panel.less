@@ -2,6 +2,8 @@
 
 @spaces: 8px;
 @font-color: rgb(143, 143, 143);
+//38.2%
+@left-ratio: 38.2%;
 
 
 .both-containers() {
@@ -21,6 +23,8 @@ body {
 
 .container {
   padding: 0;
+  min-width: 1024px;
+  width: 100%;
 }
 
 .game-container {
@@ -30,21 +34,23 @@ body {
 }
 
 #game-events {
-  width: 38.2%;
+  width: @left-ratio;
   .events {
     width:100%;
     .events-container {
       .both-containers;
+      margin-left: 20px;
       padding-right: 15px;
     }
   }
 }
 
 #game-pages {
-  width: 61.8%;
+  width: 100% - @left-ratio;
   .pages {
     .pages-container {
       .both-containers;
+      margin-right: 20px;
       position: relative;
       div {
         position: absolute;

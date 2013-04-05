@@ -24,4 +24,21 @@ class Redirect extends \Zend\Mvc\Controller\Plugin\Redirect
         $request = $this->getController()->getRequest();
         return $this->toUrl($request->getRequestUri());
     }
+
+    /**
+     * redirect to parent site (one level up, for sample /admin/site/15 -> /admin/site)
+     */
+    public function toParent()
+    {
+        $uri = clone $this->getController()->getRequest()->getUri()->normalize();
+
+        $path = $uri->getPath();
+        $pos = strrpos($path, '/');
+        if($pos === false ) return null;
+
+        $new_path = substr($path, 0, $pos);
+        $uri->setPath($new_path);
+
+        return $this->toUrl($uri);
+    }
 }

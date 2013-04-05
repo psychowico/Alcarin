@@ -27,6 +27,12 @@ return array(
         ),
     ),
 
+    'view_helpers' => array(
+        'initializers' => array(
+            'Core\Service\GameServicesInitializer',
+        ),
+    ),
+
     'service_manager' => array(
         'invokables'   => array(
             'ext-manager'   => 'Core\GameObjectExtManager',
@@ -45,6 +51,9 @@ return array(
         ),
         'aliases' => array(
             'annotation-builder' => 'AnnotationBuilderService',
+        ),
+        'initializers' => array(
+            'Core\Service\GameServicesInitializer',
         ),
     ),
 

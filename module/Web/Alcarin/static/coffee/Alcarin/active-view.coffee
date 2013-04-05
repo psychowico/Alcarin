@@ -43,6 +43,7 @@ namespace 'Alcarin', (exports, Alcarin) ->
             copy
 
         copy: (source)->
+            return false if not source?
             if $.isPlainObject source
                 for key, val of source
                     if $.isFunction @[key]

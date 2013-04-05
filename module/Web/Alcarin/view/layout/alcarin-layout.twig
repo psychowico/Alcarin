@@ -6,3 +6,30 @@
 {% block title %}
     {{ headTitle('Alcarin') }}
 {% endblock %}
+
+{% block content %}
+
+    <section id="game-events" class="left-container">
+        <div class="events">
+            <div class="events-container">
+                {% block leftcontent %}
+                {% endblock %}
+            </div>
+        </div>
+    </section>
+
+    {% block middlecontent %}
+    {% endblock %}
+
+    <section id="game-pages">
+        <div class="pages">
+            <div class="pages-container">
+                {% block rightcontent %}
+                {% endblock %}
+            </div>
+        </div>
+    </section>
+
+    <div style="clear: both"></div>
+
+{% endblock %}

@@ -28,6 +28,18 @@ class Uri extends AbstractHelper
         return substr($path, 0, $pos);
     }
 
+    public function isAdmin()
+    {
+        $uri = $this->__toString();
+        return strpos($uri, '/admin') === 0;
+    }
+
+    public function isGame()
+    {
+        $uri = $this->__toString();
+        return strpos($uri, '/game') === 0;
+    }
+
     /**
      * we want return current "path" when helper was called without args.
      */

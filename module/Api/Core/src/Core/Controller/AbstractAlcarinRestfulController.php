@@ -109,7 +109,7 @@ abstract class AbstractAlcarinRestfulController extends AbstractRestfulControlle
                 $e->setResult($result);
             }
             else {
-                throw $e;
+                throw $exc;
             }
         }
 
@@ -136,5 +136,10 @@ abstract class AbstractAlcarinRestfulController extends AbstractRestfulControlle
         }
 
         return $this->game_services;
+    }
+
+    public function player()
+    {
+        return $this->gameServices()->get('players')->current();
     }
 }

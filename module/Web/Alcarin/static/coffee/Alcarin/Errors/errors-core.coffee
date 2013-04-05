@@ -38,12 +38,14 @@ namespace 'Alcarin.Errors', (exports, Alcarin) ->
         }
         _console._error = _console.error
 
-        _console.error = (msg)->
+        _console.error = (_msg...)->
+            msg = _msg[0]
             caller_stack = printStackTrace()[4]
             data = {mode: 'manual', stack: caller_stack, msg: msg}
             Rest().$create urls.api.errors, data, (response)=>
                 @warn response.errors unless response.success
-            @_error msg
+            @_error msg for msg in _msg
+
 
         window.console = _console
     space()

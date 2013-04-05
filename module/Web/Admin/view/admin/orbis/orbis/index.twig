@@ -4,18 +4,21 @@
 <div id="orbis" data-instance="Alcarin.Orbis.Orbis">
     <div class="row">
         <div class="span6">
-            <div class="map-info">
+            <div class="info-container">
                 <h2 class="h2">
                     {{ _('Minimap') }}
-                    <button class="btn btn-inverse">
+                    <button class="map-info btn btn-inverse">
                         Info
+                    </button>
+                    <button href="#change-radius-modal" data-toggle="modal" class="btn btn-inverse">
+                        Change radius
                     </button>
                 </h2>
                 <div class="info-popover" data-placement="bottom" data-title="Global map information" data-content="">
                 </div>
             </div>
             <div class="minimap">
-                <canvas data-instance="Alcarin.Orbis.MinimapRenderer" width="500" height="500">
+                <canvas data-instance="Alcarin.Orbis.MinimapRenderer" data-radius="{{ radius }}" width="500" height="500">
                     You browser don't support canvas, can not continue.
                 </canvas>
             </div>
@@ -25,6 +28,23 @@
             {{ partial('/admin/orbis/gateways-list', {}) }}
             {{ partial('/admin/orbis/gateway-edit', {form: gateway_form}) }}
         </div>
+    </div>
+
+    {% embed "alcarin-modal" with {id: 'change-radius-modal' } %}
+        {% block header %}Change world radius{% endblock %}
+        {% block body %}
+            <p>You can only increase world radius - but this is very time-consuming and dangerous
+            thing. You need contact alcarin developers team to do this. Current world radius is {{radius}}<b>u.</b> .</p>
+            {# bootstrap(radius_form, 'horizontal') #}
+            {#
+            <div class="radius-info-container">
+            </div>
+            #}
+        {% endblock %}
+        {% block footer %}
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        {% endblock %}
+    {% endembed %}
     </div>
 </div>
 {% endblock %}

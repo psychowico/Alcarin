@@ -1,0 +1,142 @@
+@import 'core';
+
+.map-editor {
+    .toolbar {
+        .brushes {
+            .current {
+                padding: 10px;
+                .brush-color {
+                    display:block;
+                    height: 50px;
+                    width: 50px;
+                    border: 2px solid rgba(0,0,0,0.55);
+                    .rounded-corners(5px);
+                    background-color: green;
+                    cursor: pointer;
+                }
+                .size {
+                    line-height: 50px;
+                    label {
+                        margin: 2px 0 0 -15px;
+                        float: left;
+                        display: inline;
+                        vertical-align: middle;
+                    }
+                    .slider {
+                        margin: 5px 0 0 40px
+                    }
+                }
+            }
+        }
+    }
+
+    @btn_size: 25px;
+    @canvas_size: 500px;
+
+    .map-viewport {
+        position: relative;
+        width: @canvas_size + 2 * @btn_size;
+        height: @canvas_size + 2 * @btn_size;
+
+        .canvas-container {
+            .foreground {
+                position: absolute;
+                left: 0; top: 0;
+            }
+            margin: @btn_size;
+            /* Start http://www.cursors-4u.com */
+            cursor: url(http://www.useragentman.com/examples/cursor/canvasPainter/canvas_painter_v0.1/images/gimpBrush.png) 5 25, url(http://cur.cursors-4u.net/others/oth-2/oth198.cur), pointer;
+            /* End http://www.cursors-4u.com */
+            position: absolute;
+            .cursor-shadow {
+                position: absolute;
+                left: 0;top:0;
+                position: absolute;
+                border: 1px solid red;
+                .circle();
+            }
+        }
+
+        .right {
+            position: absolute;
+            left: @canvas_size + @btn_size;
+        }
+        .bottom {
+            position: absolute;
+            top: @canvas_size + @btn_size;
+        }
+
+        .btn {
+            position: absolute;
+            margin: 0;
+            &.left10 {
+                width: @btn_size;
+                height: 0.1 * @canvas_size;
+                top: @btn_size;
+            }
+            &.left40 {
+                width: @btn_size;
+                height: 0.3 * @canvas_size;
+                top: @btn_size + 0.1 * @canvas_size;
+            }
+            &.left100 {
+                top: @btn_size + 0.4 * @canvas_size;
+                width: @btn_size;
+                height: 0.6 * @canvas_size;
+            }
+
+
+            &.right10 {
+                top: @btn_size + 0.9 * @canvas_size;
+                width: @btn_size;
+                height: 0.1 * @canvas_size;
+            }
+            &.right40 {
+                width: @btn_size;
+                height: 0.3 * @canvas_size;
+                top: @btn_size + 0.6 * @canvas_size;
+            }
+            &.right100 {
+                top: @btn_size;
+                width: @btn_size;
+                height: 0.6 * @canvas_size;
+            }
+
+            &.top10 {
+                height: @btn_size;
+                left: @btn_size;
+                width: 0.1 * @canvas_size;
+
+            }
+            &.top40 {
+                height: @btn_size;
+                left: @btn_size + 0.1 * @canvas_size;
+                width: 0.3 * @canvas_size;
+
+            }
+            &.top100 {
+                height: @btn_size;
+                left: @btn_size + 0.4 * @canvas_size;
+                width: 0.6 * @canvas_size;
+            }
+
+            &.bottom10 {
+                height: @btn_size;
+                width: 0.1 * @canvas_size;
+                left: @btn_size + 0.9 * @canvas_size;
+
+            }
+            &.bottom40 {
+                height: @btn_size;
+                left: @btn_size + 0.6 * @canvas_size;
+                width: 0.3 * @canvas_size;
+
+            }
+            &.bottom100 {
+                height: @btn_size;
+                left: @btn_size;
+                width: 0.6 * @canvas_size;
+            }
+        }
+    }
+}

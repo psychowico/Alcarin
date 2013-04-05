@@ -1,0 +1,21 @@
+
+<h4>Basics</h4>
+<p>
+    <p>One terrain unit (<b>u</b>) is equal to 100 m / 100 m square.</p>
+    <p>One game day (<b>g.d.</b>) is equal to four real time days.</p>
+</p>
+
+<h4>Sizes</h4>
+<p>
+    <div>Game world radius: <i>{{ radius }} <b>u</b> ({{ radius_km }} <b>km</b>)</i></div>
+    <div>Game world area: <i>{{ area }} <b>u²</b> ({{ area_km }} <b>km²</b>)</i></div>
+</p>
+
+<h4>Traveling</h4>
+<p>
+    <div><b>Theoretical travel time</b> is a time that a avarage person need to travel world radius -
+    on foot, by using best existing road type and without any breaks for food, fight or
+    anything.</div>
+    <b>Theoretical travel time</b>: <i>{{ travel_time }} <b>g.d.</b>
+    ({{ travel_time_real }} days - mean {{ '%.1f' | format(travel_time_real_months) }} months)</i></div>
+</p>

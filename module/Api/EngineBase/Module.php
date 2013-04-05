@@ -18,18 +18,6 @@ use Zend\Http\Request;
 
 class Module
 {
-    public function getGameModuleConfig()
-    {
-        return array(
-            'EngineBase' => array(
-                'description' => 'Base game objects with minimum functionality.',
-                'game-objects' => array(
-                    'players' => 'EngineBase\GameObject\Players',
-                ),
-            ),
-        );
-    }
-
     public function getServiceConfig()
     {
         return array(

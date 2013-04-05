@@ -34,9 +34,9 @@ namespace 'Alcarin.JQueryPlugins', (exports, Alcarin) ->
                 method = if meth == 'GET' then 'GET' else 'POST'
 
                 settings = {
-                    'url'     : url,
-                    'data'    : data,
-                    'dataType': 'json',
+                    'url'     : url
+                    'data'    : data
+                    'dataType': 'json'
                     'type'    : method
                 }
                 ondone = @ondone(ondone)

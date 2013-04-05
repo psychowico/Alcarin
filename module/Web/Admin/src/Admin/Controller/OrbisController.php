@@ -6,53 +6,72 @@
 namespace Admin\Controller;
 
 use Core\Controller\AbstractAlcarinRestfulController;
+use Zend\View\Model\ViewModel;
+use Zend\InputFilter\Input;
 
 class OrbisController extends AbstractAlcarinRestfulController
 {
     public function getList()
     {
-        if($this->isJson()) {
-            $info = $this->mapInfo();
-            return $this->json()->success(['info' => $info]);
-        }
         return [
-            'gateway_form' => $this->getServiceLocator()->get('gateways-form')
+            'gateway_form' => $this->getServiceLocator()->get('gateways-form'),
+            'radius' => $this->orbis()->minimap()->properties()->radius(),
+            'radius_form' => $this->getRadiusForm(),
         ];
     }
 
-    private function mapInfo()
+
+    private function orbis()
     {
-        $orbis = $this->gameServices()->get('orbis');
-        $properties = $orbis->minimap()->properties();
-
-        $radius = $properties->radius();
-        $radius_km = $radius / 10;
-
-        $area = number_format( pi() * $radius * $radius );
-        $area_km = number_format( pi() * $radius_km * $radius_km );
-
-        //I assume that man can move 50km at day
-        $travel_time_days = ($radius_km / 50);
-
-        return sprintf( <<<MAP
-<h4>Basics</h4>
-<p>One terrain unit (<b>u</b>) is equal to 100 m / 100 m square.</p>
-<p>One game day (<b>g.d.</b>) is equal to four real time days.</p>
-<h4>Sizes</h4>
-<p>
-<div>Game world radius: <i>%s <b>u</b> (%s <b>km</b>)</i></div>
-<div>Game world area: <i>%s <b>u²</b> (%s <b>km²</b>)</i></div>
-</p>
-<h4>Traveling</h4>
-<p>
-<div><b>Theoretical travel time</b> is a time that a avarage person need to travel world radius -
-on foot, by using best existing road type and without any breaks for food, fight or
-anything.</div>
-<b>Theoretical travel time</b>: <i>%s <b>g.d.</b> (%s days - mean %.1f months)</i></div>
-</p>
-MAP
-        , $radius, $radius_km, $area, $area_km
-        , $travel_time_days, 4 * $travel_time_days, (4 * $travel_time_days / 30) );
+        return $this->gameServices()->get('orbis');
     }
 
+    public function create($data)
+    {
+        //we block option for changing global map radius.
+        //changing radius is related with global mongo geo indexes
+        //min and max coords values. it shouldn't be easly done, without
+        //programmers support - because it can give our much troubles.
+        //changing indexes, when we will have many fields, can be very
+        //time-consuming.
+
+        // $form = $this->getRadiusForm();
+        // $form->setData($data);
+
+        // if($form->isValid()) {
+        //     $new_radius = $form->getData()['radius'];
+        //     $this->orbis()->minimap()->properties()->set('radius', $new_radius);
+        // }
+        return $this->redirect()->toSelf();
+    }
+
+    private function getRadiusForm()
+    {
+        $radius = $this->orbis()->minimap()->properties()->radius();
+        $form = new \Zend\Form\Form('radius-form');
+        $form->add([
+            'name' => 'radius',
+            'type' => 'text',
+            'options' => [
+                'label'=> 'World radius:',
+                'twb' => [
+                    'help-inline' => $radius / 10 . 'km',
+                ],
+            ],
+            'attributes' => [
+                'min'   => $radius,
+                'value' => $radius,
+                'autocomplete' => 'off',
+            ],
+        ]);
+
+        $radius_validator = new \Zend\Validator\GreaterThan(['min' => $radius]);
+
+        $input = new Input('radius');
+        $input->getValidatorChain()->addValidator($radius_validator);
+
+        $filters = $form->getInputFilter()->add($input);
+
+        return $form;
+    }
 }

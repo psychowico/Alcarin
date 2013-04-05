@@ -28,14 +28,22 @@ $ =>
     $.fn.editable.defaults.ajaxOptions = {type: 'put', dataType: 'json'}
     # apply x-editable plugin
     $('.x-editable').editable()
-    # apply jquery form plugin and generate 'ajax-submit' event when ajax-form is submitted
-    $('.ajax-form').ajaxForm (response, a, b, form)->
-        $(form).trigger 'ajax-submit', response
+    # prevent auto-commit all form with 'ajax-form' class
+    $('.ajax-form').on 'submit', (e)->
+        e.preventDefault()
 
     # focus first input on site
     $('input[type="text"]:first').focus()
+
+    $('.modal-footer .btn-primary').on 'click', (e)->
+        result = $(@).trigger 'success', e
+    $('.modal').on 'success', (e)->
+        $(@).modal 'hide' if not e.isDefaultPrevented()
 
     # auto-init popover and tooltip
     $('.popover-invoke').popover()
     # disable selection on site
     $('body').disableSelection()
+
+    $('select.chosen').chosen {disable_search: true}
+    $('select.chosen-search').chosen {}

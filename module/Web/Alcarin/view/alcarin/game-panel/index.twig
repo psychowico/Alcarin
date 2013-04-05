@@ -1,0 +1,32 @@
+{% extends "alcarin-layout" %}
+
+{% block leftcontent %}
+<select id="active-select">
+    <option value="{item.value}">{item.name}</option>
+</select>
+
+{% endblock %}
+
+{% block middlecontent %}
+    <div id="main-nav">
+        <nav>
+            <ul class="nav-bar">
+                {% for class in ['list', 'glass', 'plane', 'eye-close', 'circle-arrow-up', 'calendar'] %}
+                <li {% if class == href %} class="current" {% endif %}>
+                    <a href="?href={{class}}" class="active-link" data-hash-href="{{class}}">
+                        <i class="icon-{{class}}"></i>
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </nav>
+    </div>
+{% endblock %}
+
+{% block rightcontent %}
+    {% for class in ['home', 'glass', 'plane', 'eye-close', 'circle-arrow-up', 'calendar'] %}
+    <div class="page-{{class}} {% if class != href %} hide{% endif %}">
+        {% for i in 0..118 %} {{class}}.. {% endfor %}
+    </div>
+    {% endfor %}
+{% endblock %}

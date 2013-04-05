@@ -38,6 +38,9 @@ namespace('Alcarin', function(exports, Alcarin) {
 
     ActiveView.prototype.copy = function(source) {
       var key, val, _results;
+      if (!(source != null)) {
+        return false;
+      }
       if ($.isPlainObject(source)) {
         _results = [];
         for (key in source) {

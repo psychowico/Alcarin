@@ -21,12 +21,12 @@ class IsAllowed extends AbstractHelper
      */
     public function __invoke($resource = null)
     {
-        if( $resource === null ) return \Zend\Debug\Debug::dump($this->getView());
+        if( $resource === null ) return $this;
 
 
         if( is_string($resource) ) {
             $r_resource = constant('Core\\Permission\\Resource::' . $resource);
-            if( $r_resource == null ) {
+            if( $r_resource === null ) {
                 throw new \DomainException(sprintf('"%s" is not a valid resource name.', $resource ));
             }
             $resource = $r_resource;

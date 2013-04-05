@@ -2,6 +2,11 @@ body, html, .container {
     height: 100%;
 }
 
+h2 {
+  font-family: dosissemibold;
+  font-size: 34.5px;
+}
+
 .game-container {
     height: 95%;
     footer {
@@ -32,4 +37,26 @@ ul .horizontal-divider {
   *margin: -5px 0 5px;
   overflow: hidden;
   background-color: #e5e5e5;
+}
+
+.well-inverse {
+  color: #ffffff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  background-color: #363636;
+  *background-color: #222222;
+  background-image: -moz-linear-gradient(top, #444444, #222222);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#444444), to(#222222));
+  background-image: -webkit-linear-gradient(top, #444444, #222222);
+  background-image: -o-linear-gradient(top, #444444, #222222);
+  background-image: linear-gradient(to bottom, #444444, #222222);
+  background-repeat: repeat-x;
+  border-color: #222222 #222222 #000000;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff444444', endColorstr='#ff222222', GradientType=0);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+}
+
+.first-char-link > * {
+  border: 2px dashed red;
+  padding: 5px 10px 5px 10px;
 }

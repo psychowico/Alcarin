@@ -39,6 +39,7 @@ class Module
         $this->setupGameModulesSystem($sm);
     }
 
+
     protected function setupGameModulesSystem($sm)
     {
         //let register all gameobject and gameobject extensions
@@ -117,7 +118,7 @@ class Module
     }
 
     /**
-     * //before controller choose we check privilages for current.
+     * before controller choose we check privilages for current.
      */
     public function setupAccessSystem( MvcEvent $event )
     {
@@ -126,7 +127,6 @@ class Module
 
         $route_match = $event->getRouteMatch();
         $choosed = $route_match->getParam('controller');
-
 
         $logger->debug(sprintf('Checking access for "%s".', $choosed));
 

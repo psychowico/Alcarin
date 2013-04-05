@@ -39,10 +39,23 @@ $(function() {
     dataType: 'json'
   };
   $('.x-editable').editable();
-  $('.ajax-form').ajaxForm(function(response, a, b, form) {
-    return $(form).trigger('ajax-submit', response);
+  $('.ajax-form').on('submit', function(e) {
+    return e.preventDefault();
   });
   $('input[type="text"]:first').focus();
+  $('.modal-footer .btn-primary').on('click', function(e) {
+    var result;
+    return result = $(this).trigger('success', e);
+  });
+  $('.modal').on('success', function(e) {
+    if (!e.isDefaultPrevented()) {
+      return $(this).modal('hide');
+    }
+  });
   $('.popover-invoke').popover();
-  return $('body').disableSelection();
+  $('body').disableSelection();
+  $('select.chosen').chosen({
+    disable_search: true
+  });
+  return $('select.chosen-search').chosen({});
 });

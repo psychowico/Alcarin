@@ -38,6 +38,7 @@ return array(
         'invokables' => array(
             'mongo-log-writer'        => 'DevPack\Log\Writer\MongoWriter',
             'DevPack\MongoCollector'  => 'DevPack\Collector\MongoCollector',
+            'DevPack\GameTimeCollector'  => 'DevPack\Collector\GameTimeCollector',
             'DevPack\MongoCollection' => 'DevPack\MongoCollection',
         ),
         'factories' => array(

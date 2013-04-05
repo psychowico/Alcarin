@@ -1,0 +1,51 @@
+<?php
+$time = $this->collector->getTime();
+?>
+
+<div class="zdt-toolbar-entry">
+    <div class="zdt-toolbar-preview">
+        <img src="data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wHAw8mGjxdOGkAAANISURBVDjLrZRRSCxlFMf/3+es7ujAZdkWRFtMepAUXVehEIILETei+1iy9iBURMF9iB6u9JJEBWbZS6F4k7wXe0vYLNhIwau5O4MSDKIj68LorkzhthItspvbznxzerhe2J27ZA99b3P+5//jO985cxiuOKenp44QgnPOWUdHB7sqn1+VMDMzU2htbWXxeBz/27Esi1ZXV2/+l9yGJWSz2ccZY68xxt5kjIUZYwSAEVHJdd1viGhOCHHIOX+Hcz7e1NR0PRwOFxsCTdN8i3P+kc/nC+VyOVfTtCIAOI5DkUhE6e/vbyEi23XdH4QQT8uyHC6Xy1s9PT3X0QB2yzRNymQy7tjY2IEkSZ/KsjwCIAIg2tbWdntwcDCVTCYvTNOkk5MTmpqaOu3s7Jx/BGYYxjOZTIa2t7dFb2/vPQBPPNSOjo7IsqyXLj+bfT7fZCKRKGezWVpcXPyq4WMeHBxkdV2n8fHxOwDkWi2dTlM6nX6xNtbd3f1GIpFwDw8PqVAoPFY3Npubm68A6LAs62hpaelDABe1ZiICEXkbd09V1buO48AwjE/qgLIsDwBoTiaT9wH8Vmvc399XhBAQQrR5ihLVavXb8/PzvxVFuVEH9Pv9khACZ2dnP3qfQghx/xI459WOj4+PGWN/trS0+B/GpMuRAOccwWDwwmtyHGeQcw7XdUNeLRgM2gBcx3F43Q0rlQo5joP29vaA1zQ6OnpHURQsLCz87NW6urpkIpIqlYpbB9zd3S1Vq1VEIpFYg7LenZ6edovF4pRXGx4efopzHjIM4486YWho6Mb6+vpfmqYVVFXtazBV/QDqmqKqarOmaT/t7OzQwMDAe3U31HV9LR6P/8IYC9m2/UUqlbrmAe4DKNcGbNv+mIheWFtb+31vb++zR9bX7Ozs6ysrK0W/3/+cbdva1tbWUKMfIJVKKRsbG99zzm+bpimWl5ffBiAabhtFUW5OTEx8PTIyEpIkiQHYIKI5AASgyhh7GcCrRCTl8/ny5OTkl6Zpvg/A+bf19XwsFvsgGo1G+/r6WgOBB41njKFUKiGXy1V1Xc/Nz89/DuAuAPvKfQjgWiAQeFZRlBhj7MkHPMZc183btr2ez+e/A/BrI+M/BMaRHvzJD8cAAAAASUVORK5CYII=" alt="Game Time">
+        <span class="zdt-toolbar-info time">
+            <span class="hour"><?=sprintf("%02d", $time['hour']) ?></span>:<span class="min"><?=sprintf("%02d", $time['min']) ?></span>:<span class="sec"><?=sprintf("%02d", $time['sec']) ?></span>
+        </span>
+    </div>
+    <div class="zdt-toolbar-detail">
+        <!-- <span class="zdt-toolbar-info">
+            <span class="zdt-detail-label">Total time:</span>
+            <span class="zdt-detail-value"></span>
+        </span>
+        <span class="zdt-toolbar-info">
+            <span class="zdt-detail-label">Queries count:</span>
+            <span class="zdt-detail-value"></span>
+        </span> -->
+    </div>
+    <script type="text/javascript">
+        $(function() {
+            var time = {
+                sec: $('.time .sec'),
+                min: $('.time .min'),
+                hour: $('.time .hour')
+            };
+            setInterval( function() {
+                sec = parseInt(time.sec.html());
+                sec += 1;
+                if(sec >= 60) {
+                    sec = 0;
+                    min = parseInt(time.min.html());
+                    min += 1;
+                    if(min >= 60) {
+                        hour = parseInt(time.hour.html());
+                        hour += 1;
+                        if(hour >= 24) {
+                            hour = 0;
+                        }
+                        time.hour.html(hour < 10 ? '0' + hour : hour);
+                    }
+                    time.min.html(min < 10 ? '0' + min : min);
+                }
+                time.sec.html(sec < 10 ? '0' + sec : sec);
+            }, 1000);
+
+        })
+    </script>
+</div>

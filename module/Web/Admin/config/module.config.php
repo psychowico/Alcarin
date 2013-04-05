@@ -9,14 +9,19 @@ return array(
             'Admin\Controller\Home'  => 'Admin\Controller\AdminHomeController',
 
             'Admin\Controller\Users' => 'Admin\Controller\UsersController',
-            'Admin\Controller\Orbis\Orbis' => 'Admin\Controller\OrbisController',
+            'Admin\Controller\Users\Privilages' => 'Admin\Controller\Users\PrivilagesController',
 
-            'Admin\Controller\Orbis\Minimap' => 'Admin\Controller\Orbis\MinimapController',
+            'Admin\Controller\Orbis\Orbis' => 'Admin\Controller\OrbisController',
+            'Admin\Controller\Orbis\Map' => 'Admin\Controller\Orbis\OrbisMapController',
             'Admin\Controller\Orbis\Gateways' => 'Admin\Controller\Orbis\GatewaysController',
+            'Admin\Controller\Orbis\Editor' => 'Admin\Controller\Orbis\EditorController',
+
             'Admin\Controller\Users\Privilages' => 'Admin\Controller\Users\PrivilagesController',
 
 
             'Admin\Controller\Modules' => 'Admin\Controller\ModulesController'
+
+
         ),
     ),
 
@@ -39,14 +44,19 @@ return array(
             'description'  => 'Administrative module',
             'game-objects' => array(
                 'orbis' => 'Admin\GameObject\Orbis',
+                'properties' => 'EngineBase\GameObject\Extension\WorldProperties',
             ),
             'game-objects-ext' => array(
                 'Admin\GameObject\Extension\OrbisMinimap' => array(
-                    'properties' => 'EngineBase\GameObject\Extension\MapProperties',
+                    'properties' => 'EngineBase\GameObject\Extension\WorldProperties',
+                ),
+                'Admin\GameObject\Extension\OrbisMap' => array(
+                    'properties' => 'EngineBase\GameObject\Extension\WorldProperties',
                 ),
                 'Admin\GameObject\Orbis' => array(
                     'gateways' => 'Admin\GameObject\Extension\OrbisGateways',
-                    'minimap' => 'Admin\GameObject\Extension\OrbisMinimap',
+                    'minimap'  => 'Admin\GameObject\Extension\OrbisMinimap',
+                    'map'      => 'Admin\GameObject\Extension\OrbisMap',
                 ),
                 'EngineBase\GameObject\Player' => array(
                     'admin' => 'Admin\GameObject\Extension\PlayerAdmin'
@@ -79,18 +89,6 @@ return array(
                     'restmode' => true,
                     'defaults' => array(
                         'controller' => 'Orbis',
-                    ),
-                ),
-            ),
-            'minimap'   => array(
-                'type' => 'literal',
-                'options' => array(
-                    // Change this to something specific to your module
-                    'route'    => '/admin/orbis/minimap',
-                    'defaults' => array(
-                        // Change this value to reflect the namespace in which
-                        // the controllers for your module are found
-                        'controller'    => 'Admin\Controller\Orbis\Minimap',
                     ),
                 ),
             ),

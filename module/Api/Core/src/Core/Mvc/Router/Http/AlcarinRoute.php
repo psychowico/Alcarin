@@ -66,8 +66,8 @@ class AlcarinRoute extends Literal
             'default' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route' => sprintf('[/:controller]%s[/:action]',
-                                $restmode ? '[/:id]' : null ),
+                    'route' => $restmode ? '[/:controller][/:id][/:action]' :
+                                '[/:controller][/:action][/:id]',
                     'defaults' => $defaults,
                 ),
                 'constraints' => array(
@@ -75,13 +75,14 @@ class AlcarinRoute extends Literal
                     'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
                 ),
             ),
-            'subdefault' => array(
+        );
+        if($restmode) {
+            $children['subdefault'] = array(
                 'type'    => 'Segment',
                 'options' => array(
                     //in Alcarin module we using "ActionControllers", not RESTful
-                    'route'    => sprintf('/:__NAMESPACE__%s/:controller[/:action]',
-                                $restmode ? '/:id' : null ),
-                    'defaults' => array(),
+                    'route'    => '/:__NAMESPACE__/:id/:controller[/:action]',
+                    'defaults' => [],
                     'constraints' => array(
                         '__NAMESPACE__' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'controller'    => '[a-zA-Z][a-zA-Z0-9_-]*',
@@ -89,8 +90,8 @@ class AlcarinRoute extends Literal
                         'action'        => '[a-zA-Z][a-zA-Z0-9_-]*',
                     ),
                 ),
-            ),
-        );
+            );
+        }
 
         return Part::factory(array(
             'route' => array(

@@ -11,6 +11,7 @@ namespace Alcarin;
 
 use Core\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
+use Zend\Http\PhpEnvironment\Request as HttpRequest;
 
 /**
  * main web module provided web-site that using game web api
