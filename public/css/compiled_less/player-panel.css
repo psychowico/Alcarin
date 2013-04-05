@@ -6,6 +6,8 @@ body {
 }
 .container {
   padding: 0;
+  min-width: 1024px;
+  width: 100%;
 }
 .game-container {
   font-family: "Helvetica";
@@ -28,6 +30,7 @@ body {
   -ms-border-radius: 17px;
   -o-border-radius: 17px;
   border-radius: 17px;
+  margin-left: 20px;
   padding-right: 15px;
 }
 #game-pages {
@@ -43,6 +46,7 @@ body {
   -ms-border-radius: 17px;
   -o-border-radius: 17px;
   border-radius: 17px;
+  margin-right: 20px;
   position: relative;
 }
 #game-pages .pages .pages-container div {
