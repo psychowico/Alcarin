@@ -6,6 +6,11 @@ class PlayerChars extends \Core\GameObject
 {
     use \Core\AutoCacheTrait;
 
+    protected function init()
+    {
+        $this->initChildFactory('EngineBase\GameObject\Char\Character');
+    }
+
     public function fetchAll()
     {
         $data = $this->mongo()->users->findOne(
@@ -17,9 +22,9 @@ class PlayerChars extends \Core\GameObject
 
         $chars = $this->mongo()->{'users.chars'}->find([
             '_id' => [ '$in' => $data['chars'] ]
-        ]);
+        ])->fields(['name' => 1]);
 
-        return $chars->toArray();
+        return $this->childrenFromArray($chars->toArray());
     }
 
     /**

@@ -33,28 +33,28 @@ body {
   margin: 0px auto;
 }
 
-#game-events {
+.left-container {
   width: @left-ratio;
-  .events {
+  &>div {
     width:100%;
-    .events-container {
+    &>div {
       .both-containers;
       margin-left: 20px;
       padding-right: 15px;
+      div {
+        position: absolute;
+      }
     }
   }
 }
 
-#game-pages {
+.right-container {
   width: 100% - @left-ratio;
-  .pages {
-    .pages-container {
+  &>div {
+    &>div {
       .both-containers;
       margin-right: 20px;
       position: relative;
-      div {
-        position: absolute;
-      }
     }
   }
 }
@@ -66,5 +66,16 @@ body {
     min-height: 600px;
     float:left;
     width: 100%;
+  }
+}
+
+.talking {
+  float:right;
+  width: 95%;
+  &>* {
+    input[type="text"] {
+      margin-right: 6px;
+      width:83%;
+    }
   }
 }

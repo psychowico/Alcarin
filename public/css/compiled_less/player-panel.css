@@ -14,13 +14,13 @@ body {
   font-size: 12.5px;
   margin: 0px auto;
 }
-#game-events {
+.left-container {
   width: 38.2%;
 }
-#game-events .events {
+.left-container > div {
   width: 100%;
 }
-#game-events .events .events-container {
+.left-container > div > div {
   background: rgba(255, 255, 255, 0.05);
   margin: 16px 8px 16px 8px;
   padding: 20px 30px 20px 30px;
@@ -33,10 +33,13 @@ body {
   margin-left: 20px;
   padding-right: 15px;
 }
-#game-pages {
+.left-container > div > div div {
+  position: absolute;
+}
+.right-container {
   width: 61.8%;
 }
-#game-pages .pages .pages-container {
+.right-container > div > div {
   background: rgba(255, 255, 255, 0.05);
   margin: 16px 8px 16px 8px;
   padding: 20px 30px 20px 30px;
@@ -48,9 +51,6 @@ body {
   border-radius: 17px;
   margin-right: 20px;
   position: relative;
-}
-#game-pages .pages .pages-container div {
-  position: absolute;
 }
 #game-events,
 #game-pages {
@@ -64,4 +64,12 @@ body {
   min-height: 600px;
   float: left;
   width: 100%;
+}
+.talking {
+  float: right;
+  width: 95%;
+}
+.talking > * input[type="text"] {
+  margin-right: 6px;
+  width: 83%;
 }

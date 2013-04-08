@@ -26,7 +26,6 @@ namespace 'Alcarin', (exports, Alcarin ) ->
     class exports.TestClass
         hashchange = (e)->
             state = $.bbq.getState() or {}
-            #window.scrollTo 0, 0
             $('.pages-container > .current').removeClass('current').fadeOut()
             $('.pages-container > .page-' + state.href).addClass('current').fadeIn()
 
@@ -64,7 +63,6 @@ namespace 'Alcarin', (exports, Alcarin ) ->
                 $(@).data 'hashLink', link
 
         $('.active-link').hashLink()
-        $('#active-select').data('hash-test', 313).hashLink()
 
         test = new Alcarin.TestClass()
         test.init()

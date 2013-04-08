@@ -92,7 +92,6 @@ namespace('Alcarin', function(exports, Alcarin) {
       });
     };
     $('.active-link').hashLink();
-    $('#active-select').data('hash-test', 313).hashLink();
     test = new Alcarin.TestClass();
     test.init();
     jQuery.fx.off = true;

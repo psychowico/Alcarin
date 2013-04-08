@@ -23,10 +23,17 @@ class GamePanelController extends AbstractAlcarinRestfulController
     public function get($id)
     {
         $char = $this->player()->chars()->all()[$id];
+
+        $builder = $this->getServiceLocator()->get('AnnotationBuilderService');
+        $talking_form    = $builder->createForm(new \Alcarin\Form\TalkingForm(), true, "Mów");
+
         return [
-            'current_char'  => $char['name'],
+            'current_char'  => $char->name(),
             'version' => \Zend\Version\Version::VERSION,
-            'href' => $this->getRequest()->getQuery('href')
+            'href' => $this->getRequest()->getQuery('href'),
+            'forms' => [
+                'talking' => $talking_form,
+            ]
         ];
     }
 }

@@ -9,12 +9,21 @@ class GameObject implements GameServiceAwareInterface
 {
     use GameServiceAwareTrait;
 
+    protected $child_reflect;
     protected $parent;
     protected $mongo;
     protected $extManager;
     protected $plugins   = [];
 
     public function __construct($parent = null)
+    {
+        $this->setParent($parent);
+        $this->init();
+    }
+
+    protected function init(){}
+
+    protected function setParent($parent)
     {
         $this->parent = $parent;
     }
@@ -33,6 +42,14 @@ class GameObject implements GameServiceAwareInterface
             $this->mongo = $this->getServicesContainer()->get('mongo');
         }
         return $this->mongo;
+    }
+
+    /**
+     * we will need it very often, so let create shortcut in this base class
+     */
+    protected function time()
+    {
+        return $this->getServicesContainer()->get('time');
     }
 
     protected function getExtManager()
@@ -80,4 +97,34 @@ class GameObject implements GameServiceAwareInterface
         return $plugin;
     }
 
+    protected function initChildFactory($child_class)
+    {
+        $this->child_reflect = new \ReflectionClass($child_class);
+    }
+
+    protected function createChild($args = [])
+    {
+        if($this->child_reflect === null) {
+            throw new \Exception("You need first initlize child factory before use it.");
+        }
+
+        if(!is_array($args)) $args = [$args];
+        $instance = $this->child_reflect->newInstanceArgs($args);
+
+        if($instance instanceof GameServiceAwareInterface) {
+            $sc = $this->getServicesContainer();
+            $instance->setServicesContainer($sc);
+        }
+        if($instance instanceof GameObject) {
+            $instance->setParent($this);
+        }
+        return $instance;
+    }
+
+    protected function childrenFromArray($args_array)
+    {
+        return array_map(function($args) {
+            return $this->createChild([$args]);
+        }, $args_array);
+    }
 }

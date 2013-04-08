@@ -9,6 +9,8 @@ return array(
             'Admin\Controller\Home'  => 'Admin\Controller\AdminHomeController',
 
             'Admin\Controller\Users' => 'Admin\Controller\UsersController',
+            'Admin\Controller\Translations' => 'Admin\Controller\TranslationsPanelController',
+
             'Admin\Controller\Users\Privilages' => 'Admin\Controller\Users\PrivilagesController',
 
             'Admin\Controller\Orbis\Orbis' => 'Admin\Controller\OrbisController',

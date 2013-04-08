@@ -11,6 +11,9 @@ return array(
                     'EngineBase\GameObject\Player' => array(
                         'chars' => 'EngineBase\GameObject\Extension\PlayerChars',
                     ),
+                    'EngineBase\GameObject\Char\Character' => array(
+                        'events' => 'EngineBase\GameObject\Extension\CharacterEvents',
+                    ),
                 ),
         ),
     ),

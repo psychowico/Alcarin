@@ -1,10 +1,11 @@
 {% extends "alcarin-layout" %}
 
 {% block leftcontent %}
-<select id="active-select">
-    <option value="{item.value}">{item.name}</option>
-</select>
-
+    {% for class in ['home', 'glass', 'plane', 'eye-close', 'circle-arrow-up', 'calendar'] %}
+    <div class="page-{{class}} {% if class != href %} hide{% endif %}">
+        {% for i in 0..118 %} {{class}}.. {% endfor %}
+    </div>
+    {% endfor %}
 {% endblock %}
 
 {% block middlecontent %}
@@ -24,9 +25,8 @@
 {% endblock %}
 
 {% block rightcontent %}
-    {% for class in ['home', 'glass', 'plane', 'eye-close', 'circle-arrow-up', 'calendar'] %}
-    <div class="page-{{class}} {% if class != href %} hide{% endif %}">
-        {% for i in 0..118 %} {{class}}.. {% endfor %}
+    {# do form.setAttribute('action', uri('orbis/default', {controller: 'gateways'}) ~ '/{item.id}') #}
+    <div class="talking">
+        {{ bootstrap(forms['talking'], 'inline') }}
     </div>
-    {% endfor %}
 {% endblock %}

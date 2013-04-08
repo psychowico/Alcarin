@@ -15,6 +15,7 @@ class Resource
     const ADMIN_USERS               = 2;
     const ADMIN_PRIVILAGES_MANAGING = 3;
     const ADMIN_ORBIS               = 4;
+    const ADMIN_TRANSLATIONS        = 5;
 
     /**
      * useable on privilages managing panels
@@ -28,6 +29,7 @@ class Resource
             Resource::ADMIN_USERS => ["Users menu", "Users administration menu"],
             Resource::ADMIN_PRIVILAGES_MANAGING => ["Administration of privileges", "Viewing and managing users privilages"],
             Resource::ADMIN_ORBIS => ["Orbis Editor Access", "Global map editor"],
+            Resource::ADMIN_TRANSLATIONS => ["Translations Panel Access", "Translations Panel"],
         ],
     ];
 
