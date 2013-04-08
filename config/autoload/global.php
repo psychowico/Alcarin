@@ -32,7 +32,7 @@ return array(
             'external'                          => [],
 
             'Alcarin\Controller\Panel'          => Resource::PLAYER_PANEL,
-            'Alcarin\Controller\CreateChar'          => Resource::PLAYER_PANEL,
+            'Alcarin\Controller\CreateChar'     => Resource::PLAYER_PANEL,
 
             'Admin\Controller\Home'             => Resource::ADMIN_MENU,
             'Admin\Controller\Users'            => Resource::ADMIN_USERS,

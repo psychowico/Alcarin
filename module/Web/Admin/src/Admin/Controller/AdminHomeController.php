@@ -18,6 +18,11 @@ class AdminHomeController extends AbstractAlcarinRestfulController
             'title'      => '"Orbis" Editor',
             'icon'       => 'icon-globe',
         ],
+        [
+            'controller' => 'translations',
+            'title'      => 'Translate Panel',
+            'icon'       => 'icon-book',
+        ],
     ];
 
     public function getList()

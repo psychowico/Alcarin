@@ -3,6 +3,11 @@ html,
 .container {
   height: 100%;
 }
+body {
+  color: #8f8f8f;
+  background: #323232;
+  background: url('../../img/pattern.gif') repeat top left;
+}
 h2 {
   font-family: dosissemibold;
   font-size: 34.5px;

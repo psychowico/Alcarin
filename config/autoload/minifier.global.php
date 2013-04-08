@@ -73,7 +73,6 @@ return array(
                 'list'       => array(
                     'external'  => array(
                         'sources'   => array(
-                            '/css/style.css',
                             '/css/bootstrap-2.3.1.css',
                             '/css/bootstrap-responsive-2.3.1.css',
                             '/css/bootstrap-editable-1.4.1.css',
@@ -85,7 +84,6 @@ return array(
                     'common' => array(
                         'sources' => array(
                             '/css/compiled_less/common.css',
-                            '/css/compiled_less/player-panel.css',
                         ),
                     ),
                     'guest' => array(
@@ -106,6 +104,7 @@ return array(
                     'player' => array(
                         'sources' => array(
                             '/css/compiled_less/middle-nav.css',
+                            '/css/compiled_less/player-panel.css',
                         ),
                     ),
                 ),
