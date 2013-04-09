@@ -1,0 +1,18 @@
+{% extends "admin-layout" %}
+
+{% block content %}
+
+<h2>{{ module['name'] }}</h2>
+Description: {{ module['description'] }}
+
+
+{% if module['game-objects-ext'] %}
+<h4>Game objects ext</h4>
+	{% for field in module['game-objects-ext'] %}
+		{% for row in field %}
+			{{row}}<br />
+		{% endfor %}
+	{% endfor %}
+{% endif %}
+
+{% endblock %}
