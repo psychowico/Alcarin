@@ -1,0 +1,17 @@
+{% extends "admin-layout" %}
+
+{% block content %}
+
+    <div class="admin-privilages">
+
+    {% for form in forms %}
+
+    {{ form().openTag(form) | raw }}
+    {{ formCollection(form) }}
+    {{ form().closeTag() | raw }}
+
+    {% endfor %}
+
+    </div>
+
+{% endblock %}

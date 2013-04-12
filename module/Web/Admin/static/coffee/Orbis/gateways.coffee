@@ -112,7 +112,6 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
 
             @init_groups()
 
-    class GatewayGroup extends Alcarin.ActiveView
 
         group_name: (name)->
             name = 'Ungrouped' if name == 0

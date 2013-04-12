@@ -1,0 +1,28 @@
+{% extends "admin-layout" %}
+{% block content %}
+    <div class = "row">
+        <div class = "span3 by-docs-sidebar">
+            <ul class="nav nav-list bs-docs-sidenav affix">
+                {% for key, module in modules %}
+                   	<li>
+                    	<a href="#{{key}}"><i class="icon-chevron-right"></i> {{key}}</a>
+                	</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class = "span9">
+        	{% for key, module in modules %}   
+                <section>
+                    <div id={{key}}>
+            		  <h4><a href="modules/{{key}}">{{key}}</a></h4>
+            		  Description: {{module['description']}}
+                    </div>
+                </section>
+        	{% endfor %}
+        </div>
+    </div>
+    <script>
+        console.log("kotek");
+        $('body').attr("data-spy", "scroll");
+    </script>
+{% endblock %}

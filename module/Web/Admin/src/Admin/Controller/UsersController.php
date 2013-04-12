@@ -37,13 +37,13 @@ class UsersController extends AbstractAlcarinRestfulController
             return $this->redirect()->toRoute('admin-users');
         }
         $model = new \Zend\View\Model\ViewModel();
-        $model->setVariables( [
-            'context' => [
+        $model -> setTemplate('admin/users/get');
+        $model -> setVariables( [
+             'context' => [
                 'id'    => $userid,
                 'email' => $hUser['email']
             ],
         ] );
-        $model->setTemplate('admin/users/get');
 
         return $model;
     }
