@@ -30,6 +30,7 @@ return array(
                     'common'    => array(
                         'sources' => array(
                             '/js/compiled_coffee/core.js',
+                            '/js/compiled_coffee/auto-load-plugins.js',
                             '/js/compiled_coffee/urls.js',
                             '/js/compiled_coffee/Alcarin/path.js',
                             '/js/compiled_coffee/Alcarin/color.js',
@@ -59,6 +60,7 @@ return array(
                             '/js/compiled_coffee/Orbis/Editor/map-manager.js',
                             '/js/compiled_coffee/Orbis/Editor/toolbar.js',
                             '/js/compiled_coffee/Orbis/Editor/editor.js',
+                            '/js/compiled_coffee/Admin/translations.js',
                         ),
                     ),
                     //files for regular players
@@ -98,6 +100,7 @@ return array(
                             '/css/compiled_less/admin/orbis.css',
                             '/css/compiled_less/admin/orbis-editor.css',
                             '/css/compiled_less/admin/help.css',
+                            '/css/compiled_less/admin/translations.css',
                         ),
                     ),
                     //files for regular players

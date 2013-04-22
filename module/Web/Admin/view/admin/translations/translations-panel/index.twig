@@ -1,0 +1,43 @@
+{% extends "admin-layout" %}
+
+{% block content %}
+<div class="container" data-instance="Alcarin.Admin.TranslationsCenter">
+<div class="row">
+    <div class="span3">
+        <fieldset>
+            <legend>Phrase:</legend>
+            <label target="choose-lang">Lang:
+                <select id="choose-lang" class="choose-lang chosen">
+                    {% for lang in languages %}
+                    <option>{{ lang }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <label target="choose-group">Group:
+                <select id="choose-group" class="choose-group chosen">
+                    {% for group in groups %}
+                    <option>{{ group }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <div class="phrase-search-container">
+                <select id="phrases-list" class="phrases-list chosen-always-visible">
+                </select>
+            </div>
+
+        </fieldset>
+    </div>
+    <script>
+        // $('#phrase-group').change(function(event)
+        //     {
+        //         $('.phrase-search-container .chzn-drop').css('left', 0);
+        //     });
+    </script>
+    <div class="span9">
+        <fieldset>
+            <legend>Translation panel:</legend>
+        </fieldset>
+    </div>
+</div>
+</div>
+{% endblock %}

@@ -1,0 +1,9 @@
+.phrase-search-container {
+  margin-top: 15px;
+}
+.phrase-search-container select {
+  width: 268px;
+}
+.phrase-search-container .chzn-container {
+  z-index: 1;
+}

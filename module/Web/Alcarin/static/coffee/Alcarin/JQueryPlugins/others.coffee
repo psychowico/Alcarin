@@ -91,3 +91,7 @@ namespace 'Alcarin.JQueryPlugins', (exports, Alcarin) ->
     # just simple shortcuts
     $.bbq.push = $.bbq.pushState
     $.bbq.get = $.bbq.getState
+
+    $.fn.update_chosen = ->
+        $(@).each ->
+            $(@).trigger "liszt:updated"

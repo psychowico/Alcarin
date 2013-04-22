@@ -114,5 +114,10 @@ namespace('Alcarin.JQueryPlugins', function(exports, Alcarin) {
     return this;
   };
   $.bbq.push = $.bbq.pushState;
-  return $.bbq.get = $.bbq.getState;
+  $.bbq.get = $.bbq.getState;
+  return $.fn.update_chosen = function() {
+    return $(this).each(function() {
+      return $(this).trigger("liszt:updated");
+    });
+  };
 });

@@ -9,7 +9,8 @@ return array(
             'Admin\Controller\Home'  => 'Admin\Controller\AdminHomeController',
 
             'Admin\Controller\Users' => 'Admin\Controller\UsersController',
-            'Admin\Controller\Translations' => 'Admin\Controller\TranslationsPanelController',
+            'Admin\Controller\Translations\Translations' => 'Admin\Controller\Translations\TranslationsPanelController',
+            'Admin\Controller\Translations\Events'       => 'Admin\Controller\Translations\TranslationEventsController',
 
             'Admin\Controller\Users\Privilages' => 'Admin\Controller\Users\PrivilagesController',
 
@@ -40,6 +41,7 @@ return array(
             'game-objects' => array(
                 'orbis' => 'Admin\GameObject\Orbis',
                 'properties' => 'EngineBase\GameObject\Extension\WorldProperties',
+                'translations' => 'Admin\GameObject\DynamicTranslations',
             ),
             'game-objects-ext' => array(
                 'Admin\GameObject\Extension\OrbisMinimap' => array(
@@ -84,6 +86,17 @@ return array(
                     'restmode' => true,
                     'defaults' => array(
                         'controller' => 'Orbis',
+                    ),
+                ),
+            ),
+            'translations' => array(
+                'type'    => 'alcarin',
+                'options' => array(
+                    'route'    => '/admin/translations',
+                    'namespace'=> 'Admin\Controller\Translations',
+                    'restmode' => true,
+                    'defaults' => array(
+                        'controller' => 'translations',
                     ),
                 ),
             ),

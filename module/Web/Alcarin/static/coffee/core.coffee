@@ -44,6 +44,3 @@ $ =>
     $('.popover-invoke').popover()
     # disable selection on site
     $('body').disableSelection()
-
-    $('select.chosen').chosen {disable_search: true}
-    $('select.chosen-search').chosen {}

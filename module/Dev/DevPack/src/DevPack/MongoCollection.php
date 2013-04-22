@@ -73,6 +73,9 @@ class MongoCollection extends \Mongo_Collection
 
     foreach($result as $key => $element) {
       if(isset($element['_id'])) {
+        //not every collection use mongoid on _id key
+        if(!$element['_id'] instanceof \MongoId) break;
+
         $result[$key]['id'] = $element['_id']->{'$id'};
       }
     }

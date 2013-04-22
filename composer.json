@@ -26,15 +26,15 @@
     ],
     "require": {
         "php"                               : ">=5.4.0",
-        "zendframework/zendframework"       : "2.*",
+        "zendframework/zendframework"       : "2.1.*",
         "psychowico/assets-compiler"        : "dev-master",
 
-        "zf-commons/zfc-twig"               : "dev-master",
+        "zf-commons/zfc-twig"               : "1.0.3",
         "zf-commons/zfc-user"               : "dev-master",
         "neilime/zf2-twb-bundle"            : "dev-master",
 
         "zendframework/zend-developer-tools": "dev-master",
-        "webino/zf2nette-debug"             : "1.1.0",
+        "webino/zf2nette-debug"             : "1.*",
         "colinmollenhour/mongodb-php-odm"   : "dev-master",
         "evandotpro/edp-module-layouts"     : "dev-master",
         "doctrine/common"                   : ">=2.1"
