@@ -20,6 +20,7 @@ class AdminHomeController extends AbstractAlcarinRestfulController
         ],
         [
             'controller' => 'translations',
+            'namespace'  => 'Admin\Controller\Translations',
             'title'      => 'Translate Panel',
             'icon'       => 'icon-book',
         ],
@@ -38,6 +39,7 @@ class AdminHomeController extends AbstractAlcarinRestfulController
                 $result[$controller] = $this->pageData( $data );
             }
         }
+
         return [ 'pages' => $result ];
     }
 
