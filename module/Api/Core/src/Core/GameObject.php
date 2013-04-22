@@ -18,6 +18,11 @@ class GameObject implements GameServiceAwareInterface
     public function __construct($parent = null)
     {
         $this->setParent($parent);
+    }
+
+    public function setServicesContainer($gameServiceContainer)
+    {
+        $this->gameServiceContainer = $gameServiceContainer;
         $this->init();
     }
 
