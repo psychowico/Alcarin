@@ -110,7 +110,7 @@ class GameObject implements GameServiceAwareInterface
     protected function createChild($args = [])
     {
         if($this->child_reflect === null) {
-            throw new \Exception("You need first initlize child factory before use it.");
+            throw new \Exception("You need first initilize child factory before use it.");
         }
 
         if(!is_array($args)) $args = [$args];
