@@ -11,3 +11,6 @@ $ ->
         chosen.results_hide = ->
             chosen.search_field.val ''
             chosen.results_show()
+
+    # we dont want to help-button send form or make others default button actions
+    $('.admin-help').on 'click', (e)-> e.preventDefault()
