@@ -14,20 +14,36 @@ namespace 'Alcarin.Admin', (exports, Alcarin) ->
 
                 @phrases_list.update_chosen()
                 @phrases_list.parent().spin false
+                @phrases_list.trigger 'change'
 
+        on_sentence_changed: (response)=>
+            if response.success
+                sentence = response.sentence
+                console.log sentence
+
+        base_struct: =>
+            {
+                group: @group_choose.val()
+                lang: @lang_choose.val(),
+            }
 
         init: ->
             @proxy.on 'sentences.reload', @on_sentences_reload
+            @proxy.on 'sentence.changed', @on_sentence_changed
 
-            $gruop_choose = @source.find '.choose-group'
-            $lang_choose = @source.find '.choose-lang'
+            @group_choose = @source.find '.choose-group'
+            @lang_choose = @source.find '.choose-lang'
 
             @phrases_list = @source.find '.phrases-list'
 
-            $lang_choose.add($gruop_choose).on 'change', =>
+            @phrases_list.on 'change', =>
+                if @phrases_list.val()?
+                    @proxy.emit 'sentence.change', $.extend {
+                        sentence: @phrases_list.val()
+                    }, @base_struct()
+
+            @lang_choose.add(@group_choose).on 'change', =>
                 @phrases_list.parent().spin true
-                @proxy.emit 'group.change', {
-                    group: $gruop_choose.val()
-                    lang: $lang_choose.val(),
-                }
-            .trigger 'change'
+                @proxy.emit 'group.change', @base_struct()
+            @lang_choose.trigger 'change'
+

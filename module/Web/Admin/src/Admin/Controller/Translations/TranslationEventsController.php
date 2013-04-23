@@ -22,7 +22,7 @@ class TranslationEventsController extends AbstractEventController
 
             $keys = $this->system()->getSentencesKeysForGroup($group, $lang);
             //getting sentences plain names
-            $regex = sprintf('/%s\.(.*?)\..*?\.%s/', $group, $lang);
+            $regex = sprintf('/%s\.(.*?)(\..*?)?\.%s/', $group, $lang);
 
             $rKeys = [];
             $matches = null;
@@ -35,6 +35,22 @@ class TranslationEventsController extends AbstractEventController
             $result = $this->success(['sentences' => $rKeys]);
         }
         return $this->emit('sentences.reload', $result);
+    }
+
+    protected function onSentenceChange($data)
+    {
+        if(empty($data['sentence']) || empty($data['lang']) || empty($data['group'])) {
+            return $this->fail();
+        }
+
+        $sentence = $data['sentence'];
+        $group = $data['group'];
+        $lang = $data['lang'];
+
+        $tr = $this->system()->translation($group, $sentence, $lang);
+
+        $result = $this->success(['sentence' => $tr->value()]);
+        return $this->emit('sentence.changed', $result);
     }
 
     public function system()

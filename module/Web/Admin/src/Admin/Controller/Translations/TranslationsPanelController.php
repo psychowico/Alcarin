@@ -7,7 +7,6 @@ use Admin\GameObject\DynamicTranslations;
 
 class TranslationsPanelController extends AbstractAlcarinRestfulController
 {
-
     public function getList()
     {
         return [

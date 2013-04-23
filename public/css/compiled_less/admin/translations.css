@@ -6,4 +6,8 @@
 }
 .phrase-search-container .chzn-container {
   z-index: 1;
+  float: right;
+}
+.translation-options .chzn-container {
+  float: right;
 }

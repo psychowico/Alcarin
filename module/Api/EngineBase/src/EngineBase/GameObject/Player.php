@@ -28,6 +28,12 @@ class Player extends \Core\GameObject
         return $this->data;
     }
 
+    public function lang()
+    {
+        $data = $this->data();
+        return empty($data['lang']) ? 'pl' : $data['lang'];
+    }
+
     public function save($new_data = null)
     {
         if($new_data != null) {

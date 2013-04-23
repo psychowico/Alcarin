@@ -5,6 +5,10 @@ namespace('Alcarin.Admin', function(exports, Alcarin) {
 
     function TranslationsCenter(source) {
       this.source = source;
+      this.base_struct = __bind(this.base_struct, this);
+
+      this.on_sentence_changed = __bind(this.on_sentence_changed, this);
+
       this.on_sentences_reload = __bind(this.on_sentences_reload, this);
 
       this.proxy = new Alcarin.EventProxy(urls.translations);
@@ -23,24 +27,45 @@ namespace('Alcarin.Admin', function(exports, Alcarin) {
           }));
         }
         this.phrases_list.update_chosen();
-        return this.phrases_list.parent().spin(false);
+        this.phrases_list.parent().spin(false);
+        return this.phrases_list.trigger('change');
       }
     };
 
+    TranslationsCenter.prototype.on_sentence_changed = function(response) {
+      var sentence;
+      if (response.success) {
+        sentence = response.sentence;
+        return console.log(sentence);
+      }
+    };
+
+    TranslationsCenter.prototype.base_struct = function() {
+      return {
+        group: this.group_choose.val(),
+        lang: this.lang_choose.val()
+      };
+    };
+
     TranslationsCenter.prototype.init = function() {
-      var $gruop_choose, $lang_choose,
-        _this = this;
+      var _this = this;
       this.proxy.on('sentences.reload', this.on_sentences_reload);
-      $gruop_choose = this.source.find('.choose-group');
-      $lang_choose = this.source.find('.choose-lang');
+      this.proxy.on('sentence.changed', this.on_sentence_changed);
+      this.group_choose = this.source.find('.choose-group');
+      this.lang_choose = this.source.find('.choose-lang');
       this.phrases_list = this.source.find('.phrases-list');
-      return $lang_choose.add($gruop_choose).on('change', function() {
+      this.phrases_list.on('change', function() {
+        if (_this.phrases_list.val() != null) {
+          return _this.proxy.emit('sentence.change', $.extend({
+            sentence: _this.phrases_list.val()
+          }, _this.base_struct()));
+        }
+      });
+      this.lang_choose.add(this.group_choose).on('change', function() {
         _this.phrases_list.parent().spin(true);
-        return _this.proxy.emit('group.change', {
-          group: $gruop_choose.val(),
-          lang: $lang_choose.val()
-        });
-      }).trigger('change');
+        return _this.proxy.emit('group.change', _this.base_struct());
+      });
+      return this.lang_choose.trigger('change');
     };
 
     return TranslationsCenter;
