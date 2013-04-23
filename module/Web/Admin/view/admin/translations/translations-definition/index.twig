@@ -1,4 +1,68 @@
 {% extends "admin-layout" %}
 
 {% block content %}
+<div class="container" data-instance="Alcarin.Admin.TranslationsDefCenter">
+<div class="translation-options row">
+    <div class="span3">
+        <fieldset>
+            <legend>Phrase:</legend>
+            <label target="choose-group">Group:
+                <select id="choose-group" class="choose-group chosen">
+                    {% for group in groups %}
+                    <option>{{ group }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <div class="phrase-search-container">
+                <select id="phrases-list" class="phrases-list chosen-always-visible">
+                </select>
+            </div>
+
+        </fieldset>
+    </div>
+    <div class="span9 translation-panel">
+        <form method="post">
+            <fieldset>
+                <legend>Translation panel:</legend>
+                <div class="description">
+                    <label>
+                        {{ help('Here you should describe what concerns the translation, what is it meaning. Remember that others translators can not understand what do you mean without good description.', 'right') }}
+                        Description:
+                    </label>
+                    <textarea name="descr" value="{item.description}">{item.description}</textarea>
+                </div>
+                <div class="content">
+                    <label>
+                        {{ help('Proposed wording in Polish.', 'right') }}
+                        Original content(pl):
+                    </label>
+                    <textarea name="content"></textarea>
+                </div>
+                <div class="arguments">
+                    <label>
+                        {{ help('Describe the arguments which will be called this sentence.', 'right') }}
+                        Arguments definitions:
+                    </label>
+                    <div class="row-fluid">
+                        <div class="span4">
+                            <select size="4" name="args" class="args">
+                                <option value="{item.val}">{item.name}</option>
+                            </select>
+                            <div class="btn-toolbar">
+                                <div class="btn-group">
+                                    <a class="btn plus" href="#"><i class="icon-plus-sign"></i></a>
+                                    <a class="btn minus" href="#"><i class="icon-minus-sign"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="span8">
+                            <textarea name="arg-descr" class="arg-descr" value="{item.descr_arg}">{item.descr_arg}</textarea>
+                        </div>
+                </div>
+                <button class="confirm btn">Save</button>
+            </fieldset>
+        </form>
+    </div>
+</div>
+</div>
 {% endblock %}

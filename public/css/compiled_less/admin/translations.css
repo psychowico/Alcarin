@@ -11,3 +11,24 @@
 .translation-options .chzn-container {
   float: right;
 }
+.translation-panel fieldset > div {
+  padding: 0 15px;
+  width: 95%;
+}
+.translation-panel fieldset > div > * {
+  width: 100%;
+}
+.translation-panel fieldset > div textarea {
+  height: 70px;
+}
+.translation-panel fieldset .confirm {
+  width: 300px;
+}
+.translation-panel fieldset .arguments select,
+.translation-panel fieldset .arguments textarea {
+  width: 100%;
+}
+.translation-panel fieldset .arguments .btn-toolbar {
+  float: right;
+  margin-top: 0;
+}

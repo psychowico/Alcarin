@@ -37,15 +37,45 @@ class TranslationEventsController extends AbstractEventController
         return $this->emit('sentences.reload', $result);
     }
 
+    protected function onGroupDefChange($data)
+    {
+        if(empty($data['group']) ||
+           !in_array($data['group'], DynamicTranslations::$groups)) {
+            $result = $this->fail();
+        }
+        else {
+            $group = strtolower($data['group']);
+
+            $keys = $this->system()->def()->getAll($group);
+
+            $result = $this->success(['def' => array_values($keys)]);
+        }
+        return $this->emit('sentences.def.reload', $result);
+    }
+
+    protected function onSentenceDefChange($data)
+    {
+        if(empty($data['id'])) {
+            return $this->fail();
+        }
+
+        $id = $data['id'];
+
+        $definition = $this->system()->def()->get($id);
+
+        $result = $this->success(['def' => $definition]);
+        return $this->emit('sentence.def.changed', $result);
+    }
+
     protected function onSentenceChange($data)
     {
         if(empty($data['sentence']) || empty($data['lang']) || empty($data['group'])) {
             return $this->fail();
         }
 
-        $sentence = $data['sentence'];
-        $group = $data['group'];
-        $lang = $data['lang'];
+        $sentence = strtolower($data['sentence']);
+        $group = strtolower($data['group']);
+        $lang = strtolower($data['lang']);
 
         $tr = $this->system()->translation($group, $sentence, $lang);
 

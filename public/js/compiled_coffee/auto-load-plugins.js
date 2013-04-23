@@ -4,7 +4,7 @@ $(function() {
     disable_search: true
   });
   $('select.chosen-search').chosen({});
-  return $('select.chosen-always-visible').each(function() {
+  $('select.chosen-always-visible').each(function() {
     var chosen, _;
     _ = $(this);
     _.chosen({});
@@ -17,5 +17,8 @@ $(function() {
       chosen.search_field.val('');
       return chosen.results_show();
     };
+  });
+  return $('.admin-help').on('click', function(e) {
+    return e.preventDefault();
   });
 });
