@@ -10,6 +10,7 @@ class TranslationsDefinitionController extends AbstractAlcarinRestfulController
     {
         return [
             'groups' => DynamicTranslations::$groups,
+            'args_types' => DynamicTranslations::$args_types,
             'languages' => DynamicTranslations::$languages,
         ];
     }

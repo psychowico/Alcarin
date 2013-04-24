@@ -5,6 +5,8 @@ namespace Admin\GameObject;
 class DynamicTranslations extends \Core\GameObject
 {
     public static $groups = ['Events', 'Others', 'Test'];
+    //id has meaning in database - not change it if you wont know what you are doing
+    public static $args_types = [ 0 => 'Text', 1 => 'Object', 2 => 'Character'];
     public static $languages = ['pl'];
 
     protected $current_lang = 'pl';

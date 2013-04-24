@@ -22,13 +22,21 @@
   height: 70px;
 }
 .translation-panel fieldset .confirm {
-  width: 300px;
+  width: 400px;
+  margin-top: 50px;
 }
-.translation-panel fieldset .arguments select,
 .translation-panel fieldset .arguments textarea {
+  width: 100%;
+}
+.translation-panel fieldset .arguments select.args {
+  height: 200px;
   width: 100%;
 }
 .translation-panel fieldset .arguments .btn-toolbar {
   float: right;
   margin-top: 0;
+}
+#add-tag-modal .current-group {
+  font-weight: bold;
+  font-style: italic;
 }

@@ -37,6 +37,40 @@ class TranslationEventsController extends AbstractEventController
         return $this->emit('sentences.reload', $result);
     }
 
+    protected function onSentenceChange($data)
+    {
+        if(empty($data['sentence']) || empty($data['lang']) || empty($data['group'])) {
+            $result = $this->fail();
+        }
+        else {
+            $sentence = strtolower($data['sentence']);
+            $group = strtolower($data['group']);
+            $lang = strtolower($data['lang']);
+
+            $tr = $this->system()->translation($group, $sentence, $lang);
+
+            $result = $this->success(['sentence' => $tr->value()]);
+        }
+        return $this->emit('sentence.changed', $result);
+    }
+
+    /** sentence definitions **/
+
+
+    protected function onSentenceDefCreate($data)
+    {
+        if(empty($data['name']) || empty($data['group'])) {
+            $result = $this->fail();
+        }
+        else {
+            $group = strtolower($data['group']);
+            $name = strtolower($data['name']);
+            $res = $this->system()->def()->create($group, $name);
+            $result = $res ? $this->success() : $this->fail();
+        }
+        return $this->emit('sentence.def.created', $result);
+    }
+
     protected function onGroupDefChange($data)
     {
         if(empty($data['group']) ||
@@ -56,32 +90,34 @@ class TranslationEventsController extends AbstractEventController
     protected function onSentenceDefChange($data)
     {
         if(empty($data['id'])) {
-            return $this->fail();
+            $result = $this->fail();
         }
+        else {
+            $id = $data['id'];
 
-        $id = $data['id'];
+            $definition = $this->system()->def()->get($id);
 
-        $definition = $this->system()->def()->get($id);
-
-        $result = $this->success(['def' => $definition]);
+            $result = $this->success(['def' => $definition]);
+        }
         return $this->emit('sentence.def.changed', $result);
     }
 
-    protected function onSentenceChange($data)
+    protected function onSentenceDefSave($data)
     {
-        if(empty($data['sentence']) || empty($data['lang']) || empty($data['group'])) {
-            return $this->fail();
+        if(empty($data['id'])) {
+            $result = $this->fail();
         }
+        else {
+            $id = $data['id'];
 
-        $sentence = strtolower($data['sentence']);
-        $group = strtolower($data['group']);
-        $lang = strtolower($data['lang']);
-
-        $tr = $this->system()->translation($group, $sentence, $lang);
-
-        $result = $this->success(['sentence' => $tr->value()]);
-        return $this->emit('sentence.changed', $result);
+            $this->system()->def()->save($data);
+            $result = $this->success();
+        }
+        return $this->emit('sentence.def.saved', $result);
     }
+
+    /** end sentence definitions **/
+
 
     public function system()
     {
