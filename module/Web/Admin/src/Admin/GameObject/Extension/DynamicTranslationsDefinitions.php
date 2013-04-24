@@ -4,43 +4,28 @@ namespace Admin\GameObject\Extension;
 
 use Admin\GameObject\DynamicTranslations;
 
+/**
+ * definitions for events translation tags. so, tranlator can know how many
+ * args specific translation tags has etc.
+ */
 class DynamicTranslationsDefinitions extends \Core\GameObject
 {
-    protected function table()
-    {
-        return $this->mongo()->{'translations.def'};
-    }
+    const TEXT   = 0;
+    const CHAR   = 1;
+    const OBJECT = 2;
 
-    public function getAll($group_name)
-    {
-        return $this->table()->find([
-            'group' => $group_name
-        ])->fields(['key'])->toArray();
-    }
-
-    public function get($id)
-    {
-        return $this->table()->findOne([
-            '_id' => new \MongoId($id),
-        ]);
-    }
-
-    public function save($data)
-    {
-        return $this->table()->updateById( $data['id'], [
-            '$set' => [
-                'descr' => empty($data['descr']) ? '' : $data['descr'],
-                'args' => empty($data['args']) ? [] : $data['args']
+    protected $defs = [
+        'events.public-talk' => [
+            'descr' => 'Talking that can be hear only by involved chars - and by staying really close, in part.',
+            'args'        => [
+                ['type' => TEXT, 'descr' => 'Talking content.']
             ]
-        ]);
-    }
+        ]
+    ];
 
-    public function create($group, $key)
+    public function get($group, $key)
     {
-        $data = ['group' => $group, 'key' => $key];
-        $exists = $this->table()->find($data)->count();
-        if( $exists > 0 ) return false;
-
-        return $this->table()->insert($data);
+        $a_key = sprintf('%s.%s', $group, $key);
+        return empty($defs[$a_key]) ? null : $defs[$a_key];
     }
 }

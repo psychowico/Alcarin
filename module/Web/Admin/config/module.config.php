@@ -10,7 +10,6 @@ return array(
 
             'Admin\Controller\Users' => 'Admin\Controller\UsersController',
             'Admin\Controller\Translations\Translations' => 'Admin\Controller\Translations\TranslationsPanelController',
-            'Admin\Controller\Translations\Def' => 'Admin\Controller\Translations\TranslationsDefinitionController',
             'Admin\Controller\Translations\Events'       => 'Admin\Controller\Translations\TranslationEventsController',
 
             'Admin\Controller\Users\Privilages' => 'Admin\Controller\Users\PrivilagesController',

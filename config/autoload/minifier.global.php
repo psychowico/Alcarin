@@ -61,7 +61,6 @@ return array(
                             '/js/compiled_coffee/Orbis/Editor/toolbar.js',
                             '/js/compiled_coffee/Orbis/Editor/editor.js',
                             '/js/compiled_coffee/Admin/translations.js',
-                            '/js/compiled_coffee/Admin/translations-def.js',
                         ),
                     ),
                     //files for regular players

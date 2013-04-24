@@ -38,7 +38,6 @@ return array(
             'Admin\Controller\Users'            => Resource::ADMIN_USERS,
 
             'Admin\Controller\Translations\Translations' => Resource::ADMIN_TRANSLATIONS,
-            'Admin\Controller\Translations\Def' => Resource::ADMIN_TRANSLATIONS,
             'Admin\Controller\Translations\Events'       => Resource::ADMIN_TRANSLATIONS,
 
             'Admin\Controller\Users\Privilages' => [Resource::ADMIN_USERS, Resource::ADMIN_PRIVILAGES_MANAGING],
