@@ -17,22 +17,11 @@ class TranslationEventsController extends AbstractEventController
             $result = $this->fail();
         }
         else {
-            $group = strtolower($data['group']);
-            $lang = strtolower($data['lang']);
+            $group = $data['group'];
+            $lang = $data['lang'];
 
-            $keys = $this->system()->getSentencesKeysForGroup($group, $lang);
-            //getting sentences plain names
-            $regex = sprintf('/%s\.(.*?)(\..*?)?\.%s/', $group, $lang);
-
-            $rKeys = [];
-            $matches = null;
-            foreach ($keys as $key) {
-                preg_match($regex, $key, $matches);
-                $rKeys[$matches[1]] = null;
-            }
-            $rKeys = array_keys($rKeys);
-
-            $result = $this->success(['sentences' => $rKeys]);
+            $keys = $this->system()->getAllTagsIdInGroup($group, $lang);
+            $result = $this->success(['sentences' => $keys]);
         }
         return $this->emit('sentences.reload', $result);
     }
@@ -43,13 +32,13 @@ class TranslationEventsController extends AbstractEventController
             $result = $this->fail();
         }
         else {
-            $sentence = strtolower($data['sentence']);
-            $group = strtolower($data['group']);
-            $lang = strtolower($data['lang']);
+            $tagid = $data['sentence'];
+            $group = $data['group'];
+            $lang = $data['lang'];
 
-            $tr = $this->system()->translation($group, $sentence, $lang);
+            $def = $this->system()->getTagDefinition($group, $tagid, $lang);
 
-            $result = $this->success(['sentence' => $tr->value()]);
+            $result = $this->success(['sentence' => $def]);
         }
         return $this->emit('sentence.changed', $result);
     }

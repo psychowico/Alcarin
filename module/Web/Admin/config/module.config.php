@@ -45,7 +45,7 @@ return array(
             ),
             'game-objects-ext' => array(
                 'Admin\GameObject\DynamicTranslations' => array(
-                    'def' => 'Admin\GameObject\Extension\DynamicTranslationsDefinitions',
+                    'def' => 'Admin\GameObject\Extension\Translation\DynamicTranslationsDefinitions',
                 ),
                 'Admin\GameObject\Extension\OrbisMinimap' => array(
                     'properties' => 'EngineBase\GameObject\Extension\WorldProperties',

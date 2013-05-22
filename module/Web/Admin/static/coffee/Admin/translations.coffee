@@ -9,6 +9,8 @@ namespace 'Alcarin.Admin', (exports, Alcarin) ->
             if response.success
                 @sentences_list = response.sentences
                 @phrases_list.empty()
+                if response.sentences.length == 0
+                    @phrases_list.append $('<option>', {text: null})
                 for sentence in response.sentences
                     @phrases_list.append $('<option>', {text: sentence})
 
@@ -18,8 +20,10 @@ namespace 'Alcarin.Admin', (exports, Alcarin) ->
 
         on_sentence_changed: (response)=>
             if response.success
+                $editor = @source.find('.sentence-editor')
                 sentence = response.sentence
-                console.log sentence
+
+                $editor.toggle $.isPlainObject response.sentence
 
         base_struct: =>
             {

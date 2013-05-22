@@ -19,6 +19,11 @@ namespace('Alcarin.Admin', function(exports, Alcarin) {
       if (response.success) {
         this.sentences_list = response.sentences;
         this.phrases_list.empty();
+        if (response.sentences.length === 0) {
+          this.phrases_list.append($('<option>', {
+            text: null
+          }));
+        }
         _ref = response.sentences;
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           sentence = _ref[_i];
@@ -33,10 +38,11 @@ namespace('Alcarin.Admin', function(exports, Alcarin) {
     };
 
     TranslationsCenter.prototype.on_sentence_changed = function(response) {
-      var sentence;
+      var $editor, sentence;
       if (response.success) {
+        $editor = this.source.find('.sentence-editor');
         sentence = response.sentence;
-        return console.log(sentence);
+        return $editor.toggle($.isPlainObject(response.sentence));
       }
     };
 
