@@ -47,14 +47,18 @@ abstract class AbstractEventController extends AbstractActionController
             if($this->isJson()) {
                 $excrrors = [];
                 while($exc !== null) {
-                    $errors []= $exc->getMessage();
+                    $_errors = [$exc->getMessage()];
+
+                    if(defined('DEBUG')) {
+                        foreach(explode("\n", $exc->getTraceAsString()) as $line) {
+                            $_errors []= $line;
+                        }
+                    }
+                    $errors []= $_errors;
                     $exc = $exc->getPrevious();
                 }
-                if(count($errors) == 1) {
-                    $errors = $errors[0];
-                }
 
-                $result = $this->emit('system.exception', [$errors]);
+                $result = $this->emit('system.exception', $errors);
                 $e->setResult($result);
             }
             else {
