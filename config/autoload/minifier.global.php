@@ -14,17 +14,18 @@ return array(
                 'list'              => array(
                     'external'  => array(
                         'sources'   => array(
-                            '/js/jquery/jquery-1.9.1.js',
-                            '/js/jquery/jquery.ba-bbq-1.4pre.js',
-                            '/js/jquery/jquery.cookie-1.3.1.js',
-                            '/js/jquery/jquery.ui-1.10.2.js',
-                            '/js/jquery/chosen.jquery-0.9.12.js',
-                            '/js/bootstrap-2.3.1.js',
-                            '/js/bootstrap-editable-1.4.1.js',
-                            '/js/stacktrace-0.5.js',
-                            '/js/spin-1.2.8.js',
-                            '/js/bootstrap-colorpicker.js',
-                            '/js/rot-0.4.js'
+                            '/js/vendor/jquery/jquery-1.9.1.js',
+                            '/js/vendor/jquery/jquery.ba-bbq-1.4pre.js',
+                            '/js/vendor/jquery/jquery.cookie-1.3.1.js',
+                            '/js/vendor/jquery/jquery.ui-1.10.2.js',
+                            '/js/vendor/jquery/chosen.jquery-0.9.12.js',
+                            '/js/vendor/bootstrap/bootstrap-2.3.1.js',
+                            '/js/vendor/bootstrap/bootstrap-editable-1.4.1.js',
+                            '/js/vendor/stacktrace-0.5.js',
+                            '/js/vendor/spin-1.2.8.js',
+                            '/js/vendor/bootstrap/bootstrap-colorpicker.js',
+                            '/js/vendor/rot-0.4.js',
+                            '/js/vendor/angular-1.0.7.js'
                         ),
                     ),
                     'common'    => array(
@@ -75,12 +76,12 @@ return array(
                 'list'       => array(
                     'external'  => array(
                         'sources'   => array(
-                            '/css/bootstrap-2.3.1.css',
-                            '/css/bootstrap-responsive-2.3.1.css',
-                            '/css/bootstrap-editable-1.4.1.css',
-                            '/css/bootstrap-colorpicker.css',
-                            '/css/jquery.ui-1.10.2.css',
-                            '/css/chosen-0.9.12.css',
+                            '/css/vendor/bootstrap/bootstrap-2.3.1.css',
+                            '/css/vendor/bootstrap/bootstrap-responsive-2.3.1.css',
+                            '/css/vendor/bootstrap/bootstrap-editable-1.4.1.css',
+                            '/css/vendor/bootstrap/bootstrap-colorpicker.css',
+                            '/css/vendor/jquery.ui-1.10.2.css',
+                            '/css/vendor/chosen-0.9.12.css',
                         ),
                     ),
                     'common' => array(

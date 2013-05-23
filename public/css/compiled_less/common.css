@@ -6,7 +6,7 @@ html,
 body {
   color: #8f8f8f;
   background: #323232;
-  background: url('../../img/pattern.gif') repeat top left;
+  background: url('/img/pattern.gif') repeat top left;
 }
 h2 {
   font-family: dosissemibold;
