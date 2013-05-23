@@ -13,16 +13,15 @@ class AdminHomeController extends AbstractAlcarinRestfulController
             'icon'       => 'icon-search',
         ],
         [
+            'controller' => 'translations',
+            'title'      => 'Translate Panel',
+            'icon'       => 'icon-book',
+        ],
+        [
             'controller' => 'orbis',
             'namespace'  => 'Admin\Controller\Orbis',
             'title'      => '"Orbis" Editor',
             'icon'       => 'icon-globe',
-        ],
-        [
-            'controller' => 'translations',
-            'namespace'  => 'Admin\Controller\Translations',
-            'title'      => 'Translate Panel',
-            'icon'       => 'icon-book',
         ],
     ];
 

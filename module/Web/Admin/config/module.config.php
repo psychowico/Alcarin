@@ -8,10 +8,10 @@ return array(
         'invokables' => array(
             'Admin\Controller\Home'  => 'Admin\Controller\AdminHomeController',
 
-            'Admin\Controller\Users' => 'Admin\Controller\UsersController',
-            'Admin\Controller\Translations\Translations' => 'Admin\Controller\Translations\TranslationsPanelController',
-            'Admin\Controller\Translations\Events'       => 'Admin\Controller\Translations\TranslationEventsController',
+            'Admin\Controller\Translations'        => 'Admin\Controller\Translations\TranslationsPanelController',
+            'Admin\Controller\TranslationsEvents' => 'Admin\Controller\Translations\TranslationEventsController',
 
+            'Admin\Controller\Users' => 'Admin\Controller\UsersController',
             'Admin\Controller\Users\Privilages' => 'Admin\Controller\Users\PrivilagesController',
 
             'Admin\Controller\Orbis\Orbis' => 'Admin\Controller\OrbisController',
@@ -89,17 +89,6 @@ return array(
                     'restmode' => true,
                     'defaults' => array(
                         'controller' => 'Orbis',
-                    ),
-                ),
-            ),
-            'translations' => array(
-                'type'    => 'alcarin',
-                'options' => array(
-                    'route'    => '/admin/translations',
-                    'namespace'=> 'Admin\Controller\Translations',
-                    'restmode' => true,
-                    'defaults' => array(
-                        'controller' => 'translations',
                     ),
                 ),
             ),

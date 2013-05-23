@@ -37,8 +37,8 @@ return array(
             'Admin\Controller\Home'             => Resource::ADMIN_MENU,
             'Admin\Controller\Users'            => Resource::ADMIN_USERS,
 
-            'Admin\Controller\Translations\Translations' => Resource::ADMIN_TRANSLATIONS,
-            'Admin\Controller\Translations\Events'       => Resource::ADMIN_TRANSLATIONS,
+            'Admin\Controller\Translations' => Resource::ADMIN_TRANSLATIONS,
+            'Admin\Controller\TranslationsEvents'       => Resource::ADMIN_TRANSLATIONS,
 
             'Admin\Controller\Users\Privilages' => [Resource::ADMIN_USERS, Resource::ADMIN_PRIVILAGES_MANAGING],
             'Admin\Controller\Orbis\Orbis'    => [Resource::ADMIN_ORBIS],

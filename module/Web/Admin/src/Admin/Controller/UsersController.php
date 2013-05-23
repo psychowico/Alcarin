@@ -34,7 +34,7 @@ class UsersController extends AbstractAlcarinRestfulController
     {
         $hUser = $this->mongo()->users->findById($userid, ['email']);
         if( $hUser == null ) {
-            return $this->redirect()->toRoute('admin-users');
+            return $this->redirect()->toRoute('admin/default');
         }
         $model = new \Zend\View\Model\ViewModel();
         $model->setVariables( [

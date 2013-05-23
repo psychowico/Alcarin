@@ -134,6 +134,7 @@ class Module
         //resources, we render for him 'notallowed' site.
         $authService = $sm->get('auth-service');
         if( !$authService->isAllowedToController( $choosed ) ) {
+            $logger->debug('--- Refuse ---');
             $not_allowed_route_params = $sm->get('config')['controllers_access']['notallowed_route'];
             foreach ($not_allowed_route_params as $name => $value) {
                 $route_match->setParam( $name, $value);
@@ -141,6 +142,9 @@ class Module
             //let set redirect value
             $original_uri = $event->getRequest()->getServer( 'REQUEST_URI' );
             $event->getRequest()->getQuery()->set('redirect', $original_uri);
+        }
+        else {
+            $logger->debug('--- Granted ---');
         }
     }
 
