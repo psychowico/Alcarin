@@ -139,6 +139,7 @@ class Module
             foreach ($not_allowed_route_params as $name => $value) {
                 $route_match->setParam( $name, $value);
             }
+            $event->getResponse()->setStatusCode(401);
             //let set redirect value
             $original_uri = $event->getRequest()->getServer( 'REQUEST_URI' );
             $event->getRequest()->getQuery()->set('redirect', $original_uri);
