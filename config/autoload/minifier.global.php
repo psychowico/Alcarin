@@ -25,7 +25,7 @@ return array(
                             '/js/vendor/spin-1.2.8.js',
                             '/js/vendor/bootstrap/bootstrap-colorpicker.js',
                             '/js/vendor/rot-0.4.js',
-                            '/js/vendor/angular-1.0.7.js'
+                            '/js/vendor/angular-1.0.7.js',
                         ),
                     ),
                     'common'    => array(
@@ -45,6 +45,7 @@ return array(
                             '/js/compiled_coffee/Alcarin/JQueryPlugins/forms.js',
                             '/js/compiled_coffee/Alcarin/JQueryPlugins/others.js',
                             '/js/compiled_coffee/Dialogs/confirms.js',
+                            '/js/compiled_coffee/Alcarin/Angular/alcarin-events.js',
                         ),
                     ),
                     //files enough for guest users

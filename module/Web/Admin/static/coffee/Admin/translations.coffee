@@ -1,5 +1,20 @@
 namespace 'Alcarin.Admin', (exports, Alcarin) ->
 
+    angular.module('translations', ['alcarin-events'])
+           .factory('zf2action', (ZF2Action)->
+                ZF2Action urls.translations
+            )
+
+    exports.Translations = ($scope, zf2action)->
+        $scope.choose = {
+            lang: 'pl'
+            group: 'static'
+        }
+        $scope.reloadPhrases = ->
+            $scope.phrases = zf2action('get-sentences', $scope.choose)#.success (response)->
+            #     $scope.phrases = response
+
+
     class exports.TranslationsCenter
 
         constructor: (@source)->

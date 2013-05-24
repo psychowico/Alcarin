@@ -4,29 +4,11 @@ namespace Admin\Controller\Translations;
 
 use Core\Controller\AbstractEventController;
 use Admin\GameObject\DynamicTranslations;
+use Zend\Mvc\Controller\AbstractActionController;
 
-class TranslationEventsController extends AbstractEventController
+class TranslationEventsController extends AbstractActionController
 {
-    protected function onGroupChange($data)
-    {
-        if(empty($data['group']) ||
-           !in_array($data['group'], DynamicTranslations::$groups) ||
-           empty($data['lang']) ||
-           !in_array($data['lang'], DynamicTranslations::$languages)
-           ) {
-            $result = $this->fail();
-        }
-        else {
-            $group = $data['group'];
-            $lang = $data['lang'];
-
-            $keys = $this->system()->getAllTagsIdInGroup($group, $lang);
-            $result = $this->success(['sentences' => $keys]);
-        }
-        return $this->emit('sentences.reload', $result);
-    }
-
-    protected function onSentenceChange($data)
+    protected function sentenceChangeAction($data)
     {
         if(empty($data['sentence']) || empty($data['lang']) || empty($data['group'])) {
             $result = $this->fail();

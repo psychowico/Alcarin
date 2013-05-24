@@ -12,5 +12,5 @@ Hrefs shouldn't have '/' symbol at end.
     api: {
         errors: '/api/errors/external'
     }
-    translations: '/admin/translations-events'
+    translations: '/admin/translations/0'
 }

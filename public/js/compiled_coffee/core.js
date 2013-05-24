@@ -17,6 +17,22 @@ namespace = function(target, name, block) {
   return block(target, main_ns);
 };
 
+angular._module = angular.module;
+
+angular.module = function() {
+  var args;
+  args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+  if (args.length < 2) {
+    args.push([]);
+  }
+  if (args.length < 3) {
+    args.push(function($interpolateProvider) {
+      return $interpolateProvider.startSymbol('{*').endSymbol('*}');
+    });
+  }
+  return angular._module.apply(angular, args);
+};
+
 $(function() {
   $('[data-instance]').each(function() {
     var class_str, instance, splitted, str, _class, _i, _len;

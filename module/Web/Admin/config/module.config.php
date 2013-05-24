@@ -92,6 +92,19 @@ return array(
                     ),
                 ),
             ),
+            'translations' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/admin/translations[/[:id[/[:action]]]]',
+                    'constraints' => array(
+                        'id'     => '[a-zA-Z0-9_-]+',
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Translations',
+                    ),
+                ),
+            ),
         ),
         /* declaring specific routes subfolders and corresponding namespaces */
         'namespaces' => array(

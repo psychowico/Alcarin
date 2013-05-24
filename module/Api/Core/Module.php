@@ -143,6 +143,7 @@ class Module
             //let set redirect value
             $original_uri = $event->getRequest()->getServer( 'REQUEST_URI' );
             $event->getRequest()->getQuery()->set('redirect', $original_uri);
+            $event->getRequest()->setMethod('get');
         }
         else {
             $logger->debug('--- Granted ---');

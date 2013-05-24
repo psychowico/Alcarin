@@ -2,41 +2,49 @@
 
 {% block content %}
 <div class="container">
-<div class="translation-options row">
-    <div class="span3">
-        <fieldset>
-            <legend>Phrase:</legend>
-            <label target="choose-lang">Lang:
-                <select id="choose-lang" class="choose-lang chosen">
-                    {% for lang in languages %}
-                    <option>{{ lang }}</option>
-                    {% endfor %}
-                </select>
-            </label>
-            <label target="choose-group">Group:
-                <select id="choose-group" class="choose-group chosen">
-                    {% for group in groups %}
-                    <option>{{ group }}</option>
-                    {% endfor %}
-                </select>
-            </label>
-            <div class="phrase-search-container">
-                <select id="phrases-list" class="phrases-list chosen-always-visible">
-                </select>
-            </div>
-
-        </fieldset>
-    </div>
-    <div class="span9">
-        <fieldset>
-            <legend>Translation panel:</legend>
-            <div class="hide sentence-editor">
-                <div class="descr">
-                    <p>{description}</p>
+    <div class="translation-options row" ng-app="translations">
+        <div class="span3" ng-controller="Alcarin.Admin.Translations">
+            <fieldset>
+                <legend ng-click="test()">Phrase:</legend>
+                <label target="choose-lang">Lang:
+                    <select id="choose-lang" class="choose-lang chosen"
+                            ng-model="choose.lang" ng-change="reloadPhrases()" >
+                        {% for lang in languages %}
+                        <option>{{ lang }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+                <label target="choose-group">Group:
+                    <select id="choose-group" class="choose-group chosen"
+                        ng-model="choose.group" ng-change="reloadPhrases()">
+                        {% for group in groups %}
+                        <option>{{ group }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+                <div class="phrase-search-container">
+                    <!-- chosen-always-visible -->
+                    <p>{* phrases.length *}</p>
+                    <select id="phrases-list" class="phrases-list">
+                        <option ng-repeat="phrase in phrases.sentences" value="">
+                            {* phrase *}
+                        </option>
+                    </select>
                 </div>
-            </div>
-        </fieldset>
+
+            </fieldset>
+        </div>
+        <div class="span9">
+            <fieldset>
+                <legend>Translation panel:</legend>
+                <div class="sentence-editor">
+                    <div class="descr">
+                        <input type="text" ng-model="descr">
+                        <p>{* descr *}</p>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
     </div>
-</div>
 </div>
 {% endblock %}

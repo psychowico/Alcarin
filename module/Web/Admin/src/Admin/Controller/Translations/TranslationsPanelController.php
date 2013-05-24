@@ -22,4 +22,29 @@ class TranslationsPanelController extends AbstractAlcarinRestfulController
         $model->setTemplate('admin/translations-panel/get');
         return $model;
     }
+
+    public function getSentencesAction()
+    {
+        $data = $this->params()->fromPost();
+        if(empty($data['group']) ||
+           !in_array($data['group'], DynamicTranslations::$groups) ||
+           empty($data['lang']) ||
+           !in_array($data['lang'], DynamicTranslations::$languages)
+           ) {
+            return $this->json()->fail($data);
+        }
+        else {
+            $group = $data['group'];
+            $lang = $data['lang'];
+
+            $keys = $this->system()->getAllTagsIdInGroup($group, $lang);
+            return $this->json()->success(['sentences' => $keys]);
+        }
+    }
+
+
+    protected function system()
+    {
+        return $this->gameServices()->get('translations');
+    }
 }

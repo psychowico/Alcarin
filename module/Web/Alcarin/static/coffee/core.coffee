@@ -7,6 +7,15 @@ namespace = (target, name, block) ->
     target = target[item] or= {} for item in name.split '.'
     block target, main_ns
 
+# override angularjs default module method, to use {* *} delimiters as default
+angular._module = angular.module
+angular.module = (args...)->
+    args.push [] if args.length < 2
+    if args.length < 3
+        args.push ($interpolateProvider)->
+            $interpolateProvider.startSymbol('{*').endSymbol('*}')
+    angular._module.apply angular, args
+
 $ =>
     # find all objects with 'data-instance' attribute and try use it value as @_class.
     # it create instance of @_class with one argument - specific html element,

@@ -1,6 +1,18 @@
 var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 namespace('Alcarin.Admin', function(exports, Alcarin) {
+  angular.module('translations', ['alcarin-events']).factory('zf2action', function(ZF2Action) {
+    return ZF2Action(urls.translations);
+  });
+  exports.Translations = function($scope, zf2action) {
+    $scope.choose = {
+      lang: 'pl',
+      group: 'static'
+    };
+    return $scope.reloadPhrases = function() {
+      return $scope.phrases = zf2action('get-sentences', $scope.choose);
+    };
+  };
   return exports.TranslationsCenter = (function() {
 
     function TranslationsCenter(source) {
