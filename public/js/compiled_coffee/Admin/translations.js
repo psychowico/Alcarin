@@ -1,18 +1,20 @@
+'use strict';
+
 var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 namespace('Alcarin.Admin', function(exports, Alcarin) {
   angular.module('translations', ['alcarin-events']).factory('zf2action', function(ZF2Action) {
     return ZF2Action(urls.translations);
   });
-  exports.Translations = function($scope, zf2action) {
-    $scope.choose = {
+  exports.Translations = ngcontroller(function(zf2action) {
+    this.choose = {
       lang: 'pl',
       group: 'static'
     };
-    return $scope.reloadPhrases = function() {
-      return $scope.phrases = zf2action('get-sentences', $scope.choose);
+    return this.reloadPhrases = function() {
+      return this.phrases = zf2action('get-sentences', this.choose);
     };
-  };
+  }, 'zf2action');
   return exports.TranslationsCenter = (function() {
 
     function TranslationsCenter(source) {

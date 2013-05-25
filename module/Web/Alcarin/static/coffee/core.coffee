@@ -1,11 +1,20 @@
+'use strict'
+
 # Defining nice namespace support for coffee, check coffee-script FAQ for more info
 namespace = (target, name, block) ->
     [target, name, block] = [(if typeof exports isnt 'undefined' then exports else window), arguments...] if arguments.length < 3
-    target._ = target.Alcarin = target.Alcarin or= {}
+    #target._ = target.Alcarin = target.Alcarin or= {}
     main_ns = target.Alcarin
 
     target = target[item] or= {} for item in name.split '.'
     block target, main_ns
+
+# shorter angular  controller, check translations.cofffee for use example
+ngcontroller = (block, args...)->
+    inv = ['$scope'].concat args
+    inv.push ($scope, _args...)->
+        block.apply($scope, _args)
+    inv
 
 # override angularjs default module method, to use {* *} delimiters as default
 angular._module = angular.module

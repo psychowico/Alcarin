@@ -1,3 +1,5 @@
+'use strict'
+
 namespace 'Alcarin.Admin', (exports, Alcarin) ->
 
     angular.module('translations', ['alcarin-events'])
@@ -5,14 +7,14 @@ namespace 'Alcarin.Admin', (exports, Alcarin) ->
                 ZF2Action urls.translations
             )
 
-    exports.Translations = ($scope, zf2action)->
-        $scope.choose = {
+    exports.Translations = ngcontroller (zf2action)->
+        @choose = {
             lang: 'pl'
             group: 'static'
         }
-        $scope.reloadPhrases = ->
-            $scope.phrases = zf2action('get-sentences', $scope.choose)#.success (response)->
-            #     $scope.phrases = response
+        @reloadPhrases = ->
+            @phrases = zf2action 'get-sentences', @choose
+    , 'zf2action'
 
 
     class exports.TranslationsCenter

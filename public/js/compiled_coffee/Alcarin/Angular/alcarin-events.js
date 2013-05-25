@@ -1,7 +1,7 @@
 
 namespace('Alcarin.Angular', function(exports, Alcarin) {
   return angular.module('alcarin-events').factory('ZF2Action', [
-    '$q', '$http', '$rootScope', function($q, $http, $rootScope) {
+    '$http', function($http) {
       return function($uri) {
         return function(_action, _data) {
           var _url;

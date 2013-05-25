@@ -1,4 +1,6 @@
-var namespace,
+'use strict';
+
+var namespace, ngcontroller,
   __slice = [].slice,
   _this = this;
 
@@ -7,7 +9,6 @@ namespace = function(target, name, block) {
   if (arguments.length < 3) {
     _ref = [(typeof exports !== 'undefined' ? exports : window)].concat(__slice.call(arguments)), target = _ref[0], name = _ref[1], block = _ref[2];
   }
-  target._ = target.Alcarin = target.Alcarin || (target.Alcarin = {});
   main_ns = target.Alcarin;
   _ref1 = name.split('.');
   for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
@@ -15,6 +16,18 @@ namespace = function(target, name, block) {
     target = target[item] || (target[item] = {});
   }
   return block(target, main_ns);
+};
+
+ngcontroller = function() {
+  var args, block, inv;
+  block = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+  inv = ['$scope'].concat(args);
+  inv.push(function() {
+    var $scope, _args;
+    $scope = arguments[0], _args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+    return block.apply($scope, _args);
+  });
+  return inv;
 };
 
 angular._module = angular.module;
