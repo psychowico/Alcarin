@@ -1,6 +1,9 @@
+'use strict';
 
 namespace('Alcarin.Angular', function(exports, Alcarin) {
-  return angular.module('alcarin-events').factory('ZF2Action', [
+  var module;
+  module = angular.module('zf2-proxy');
+  return module.factory('ZF2Action', [
     '$http', function($http) {
       return function($uri) {
         return function(_action, _data) {

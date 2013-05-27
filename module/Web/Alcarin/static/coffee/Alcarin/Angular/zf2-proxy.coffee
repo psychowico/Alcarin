@@ -1,7 +1,11 @@
+'use strict'
 
 namespace 'Alcarin.Angular', (exports, Alcarin) ->
 
-    angular.module('alcarin-events').factory 'ZF2Action', ['$http', ($http)->
+    module = angular.module('zf2-proxy')
+
+    # zf2 action controllers connection model
+    module.factory 'ZF2Action', ['$http', ($http)->
         ($uri)->
             (_action, _data)->
                 _url = "#{$uri}/#{_action}"

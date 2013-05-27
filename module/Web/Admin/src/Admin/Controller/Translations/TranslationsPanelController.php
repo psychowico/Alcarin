@@ -16,13 +16,6 @@ class TranslationsPanelController extends AbstractAlcarinRestfulController
         ];
     }
 
-    public function get($tagid)
-    {
-        $model = new ViewModel();
-        $model->setTemplate('admin/translations-panel/get');
-        return $model;
-    }
-
     public function getSentencesAction()
     {
         $data = $this->params()->fromPost();
@@ -39,6 +32,23 @@ class TranslationsPanelController extends AbstractAlcarinRestfulController
 
             $keys = $this->system()->getAllTagsIdInGroup($group, $lang);
             return $this->json()->success(['sentences' => $keys]);
+        }
+    }
+
+    public function getSentenceAction()
+    {
+        $data = $this->params()->fromPost();
+        if(empty($data['sentence']) || empty($data['lang']) || empty($data['group'])) {
+            return $this->json()->fail();
+        }
+        else {
+            $tagid = $data['sentence'];
+            $group = $data['group'];
+            $lang = $data['lang'];
+
+            $def = $this->system()->getTagDefinition($group, $tagid, $lang);
+
+            return $this->json()->success(['sentence' => $def]);
         }
     }
 

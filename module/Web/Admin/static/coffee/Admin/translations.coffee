@@ -2,7 +2,7 @@
 
 namespace 'Alcarin.Admin', (exports, Alcarin) ->
 
-    angular.module('translations', ['alcarin-events'])
+    angular.module('translations', ['zf2-proxy', 'ng-chosen'])
            .factory('zf2action', (ZF2Action)->
                 ZF2Action urls.translations
             )
@@ -12,8 +12,16 @@ namespace 'Alcarin.Admin', (exports, Alcarin) ->
             lang: 'pl'
             group: 'static'
         }
+        @tag = {
+            id:     ''
+            descr:  ''
+        }
         @reloadPhrases = ->
             @phrases = zf2action 'get-sentences', @choose
+
+        @loadSentence = (test)->
+            #console.log @tag.id
+
     , 'zf2action'
 
 

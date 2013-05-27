@@ -3,7 +3,7 @@
 var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 namespace('Alcarin.Admin', function(exports, Alcarin) {
-  angular.module('translations', ['alcarin-events']).factory('zf2action', function(ZF2Action) {
+  angular.module('translations', ['zf2-proxy', 'ng-chosen']).factory('zf2action', function(ZF2Action) {
     return ZF2Action(urls.translations);
   });
   exports.Translations = ngcontroller(function(zf2action) {
@@ -11,9 +11,14 @@ namespace('Alcarin.Admin', function(exports, Alcarin) {
       lang: 'pl',
       group: 'static'
     };
-    return this.reloadPhrases = function() {
+    this.tag = {
+      id: '',
+      descr: ''
+    };
+    this.reloadPhrases = function() {
       return this.phrases = zf2action('get-sentences', this.choose);
     };
+    return this.loadSentence = function(test) {};
   }, 'zf2action');
   return exports.TranslationsCenter = (function() {
 

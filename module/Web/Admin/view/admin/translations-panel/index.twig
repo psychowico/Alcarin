@@ -2,10 +2,10 @@
 
 {% block content %}
 <div class="container">
-    <div class="translation-options row" ng-app="translations">
-        <div class="span3" ng-controller="Alcarin.Admin.Translations">
+    <div class="translation-options row" ng-app="translations"  ng-controller="Alcarin.Admin.Translations">
+        <div class="span3">
             <fieldset>
-                <legend ng-click="test()">Phrase:</legend>
+                <legend>Phrase:</legend>
                 <label target="choose-lang">Lang:
                     <select id="choose-lang" class="choose-lang chosen"
                             ng-model="choose.lang" ng-change="reloadPhrases()" >
@@ -24,11 +24,8 @@
                 </label>
                 <div class="phrase-search-container">
                     <!-- chosen-always-visible -->
-                    <p>{* phrases.length *}</p>
-                    <select id="phrases-list" class="phrases-list ">
-                        <option ng-repeat="phrase in phrases.sentences" value="">
-                            {* phrase *}
-                        </option>
+                    <select id="phrases-list" class="chosen-always-visible phrases-list" ng-options="p for p in phrases.sentences"
+                        ng-model="tag.id" ng-chosen-watch="phrases.sentences" ng-change="loadSentence()">
                     </select>
                 </div>
 
@@ -39,8 +36,7 @@
                 <legend>Translation panel:</legend>
                 <div class="sentence-editor">
                     <div class="descr">
-                        <input type="text" ng-model="descr">
-                        <p>{* descr *}</p>
+                        <p>{* tag.descr *}</p>
                     </div>
                 </div>
             </fieldset>

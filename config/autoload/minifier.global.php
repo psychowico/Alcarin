@@ -45,7 +45,8 @@ return array(
                             '/js/compiled_coffee/Alcarin/JQueryPlugins/forms.js',
                             '/js/compiled_coffee/Alcarin/JQueryPlugins/others.js',
                             '/js/compiled_coffee/Dialogs/confirms.js',
-                            '/js/compiled_coffee/Alcarin/Angular/alcarin-events.js',
+                            '/js/compiled_coffee/Alcarin/Angular/zf2-proxy.js',
+                            '/js/compiled_coffee/Alcarin/Angular/ng-chosen.js',
                         ),
                     ),
                     //files enough for guest users
