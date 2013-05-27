@@ -18,6 +18,13 @@ return array(
             'Admin\Controller\Orbis\Map' => 'Admin\Controller\Orbis\OrbisMapController',
             'Admin\Controller\Orbis\Gateways' => 'Admin\Controller\Orbis\GatewaysController',
             'Admin\Controller\Orbis\Editor' => 'Admin\Controller\Orbis\EditorController',
+
+            'Admin\Controller\Users\Privilages' => 'Admin\Controller\Users\PrivilagesController',
+
+
+            'Admin\Controller\Modules' => 'Admin\Controller\ModulesController'
+
+
         ),
     ),
 
@@ -110,6 +117,7 @@ return array(
         'namespaces' => array(
             'admin/subdefault' => array(
                 'users' => 'Admin\Controller\Users',
+                'modules' => 'Admin\Controller\Modules',
                 'orbis' => 'Admin\Controller\Orbis',
             ),
         ),
