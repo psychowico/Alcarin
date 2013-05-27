@@ -22,8 +22,8 @@ class DynamicTranslationsDefinitions extends \Core\GameObject
                     ['type' => DynamicTranslationsDefinitions::CHARNAME, 'descr' => 'Speaking person name.']
                 ],
                 'defaults'  => [
-                    'self'   => 'You say: %0',
-                    'others' => '%1 says: %0',
+                    ['name' => 'self',  'value' => 'You say: %0'],
+                    ['name' => 'others',  'value' => '%1 says: %0'],
                 ],
             ],
         ],

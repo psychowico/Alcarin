@@ -73,7 +73,9 @@ class DynamicTranslations extends \Core\GameObject
         $key = sprintf('/%s\.%s\..*\.%s/', $group, $tagid, $lang);
 
         if(in_array($group, static::$predefined_groups)) {
-            return $this->def()->get($group, $tagid) ?: [];
+            $def     = $this->def()->get($group, $tagid) ?: [];
+            $def['content'] = $this->translation($group, $tagid, $lang)->val();
+            return $def;
         }
         else {
             //will be done later

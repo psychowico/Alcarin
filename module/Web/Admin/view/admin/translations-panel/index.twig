@@ -8,7 +8,7 @@
                 <legend>Phrase:</legend>
                 <label target="choose-lang">Lang:
                     <select id="choose-lang" class="choose-lang chosen"
-                            ng-model="choose.lang" ng-change="reloadPhrases()" >
+                            ng-model="selected.choose.lang" ng-change="reloadSentences()" >
                         {% for lang in languages %}
                         <option>{{ lang }}</option>
                         {% endfor %}
@@ -16,7 +16,7 @@
                 </label>
                 <label target="choose-group">Group:
                     <select id="choose-group" class="choose-group chosen"
-                        ng-model="choose.group" ng-change="reloadPhrases()">
+                        ng-model="selected.choose.group" ng-change="reloadSentences()">
                         {% for group in groups %}
                         <option>{{ group }}</option>
                         {% endfor %}
@@ -25,21 +25,40 @@
                 <div class="phrase-search-container">
                     <!-- chosen-always-visible -->
                     <select id="phrases-list" class="chosen-always-visible phrases-list" ng-options="p for p in phrases.sentences"
-                        ng-model="tag.id" ng-chosen-watch="phrases.sentences" ng-change="loadSentence()">
+                        ng-model="selected.tag" ng-chosen-watch="phrases.sentences" ng-change="loadSentence()">
                     </select>
                 </div>
 
             </fieldset>
         </div>
         <div class="span9">
-            <fieldset>
-                <legend>Translation panel:</legend>
-                <div class="sentence-editor">
-                    <div class="descr">
-                        <p>{* tag.descr *}</p>
+            <form name="sentenceForm" ng-submit="saveSentence()">
+                <fieldset>
+                    <legend>Translation panel: <span>{* selected.tag *}</span></legend>
+                    <div class="sentence-editor" ng-show='tag != null'>
+                        <div class="row-fluid">
+                            <label>Translation ({* selected.choose.lang *}):
+                                <textarea name="descr" class="span12" ng-model="tag.content"></textarea>
+                            </label>
+                        </div>
+                        <div class="descr">
+                            <h4>Description:</h4>
+                            <span>{* tag.descr *}</span>
+                        </div>
+                        <div class="defaults">
+                            <h4>Defaults values:</h4>
+                            <ul>
+                                <li ng-repeat="def in tag.defaults">
+                                    <span>{* def.name *}</span> - <span>{* def.value *}</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="pull-right">
+                            <button class="btn span2" ng-disabled="!sentenceForm.$dirty || saving">Save</button>
+                        </div>
                     </div>
-                </div>
-            </fieldset>
+                </fieldset>
+            <form>
         </div>
     </div>
 </div>

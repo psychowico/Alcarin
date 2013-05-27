@@ -6,20 +6,38 @@ namespace('Alcarin.Angular', function(exports, Alcarin) {
   return module.factory('ZF2Action', [
     '$http', function($http) {
       return function($uri) {
-        return function(_action, _data) {
-          var _url;
+        var zf2action, zf2query;
+        zf2query = function(_action, _params, _callback) {
+          var result, _url;
           _url = "" + $uri + "/" + _action;
-          return $http({
+          _params.url = _url;
+          result = $http(_params);
+          if (_callback) {
+            return result.success(_callback);
+          }
+          return result.then(function(response) {
+            return response.data;
+          });
+        };
+        zf2action = function(_action, _data, _callback) {
+          return zf2action.get.call(zf2action, _action, _data, _callback);
+        };
+        zf2action.get = function(_action, _data, _callback) {
+          return zf2query(_action, {
+            method: 'GET',
+            params: _data
+          }, _callback);
+        };
+        zf2action.post = function(_action, _data, _callback) {
+          return zf2query(_action, {
             method: 'POST',
-            url: _url,
             data: $.param(_data),
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded'
             }
-          }).then(function(response) {
-            return response.data;
-          });
+          }, _callback);
         };
+        return zf2action;
       };
     }
   ]);

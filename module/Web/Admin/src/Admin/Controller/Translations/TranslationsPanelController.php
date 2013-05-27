@@ -18,7 +18,7 @@ class TranslationsPanelController extends AbstractAlcarinRestfulController
 
     public function getSentencesAction()
     {
-        $data = $this->params()->fromPost();
+        $data = $this->params()->fromQuery();
         if(empty($data['group']) ||
            !in_array($data['group'], DynamicTranslations::$groups) ||
            empty($data['lang']) ||
@@ -37,12 +37,12 @@ class TranslationsPanelController extends AbstractAlcarinRestfulController
 
     public function getSentenceAction()
     {
-        $data = $this->params()->fromPost();
-        if(empty($data['sentence']) || empty($data['lang']) || empty($data['group'])) {
+        $data = $this->params()->fromQuery();
+        if(empty($data['tagid']) || empty($data['lang']) || empty($data['group'])) {
             return $this->json()->fail();
         }
         else {
-            $tagid = $data['sentence'];
+            $tagid = $data['tagid'];
             $group = $data['group'];
             $lang = $data['lang'];
 
@@ -52,6 +52,24 @@ class TranslationsPanelController extends AbstractAlcarinRestfulController
         }
     }
 
+    public function saveSentenceAction()
+    {
+        $def = $this->params()->fromPost('def');
+        $tag = $this->params()->fromPost('tag');
+        if(empty($def['choose']['group']) || empty($def['choose']['lang']) ||
+            empty($def['tag'])) {
+            return $this->json()->fail();
+        }
+
+        $group = $def['choose']['group'];
+        $lang  = $def['choose']['lang'];
+
+        $new_content = empty($tag['content']) ? '' : $tag['content'];
+        $entry = $this->system()->translation($group, $def['tag'], $lang);
+        $entry->setValue($new_content);
+
+        return $this->json()->success();
+    }
 
     protected function system()
     {

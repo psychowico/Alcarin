@@ -21,6 +21,16 @@ class TranslationEntry extends \Core\GameObject
         return $this->generateKey();
     }
 
+    public function setValue($new_value, $variety = 'std')
+    {
+        $this->cache[$variety] = $new_value;
+        $this->variety = $variety;
+
+        $key = $this->generateKey();
+        $this->mongo()->translations->update(['_id' => $key],
+                      ['val' => $new_value, '_id' => $key], ['upsert' => true] );
+    }
+
     /**
      * just alias for "val"
      */
