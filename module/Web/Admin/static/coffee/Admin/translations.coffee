@@ -7,7 +7,7 @@ namespace 'Alcarin.Admin', (exports, Alcarin) ->
                 ZF2Action urls.translations
             )
 
-    exports.Translations = ngcontroller (zf2action, $q)->
+    exports.Translations = ngcontroller (zf2action)->
         @selected = {
             tag: ''
             choose: {
@@ -35,4 +35,4 @@ namespace 'Alcarin.Admin', (exports, Alcarin) ->
                 tag: @tag
             }, => @saving = false
 
-    , 'zf2action', '$q'
+    , 'zf2action'

@@ -4,7 +4,7 @@ namespace('Alcarin.Admin', function(exports, Alcarin) {
   angular.module('translations', ['zf2-proxy', 'ng-chosen']).factory('zf2action', function(ZF2Action) {
     return ZF2Action(urls.translations);
   });
-  return exports.Translations = ngcontroller(function(zf2action, $q) {
+  return exports.Translations = ngcontroller(function(zf2action) {
     this.selected = {
       tag: '',
       choose: {
@@ -39,5 +39,5 @@ namespace('Alcarin.Admin', function(exports, Alcarin) {
         return _this.saving = false;
       });
     };
-  }, 'zf2action', '$q');
+  }, 'zf2action');
 });
