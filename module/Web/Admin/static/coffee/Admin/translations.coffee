@@ -3,11 +3,11 @@
 namespace 'Alcarin.Admin', (exports, Alcarin) ->
 
     angular.module('translations', ['zf2-proxy', 'ng-chosen'])
-           .factory('zf2action', (ZF2Action)->
+           .factory('Translations', ['ZF2Action', (ZF2Action)->
                 ZF2Action urls.translations
-            )
+            ])
 
-    exports.Translations = ngcontroller (zf2action)->
+    exports.Translations = ngcontroller (Translations)->
         @selected = {
             tag: ''
             choose: {
@@ -15,24 +15,36 @@ namespace 'Alcarin.Admin', (exports, Alcarin) ->
                 group: 'static'
             }
         }
+
+        @reloadSentences = ->
+            @$broadcast 'sentence-clear'
+            @selected.tag = ''
+            @phrases = Translations 'get-sentences', @selected.choose
+
+        @loadSentence = ->
+            @$broadcast 'sentence-choosed'
+
+    , 'Translations'
+
+
+    exports.SelectedTranslation = ngcontroller (Translations)->
         @tag = null
         @saving = false
 
-        @reloadSentences = ->
-            @tag = null
-            @selected.tag = ''
-            @phrases = zf2action 'get-sentences', @selected.choose
-
-        @loadSentence = ->
+        fetchSentence = =>
             args = angular.extend {tagid: @selected.tag}, @selected.choose
-            zf2action 'get-sentence', args, (response)=>
+            Translations 'get-sentence', args, (response)=>
                 @tag = response.sentence
 
         @saveSentence = ->
             @saving = true
-            zf2action.post 'save-sentence', {
+            Translations.post 'save-sentence', {
                 def: @selected
                 tag: @tag
             }, => @saving = false
 
-    , 'zf2action'
+        @$on 'sentence-choosed', fetchSentence
+        @$on 'sentence-clear', => @tag = null
+
+
+    , 'Translations'

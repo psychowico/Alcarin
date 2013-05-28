@@ -14,7 +14,8 @@
                         {% endfor %}
                     </select>
                 </label>
-                <label target="choose-group">Group:
+                <label target="choose-group">
+                    Group:
                     <select id="choose-group" class="choose-group chosen"
                         ng-model="selected.choose.group" ng-change="reloadSentences()">
                         {% for group in groups %}
@@ -31,7 +32,7 @@
 
             </fieldset>
         </div>
-        <div class="span9">
+        <div class="span9" ng-controller="Alcarin.Admin.SelectedTranslation">
             <form name="sentenceForm" ng-submit="saveSentence()">
                 <fieldset>
                     <legend>Translation panel: <span>{* selected.tag *}</span></legend>

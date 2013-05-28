@@ -1,10 +1,12 @@
 'use strict';
 
 namespace('Alcarin.Admin', function(exports, Alcarin) {
-  angular.module('translations', ['zf2-proxy', 'ng-chosen']).factory('zf2action', function(ZF2Action) {
-    return ZF2Action(urls.translations);
-  });
-  return exports.Translations = ngcontroller(function(zf2action) {
+  angular.module('translations', ['zf2-proxy', 'ng-chosen']).factory('Translations', [
+    'ZF2Action', function(ZF2Action) {
+      return ZF2Action(urls.translations);
+    }
+  ]);
+  exports.Translations = ngcontroller(function(Translations) {
     this.selected = {
       tag: '',
       choose: {
@@ -12,32 +14,42 @@ namespace('Alcarin.Admin', function(exports, Alcarin) {
         group: 'static'
       }
     };
+    this.reloadSentences = function() {
+      this.$broadcast('sentence-clear');
+      this.selected.tag = '';
+      return this.phrases = Translations('get-sentences', this.selected.choose);
+    };
+    return this.loadSentence = function() {
+      return this.$broadcast('sentence-choosed');
+    };
+  }, 'Translations');
+  return exports.SelectedTranslation = ngcontroller(function(Translations) {
+    var fetchSentence,
+      _this = this;
     this.tag = null;
     this.saving = false;
-    this.reloadSentences = function() {
-      this.tag = null;
-      this.selected.tag = '';
-      return this.phrases = zf2action('get-sentences', this.selected.choose);
-    };
-    this.loadSentence = function() {
-      var args,
-        _this = this;
+    fetchSentence = function() {
+      var args;
       args = angular.extend({
-        tagid: this.selected.tag
-      }, this.selected.choose);
-      return zf2action('get-sentence', args, function(response) {
+        tagid: _this.selected.tag
+      }, _this.selected.choose);
+      return Translations('get-sentence', args, function(response) {
         return _this.tag = response.sentence;
       });
     };
-    return this.saveSentence = function() {
+    this.saveSentence = function() {
       var _this = this;
       this.saving = true;
-      return zf2action.post('save-sentence', {
+      return Translations.post('save-sentence', {
         def: this.selected,
         tag: this.tag
       }, function() {
         return _this.saving = false;
       });
     };
-  }, 'zf2action');
+    this.$on('sentence-choosed', fetchSentence);
+    return this.$on('sentence-clear', function() {
+      return _this.tag = null;
+    });
+  }, 'Translations');
 });
