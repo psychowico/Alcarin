@@ -19,7 +19,7 @@ return array(
                             '/js/vendor/jquery/jquery.cookie-1.3.1.js',
                             '/js/vendor/jquery/jquery.ui-1.10.2.js',
                             '/js/vendor/jquery/chosen.jquery-0.9.12.js',
-                            '/js/vendor/angular-1.0.7.js',
+                            '/js/vendor/angular-1.1.5.js',
                             '/js/vendor/bootstrap/bootstrap-2.3.1.js',
                             '/js/vendor/bootstrap/bootstrap-editable-1.4.1.js',
                             '/js/vendor/stacktrace-0.5.js',
