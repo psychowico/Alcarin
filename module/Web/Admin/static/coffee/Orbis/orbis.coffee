@@ -1,6 +1,35 @@
+'use strict'
+
 namespace 'Alcarin.Orbis', (exports, Alcarin) ->
-    
-    
+
+    angular.module('orbis', ['ng-popover', 'ng-x-editable', 'ng-gateways'])
+           .config ($routeProvider)->
+                $routeProvider
+                    .when '/groups',
+                        controller: Alcarin.Orbis.Gateways.List
+                        templateUrl: urls.orbis.panel + '/__gateways-list'
+                    .otherwise
+                        redirectTo:'/groups'
+
+                # when('/edit/:projectId', {controller:EditCtrl, templateUrl:'detail.html'}).
+                # when('/new', {controller:CreateCtrl, templateUrl:'detail.html'}).
+
+    exports.App = ngcontroller ->
+        @active_group = -1
+        @toggleGroup = (index)->
+            @active_group = if @active_group == index then -1 else index
+
+        # init : ->
+
+        #     # @init_radius_modal()
+
+        #     @map_info = @orbis.find '.info-popover'
+        #     @map_info.popover {html: true, trigger: 'manual'}
+        #     @map_info.parent().find('.map-info').one('mouseover', @load_map_info)
+        #                             .on 'click', => @map_info.popover 'toggle'
+
+    return
+
     class exports.Orbis
 
         constructor : ($orbis)->
@@ -67,7 +96,7 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
         init : ->
             $gateways = @orbis.find '.gateways-list'
 
-            @gateways = new Alcarin.Orbis.Gateways $gateways
+            @gateways = new Alcarin.Orbis.Gateways.Core $gateways
             @gateways.init()
 
             # @init_radius_modal()

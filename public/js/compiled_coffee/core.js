@@ -18,14 +18,18 @@ namespace = function(target, name, block) {
   return block(target, main_ns);
 };
 
-ngcontroller = function() {
-  var args, block, inv;
-  block = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+ngcontroller = function(block) {
+  var args, fun, inv;
+  if (!$.isArray(block)) {
+    block = [block];
+  }
+  args = block.length > 1 ? block.slice(0, -1) : [];
+  fun = block.slice(-1)[0];
   inv = ['$scope'].concat(args);
   inv.push(function() {
     var $scope, _args;
     $scope = arguments[0], _args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
-    return block.apply($scope, _args);
+    return fun.apply($scope, _args);
   });
   return inv;
 };
@@ -63,11 +67,6 @@ $(function() {
     instance = new _class($(this));
     return typeof instance.init === "function" ? instance.init() : void 0;
   });
-  $.fn.editable.defaults.ajaxOptions = {
-    type: 'put',
-    dataType: 'json'
-  };
-  $('.x-editable').editable();
   $('.ajax-form').on('submit', function(e) {
     return e.preventDefault();
   });
@@ -81,6 +80,5 @@ $(function() {
       return $(this).modal('hide');
     }
   });
-  $('.popover-invoke').popover();
   return $('body').disableSelection();
 });

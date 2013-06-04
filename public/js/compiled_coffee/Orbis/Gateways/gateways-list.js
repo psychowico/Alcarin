@@ -1,9 +1,43 @@
-var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+'use-strict';
+
+var __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
+  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-namespace('Alcarin.Orbis', function(exports, Alcarin) {
+namespace('Alcarin.Orbis.Gateways', function(exports, Alcarin) {
   var Gateway, GatewayEditor, GatewayGroup, root;
+  exports.List = ngcontroller([
+    'GatewaysGroup', 'Gateway', function(GatewaysGroup, Gateway) {
+      var _this = this;
+      this.gateways_groups = GatewaysGroup.query();
+      return this.rename = function(_group) {
+        return function(ign, new_name) {
+          var group;
+          if (!new_name) {
+            return "Can not be empty.";
+          }
+          if (__indexOf.call((function() {
+            var _i, _len, _ref, _results;
+            _ref = this.gateways_groups;
+            _results = [];
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+              group = _ref[_i];
+              _results.push(group.name);
+            }
+            return _results;
+          }).call(_this), new_name) >= 0) {
+            return "Group name reserved.";
+          }
+          group.name = new_name;
+          return group.$save(function(resp) {
+            return console.log(resp);
+          });
+        };
+      };
+    }
+  ]);
+  return;
   root = null;
   exports.Gateways = (function() {
 

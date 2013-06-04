@@ -1,8 +1,8 @@
 {% extends "admin-layout" %}
 
 {% block content %}
-<div id="orbis" data-instance="Alcarin.Orbis.Orbis">
-    <div class="row">
+<div id="orbis" ng-app="orbis">
+    <div class="row" ng-controller="Alcarin.Orbis.App">
         <div class="span6">
             <div class="info-container">
                 <h2 class="h2">
@@ -25,8 +25,10 @@
         </div>
         <div class="span6 gateways-list">
             <h2>{{ _('Gateways') }}</h2>
-            {{ partial('/admin/orbis/gateways-list', {}) }}
-            {{ partial('/admin/orbis/gateway-edit', {form: gateway_form}) }}
+            <div ng-view>
+            {# partial('/admin/orbis/gateways-list', {}) }}
+            {{ partial('/admin/orbis/gateway-edit', {form: gateway_form}) #}
+            </div>
         </div>
     </div>
 
@@ -35,11 +37,6 @@
         {% block body %}
             <p>You can only increase world radius - but this is very time-consuming and dangerous
             thing. You need contact alcarin developers team to do this. Current world radius is {{radius}}<b>u.</b> .</p>
-            {# bootstrap(radius_form, 'horizontal') #}
-            {#
-            <div class="radius-info-container">
-            </div>
-            #}
         {% endblock %}
         {% block footer %}
         <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>

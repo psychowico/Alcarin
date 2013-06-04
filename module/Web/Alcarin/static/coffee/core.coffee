@@ -14,10 +14,9 @@ ngcontroller = (block)->
     block = [block] if not $.isArray block
 
     args = if block.length > 1 then block[0...-1] else []
-    fun = block[-1..0][0]
+    fun = block[-1..][0]
 
     inv = ['$scope'].concat args
-
     inv.push ($scope, _args...)->
         fun.apply($scope, _args)
     inv
@@ -48,10 +47,6 @@ $ =>
         instance = new _class $(@)
         instance.init?()
 
-    #prepare x-editable defaults
-    $.fn.editable.defaults.ajaxOptions = {type: 'put', dataType: 'json'}
-    # apply x-editable plugin
-    $('.x-editable').editable()
     # prevent auto-commit all form with 'ajax-form' class
     $('.ajax-form').on 'submit', (e)->
         e.preventDefault()
@@ -64,7 +59,5 @@ $ =>
     $('.modal').on 'success', (e)->
         $(@).modal 'hide' if not e.isDefaultPrevented()
 
-    # auto-init popover and tooltip
-    $('.popover-invoke').popover()
     # disable selection on site
     $('body').disableSelection()

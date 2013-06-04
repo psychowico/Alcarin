@@ -1,6 +1,23 @@
+'use strict';
+
 var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 namespace('Alcarin.Orbis', function(exports, Alcarin) {
+  angular.module('orbis', ['ng-popover', 'ng-x-editable', 'ng-gateways']).config(function($routeProvider) {
+    return $routeProvider.when('/groups', {
+      controller: Alcarin.Orbis.Gateways.List,
+      templateUrl: urls.orbis.panel + '/__gateways-list'
+    }).otherwise({
+      redirectTo: '/groups'
+    });
+  });
+  exports.App = ngcontroller(function() {
+    this.active_group = -1;
+    return this.toggleGroup = function(index) {
+      return this.active_group = this.active_group === index ? -1 : index;
+    };
+  });
+  return;
   return exports.Orbis = (function() {
 
     function Orbis($orbis) {
@@ -76,7 +93,7 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
       var $gateways,
         _this = this;
       $gateways = this.orbis.find('.gateways-list');
-      this.gateways = new Alcarin.Orbis.Gateways($gateways);
+      this.gateways = new Alcarin.Orbis.Gateways.Core($gateways);
       this.gateways.init();
       this.map_info = this.orbis.find('.info-popover');
       this.map_info.popover({

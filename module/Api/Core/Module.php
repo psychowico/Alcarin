@@ -34,6 +34,10 @@ class Module
             $eventManager->attach( MvcEvent::EVENT_ROUTE , array( $this, 'setupAccessSystem' ), -100 );
 
             $this->setupRestfulStandard($sm, $request);
+
+            $sharedEvents = $eventManager->getSharedManager();
+            $injectTemplateListener = new \Core\Mvc\View\Http\InjectTemplateListener();
+            $sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, array($injectTemplateListener, 'injectTemplate'), -81);
         }
 
         $this->setupGameModulesSystem($sm);

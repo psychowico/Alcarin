@@ -6,6 +6,7 @@ use Zend\Mvc\Router\RouteMatch;
 
 class AdminHomeController extends AbstractAlcarinRestfulController
 {
+    protected $filter = null;
     protected $admin_pages = [
         [
             'controller' => 'users',
@@ -18,8 +19,9 @@ class AdminHomeController extends AbstractAlcarinRestfulController
             'icon'       => 'icon-book',
         ],
         [
-            'controller' => 'orbis',
+            'controller' => 'GatewaysPanel',
             'namespace'  => 'Admin\Controller\Orbis',
+            'route'      => 'orbis',
             'title'      => '"Orbis" Editor',
             'icon'       => 'icon-globe',
         ],
@@ -47,9 +49,23 @@ class AdminHomeController extends AbstractAlcarinRestfulController
         return [ 'pages' => $result ];
     }
 
+    private function routeFilter()
+    {
+        if($this->filter == null) {
+            $filter = new \Zend\Filter\FilterChain();
+            $filter->attach(new \Zend\Filter\Word\CamelCaseToDash());
+            $filter->attach(new \Zend\Filter\StringToLower());
+            $this->filter = $filter;
+        }
+        return $this->filter;
+
+    }
+
     private function pageData( $data ) {
+        $route_name = empty($data['route']) ? 'admin/default' : $data['route'];
+        $controller = $this->routeFilter()->filter($data['controller']);
         return [
-            'href' => $this->url()->fromRoute( 'admin/default', [ 'controller' => $data['controller'] ] ),
+            'href' => $this->url()->fromRoute( $route_name, [ 'controller' => $controller ] ),
             'icon' => empty( $data['icon'] ) ? null : $data['icon'],
             'title'  => empty( $data['title'] ) ? null : $data['title'],
         ];

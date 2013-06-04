@@ -7,7 +7,7 @@ namespace 'Alcarin.Admin', (exports, Alcarin) ->
                 ZF2Action urls.translations
             ])
 
-    exports.Translations = ngcontroller (Translations)->
+    exports.Translations = ngcontroller [ 'Translations', (Translations)->
         @selected = {
             tag: ''
             choose: {
@@ -23,8 +23,7 @@ namespace 'Alcarin.Admin', (exports, Alcarin) ->
 
         @loadSentence = ->
             @$broadcast 'sentence-choosed'
-
-    , 'Translations'
+    ]
 
 
     exports.SelectedTranslation = ngcontroller (Translations)->

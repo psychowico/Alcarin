@@ -1,0 +1,48 @@
+<div class="gateways-groups">
+    <div class="add clearfix">
+        {{ help('Here you can create new gateways and change it position.
+                 To edit existing gateway click it name.') }}
+        <button class="btn btn-inverse add-group">{{ _('Add group') }}</button>
+    </div>
+    <div class="accordion active-group">
+        <div class="accordion-group" ng-repeat="group in gateways_groups">
+            <div class="accordion-heading">
+                <div class="group-name">
+                    <div ng-show="group.name != 0">
+                        <button class="edit-group btn-inverse"
+                            ng-x-editable="{value: group.name, success: rename(group)}" data-placement="left" data-name="group-name"
+                            data-type="text" data-params="{mode: 'group'}" data-display="false"
+                            data-placeholder="group new name" data-send="always">
+                            <i class="icon-edit icon-white"></i>
+                        </button>
+                    </div>
+
+                    <a ng-click="$parent.toggleGroup($index)" class="group-header accordion-toggle text-center"
+                        data-toggle="collapse" data-parent="#acc-group">
+                        <span>{* group.displayname() *}</span>
+                        <button class="close delete-group {item.edit_btn_class}">&times;</button>
+                    </a>
+                </div>
+            </div>
+            <div class="accordion-body collapse" ng-class="{in: $index == active_group}">
+                <div class="accordion-inner navbar-inverse">
+                    <ul class="items unstyled">
+                        <li class="gateway" ng-repeat="gateway in group.gateways" data-gateway-id="{item.id}">
+                            <button class="close delete-gateway">&times;</button>
+                            <a href="#" class="edit btn-mini btn btn-inverse">EDIT</a>
+                            <a ng-href="{{ url('orbis', {controller: 'editor'}) }}#x={* gateway.x *}&y={* gateway.y *}"
+                                title="{* gateway.description *}">
+                                <i class="icon-flag"></i><span class="name">{* gateway.name *}</span>
+                                <span class="description">, {* gateway.description *}</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="unstyled">
+                        <li class="horizontal-divider"></li>
+                        <li><a href="#" class="create-gateway"><i class="icon-plus"></i>Add</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

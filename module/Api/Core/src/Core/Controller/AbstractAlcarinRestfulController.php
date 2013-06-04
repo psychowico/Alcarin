@@ -90,6 +90,15 @@ abstract class AbstractAlcarinRestfulController extends AbstractRestfulControlle
     {
         $routeMatch = $e->getRouteMatch();
         $action  = $routeMatch->getParam('action', false);
+        $template  = $routeMatch->getParam('template', false);
+
+        if($template) {
+            $response = $e->getResponse();
+            //automatic cache angularjs template files
+            $response->getHeaders()
+                     ->addHeaderLine('Cache-Control: max-age=290304000, public');
+            return [];
+        }
 
         try {
             $result = parent::onDispatch($e);

@@ -6,23 +6,25 @@ namespace('Alcarin.Admin', function(exports, Alcarin) {
       return ZF2Action(urls.translations);
     }
   ]);
-  exports.Translations = ngcontroller(function(Translations) {
-    this.selected = {
-      tag: '',
-      choose: {
-        lang: 'pl',
-        group: 'static'
-      }
-    };
-    this.reloadSentences = function() {
-      this.$broadcast('sentence-clear');
-      this.selected.tag = '';
-      return this.phrases = Translations('get-sentences', this.selected.choose);
-    };
-    return this.loadSentence = function() {
-      return this.$broadcast('sentence-choosed');
-    };
-  }, 'Translations');
+  exports.Translations = ngcontroller([
+    'Translations', function(Translations) {
+      this.selected = {
+        tag: '',
+        choose: {
+          lang: 'pl',
+          group: 'static'
+        }
+      };
+      this.reloadSentences = function() {
+        this.$broadcast('sentence-clear');
+        this.selected.tag = '';
+        return this.phrases = Translations('get-sentences', this.selected.choose);
+      };
+      return this.loadSentence = function() {
+        return this.$broadcast('sentence-choosed');
+      };
+    }
+  ]);
   return exports.SelectedTranslation = ngcontroller(function(Translations) {
     var fetchSentence,
       _this = this;

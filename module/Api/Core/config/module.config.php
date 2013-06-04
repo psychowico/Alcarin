@@ -24,6 +24,7 @@ return array(
             'redirect'  => 'Core\Mvc\Controller\Plugin\Redirect',
             'json'      => 'Core\Mvc\Controller\Plugin\Json',
             'isJson'      => 'Core\Mvc\Controller\Plugin\IsJson',
+            'badRequest'      => 'Core\Mvc\Controller\Plugin\BadRequest',
         ),
     ),
 

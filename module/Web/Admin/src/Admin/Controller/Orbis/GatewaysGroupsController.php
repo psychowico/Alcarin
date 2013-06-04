@@ -4,12 +4,33 @@ namespace Admin\Controller\Orbis;
 
 use Core\Controller\AbstractAlcarinRestfulController;
 
-class GatewaysController extends AbstractAlcarinRestfulController
+class GatewaysGroupsController extends AbstractAlcarinRestfulController
 {
     public function getList()
     {
         $gateways_data = $this->orbis()->gateways()->find();
+
+        $grouped_gateways = [];
+        foreach($gateways_data as $key => $group) {
+            $grouped_gateways []= [
+                'id'   => strval($key),
+                'name' => strval($key),
+                'gateways' => array_map( function($gateway) {
+                    $gateway['id'] = $gateway['_id']->{'$id'};
+                    unset($gateway['_id']);
+                    return $gateway;
+                }, $group ),
+            ];
+        }
+
         return $this->json($grouped_gateways);
+    }
+
+    public function update($group_id, $data)
+    {
+        if(empty($data['name']) or $data['name'] == 0) return $this->badRequest();
+        // $newname = $data['name']
+        return $this->json();
     }
 
     protected function orbis()

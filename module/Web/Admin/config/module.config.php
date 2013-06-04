@@ -1,5 +1,7 @@
 <?php
+
 return array(
+
     'module_layouts' => array(
         'Admin' => 'admin-layout',
     ),
@@ -14,10 +16,14 @@ return array(
             'Admin\Controller\Users' => 'Admin\Controller\UsersController',
             'Admin\Controller\Users\Privilages' => 'Admin\Controller\Users\PrivilagesController',
 
-            'Admin\Controller\Orbis\Orbis' => 'Admin\Controller\OrbisController',
-            'Admin\Controller\Orbis\Map' => 'Admin\Controller\Orbis\OrbisMapController',
+            // 'admin\orbis\Editor' => 'Admin\Controller\Orbis\EditorController',
+            // 'orbis\Gateways' => 'Admin\Controller\Orbis\GatewaysController',
+
+            // 'Admin\Controller\Orbis\Orbis' => 'Admin\Controller\OrbisController',
+            // 'Admin\Controller\Orbis\Map' => 'Admin\Controller\Orbis\OrbisMapController',
             'Admin\Controller\Orbis\Gateways' => 'Admin\Controller\Orbis\GatewaysController',
-            'Admin\Controller\Orbis\Editor' => 'Admin\Controller\Orbis\EditorController',
+            'Admin\Controller\Orbis\GatewaysGroups' => 'Admin\Controller\Orbis\GatewaysGroupsController',
+            'Admin\Controller\Orbis\GatewaysPanel' => 'Admin\Controller\Orbis\GatewaysPanelController',
 
             'Admin\Controller\Users\Privilages' => 'Admin\Controller\Users\PrivilagesController',
 
@@ -75,53 +81,7 @@ return array(
         ),
     ),
 
-    'router' => array(
-        'routes' => array(
-            'admin' => array(
-                'type'    => 'alcarin',
-                'options' => array(
-                    'route'    => '/admin',
-                    'namespace'=> 'Admin\Controller',
-                    'restmode' => true,
-                    'defaults' => array(
-                        'controller' => 'Home',
-                    ),
-                ),
-            ),
-            'orbis' => array(
-                'type'    => 'alcarin',
-                'options' => array(
-                    'route'    => '/admin/orbis',
-                    'namespace'=> 'Admin\Controller\Orbis',
-                    'restmode' => true,
-                    'defaults' => array(
-                        'controller' => 'Orbis',
-                    ),
-                ),
-            ),
-            'translations' => array(
-                'type'    => 'segment',
-                'options' => array(
-                    'route'    => '/admin/translations[/[:id[/[:action]]]]',
-                    'constraints' => array(
-                        'id'     => '[a-zA-Z0-9_-]+',
-                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    ),
-                    'defaults' => array(
-                        'controller' => 'Admin\Controller\Translations',
-                    ),
-                ),
-            ),
-        ),
-        /* declaring specific routes subfolders and corresponding namespaces */
-        'namespaces' => array(
-            'admin/subdefault' => array(
-                'users' => 'Admin\Controller\Users',
-                'modules' => 'Admin\Controller\Modules',
-                'orbis' => 'Admin\Controller\Orbis',
-            ),
-        ),
-    ),
+    'router' => include __DIR__ . '/router.config.php',
 
     'view_manager' => array(
         'template_map' => array(

@@ -45,10 +45,10 @@ return array(
 
             'Admin\Controller\Modules'          => [],
 
-            'Admin\Controller\Orbis\Orbis'    => [Resource::ADMIN_ORBIS],
-            'Admin\Controller\Orbis\Gateways' => [Resource::ADMIN_ORBIS],
+            'Admin\Controller\Orbis\GatewaysPanel'  => [Resource::ADMIN_ORBIS],
+            'Admin\Controller\Orbis\GatewaysGroups' => [Resource::ADMIN_ORBIS],
+            'Admin\Controller\Orbis\Gateways'       => [Resource::ADMIN_ORBIS],
             'Admin\Controller\Orbis\Map'      => [Resource::ADMIN_ORBIS],
-            'Admin\Controller\Orbis\Editor'   => [Resource::ADMIN_ORBIS],
         ),
     ),
 
