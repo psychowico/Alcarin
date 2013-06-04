@@ -10,10 +10,16 @@ namespace = (target, name, block) ->
     block target, main_ns
 
 # shorter angular  controller, check translations.cofffee for use example
-ngcontroller = (block, args...)->
+ngcontroller = (block)->
+    block = [block] if not $.isArray block
+
+    args = if block.length > 1 then block[0...-1] else []
+    fun = block[-1..0][0]
+
     inv = ['$scope'].concat args
+
     inv.push ($scope, _args...)->
-        block.apply($scope, _args)
+        fun.apply($scope, _args)
     inv
 
 # override angularjs default module method, to use {* *} delimiters as default
