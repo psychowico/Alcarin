@@ -92,6 +92,23 @@ abstract class AbstractAlcarinRestfulController extends AbstractRestfulControlle
         throw new \Exception($errstr);
     }
 
+    /**
+     * Transform an "template" token into a method name
+     *
+     * @param  string $action
+     * @return string
+     */
+    private static function getMethodFromTemplate($action)
+    {
+        $method  = str_replace(array('.', '-', '_'), ' ', $action);
+        $method  = ucwords($method);
+        $method  = str_replace(' ', '', $method);
+        $method  = lcfirst($method);
+        $method .= 'Template';
+
+        return $method;
+    }
+
     public function onDispatch(MvcEvent $e)
     {
         if($this->isJson()) {
@@ -99,15 +116,22 @@ abstract class AbstractAlcarinRestfulController extends AbstractRestfulControlle
         }
 
         $routeMatch = $e->getRouteMatch();
-        $action  = $routeMatch->getParam('action', false);
-        $template  = $routeMatch->getParam('template', false);
+        $action   = $routeMatch->getParam('action', false);
+        $template = $routeMatch->getParam('template', false);
 
         if($template) {
             $response = $e->getResponse();
             //automatic cache angularjs template files
             $response->getHeaders()
                      ->addHeaderLine('Cache-Control: max-age=290304000, public');
-            return [];
+            $meth = static::getMethodFromTemplate($template);
+
+            $result = [];
+            if(method_exists($this, $meth)) {
+                $result = $this->{$meth}();
+            }
+            $e->setResult($result);
+            return $result;
         }
         else {
             try {
@@ -131,6 +155,7 @@ abstract class AbstractAlcarinRestfulController extends AbstractRestfulControlle
 
                 $result = $this->json()->fail(['errors' => $errors]);
                 $e->setResult($result);
+                $e->getResponse()->setStatusCode(500);
             }
 
             if (!$action) {
