@@ -9,14 +9,20 @@ use Zend\Mvc\Controller\Plugin\AbstractPlugin;
  */
 class IsJson extends AbstractPlugin
 {
+    protected $is_json = null;
+
     public function __invoke( $array = null )
     {
-        $headers = $this->getController()->getRequest()->getHeaders();
-        if (!$headers->has('accept')) return false;
+        if($this->is_json === null) {
+            $headers = $this->getController()->getRequest()->getHeaders();
+            if (!$headers->has('accept')) return false;
 
-        $accept  = $headers->get('accept');
+            $accept  = $headers->get('accept');
 
-        $match = $accept->match('application/json, application/javascript');
-        return $match->getTypeString() == 'application/json';
+            $match = $accept->match('application/json, application/javascript');
+            $this->is_json = $match->getTypeString() == 'application/json';
+        }
+
+        return $this->is_json;
     }
 }
