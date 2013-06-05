@@ -86,8 +86,18 @@ abstract class AbstractAlcarinRestfulController extends AbstractRestfulControlle
         throw new \LogicException("Method '$type' in controller '$className' isn't implemented yet.");
     }
 
+    //we want throw notices and warnings as exceptions
+    //so we can easly debuging ajax controllers
+    public function custom_warning_handler($errno, $errstr) {
+        throw new \Exception($errstr);
+    }
+
     public function onDispatch(MvcEvent $e)
     {
+        if($this->isJson()) {
+            set_error_handler([$this, 'custom_warning_handler'], E_NOTICE | E_WARNING);
+        }
+
         $routeMatch = $e->getRouteMatch();
         $action  = $routeMatch->getParam('action', false);
         $template  = $routeMatch->getParam('template', false);
@@ -99,33 +109,38 @@ abstract class AbstractAlcarinRestfulController extends AbstractRestfulControlle
                      ->addHeaderLine('Cache-Control: max-age=290304000, public');
             return [];
         }
+        else {
+            try {
+                $result = parent::onDispatch($e);
+            }
+            catch( \Exception $exc ) {
+                if(!$this->isJson()) throw $exc;
 
-        try {
-            $result = parent::onDispatch($e);
-        }
-        catch( \Exception $exc ) {
-            if($this->isJson()) {
                 $excrrors = [];
                 while($exc !== null) {
-                    $errors []= $exc->getMessage();
+                    $_errors = [$exc->getMessage()];
+
+                    if(defined('DEBUG')) {
+                        foreach(explode("\n", $exc->getTraceAsString()) as $line) {
+                            $_errors []= $line;
+                        }
+                    }
+                    $errors []= $_errors;
                     $exc = $exc->getPrevious();
-                }
-                if(count($errors) == 1) {
-                    $errors = $errors[0];
                 }
 
                 $result = $this->json()->fail(['errors' => $errors]);
                 $e->setResult($result);
             }
-            else {
-                throw $exc;
+
+            if (!$action) {
+                $routeMatch->setParam( 'action', 'index' );
             }
         }
 
-        if (!$action) {
-            $routeMatch->setParam( 'action', 'index' );
+        if($this->isJson()) {
+            restore_error_handler();
         }
-
         return $result;
     }
 
