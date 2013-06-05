@@ -36,7 +36,8 @@ namespace 'Alcarin.JQueryPlugins', (exports, Alcarin) ->
         return this
                  .attr('unselectable', 'on')
                  .css('user-select', 'none')
-                 .on('selectstart', false)
+                 # this blocking ctrl+a in textarea too, stupid
+                 #.on('selectstart', false)
 
     # adding relative position set feature
     _old_position = $.fn.position
