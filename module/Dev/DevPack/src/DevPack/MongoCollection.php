@@ -16,17 +16,12 @@ class MongoCollection extends \Mongo_Collection
     return $result;
   }
 
-  public function updateById($_id, $dataset, $safe = true)
+  public function updateById($_id, $dataset)
   {
     if(!$_id instanceof \MongoId) {
       $_id = new \MongoId($_id);
     }
-    if($safe) {
-      return $this->update_safe(['_id' => $_id], $dataset);
-    }
-    else {
-      return $this->update(['_id' => new $_id], $dataset);
-    }
+    return $this->update_safe(['_id' => $_id], $dataset);
   }
 
   public function removeById($_id, $safe = true)
