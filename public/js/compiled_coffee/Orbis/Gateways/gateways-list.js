@@ -13,7 +13,7 @@ namespace('Alcarin.Orbis.Gateways', function(exports, Alcarin) {
       this.gateways_groups = GatewaysGroup.query({
         full: true
       });
-      return this.rename = function(_group) {
+      this.rename = function(_group) {
         return function(ign, new_name) {
           var group;
           if (!new_name) {
@@ -35,6 +35,13 @@ namespace('Alcarin.Orbis.Gateways', function(exports, Alcarin) {
           return group.$save();
         };
       };
+      this.hoverGateway = function(gateway) {
+        return _this.$parent.$broadcast('mouse-enter-gateway', gateway.x, gateway.y);
+      };
+      this.leaveGateway = function(gateway) {
+        return _this.$parent.$broadcast('mouse-leave-gateway');
+      };
+      return this.leaveGateway();
     }
   ]);
   exports.Item = ngcontroller([
@@ -50,28 +57,39 @@ namespace('Alcarin.Orbis.Gateways', function(exports, Alcarin) {
           Gateway.get({
             id: $params.gatewayid
           }, function(_gateway) {
-            return _this.rel = _gateway;
+            _this.rel = _gateway;
+            return _this.$parent.$broadcast('mouse-enter-gateway', _gateway.x, _gateway.y);
           });
-          return this.save = function() {
+          this.save = function() {
             var _this = this;
             return this.rel.$save({}, function() {
               return $loc.path('/groups/' + _this.rel.group);
             });
           };
+          break;
         case 'create':
           this.title = 'New gateway';
           this.rel = $.extend(new Gateway(), {
             name: 'newGateway',
             group: '0',
-            description: 'new gateway..'
+            description: 'new gateway..',
+            x: 0,
+            y: 0
           });
-          return this.save = function() {
+          this.save = function() {
             var _this = this;
             return this.rel.$create({}, function() {
               return $loc.path('/groups/' + _this.rel.group);
             });
           };
       }
+      return this.$on('flag-updated', function(ev, x, y) {
+        var _ref, _ref1;
+        if ((_ref = _this.rel) != null) {
+          _ref.x = x;
+        }
+        return (_ref1 = _this.rel) != null ? _ref1.y = y : void 0;
+      });
     }
   ]);
   return;

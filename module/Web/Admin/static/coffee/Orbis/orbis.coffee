@@ -2,7 +2,8 @@
 
 namespace 'Alcarin.Orbis', (exports, Alcarin) ->
 
-    angular.module('orbis', ['@popover', '@x-editable', '@gateways', '@minimap-renderer'])
+    angular.module('orbis', ['@popover', '@x-editable', '@gateways',
+                             '@minimap-renderer', 'ui.event'])
            .config ($routeProvider)->
                 $routeProvider
                     .when '/groups/:groupid',

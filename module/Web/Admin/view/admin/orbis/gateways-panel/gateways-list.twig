@@ -30,7 +30,8 @@
                         <li class="gateway" ng-repeat="gateway in group.gateways" data-gateway-id="{item.id}">
                             <button class="close delete-gateway">&times;</button>
                             <a href="#/gateway/edit/{*gateway.id*}" class="edit btn-mini btn btn-inverse">EDIT</a>
-                            <a ng-href="{{ url('orbis', {controller: 'editor'}) }}#x={* gateway.x *}&y={* gateway.y *}"
+                            {% set _href = url('orbis', {controller: 'editor'}) ~ "#x={* gateway.x *}&y={* gateway.y *}" %}
+                            <a ng-href="{{_href}}" ui-event="{mouseenter: 'hoverGateway(gateway)', mouseleave: 'leaveGateway()'}"
                                 title="{* gateway.description *}">
                                 <i class="icon-flag"></i><span class="name">{* gateway.name *}</span>
                                 <span class="description">, {* gateway.description *}</span>

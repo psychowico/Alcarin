@@ -10,6 +10,12 @@ namespace 'Alcarin.Orbis.Gateways', (exports, Alcarin) ->
                 return "Group name reserved." if new_name in (group.name for group in @gateways_groups)
                 group.name = new_name
                 group.$save()
+        @hoverGateway = (gateway)=>
+            @$parent.$broadcast 'mouse-enter-gateway', gateway.x, gateway.y
+        @leaveGateway = (gateway)=>
+            @$parent.$broadcast 'mouse-leave-gateway'
+
+        @leaveGateway()
     ]
 
     exports.Item = ngcontroller ['GatewaysGroup', 'Gateway', '$routeParams', '$location',
@@ -23,6 +29,7 @@ namespace 'Alcarin.Orbis.Gateways', (exports, Alcarin) ->
                     @title = 'Edit gateway'
                     Gateway.get {id: $params.gatewayid}, (_gateway)=>
                         @rel = _gateway
+                        @$parent.$broadcast 'mouse-enter-gateway', _gateway.x, _gateway.y
                     @save = ()->
                         @rel.$save {}, =>
                             $loc.path '/groups/' + @rel.group
@@ -32,13 +39,15 @@ namespace 'Alcarin.Orbis.Gateways', (exports, Alcarin) ->
                         name: 'newGateway'
                         group: '0'
                         description: 'new gateway..'
+                        x: 0
+                        y: 0
                     @save = ()->
                         @rel.$create {}, =>
                             $loc.path '/groups/' + @rel.group
 
-
-
-
+            @$on 'flag-updated', (ev, x, y)=>
+                @rel?.x = x
+                @rel?.y = y
     ]
     return
 
