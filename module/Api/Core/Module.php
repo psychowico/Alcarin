@@ -97,7 +97,7 @@ class Module
                             $config['profiling'] = false;
                         }
                     }
-                    $db = \Mongo_Database::instance('mongo', $config );
+                    $db = \DevPack\MongoDatabase::instance('mongo', $config );
                     if( isset( $profiler ) ) {
                         $db->set_profiler( [$profiler, 'start'], [$profiler, 'stop'] );
                     }
