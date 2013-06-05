@@ -5,7 +5,7 @@ namespace 'Admin.Angular', (exports, Alcarin) ->
     #prepare x-editable defaults
     $.fn.editable.defaults.ajaxOptions = {type: 'put', dataType: 'json'}
 
-    angular.module('alc-x-editable').directive 'alcXEditable', ->
+    angular.module('@x-editable').directive 'alcXEditable', ->
             restrict:'A',
             scope: {
                 options: "&alcXEditable",

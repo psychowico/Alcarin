@@ -2,7 +2,7 @@
 
 namespace 'Alcarin.Angular', (exports, Alcarin) ->
 
-    module = angular.module 'alc-proxy', ['ngResource']
+    module = angular.module '@proxy', ['ngResource']
 
     # redefining default resource to make little more friendly interface
     module.factory 'alc-resource', ['$resource', ($res)->

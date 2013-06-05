@@ -1,7 +1,7 @@
 'use strict';
 
 namespace('Alcarin.Angular', function(exports, Alcarin) {
-  return angular.module('alc-chosen').directive('alcChosenWatch', function() {
+  return angular.module('@chosen').directive('alcChosenWatch', function() {
     return {
       restrict: 'A',
       link: function($scope, element, attrs) {

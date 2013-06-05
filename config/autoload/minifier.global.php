@@ -47,8 +47,8 @@ return array(
                             '/js/compiled_coffee/Alcarin/JQueryPlugins/forms.js',
                             '/js/compiled_coffee/Alcarin/JQueryPlugins/others.js',
                             '/js/compiled_coffee/Dialogs/confirms.js',
-                            '/js/compiled_coffee/Alcarin/Angular/alc-proxy.js',
-                            '/js/compiled_coffee/Alcarin/Angular/alc-chosen.js',
+                            '/js/compiled_coffee/Alcarin/Angular/ngx-proxy.js',
+                            '/js/compiled_coffee/Alcarin/Angular/ngx-chosen.js',
                         ),
                     ),
                     //files enough for guest users
@@ -59,11 +59,12 @@ return array(
                     //files enough for admins
                     'admin' => array(
                         'sources' => array(
-                            '/js/compiled_coffee/Admin/Angular/alc-popover.js',
-                            '/js/compiled_coffee/Admin/Angular/alc-x-editable.js',
+                            '/js/compiled_coffee/Admin/Angular/ngx-popover.js',
+                            '/js/compiled_coffee/Admin/Angular/ngx-x-editable.js',
                             '/js/compiled_coffee/Orbis/minimap-renderer.js',
                             '/js/compiled_coffee/Orbis/orbis.js',
-                            '/js/compiled_coffee/Orbis/Gateways/alc-gateways.js',
+                            '/js/compiled_coffee/Orbis/Gateways/ngx-gateways.js',
+                            '/js/compiled_coffee/Orbis/ngx-minimap-renderer.js',
                             '/js/compiled_coffee/Orbis/Gateways/gateways-list.js',
                             // '/js/compiled_coffee/Orbis/Editor/map-manager.js',
                             // '/js/compiled_coffee/Orbis/Editor/toolbar.js',

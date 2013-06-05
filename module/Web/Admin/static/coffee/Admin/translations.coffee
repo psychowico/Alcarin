@@ -2,7 +2,7 @@
 
 namespace 'Alcarin.Admin', (exports, Alcarin) ->
 
-    angular.module('translations', ['zf2-proxy', 'alc-chosen'])
+    angular.module('translations', ['@proxy', '@chosen'])
            .factory('Translations', ['ZF2Action', (ZF2Action)->
                 ZF2Action urls.translations
             ])

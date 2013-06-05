@@ -1,7 +1,7 @@
 'use strict';
 
 namespace('Alcarin.Admin', function(exports, Alcarin) {
-  angular.module('translations', ['zf2-proxy', 'alc-chosen']).factory('Translations', [
+  angular.module('translations', ['@proxy', '@chosen']).factory('Translations', [
     'ZF2Action', function(ZF2Action) {
       return ZF2Action(urls.translations);
     }

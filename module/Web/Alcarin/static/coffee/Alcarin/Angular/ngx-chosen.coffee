@@ -2,7 +2,7 @@
 
 namespace 'Alcarin.Angular', (exports, Alcarin) ->
 
-    angular.module('alc-chosen').directive 'alcChosenWatch', ->
+    angular.module('@chosen').directive 'alcChosenWatch', ->
         restrict:'A',
         link: ($scope,element,attrs)->
             model = attrs['ngModel']
