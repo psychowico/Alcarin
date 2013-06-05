@@ -9,7 +9,35 @@ class GatewaysController extends AbstractAlcarinRestfulController
     public function getList()
     {
         $gateways_data = $this->orbis()->gateways()->find();
-        return $this->json($grouped_gateways);
+        return $this->json($gateways_data);
+    }
+
+    public function get($id)
+    {
+        $data = $this->orbis()->gateways()->get($id);
+        return $this->json($data);
+    }
+
+    public function create($gateway)
+    {
+        return $this->json($data);
+    }
+
+    public function update($id, $gateway)
+    {
+        $form = $this->getServiceLocator()->get('gateways-form');
+
+        $form->setData($gateway);
+
+        if($form->isValid()) {
+            $new_data = $form->getData();
+
+            $this->orbis()->gateways()->update($id,
+                $new_data['name'], $new_data['description'],
+                $new_data['x'], $new_data['y'], $new_data['group'] );
+            return $this->json($new_data);
+        }
+        return $this->responses()->badRequest();
     }
 
     protected function orbis()
@@ -103,24 +131,5 @@ class GatewaysController extends AbstractAlcarinRestfulController
         return $this->emit('gateway.created', $result);
     }
 
-    protected function onGatewayUpdate($data)
-    {
-        $form = $this->getServiceLocator()->get('gateways-form');
-        $form->setData($data);
-
-        if($form->isValid()) {
-            $new_data = $form->getData();
-
-            $this->orbis()->gateways()->update($new_data['id'],
-                $new_data['name'], $new_data['description'],
-                $new_data['x'], $new_data['y'], $new_data['group'] );
-            $result = $this->success(['gateway' => $new_data]);
-        }
-        else {
-            $result = $this->fail(['errors' => $form->getMessages()]);
-        }
-
-        return $this->emit('gateway.updated', $result);
-    }
     */
 }

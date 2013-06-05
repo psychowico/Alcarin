@@ -1,4 +1,4 @@
-/* some part of angular-utils library, only modules that are in use in alcarin project */
+/* some part of angular-utils library, only modules that are in use in alcarin project
 
 
 /**

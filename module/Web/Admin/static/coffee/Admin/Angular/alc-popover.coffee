@@ -2,7 +2,7 @@
 
 namespace 'Admin.Angular', (exports, Alcarin) ->
 
-    angular.module('ng-popover').directive 'ngPopover', ->
+    angular.module('alc-popover').directive 'alcPopover', ->
             restrict:'A',
             link: ($scope, element,attrs)->
                 element.popover()

@@ -20,7 +20,8 @@ class DefaultFieldset
     /**
      * @Annotation\Type("csrf")
      */
-    public $CSRF;
+    // temporary removed, need thing how connect this feature with angularjs system
+    // public $CSRF;
 
     /**
      * @Annotation\Type("submit")

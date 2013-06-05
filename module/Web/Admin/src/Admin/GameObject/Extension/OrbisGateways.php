@@ -6,6 +6,11 @@ class OrbisGateways extends \Core\GameObject
 {
     const COLLECTION = 'map.gateways';
 
+    public function fetchGroups()
+    {
+        return $this->mongo()->{static::COLLECTION}->distinct('group');
+    }
+
     public function find($grouped = true)
     {
         $gateways = $this->mongo()->{static::COLLECTION}->find()->sort(['group' => 1, 'name'=> 1]);
@@ -23,6 +28,12 @@ class OrbisGateways extends \Core\GameObject
         }
 
         return $gateways;
+    }
+
+    public function get($id)
+    {
+        $obj = $this->mongo()->{static::COLLECTION}->findById($id);
+        return $this->mongo()->transl($obj);
     }
 
     public function rename_group($old_name, $new_name)

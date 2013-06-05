@@ -14,8 +14,14 @@ class GatewaysPanelController extends AbstractAlcarinRestfulController
     public function getList()
     {
         return [
-            'gateway_form' => $this->getServiceLocator()->get('gateways-form'),
             'radius' => $this->orbis()->minimap()->properties()->radius(),
+        ];
+    }
+
+    public function gatewayEditTemplate()
+    {
+        return [
+            'form' => $this->getServiceLocator()->get('gateways-form'),
         ];
     }
 

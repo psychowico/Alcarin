@@ -2,14 +2,43 @@
 
 namespace 'Alcarin.Orbis.Gateways', (exports, Alcarin) ->
 
-    exports.List = ngcontroller ['GatewaysGroup', 'Gateway', (GatewaysGroup, Gateway)->
-        @gateways_groups = GatewaysGroup.query()
+    exports.List = ngcontroller ['GatewaysGroup', (GatewaysGroup)->
+        @gateways_groups = GatewaysGroup.query {full: true}
         @rename = (_group)=>
             (ign, new_name)=>
                 return "Can not be empty." if not new_name
                 return "Group name reserved." if new_name in (group.name for group in @gateways_groups)
                 group.name = new_name
                 group.$save()
+    ]
+
+    exports.Item = ngcontroller ['GatewaysGroup', 'Gateway', '$routeParams', '$location',
+        (GatewaysGroup, Gateway, $params, $loc)->
+            @groups = GatewaysGroup.query()
+            @title  = '...'
+            mode    = if $params.gatewayid? then 'edit' else 'create'
+
+            switch mode
+                when 'edit'
+                    @title = 'Edit gateway'
+                    Gateway.get {id: $params.gatewayid}, (_gateway)=>
+                        @rel = _gateway
+                    @save = ()->
+                        @rel.$save {}, =>
+                            $loc.path '/groups/' + @rel.group
+                when 'create'
+                    @title = 'New gateway'
+                    @rel = $.extend new Gateway(),
+                        name: 'newGateway'
+                        group: '0'
+                        description: 'new gateway..'
+                    @save = ()->
+                        @rel.$create {}, =>
+                            $loc.path '/groups/' + @rel.group
+
+
+
+
     ]
     return
 

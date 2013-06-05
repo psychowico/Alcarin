@@ -11,7 +11,7 @@ class HelpButton extends AbstractHelper
     {
         return sprintf(<<<HTML
 <div class="admin-help">
-    <button href="#" class="label label-%s" ng-popover
+    <button href="#" class="label label-%s" alc-popover
         data-placement="%s" title="%s" data-content="%s">
         <i class="icon-question-sign"></i>
     </button>

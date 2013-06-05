@@ -2,12 +2,12 @@
 
 namespace 'Alcarin.Angular', (exports, Alcarin) ->
 
-    angular.module('ng-chosen').directive 'ngChosenWatch', ->
+    angular.module('alc-chosen').directive 'alcChosenWatch', ->
         restrict:'A',
         link: ($scope,element,attrs)->
             model = attrs['ngModel']
 
-            $scope.$watch attrs['ngChosenWatch'], ->
+            $scope.$watch attrs['alcChosenWatch'], ->
                 element.trigger 'liszt:updated'
 
             # Added this in so that you could preselect items

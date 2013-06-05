@@ -1,15 +1,13 @@
-<div class="gateway-edit accordion-group hide">
+<div class="gateway-edit accordion-group ">
     <div class="accordion-heading">
         <div class="accordion-toggle text-center">
-            {{ _('Edit gateway') }}
+            {* title *}
             {{ help('On minimap you can see selected gateway position -
                      you can drag and drop it where you want.') }}
-            <button class="close">×</button>
+            <a href="#/groups/{*rel.group*}" class="close">×</a>
         </div>
     </div>
     <div class="accordion-inner">
-        {% do form.setAttribute('action', uri('orbis/default', {controller: 'gateways'}) ~ '/{item.id}') %}
-
         {{ bootstrap(form, 'horizontal') }}
     </div>
 </div>

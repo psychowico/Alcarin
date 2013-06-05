@@ -67,9 +67,6 @@ $(function() {
     instance = new _class($(this));
     return typeof instance.init === "function" ? instance.init() : void 0;
   });
-  $('.ajax-form').on('submit', function(e) {
-    return e.preventDefault();
-  });
   $('input[type="text"]:first').focus();
   $('.modal-footer .btn-primary').on('click', function(e) {
     var result;

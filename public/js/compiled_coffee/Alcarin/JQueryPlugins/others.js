@@ -55,7 +55,7 @@ namespace('Alcarin.JQueryPlugins', function(exports, Alcarin) {
     };
   };
   $.fn.disableSelection = function() {
-    return this.attr('unselectable', 'on').css('user-select', 'none').on('selectstart', false);
+    return this.attr('unselectable', 'on').css('user-select', 'none');
   };
   _old_position = $.fn.position;
   $.fn.position = function(arg) {

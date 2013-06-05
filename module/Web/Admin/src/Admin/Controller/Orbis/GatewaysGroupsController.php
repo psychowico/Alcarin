@@ -8,22 +8,33 @@ class GatewaysGroupsController extends AbstractAlcarinRestfulController
 {
     public function getList()
     {
-        $gateways_data = $this->orbis()->gateways()->find();
+        $fullmode = $this->params()->fromQuery('full', false);
+        if($fullmode){
+            $gateways_data = $this->orbis()->gateways()->find();
+            $grouped_gateways = [];
+            foreach($gateways_data as $key => $group) {
+                $grouped_gateways []= [
+                    'id'   => strval($key),
+                    'name' => strval($key),
+                    'gateways' => array_map( function($gateway) {
+                        $gateway['id'] = $gateway['_id']->{'$id'};
+                        unset($gateway['_id']);
+                        return $gateway;
+                    }, $group ),
+                ];
+            }
 
-        $grouped_gateways = [];
-        foreach($gateways_data as $key => $group) {
-            $grouped_gateways []= [
-                'id'   => strval($key),
-                'name' => strval($key),
-                'gateways' => array_map( function($gateway) {
-                    $gateway['id'] = $gateway['_id']->{'$id'};
-                    unset($gateway['_id']);
-                    return $gateway;
-                }, $group ),
-            ];
+            return $this->json($grouped_gateways);
         }
-
-        return $this->json($grouped_gateways);
+        else {
+            $groups = $this->orbis()->gateways()->fetchGroups();
+            $groups = array_map( function($name) {
+                return [
+                    'name' => $name,
+                ];
+            }, $groups);
+            return $this->json($groups);
+        }
     }
 
     public function update($group_id, $data)

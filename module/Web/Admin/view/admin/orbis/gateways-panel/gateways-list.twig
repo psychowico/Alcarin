@@ -10,26 +10,26 @@
                 <div class="group-name">
                     <div ng-show="group.name != 0">
                         <button class="edit-group btn-inverse"
-                            ng-x-editable="{value: group.name, success: rename(group)}" data-placement="left" data-name="group-name"
+                            alc-x-editable="{value: group.name, success: rename(group)}" data-placement="left" data-name="group-name"
                             data-type="text" data-params="{mode: 'group'}" data-display="false"
                             data-placeholder="group new name" data-send="always">
                             <i class="icon-edit icon-white"></i>
                         </button>
                     </div>
 
-                    <a ng-click="$parent.toggleGroup($index)" class="group-header accordion-toggle text-center"
+                    <a ng-click="$parent.toggleGroup(group)" class="group-header accordion-toggle text-center"
                         data-toggle="collapse" data-parent="#acc-group">
                         <span>{* group.displayname() *}</span>
                         <button class="close delete-group {item.edit_btn_class}">&times;</button>
                     </a>
                 </div>
             </div>
-            <div class="accordion-body collapse" ng-class="{in: $index == active_group}">
+            <div class="accordion-body collapse" ng-class="{in: group.name == active_group}">
                 <div class="accordion-inner navbar-inverse">
                     <ul class="items unstyled">
                         <li class="gateway" ng-repeat="gateway in group.gateways" data-gateway-id="{item.id}">
                             <button class="close delete-gateway">&times;</button>
-                            <a href="#" class="edit btn-mini btn btn-inverse">EDIT</a>
+                            <a href="#/gateway/edit/{*gateway.id*}" class="edit btn-mini btn btn-inverse">EDIT</a>
                             <a ng-href="{{ url('orbis', {controller: 'editor'}) }}#x={* gateway.x *}&y={* gateway.y *}"
                                 title="{* gateway.description *}">
                                 <i class="icon-flag"></i><span class="name">{* gateway.name *}</span>
@@ -39,7 +39,7 @@
                     </ul>
                     <ul class="unstyled">
                         <li class="horizontal-divider"></li>
-                        <li><a href="#" class="create-gateway"><i class="icon-plus"></i>Add</a></li>
+                        <li><a href="#/gateway/new/{*group.name*}" class="create-gateway"><i class="icon-plus"></i>Add</a></li>
                     </ul>
                 </div>
             </div>

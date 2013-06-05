@@ -3,20 +3,31 @@
 var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 namespace('Alcarin.Orbis', function(exports, Alcarin) {
-  angular.module('orbis', ['ng-popover', 'ng-x-editable', 'ng-gateways']).config(function($routeProvider) {
-    return $routeProvider.when('/groups', {
+  angular.module('orbis', ['alc-popover', 'alc-x-editable', 'alc-gateways']).config(function($routeProvider) {
+    return $routeProvider.when('/groups/:groupid', {
       controller: Alcarin.Orbis.Gateways.List,
       templateUrl: urls.orbis.panel + '/__gateways-list'
+    }).when('/gateway/edit/:gatewayid', {
+      controller: Alcarin.Orbis.Gateways.Item,
+      templateUrl: urls.orbis.panel + '/__gateway-edit'
+    }).when('/gateway/new/:group', {
+      controller: Alcarin.Orbis.Gateways.Item,
+      templateUrl: urls.orbis.panel + '/__gateway-edit'
     }).otherwise({
-      redirectTo: '/groups'
+      redirectTo: '/groups/0'
     });
   });
-  exports.App = ngcontroller(function() {
-    this.active_group = -1;
-    return this.toggleGroup = function(index) {
-      return this.active_group = this.active_group === index ? -1 : index;
-    };
-  });
+  exports.App = ngcontroller([
+    '$routeParams', function(params) {
+      var _this = this;
+      this.$on('$routeChangeSuccess', function() {
+        return _this.active_group = params.groupid;
+      });
+      return this.toggleGroup = function(group) {
+        return this.active_group = this.active_group === group.name ? -1 : group.name;
+      };
+    }
+  ]);
   return;
   return exports.Orbis = (function() {
 

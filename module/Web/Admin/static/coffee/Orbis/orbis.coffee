@@ -2,23 +2,30 @@
 
 namespace 'Alcarin.Orbis', (exports, Alcarin) ->
 
-    angular.module('orbis', ['ng-popover', 'ng-x-editable', 'ng-gateways'])
+    angular.module('orbis', ['alc-popover', 'alc-x-editable', 'alc-gateways'])
            .config ($routeProvider)->
                 $routeProvider
-                    .when '/groups',
+                    .when '/groups/:groupid',
                         controller: Alcarin.Orbis.Gateways.List
                         templateUrl: urls.orbis.panel + '/__gateways-list'
+                    .when '/gateway/edit/:gatewayid',
+                        controller: Alcarin.Orbis.Gateways.Item
+                        templateUrl: urls.orbis.panel + '/__gateway-edit'
+                    .when '/gateway/new/:group',
+                        controller: Alcarin.Orbis.Gateways.Item
+                        templateUrl: urls.orbis.panel + '/__gateway-edit'
                     .otherwise
-                        redirectTo:'/groups'
+                        redirectTo:'/groups/0'
 
-                # when('/edit/:projectId', {controller:EditCtrl, templateUrl:'detail.html'}).
                 # when('/new', {controller:CreateCtrl, templateUrl:'detail.html'}).
 
-    exports.App = ngcontroller ->
-        @active_group = -1
-        @toggleGroup = (index)->
-            @active_group = if @active_group == index then -1 else index
+    exports.App = ngcontroller ['$routeParams', (params)->
+        @$on '$routeChangeSuccess', =>
+            @active_group = params.groupid
 
+        @toggleGroup = (group)->
+            @active_group = if @active_group == group.name then -1 else group.name
+    ]
         # init : ->
 
         #     # @init_radius_modal()

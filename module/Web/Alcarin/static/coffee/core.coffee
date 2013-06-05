@@ -48,8 +48,8 @@ $ =>
         instance.init?()
 
     # prevent auto-commit all form with 'ajax-form' class
-    $('.ajax-form').on 'submit', (e)->
-        e.preventDefault()
+    # $('.ajax-form').on 'submit', (e)->
+    #     e.preventDefault()
 
     # focus first input on site
     $('input[type="text"]:first').focus()

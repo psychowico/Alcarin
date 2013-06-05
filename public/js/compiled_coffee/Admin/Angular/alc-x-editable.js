@@ -5,11 +5,11 @@ namespace('Admin.Angular', function(exports, Alcarin) {
     type: 'put',
     dataType: 'json'
   };
-  return angular.module('ng-x-editable').directive('ngXEditable', function() {
+  return angular.module('alc-x-editable').directive('alcXEditable', function() {
     return {
       restrict: 'A',
       scope: {
-        options: "&ngXEditable"
+        options: "&alcXEditable"
       },
       link: function($scope, element, attrs) {
         var options, _success;

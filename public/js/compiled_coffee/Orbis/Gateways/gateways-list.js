@@ -8,9 +8,11 @@ var __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; 
 namespace('Alcarin.Orbis.Gateways', function(exports, Alcarin) {
   var Gateway, GatewayEditor, GatewayGroup, root;
   exports.List = ngcontroller([
-    'GatewaysGroup', 'Gateway', function(GatewaysGroup, Gateway) {
+    'GatewaysGroup', function(GatewaysGroup) {
       var _this = this;
-      this.gateways_groups = GatewaysGroup.query();
+      this.gateways_groups = GatewaysGroup.query({
+        full: true
+      });
       return this.rename = function(_group) {
         return function(ign, new_name) {
           var group;
@@ -33,6 +35,43 @@ namespace('Alcarin.Orbis.Gateways', function(exports, Alcarin) {
           return group.$save();
         };
       };
+    }
+  ]);
+  exports.Item = ngcontroller([
+    'GatewaysGroup', 'Gateway', '$routeParams', '$location', function(GatewaysGroup, Gateway, $params, $loc) {
+      var mode,
+        _this = this;
+      this.groups = GatewaysGroup.query();
+      this.title = '...';
+      mode = $params.gatewayid != null ? 'edit' : 'create';
+      switch (mode) {
+        case 'edit':
+          this.title = 'Edit gateway';
+          Gateway.get({
+            id: $params.gatewayid
+          }, function(_gateway) {
+            return _this.rel = _gateway;
+          });
+          return this.save = function() {
+            var _this = this;
+            return this.rel.$save({}, function() {
+              return $loc.path('/groups/' + _this.rel.group);
+            });
+          };
+        case 'create':
+          this.title = 'New gateway';
+          this.rel = $.extend(new Gateway(), {
+            name: 'newGateway',
+            group: '0',
+            description: 'new gateway..'
+          });
+          return this.save = function() {
+            var _this = this;
+            return this.rel.$create({}, function() {
+              return $loc.path('/groups/' + _this.rel.group);
+            });
+          };
+      }
     }
   ]);
   return;
