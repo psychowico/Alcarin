@@ -3,22 +3,43 @@
 namespace Core\Mvc\Controller\Plugin;
 
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
-use Zend\Http\Response;
+use Zend\View\Model\JsonModel;
 
 /**
- * simple plugin to faster returning "bad request" response for wrong REST request.
+ * simple plugin to avoid adding Zend\View\Model\JsonModel to use all the times.
  */
-class BadRequest extends AbstractPlugin
+class Json extends AbstractPlugin
 {
-    public function __invoke()
+    public function fail($additional_data = null)
     {
-        $response = new Response();
-        $response->setStatusCode(Response::STATUS_CODE_400);
-//         $response->getHeaders()->addHeaders(array(
-//     'HeaderField1' => 'header-field-value',
-//     'HeaderField2' => 'header-field-value2',
-// );
+        $data = ['success' => false];
+        if(!empty($additional_data)) {
+            $data += $additional_data;
+        }
+        return new JsonModel($data);
+    }
 
-        return $response;
+    public function success($additional_data = null)
+    {
+        $data = ['success' => true];
+        if(!empty($additional_data)) {
+            $data += $additional_data;
+        }
+        return new JsonModel($data);
+    }
+
+    public function emit($event_name, $data)
+    {
+        return new JsonModel([
+            'id'   => $event_name,
+            'data' => $data,
+        ]);
+    }
+
+    public function __invoke( $array = null )
+    {
+        if($array == null) return $this;
+
+        return new JsonModel($array);
     }
 }
