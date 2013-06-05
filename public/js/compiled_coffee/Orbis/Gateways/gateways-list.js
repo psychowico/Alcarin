@@ -30,9 +30,7 @@ namespace('Alcarin.Orbis.Gateways', function(exports, Alcarin) {
             return "Group name reserved.";
           }
           group.name = new_name;
-          return group.$save(function(resp) {
-            return console.log(resp);
-          });
+          return group.$save();
         };
       };
     }

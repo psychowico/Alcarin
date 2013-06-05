@@ -27,19 +27,17 @@ class OrbisGateways extends \Core\GameObject
 
     public function rename_group($old_name, $new_name)
     {
-        $all = $this->find();
+        $all = $this->mongo()->{static::COLLECTION}->distinct('group');
+        $all = array_flip($all);
 
-        if(empty($all[$old_name])) {
-            return "Can not find group '$old_name'.";
-        }
-        if(!empty($all[$new_name])) {
-            return "Group with name '$new_name' exists.";
-        }
+        #"Can not find group '$old_name'
+        # or group with name '$new_name' exists"
+        if(empty($all[$old_name]) || !empty($all[$new_name])) return false;
 
-        foreach($all[$old_name] as $gateway) {
-            $gateway['group'] = $new_name;
-            $this->mongo()->{static::COLLECTION}->updateById($gateway['_id'], $gateway);
-        }
+        $this->mongo()->{static::COLLECTION}->update_safe(
+            ['group' => $old_name],
+            ['$set' => ['group' => $new_name]]
+        );
 
         return true;
     }

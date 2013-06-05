@@ -28,9 +28,12 @@ class GatewaysGroupsController extends AbstractAlcarinRestfulController
 
     public function update($group_id, $data)
     {
-        if(empty($data['name']) or $data['name'] == 0) return $this->badRequest();
-        // $newname = $data['name']
-        return $this->json();
+        if(empty($data['name']) or $data['name'] == "0") return $this->responses()->badRequest();
+
+        $this->orbis()->gateways()->rename_group($group_id, $data['name']);
+
+        $data['id'] = $data['name'];
+        return $this->json($data);
     }
 
     protected function orbis()

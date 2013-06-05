@@ -9,8 +9,7 @@ namespace 'Alcarin.Orbis.Gateways', (exports, Alcarin) ->
                 return "Can not be empty." if not new_name
                 return "Group name reserved." if new_name in (group.name for group in @gateways_groups)
                 group.name = new_name
-                group.$save (resp)->
-                    console.log resp
+                group.$save()
     ]
     return
 
