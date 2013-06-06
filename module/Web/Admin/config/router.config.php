@@ -18,7 +18,7 @@ return array(
                 'route'    => '/admin/orbis/:controller[/__:template][/:id]',
                 'constraints' => array(
                     'controller' => 'gateways-panel|gateways-groups|gateways',
-                    'id'         => '[a-zA-Z0-9_-]+',
+                    'id'         => '[a-zA-Z0-9%_-]+',
                     'template'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                 ),
                 'defaults' => array(
@@ -27,17 +27,6 @@ return array(
                 ),
             ),
         ),
-        // 'orbis' => array(
-        //     'type'    => 'alcarin',
-        //     'options' => array(
-        //         'route'    => '/admin/orbis',
-        //         'namespace'=> 'Admin\Controller\Orbis',
-        //         'restmode' => true,
-        //         'defaults' => array(
-        //             'controller' => 'Orbis',
-        //         ),
-        //     ),
-        // ),
         'translations' => array(
             'type'    => 'segment',
             'options' => array(
