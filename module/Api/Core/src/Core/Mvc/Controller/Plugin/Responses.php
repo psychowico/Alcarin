@@ -20,6 +20,11 @@ class Responses extends AbstractPlugin
         return $response;
     }
 
+    public function internalServerError($reasonPhrase = null)
+    {
+        return $this->response(Response::STATUS_CODE_500, $reasonPhrase);
+    }
+
     public function badRequest($reasonPhrase = null)
     {
         return $this->response(Response::STATUS_CODE_400, $reasonPhrase);

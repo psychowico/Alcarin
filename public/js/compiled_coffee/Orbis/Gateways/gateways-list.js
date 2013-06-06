@@ -72,7 +72,7 @@ namespace('Alcarin.Orbis.Gateways', function(exports, Alcarin) {
           this.title = 'New gateway';
           this.rel = $.extend(new Gateway(), {
             name: 'newGateway',
-            group: '0',
+            group: $params.group,
             description: 'new gateway..',
             x: 0,
             y: 0

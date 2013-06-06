@@ -47,7 +47,8 @@ class OrbisGateways extends \Core\GameObject
 
         $this->mongo()->{static::COLLECTION}->update_safe(
             ['group' => $old_name],
-            ['$set' => ['group' => $new_name]]
+            ['$set' => ['group' => $new_name]],
+            ['multiple' => true]
         );
 
         return true;

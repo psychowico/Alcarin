@@ -20,7 +20,24 @@ class GatewaysController extends AbstractAlcarinRestfulController
 
     public function create($gateway)
     {
-        return $this->json($data);
+        $form = $this->getServiceLocator()->get('gateways-form');
+        $form->setData($gateway);
+
+        if($form->isValid()) {
+            $data = $form->getData();
+
+            $result_id = $this->orbis()->gateways()->insert(
+                $data['name'], $data['description'],
+                $data['x'], $data['y'], $data['group']);
+
+            if($result_id !== false) {
+                $data['id'] = $result_id;
+                return $this->json($data);
+            }
+            return $this->responses()->internalServerError();
+        }
+
+        return $this->responses()->badRequest();
     }
 
     public function update($id, $gateway)

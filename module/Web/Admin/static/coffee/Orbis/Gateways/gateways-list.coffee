@@ -41,7 +41,7 @@ namespace 'Alcarin.Orbis.Gateways', (exports, Alcarin) ->
                     @title = 'New gateway'
                     @rel = $.extend new Gateway(),
                         name: 'newGateway'
-                        group: '0'
+                        group: $params.group
                         description: 'new gateway..'
                         x: 0
                         y: 0

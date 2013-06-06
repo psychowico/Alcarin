@@ -38,7 +38,7 @@ class EditGatewayForm
 
     /**
      * @Annotation\Type("hidden")
-     * @Annotation\Required(true)
+     * @Annotation\Required(false)
      */
     public $id;
 
