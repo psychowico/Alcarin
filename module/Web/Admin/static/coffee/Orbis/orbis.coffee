@@ -4,7 +4,7 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
 
     angular.module('orbis', ['@popover', '@x-editable', '@gateways',
                              '@minimap-renderer', 'ui.event'])
-           .config ($routeProvider)->
+           .config ($routeProvider, $locationProvider)->
                 $routeProvider
                     .when '/groups/:groupid',
                         controller: Alcarin.Orbis.Gateways.List
@@ -18,7 +18,6 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
                     .otherwise
                         redirectTo:'/groups/0'
 
-                # when('/new', {controller:CreateCtrl, templateUrl:'detail.html'}).
 
     exports.App = ngcontroller ['$routeParams', (params)->
         @$on '$routeChangeSuccess', =>

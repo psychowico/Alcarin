@@ -2,7 +2,8 @@
 
 namespace 'Alcarin.Orbis.Gateways', (exports, Alcarin) ->
 
-    exports.List = ngcontroller ['GatewaysGroup', (GatewaysGroup)->
+    exports.List = ngcontroller ['GatewaysGroup', '@EventsBus', (GatewaysGroup, EventsBus)->
+        GatewaysGroup.test = 'test'
         @gateways_groups = GatewaysGroup.query {full: true}
         @rename = (_group)=>
             (ign, new_name)=>
@@ -11,15 +12,16 @@ namespace 'Alcarin.Orbis.Gateways', (exports, Alcarin) ->
                 group.name = new_name
                 group.$save()
         @hoverGateway = (gateway)=>
-            @$parent.$broadcast 'mouse-enter-gateway', gateway.x, gateway.y
+            EventsBus.emit 'mouse-enter-gateway', gateway.x, gateway.y
         @leaveGateway = (gateway)=>
-            @$parent.$broadcast 'mouse-leave-gateway'
+            EventsBus.emit 'mouse-leave-gateway'
 
         @leaveGateway()
     ]
 
-    exports.Item = ngcontroller ['GatewaysGroup', 'Gateway', '$routeParams', '$location',
-        (GatewaysGroup, Gateway, $params, $loc)->
+    exports.Item = ngcontroller ['GatewaysGroup', 'Gateway', '$routeParams',
+            '$location', '@EventsBus',
+        (GatewaysGroup, Gateway, $params, $loc, EventsBus)->
             @groups = GatewaysGroup.query()
             @title  = '...'
             mode    = if $params.gatewayid? then 'edit' else 'create'
@@ -29,7 +31,7 @@ namespace 'Alcarin.Orbis.Gateways', (exports, Alcarin) ->
                     @title = 'Edit gateway'
                     Gateway.get {id: $params.gatewayid}, (_gateway)=>
                         @rel = _gateway
-                        @$parent.$broadcast 'mouse-enter-gateway', _gateway.x, _gateway.y
+                        EventsBus.emit 'mouse-enter-gateway', _gateway.x, _gateway.y
                     @save = ()->
                         @rel.$save {}, =>
                             $loc.path '/groups/' + @rel.group
@@ -45,7 +47,7 @@ namespace 'Alcarin.Orbis.Gateways', (exports, Alcarin) ->
                         @rel.$create {}, =>
                             $loc.path '/groups/' + @rel.group
 
-            @$on 'flag-updated', (ev, x, y)=>
+            EventsBus.on 'flag.updated', (x, y)=>
                 @rel?.x = x
                 @rel?.y = y
     ]

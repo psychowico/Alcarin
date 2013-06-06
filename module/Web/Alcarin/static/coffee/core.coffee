@@ -25,6 +25,8 @@ ngcontroller = (block)->
 angular._module = angular.module
 angular.module = (args...)->
     args.push [] if args.length < 2
+    # automatic add @core module from ngx-core.coffee
+    args[1].push '@core'
     if args.length < 3
         args.push ($interpolateProvider)->
             $interpolateProvider.startSymbol('{*').endSymbol('*}')

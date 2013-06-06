@@ -8,8 +8,9 @@ var __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; 
 namespace('Alcarin.Orbis.Gateways', function(exports, Alcarin) {
   var Gateway, GatewayEditor, GatewayGroup, root;
   exports.List = ngcontroller([
-    'GatewaysGroup', function(GatewaysGroup) {
+    'GatewaysGroup', '@EventsBus', function(GatewaysGroup, EventsBus) {
       var _this = this;
+      GatewaysGroup.test = 'test';
       this.gateways_groups = GatewaysGroup.query({
         full: true
       });
@@ -36,16 +37,16 @@ namespace('Alcarin.Orbis.Gateways', function(exports, Alcarin) {
         };
       };
       this.hoverGateway = function(gateway) {
-        return _this.$parent.$broadcast('mouse-enter-gateway', gateway.x, gateway.y);
+        return EventsBus.emit('mouse-enter-gateway', gateway.x, gateway.y);
       };
       this.leaveGateway = function(gateway) {
-        return _this.$parent.$broadcast('mouse-leave-gateway');
+        return EventsBus.emit('mouse-leave-gateway');
       };
       return this.leaveGateway();
     }
   ]);
   exports.Item = ngcontroller([
-    'GatewaysGroup', 'Gateway', '$routeParams', '$location', function(GatewaysGroup, Gateway, $params, $loc) {
+    'GatewaysGroup', 'Gateway', '$routeParams', '$location', '@EventsBus', function(GatewaysGroup, Gateway, $params, $loc, EventsBus) {
       var mode,
         _this = this;
       this.groups = GatewaysGroup.query();
@@ -58,7 +59,7 @@ namespace('Alcarin.Orbis.Gateways', function(exports, Alcarin) {
             id: $params.gatewayid
           }, function(_gateway) {
             _this.rel = _gateway;
-            return _this.$parent.$broadcast('mouse-enter-gateway', _gateway.x, _gateway.y);
+            return EventsBus.emit('mouse-enter-gateway', _gateway.x, _gateway.y);
           });
           this.save = function() {
             var _this = this;
@@ -83,7 +84,7 @@ namespace('Alcarin.Orbis.Gateways', function(exports, Alcarin) {
             });
           };
       }
-      return this.$on('flag-updated', function(ev, x, y) {
+      return EventsBus.on('flag.updated', function(x, y) {
         var _ref, _ref1;
         if ((_ref = _this.rel) != null) {
           _ref.x = x;

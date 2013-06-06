@@ -2,7 +2,7 @@
 
 namespace('Alcarin.Orbis', function(exports, Alcarin) {
   return angular.module('@minimap-renderer').directive('alcMinimapRenderer', [
-    '$rootScope', function($rootScope) {
+    '$rootScope', '@EventsBus', function($rootScope, EventsBus) {
       return {
         restrict: 'A',
         link: function($scope, el, attrs) {
@@ -10,7 +10,7 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
             _this = this;
           map = new Alcarin.Orbis.MinimapRenderer(el);
           map.init();
-          $scope.$on('mouse-enter-gateway', function(ev, x, y) {
+          EventsBus.on('mouse-enter-gateway', function(x, y) {
             var flag, _ref;
             if ((_ref = el.data('flag')) != null) {
               _ref.destroy();
@@ -20,12 +20,12 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
               var coords, p;
               p = ev.position;
               coords = map.to_coords(p.left, p.top);
-              return $rootScope.$broadcast('flag-updated', coords.x, coords.y);
+              return EventsBus.emit('flag.updated', coords.x, coords.y);
             });
             el.data('flag', flag);
             return flag.show();
           });
-          return $scope.$on('mouse-leave-gateway', function() {
+          return EventsBus.on('mouse-leave-gateway', function() {
             var _ref;
             if ((_ref = el.data('flag')) != null) {
               _ref.destroy();

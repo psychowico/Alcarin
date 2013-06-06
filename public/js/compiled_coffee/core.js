@@ -42,6 +42,7 @@ angular.module = function() {
   if (args.length < 2) {
     args.push([]);
   }
+  args[1].push('@core');
   if (args.length < 3) {
     args.push(function($interpolateProvider) {
       return $interpolateProvider.startSymbol('{*').endSymbol('*}');

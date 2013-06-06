@@ -48,6 +48,7 @@ return array(
                             '/js/compiled_coffee/Alcarin/JQueryPlugins/others.js',
                             '/js/compiled_coffee/Dialogs/confirms.js',
                             '/js/compiled_coffee/Alcarin/Angular/ngx-proxy.js',
+                            '/js/compiled_coffee/Alcarin/Angular/ngx-core.js',
                             '/js/compiled_coffee/Alcarin/Angular/ngx-chosen.js',
                         ),
                     ),
