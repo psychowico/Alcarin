@@ -55,12 +55,23 @@ namespace('Alcarin.Orbis.Gateways', function(exports, Alcarin) {
         });
       };
       this.deleteGroup = function(group) {
-        var _this = this;
         return Alcarin.Dialogs.Confirms.admin('Really deleting? Gateways will be moved to "ungrouped" group.', function() {
           return group.$delete(function() {
-            return _this.gateways_groups.remove(group);
+            return GatewaysGroup.query({
+              full: true
+            }, function(_g) {
+              return _this.gateways_groups = _g;
+            });
           });
         });
+      };
+      this.createGroup = function() {
+        var group;
+        group = new GatewaysGroup();
+        group.name = 'new_group ...';
+        group.id = 'new_group';
+        group.$create();
+        return _this.gateways_groups.push(group);
       };
       return this.leaveGateway();
     }

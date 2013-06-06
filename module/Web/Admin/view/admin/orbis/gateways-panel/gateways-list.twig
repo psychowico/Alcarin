@@ -2,7 +2,7 @@
     <div class="add clearfix">
         {{ help('Here you can create new gateways and change it position.
                  To edit existing gateway click it name.') }}
-        <button class="btn btn-inverse add-group">{{ _('Add group') }}</button>
+        <button class="btn btn-inverse" ng-click="createGroup()">{{ _('Add group') }}</button>
     </div>
     <div class="accordion active-group">
         <div class="accordion-group" ng-repeat="group in gateways_groups">
