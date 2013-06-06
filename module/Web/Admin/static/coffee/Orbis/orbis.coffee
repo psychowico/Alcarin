@@ -2,7 +2,7 @@
 
 namespace 'Alcarin.Orbis', (exports, Alcarin) ->
 
-    angular.module('orbis', ['@popover', '@x-editable', '@gateways',
+    orbis = angular.module('orbis', ['@popover', '@x-editable', '@gateways',
                              '@minimap-renderer', 'ui.event'])
            .config ($routeProvider, $locationProvider)->
                 $routeProvider
@@ -17,7 +17,6 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
                         templateUrl: urls.orbis.panel + '/__gateway-edit'
                     .otherwise
                         redirectTo:'/groups'
-
 
     exports.App = ngcontroller ['$routeParams', (params)->
         @active_group = 0

@@ -2,20 +2,26 @@
 
 namespace 'Alcarin.Orbis.Gateways', (exports, Alcarin) ->
 
-    exports.List = ngcontroller ['GatewaysGroup', '@EventsBus', (GatewaysGroup, EventsBus)->
-        @gateways_groups = GatewaysGroup.query {full: true}
-        @rename = (_group)=>
-            (ign, new_name)=>
-                return "Can not be empty." if not new_name
-                return "Group name reserved." if new_name in (group.name for group in @gateways_groups)
-                group.name = new_name
-                group.$save()
-        @hoverGateway = (gateway)=>
-            EventsBus.emit 'mouse-enter-gateway', gateway.x, gateway.y
-        @leaveGateway = (gateway)=>
-            EventsBus.emit 'mouse-leave-gateway'
+    exports.List = ngcontroller ['GatewaysGroup', 'Gateway', '@EventsBus',
+        (GatewaysGroup, Gateway, EventsBus)->
+            @gateways_groups = GatewaysGroup.query {full: true}
+            @rename = (_group)=>
+                (ign, new_name)=>
+                    return "Can not be empty." if not new_name
+                    return "Group name reserved." if new_name in (group.name for group in @gateways_groups)
+                    group.name = new_name
+                    group.$save => @$emit 'groupChanged', new_name
 
-        @leaveGateway()
+            @hoverGateway = (gateway)=>
+                EventsBus.emit 'mouse-enter-gateway', gateway.x, gateway.y
+            @leaveGateway = (gateway)=>
+                EventsBus.emit 'mouse-leave-gateway'
+            @delete = (group, gateway)=>
+                Alcarin.Dialogs.Confirms.admin 'Really deleting this gateway?', =>
+                    Gateway.get {id: gateway.id}, ($gateway)=>
+                        $gateway.$delete => group.gateways.remove gateway
+
+            @leaveGateway()
     ]
 
     exports.Item = ngcontroller ['GatewaysGroup', 'Gateway', '$routeParams',

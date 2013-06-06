@@ -57,6 +57,16 @@ class GatewaysController extends AbstractAlcarinRestfulController
         return $this->responses()->badRequest();
     }
 
+    public function delete($id)
+    {
+        if($this->orbis()->gateways()->delete($id)) {
+            return $this->json();
+        }
+        else {
+            return $this->responses()->internalServerError();
+        }
+    }
+
     protected function orbis()
     {
         return $this->gameServices()->get('orbis');

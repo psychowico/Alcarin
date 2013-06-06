@@ -9,6 +9,10 @@ namespace = (target, name, block) ->
     target = target[item] or= {} for item in name.split '.'
     block target, main_ns
 
+Array.prototype.remove = (obj)->
+    ind = @indexOf obj
+    @splice ind, 1
+
 # shorter angular  controller, check translations.cofffee for use example
 ngcontroller = (block)->
     block = [block] if not $.isArray block

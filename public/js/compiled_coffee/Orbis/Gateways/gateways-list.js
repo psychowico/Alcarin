@@ -8,7 +8,7 @@ var __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; 
 namespace('Alcarin.Orbis.Gateways', function(exports, Alcarin) {
   var Gateway, GatewayEditor, GatewayGroup, root;
   exports.List = ngcontroller([
-    'GatewaysGroup', '@EventsBus', function(GatewaysGroup, EventsBus) {
+    'GatewaysGroup', 'Gateway', '@EventsBus', function(GatewaysGroup, Gateway, EventsBus) {
       var _this = this;
       this.gateways_groups = GatewaysGroup.query({
         full: true
@@ -32,7 +32,9 @@ namespace('Alcarin.Orbis.Gateways', function(exports, Alcarin) {
             return "Group name reserved.";
           }
           group.name = new_name;
-          return group.$save();
+          return group.$save(function() {
+            return _this.$emit('groupChanged', new_name);
+          });
         };
       };
       this.hoverGateway = function(gateway) {
@@ -40,6 +42,17 @@ namespace('Alcarin.Orbis.Gateways', function(exports, Alcarin) {
       };
       this.leaveGateway = function(gateway) {
         return EventsBus.emit('mouse-leave-gateway');
+      };
+      this["delete"] = function(group, gateway) {
+        return Alcarin.Dialogs.Confirms.admin('Really deleting this gateway?', function() {
+          return Gateway.get({
+            id: gateway.id
+          }, function($gateway) {
+            return $gateway.$delete(function() {
+              return group.gateways.remove(gateway);
+            });
+          });
+        });
       };
       return this.leaveGateway();
     }

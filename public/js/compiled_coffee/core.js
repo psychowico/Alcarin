@@ -18,6 +18,12 @@ namespace = function(target, name, block) {
   return block(target, main_ns);
 };
 
+Array.prototype.remove = function(obj) {
+  var ind;
+  ind = this.indexOf(obj);
+  return this.splice(ind, 1);
+};
+
 ngcontroller = function(block) {
   var args, fun, inv;
   if (!$.isArray(block)) {

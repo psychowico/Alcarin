@@ -3,7 +3,8 @@
 var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 namespace('Alcarin.Orbis', function(exports, Alcarin) {
-  angular.module('orbis', ['@popover', '@x-editable', '@gateways', '@minimap-renderer', 'ui.event']).config(function($routeProvider, $locationProvider) {
+  var orbis;
+  orbis = angular.module('orbis', ['@popover', '@x-editable', '@gateways', '@minimap-renderer', 'ui.event']).config(function($routeProvider, $locationProvider) {
     return $routeProvider.when('/groups', {
       controller: Alcarin.Orbis.Gateways.List,
       templateUrl: urls.orbis.panel + '/__gateways-list'
