@@ -16,10 +16,14 @@ namespace 'Alcarin.Orbis.Gateways', (exports, Alcarin) ->
                 EventsBus.emit 'mouse-enter-gateway', gateway.x, gateway.y
             @leaveGateway = (gateway)=>
                 EventsBus.emit 'mouse-leave-gateway'
-            @delete = (group, gateway)=>
+            @deleteGateway = (group, gateway)=>
                 Alcarin.Dialogs.Confirms.admin 'Really deleting this gateway?', =>
                     Gateway.get {id: gateway.id}, ($gateway)=>
                         $gateway.$delete => group.gateways.remove gateway
+
+            @deleteGroup = (group)->
+                Alcarin.Dialogs.Confirms.admin 'Really deleting? Gateways will be moved to "ungrouped" group.', =>
+                    group.$delete => @gateways_groups.remove group
 
             @leaveGateway()
     ]

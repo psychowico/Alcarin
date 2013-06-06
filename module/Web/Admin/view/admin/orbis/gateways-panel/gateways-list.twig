@@ -20,7 +20,7 @@
                     <a ng-click="$parent.toggleGroup(group)" class="group-header accordion-toggle text-center"
                         data-toggle="collapse" data-parent="#acc-group">
                         <span>{* group.displayname() *}</span>
-                        <button class="close delete-group">&times;</button>
+                        <button ng-show="group.name != 0" class="close" ng-click="deleteGroup(group)">&times;</button>
                     </a>
                 </div>
             </div>
@@ -28,7 +28,7 @@
                 <div class="accordion-inner navbar-inverse">
                     <ul class="items unstyled">
                         <li class="gateway" ng-repeat="gateway in group.gateways">
-                            <button class="close" ng-click="delete(group, gateway)">&times;</button>
+                            <button class="close" ng-click="deleteGateway(group, gateway)">&times;</button>
                             <a href="#/gateway/edit/{*gateway.id*}" class="edit btn-mini btn btn-inverse">EDIT</a>
                             {% set _href = url('orbis', {controller: 'editor'}) ~ "#x={* gateway.x *}&y={* gateway.y *}" %}
                             <a ng-href="{{_href}}" ui-event="{mouseenter: 'hoverGateway(gateway)', mouseleave: 'leaveGateway()'}"

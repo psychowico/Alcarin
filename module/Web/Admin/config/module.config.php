@@ -16,11 +16,6 @@ return array(
             'Admin\Controller\Users' => 'Admin\Controller\UsersController',
             'Admin\Controller\Users\Privilages' => 'Admin\Controller\Users\PrivilagesController',
 
-            // 'admin\orbis\Editor' => 'Admin\Controller\Orbis\EditorController',
-            // 'orbis\Gateways' => 'Admin\Controller\Orbis\GatewaysController',
-
-            // 'Admin\Controller\Orbis\Orbis' => 'Admin\Controller\OrbisController',
-            // 'Admin\Controller\Orbis\Map' => 'Admin\Controller\Orbis\OrbisMapController',
             'Admin\Controller\Orbis\Gateways' => 'Admin\Controller\Orbis\GatewaysController',
             'Admin\Controller\Orbis\GatewaysGroups' => 'Admin\Controller\Orbis\GatewaysGroupsController',
             'Admin\Controller\Orbis\GatewaysPanel' => 'Admin\Controller\Orbis\GatewaysPanelController',
@@ -29,8 +24,6 @@ return array(
 
 
             'Admin\Controller\Modules' => 'Admin\Controller\ModulesController'
-
-
         ),
     ),
 

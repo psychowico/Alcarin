@@ -43,7 +43,7 @@ namespace('Alcarin.Orbis.Gateways', function(exports, Alcarin) {
       this.leaveGateway = function(gateway) {
         return EventsBus.emit('mouse-leave-gateway');
       };
-      this["delete"] = function(group, gateway) {
+      this.deleteGateway = function(group, gateway) {
         return Alcarin.Dialogs.Confirms.admin('Really deleting this gateway?', function() {
           return Gateway.get({
             id: gateway.id
@@ -51,6 +51,14 @@ namespace('Alcarin.Orbis.Gateways', function(exports, Alcarin) {
             return $gateway.$delete(function() {
               return group.gateways.remove(gateway);
             });
+          });
+        });
+      };
+      this.deleteGroup = function(group) {
+        var _this = this;
+        return Alcarin.Dialogs.Confirms.admin('Really deleting? Gateways will be moved to "ungrouped" group.', function() {
+          return group.$delete(function() {
+            return _this.gateways_groups.remove(group);
           });
         });
       };
