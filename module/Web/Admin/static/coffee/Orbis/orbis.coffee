@@ -6,7 +6,7 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
                              '@minimap-renderer', 'ui.event'])
            .config ($routeProvider, $locationProvider)->
                 $routeProvider
-                    .when '/groups/:groupid',
+                    .when '/groups',
                         controller: Alcarin.Orbis.Gateways.List
                         templateUrl: urls.orbis.panel + '/__gateways-list'
                     .when '/gateway/edit/:gatewayid',
@@ -16,15 +16,15 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
                         controller: Alcarin.Orbis.Gateways.Item
                         templateUrl: urls.orbis.panel + '/__gateway-edit'
                     .otherwise
-                        redirectTo:'/groups/0'
+                        redirectTo:'/groups'
 
 
     exports.App = ngcontroller ['$routeParams', (params)->
-        @$on '$routeChangeSuccess', =>
-            @active_group = params.groupid
-
+        @active_group = 0
         @toggleGroup = (group)->
             @active_group = if @active_group == group.name then -1 else group.name
+        @$on 'groupChanged', (ev, group)=>
+            @active_group = group
     ]
         # init : ->
 

@@ -3,7 +3,6 @@
 namespace 'Alcarin.Orbis.Gateways', (exports, Alcarin) ->
 
     exports.List = ngcontroller ['GatewaysGroup', '@EventsBus', (GatewaysGroup, EventsBus)->
-        GatewaysGroup.test = 'test'
         @gateways_groups = GatewaysGroup.query {full: true}
         @rename = (_group)=>
             (ign, new_name)=>
@@ -26,6 +25,10 @@ namespace 'Alcarin.Orbis.Gateways', (exports, Alcarin) ->
             @title  = '...'
             mode    = if $params.gatewayid? then 'edit' else 'create'
 
+            @cancel = =>
+                @$emit 'groupChanged', @rel.group
+                $loc.path '/groups'
+
             switch mode
                 when 'edit'
                     @title = 'Edit gateway'
@@ -33,8 +36,7 @@ namespace 'Alcarin.Orbis.Gateways', (exports, Alcarin) ->
                         @rel = _gateway
                         EventsBus.emit 'mouse-enter-gateway', _gateway.x, _gateway.y
                     @save = ()->
-                        @rel.$save {}, =>
-                            $loc.path '/groups/' + @rel.group
+                        @rel.$save {}, @cancel
                 when 'create'
                     @title = 'New gateway'
                     @rel = $.extend new Gateway(),
@@ -44,8 +46,7 @@ namespace 'Alcarin.Orbis.Gateways', (exports, Alcarin) ->
                         x: 0
                         y: 0
                     @save = ()->
-                        @rel.$create {}, =>
-                            $loc.path '/groups/' + @rel.group
+                        @rel.$create {}, @cancel
 
             EventsBus.on 'flag.updated', (x, y)=>
                 @rel?.x = x

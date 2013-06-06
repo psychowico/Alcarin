@@ -10,7 +10,6 @@ namespace('Alcarin.Orbis.Gateways', function(exports, Alcarin) {
   exports.List = ngcontroller([
     'GatewaysGroup', '@EventsBus', function(GatewaysGroup, EventsBus) {
       var _this = this;
-      GatewaysGroup.test = 'test';
       this.gateways_groups = GatewaysGroup.query({
         full: true
       });
@@ -52,6 +51,10 @@ namespace('Alcarin.Orbis.Gateways', function(exports, Alcarin) {
       this.groups = GatewaysGroup.query();
       this.title = '...';
       mode = $params.gatewayid != null ? 'edit' : 'create';
+      this.cancel = function() {
+        _this.$emit('groupChanged', _this.rel.group);
+        return $loc.path('/groups');
+      };
       switch (mode) {
         case 'edit':
           this.title = 'Edit gateway';
@@ -62,10 +65,7 @@ namespace('Alcarin.Orbis.Gateways', function(exports, Alcarin) {
             return EventsBus.emit('mouse-enter-gateway', _gateway.x, _gateway.y);
           });
           this.save = function() {
-            var _this = this;
-            return this.rel.$save({}, function() {
-              return $loc.path('/groups/' + _this.rel.group);
-            });
+            return this.rel.$save({}, this.cancel);
           };
           break;
         case 'create':
@@ -78,10 +78,7 @@ namespace('Alcarin.Orbis.Gateways', function(exports, Alcarin) {
             y: 0
           });
           this.save = function() {
-            var _this = this;
-            return this.rel.$create({}, function() {
-              return $loc.path('/groups/' + _this.rel.group);
-            });
+            return this.rel.$create({}, this.cancel);
           };
       }
       return EventsBus.on('flag.updated', function(x, y) {

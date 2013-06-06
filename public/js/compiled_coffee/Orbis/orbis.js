@@ -4,7 +4,7 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
 
 namespace('Alcarin.Orbis', function(exports, Alcarin) {
   angular.module('orbis', ['@popover', '@x-editable', '@gateways', '@minimap-renderer', 'ui.event']).config(function($routeProvider, $locationProvider) {
-    return $routeProvider.when('/groups/:groupid', {
+    return $routeProvider.when('/groups', {
       controller: Alcarin.Orbis.Gateways.List,
       templateUrl: urls.orbis.panel + '/__gateways-list'
     }).when('/gateway/edit/:gatewayid', {
@@ -14,18 +14,19 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
       controller: Alcarin.Orbis.Gateways.Item,
       templateUrl: urls.orbis.panel + '/__gateway-edit'
     }).otherwise({
-      redirectTo: '/groups/0'
+      redirectTo: '/groups'
     });
   });
   exports.App = ngcontroller([
     '$routeParams', function(params) {
       var _this = this;
-      this.$on('$routeChangeSuccess', function() {
-        return _this.active_group = params.groupid;
-      });
-      return this.toggleGroup = function(group) {
+      this.active_group = 0;
+      this.toggleGroup = function(group) {
         return this.active_group = this.active_group === group.name ? -1 : group.name;
       };
+      return this.$on('groupChanged', function(ev, group) {
+        return _this.active_group = group;
+      });
     }
   ]);
   return;
