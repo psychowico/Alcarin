@@ -59,12 +59,18 @@ namespace('Alcarin.Orbis.Gateways', function(exports, Alcarin) {
       };
       this.deleteGroup = function(group) {
         return Alcarin.Dialogs.Confirms.admin('Really deleting? Gateways will be moved to "ungrouped" group.', function() {
+          var c_group;
+          c_group = new GatewaysGroup(group);
           return group.$delete(function() {
-            return GatewaysGroup.query({
-              full: true
-            }, function(_g) {
-              return _this.gateways_groups = _g;
-            });
+            var _g, _i, _len, _ref;
+            _this.gateways_groups.remove(group);
+            console.log(c_group.gateways);
+            _ref = c_group.gateways;
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+              _g = _ref[_i];
+              _this.gateways_groups[0].gateways.push(_g);
+            }
+            return _this.$emit('groupChanged', 0);
           });
         });
       };
@@ -73,8 +79,10 @@ namespace('Alcarin.Orbis.Gateways', function(exports, Alcarin) {
         group = new GatewaysGroup();
         group.name = 'new_group ...';
         group.id = 'new_group';
-        group.$create();
-        return _this.gateways_groups.push(group);
+        return group.$create(function() {
+          _this.gateways_groups.push(group);
+          return _this.$emit('groupChanged', group.name);
+        });
       };
       return this.leaveGateway();
     }

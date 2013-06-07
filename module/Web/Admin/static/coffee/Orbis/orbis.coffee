@@ -26,8 +26,6 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
     ]
         # init : ->
 
-        #     # @init_radius_modal()
-
         #     @map_info = @orbis.find '.info-popover'
         #     @map_info.popover {html: true, trigger: 'manual'}
         #     @map_info.parent().find('.map-info').one('mouseover', @load_map_info)

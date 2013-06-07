@@ -16,6 +16,7 @@ namespace 'Alcarin.Orbis.Gateways', (exports, Alcarin) ->
                 EventsBus.emit 'mouse-enter-gateway', gateway.x, gateway.y
             @leaveGateway = (gateway)=>
                 EventsBus.emit 'mouse-leave-gateway'
+
             @deleteGateway = (group, gateway)=>
                 Alcarin.Dialogs.Confirms.admin 'Really deleting this gateway?', =>
                     Gateway.get {id: gateway.id}, ($gateway)=>
@@ -24,17 +25,21 @@ namespace 'Alcarin.Orbis.Gateways', (exports, Alcarin) ->
                             @gateways_groups.remove group if group.gateways.length == 0
             @deleteGroup = (group)=>
                 Alcarin.Dialogs.Confirms.admin 'Really deleting? Gateways will be moved to "ungrouped" group.', =>
+                    c_group = new GatewaysGroup group
                     group.$delete =>
                         #reload group when delete one
-                        GatewaysGroup.query {full: true}, (_g)=>
-                            @gateways_groups = _g
+                        @gateways_groups.remove group
+                        console.log c_group.gateways
+                        @gateways_groups[0].gateways.push _g for _g in c_group.gateways
+                        @$emit 'groupChanged', 0
 
             @createGroup = =>
                 group = new GatewaysGroup()
                 group.name = 'new_group ...'
                 group.id   = 'new_group'
-                group.$create()
-                @gateways_groups.push group
+                group.$create =>
+                    @gateways_groups.push group
+                    @$emit 'groupChanged', group.name
 
             @leaveGateway()
     ]
