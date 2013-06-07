@@ -4,8 +4,10 @@ namespace 'Alcarin.Angular', (exports, Alcarin) ->
 
     angular.module('@jquery-anims')
         .animation '$slideDown', ->
-            setup : (element)-> element.hide()
-            start : (element, done)->
-                element.slideDown -> done()
+            setup : (e)-> e.hide()
+            start : (e, done)-> e.slideDown -> done()
+            cancel : (e)-> e.stop()
         .animation '$slideUp', ->
+            setup : (e)-> e.show()
             start: (e, done)-> e.slideUp -> done()
+            cancel : (e)-> e.stop()
