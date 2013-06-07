@@ -4,7 +4,8 @@ namespace 'Alcarin.Angular', (exports, Alcarin) ->
 
     # simple event bus - because I not trust angularjs $broadcast events system
     # when we will have many of scopes.
-    angular.module('@core').factory '@EventsBus', ->
+    # I use "angular._module" defined in "core.coffee" to avoid cross-reference
+    angular._module('@core', []).factory '@EventsBus', ->
         class EventsBus
             listeners = {}
 

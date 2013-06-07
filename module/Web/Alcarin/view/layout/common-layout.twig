@@ -10,9 +10,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         {{ headMeta() }}
-
         <!-- temporary turning off favicon requests -->
         <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+
+        <script type="text/javascript" src="/js/vendor/jquery/jquery-1.9.1.js"></script>
+        <script type="text/javascript" src="/js/vendor/angular-1.1.5.js"></script>
 
         {{ headLink().prependBundle('common').prependBundle('external') | raw }}
 

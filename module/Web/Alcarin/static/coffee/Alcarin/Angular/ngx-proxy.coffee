@@ -11,5 +11,4 @@ namespace 'Alcarin.Angular', (exports, Alcarin) ->
                 create: { method: 'POST' }
                 save: { method: 'PUT' }
             $res uri, params, methods
-
     ]

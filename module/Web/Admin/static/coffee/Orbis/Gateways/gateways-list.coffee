@@ -19,8 +19,9 @@ namespace 'Alcarin.Orbis.Gateways', (exports, Alcarin) ->
             @deleteGateway = (group, gateway)=>
                 Alcarin.Dialogs.Confirms.admin 'Really deleting this gateway?', =>
                     Gateway.get {id: gateway.id}, ($gateway)=>
-                        $gateway.$delete => group.gateways.remove gateway
-
+                        $gateway.$delete =>
+                            group.gateways.remove gateway
+                            @gateways_groups.remove group if group.gateways.length == 0
             @deleteGroup = (group)=>
                 Alcarin.Dialogs.Confirms.admin 'Really deleting? Gateways will be moved to "ungrouped" group.', =>
                     group.$delete =>

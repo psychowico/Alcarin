@@ -14,12 +14,15 @@ return array(
                 'list'              => array(
                     'external'  => array(
                         'sources'   => array(
-                            '/js/vendor/jquery/jquery-1.9.1.js',
+                            //because angularsjs cant be packed by default minifier config
+                            //I moved it to common.layout directly - to time when I fix this
+                            //issue
+                            // '/js/vendor/jquery/jquery-1.9.1.js',
+                            // '/js/vendor/angular-1.1.5.js',
                             '/js/vendor/jquery/jquery.ba-bbq-1.4pre.js',
                             '/js/vendor/jquery/jquery.cookie-1.3.1.js',
                             '/js/vendor/jquery/jquery.ui-1.10.2.js',
                             '/js/vendor/jquery/chosen.jquery-0.9.12.js',
-                            '/js/vendor/angular-1.1.5.js',
                             '/js/vendor/angular-resource-1.1.5.js',
                             '/js/vendor/angular-utils-0.0.2.js',
                             '/js/vendor/bootstrap/bootstrap-2.3.1.js',
@@ -67,9 +70,9 @@ return array(
                             '/js/compiled_coffee/Orbis/Gateways/ngx-gateways.js',
                             '/js/compiled_coffee/Orbis/ngx-minimap-renderer.js',
                             '/js/compiled_coffee/Orbis/Gateways/gateways-list.js',
-                            // '/js/compiled_coffee/Orbis/Editor/map-manager.js',
-                            // '/js/compiled_coffee/Orbis/Editor/toolbar.js',
-                            // '/js/compiled_coffee/Orbis/Editor/editor.js',
+                            '/js/compiled_coffee/Orbis/Editor/map-manager.js',
+                            '/js/compiled_coffee/Orbis/Editor/toolbar.js',
+                            '/js/compiled_coffee/Orbis/Editor/editor.js',
                             '/js/compiled_coffee/Admin/translations.js',
                         ),
                     ),

@@ -3,7 +3,7 @@
 var __slice = [].slice;
 
 namespace('Alcarin.Angular', function(exports, Alcarin) {
-  return angular.module('@core').factory('@EventsBus', function() {
+  return angular._module('@core', []).factory('@EventsBus', function() {
     var EventsBus;
     EventsBus = (function() {
       var listeners;

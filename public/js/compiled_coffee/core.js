@@ -50,9 +50,11 @@ angular.module = function() {
   }
   args[1].push('@core');
   if (args.length < 3) {
-    args.push(function($interpolateProvider) {
-      return $interpolateProvider.startSymbol('{*').endSymbol('*}');
-    });
+    args.push([
+      '$interpolateProvider', function($ip) {
+        return $ip.startSymbol('{*').endSymbol('*}');
+      }
+    ]);
   }
   return angular._module.apply(angular, args);
 };

@@ -32,8 +32,9 @@ angular.module = (args...)->
     # automatic add @core module from ngx-core.coffee
     args[1].push '@core'
     if args.length < 3
-        args.push ($interpolateProvider)->
-            $interpolateProvider.startSymbol('{*').endSymbol('*}')
+        args.push ['$interpolateProvider', ($ip)->
+            $ip.startSymbol('{*').endSymbol('*}')
+        ]
     angular._module.apply angular, args
 
 $ =>

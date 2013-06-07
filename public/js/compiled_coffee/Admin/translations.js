@@ -25,33 +25,35 @@ namespace('Alcarin.Admin', function(exports, Alcarin) {
       };
     }
   ]);
-  return exports.SelectedTranslation = ngcontroller(function(Translations) {
-    var fetchSentence,
-      _this = this;
-    this.tag = null;
-    this.saving = false;
-    fetchSentence = function() {
-      var args;
-      args = angular.extend({
-        tagid: _this.selected.tag
-      }, _this.selected.choose);
-      return Translations('get-sentence', args, function(response) {
-        return _this.tag = response.sentence;
+  return exports.SelectedTranslation = ngcontroller([
+    'Translations', function(Translations) {
+      var fetchSentence,
+        _this = this;
+      this.tag = null;
+      this.saving = false;
+      fetchSentence = function() {
+        var args;
+        args = angular.extend({
+          tagid: _this.selected.tag
+        }, _this.selected.choose);
+        return Translations('get-sentence', args, function(response) {
+          return _this.tag = response.sentence;
+        });
+      };
+      this.saveSentence = function() {
+        var _this = this;
+        this.saving = true;
+        return Translations.post('save-sentence', {
+          def: this.selected,
+          tag: this.tag
+        }, function() {
+          return _this.saving = false;
+        });
+      };
+      this.$on('sentence-choosed', fetchSentence);
+      return this.$on('sentence-clear', function() {
+        return _this.tag = null;
       });
-    };
-    this.saveSentence = function() {
-      var _this = this;
-      this.saving = true;
-      return Translations.post('save-sentence', {
-        def: this.selected,
-        tag: this.tag
-      }, function() {
-        return _this.saving = false;
-      });
-    };
-    this.$on('sentence-choosed', fetchSentence);
-    return this.$on('sentence-clear', function() {
-      return _this.tag = null;
-    });
-  }, 'Translations');
+    }
+  ]);
 });

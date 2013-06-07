@@ -26,7 +26,7 @@ namespace 'Alcarin.Admin', (exports, Alcarin) ->
     ]
 
 
-    exports.SelectedTranslation = ngcontroller (Translations)->
+    exports.SelectedTranslation = ngcontroller ['Translations', (Translations)->
         @tag = null
         @saving = false
 
@@ -44,6 +44,4 @@ namespace 'Alcarin.Admin', (exports, Alcarin) ->
 
         @$on 'sentence-choosed', fetchSentence
         @$on 'sentence-clear', => @tag = null
-
-
-    , 'Translations'
+    ]

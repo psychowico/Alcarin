@@ -49,7 +49,10 @@ namespace('Alcarin.Orbis.Gateways', function(exports, Alcarin) {
             id: gateway.id
           }, function($gateway) {
             return $gateway.$delete(function() {
-              return group.gateways.remove(gateway);
+              group.gateways.remove(gateway);
+              if (group.gateways.length === 0) {
+                return _this.gateways_groups.remove(group);
+              }
             });
           });
         });
