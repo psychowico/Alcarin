@@ -53,6 +53,8 @@ return array(
                             '/js/compiled_coffee/Alcarin/Angular/ngx-proxy.js',
                             '/js/compiled_coffee/Alcarin/Angular/ngx-core.js',
                             '/js/compiled_coffee/Alcarin/Angular/ngx-chosen.js',
+                            '/js/compiled_coffee/Alcarin/Angular/ngx-jquery-anims.js',
+                            '/js/compiled_coffee/Alcarin/Angular/ngx-animate-in-place.js',
                         ),
                     ),
                     //files enough for guest users
@@ -94,6 +96,7 @@ return array(
                             '/css/vendor/bootstrap/bootstrap-colorpicker.css',
                             '/css/vendor/jquery.ui-1.10.2.css',
                             '/css/vendor/chosen-0.9.12.css',
+                            '/css/vendor/animate-8429a2d.css',
                         ),
                     ),
                     'common' => array(

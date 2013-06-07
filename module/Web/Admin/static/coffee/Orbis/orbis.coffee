@@ -3,7 +3,7 @@
 namespace 'Alcarin.Orbis', (exports, Alcarin) ->
 
     orbis = angular.module('orbis', ['@popover', '@x-editable', '@gateways',
-                             '@minimap-renderer', 'ui.event'])
+                             '@minimap-renderer', '@animate', 'ui.event'])
            .config ['$routeProvider', ($routeProvider)->
                 $routeProvider
                     .when '/groups',
@@ -21,8 +21,6 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
 
     exports.App = ngcontroller ['$routeParams', (params)->
         @active_group = 0
-        @toggleGroup = (group)->
-            @active_group = if @active_group == group.name then -1 else group.name
         @$on 'groupChanged', (ev, group)=>
             @active_group = group
     ]

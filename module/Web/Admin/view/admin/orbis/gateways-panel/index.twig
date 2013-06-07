@@ -23,12 +23,9 @@
                 </canvas>
             </div>
         </div>
-        <div class="span6 gateways-list">
+        <div class="span6 gateways-list" style="position: relative">
             <h2>{{ _('Gateways') }}</h2>
-            <div ng-view ng-animate="{enter: 'fade', leave: 'fade'}">
-            {# partial('/admin/orbis/gateways-list', {}) }}
-            {{ partial('/admin/orbis/gateway-edit', {form: gateway_form}) #}
-            </div>
+            <div ng-view ng-animate="{enter: 'animated fadeInUp'}"></div>
         </div>
     </div>
 

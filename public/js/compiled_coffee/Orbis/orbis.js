@@ -2,7 +2,7 @@
 
 namespace('Alcarin.Orbis', function(exports, Alcarin) {
   var orbis;
-  orbis = angular.module('orbis', ['@popover', '@x-editable', '@gateways', '@minimap-renderer', 'ui.event']).config([
+  orbis = angular.module('orbis', ['@popover', '@x-editable', '@gateways', '@minimap-renderer', '@animate', 'ui.event']).config([
     '$routeProvider', function($routeProvider) {
       return $routeProvider.when('/groups', {
         controller: Alcarin.Orbis.Gateways.List,
@@ -22,9 +22,6 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
     '$routeParams', function(params) {
       var _this = this;
       this.active_group = 0;
-      this.toggleGroup = function(group) {
-        return this.active_group = this.active_group === group.name ? -1 : group.name;
-      };
       return this.$on('groupChanged', function(ev, group) {
         return _this.active_group = group;
       });
