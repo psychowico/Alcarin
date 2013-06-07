@@ -38,7 +38,7 @@ class Json extends AbstractPlugin
 
     public function __invoke( $array = null )
     {
-        if($array == null) return $this;
+        if($array === null) return $this;
 
         return new JsonModel($array);
     }
