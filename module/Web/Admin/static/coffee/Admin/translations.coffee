@@ -3,44 +3,40 @@
 namespace 'Alcarin.Admin', (exports, Alcarin) ->
 
     angular.module('translations', ['@proxy', '@chosen'])
-           .factory('Translations', ['ZF2Action', (ZF2Action)->
-                ZF2Action urls.translations
-            ])
+        .factory('Translation', ['alc-resource', ($res)->
+            $res urls.translations + '/:tagid', {tagid: "@tagid"}
+        ])
 
-    exports.Translations = ngcontroller [ 'Translations', (Translations)->
+    exports.Translations = ngcontroller [ 'Translation', (Translation)->
+        @phrases = []
+        @choose  =
+            lang: 'pl'
+            group: 'static'
+
         @selected = {
-            tag: ''
-            choose: {
-                lang: 'pl'
-                group: 'static'
-            }
         }
 
         @reloadSentences = ->
             @$broadcast 'sentence-clear'
-            @selected.tag = ''
-            @phrases = Translations 'get-sentences', @selected.choose
+            @selected = ''
+            Translation.query @choose, (_ph)=>
+                @phrases = _ph
 
         @loadSentence = ->
             @$broadcast 'sentence-choosed'
     ]
 
 
-    exports.SelectedTranslation = ngcontroller ['Translations', (Translations)->
+    exports.SelectedTranslation = ngcontroller ['Translation', (Translation)->
         @tag = null
         @saving = false
 
         fetchSentence = =>
-            args = angular.extend {tagid: @selected.tag}, @selected.choose
-            Translations 'get-sentence', args, (response)=>
-                @tag = response.sentence
+            @tag = Translation.get $.extend {tagid: @selected.tagid}, @choose
 
         @saveSentence = ->
             @saving = true
-            Translations.post 'save-sentence', {
-                def: @selected
-                tag: @tag
-            }, => @saving = false
+            @tag.$save @choose, => @saving = false
 
         @$on 'sentence-choosed', fetchSentence
         @$on 'sentence-clear', => @tag = null

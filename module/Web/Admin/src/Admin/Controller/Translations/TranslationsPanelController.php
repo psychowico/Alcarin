@@ -10,65 +10,71 @@ class TranslationsPanelController extends AbstractAlcarinRestfulController
 {
     public function getList()
     {
-        return [
-            'groups' => DynamicTranslations::$groups,
-            'languages' => DynamicTranslations::$languages,
-        ];
-    }
-
-    public function getSentencesAction()
-    {
-        $data = $this->params()->fromQuery();
-        if(empty($data['group']) ||
-           !in_array($data['group'], DynamicTranslations::$groups) ||
-           empty($data['lang']) ||
-           !in_array($data['lang'], DynamicTranslations::$languages)
-           ) {
-            return $this->json()->fail($data);
+        $group = $this->params()->fromQuery('group');
+        $lang = $this->params()->fromQuery('lang');
+        if(empty($group) || empty($lang)) {
+            return [
+                'groups' => DynamicTranslations::$groups,
+                'languages' => DynamicTranslations::$languages,
+            ];
         }
         else {
-            $group = $data['group'];
-            $lang = $data['lang'];
+            return $this->getSentences($group, $lang);
+        }
+    }
 
+    public function get($tagid)
+    {
+        $group = $this->params()->fromQuery('group');
+        $lang  = $this->params()->fromQuery('lang');
+        return $this->getSentence($group, $lang, $tagid);
+    }
+
+    public function update($tagid, $transl_entry)
+    {
+        $group = $this->params()->fromQuery('group');
+        $lang  = $this->params()->fromQuery('lang');
+        return $this->saveSentence($group, $lang, $tagid, $transl_entry);
+    }
+
+    private function getSentences($group, $lang)
+    {
+        if(!in_array($group, DynamicTranslations::$groups) ||
+           !in_array($lang, DynamicTranslations::$languages) ) {
+            return $this->responses()->badRequest();
+        }
+        else {
             $keys = $this->system()->getAllTagsIdInGroup($group, $lang);
-            return $this->json()->success(['sentences' => $keys]);
+            return $this->json(array_map(function($e) {
+                return ['tagid' => $e];
+            }, $keys));
         }
     }
 
-    public function getSentenceAction()
+    private function getSentence($group, $lang, $tagid)
     {
-        $data = $this->params()->fromQuery();
-        if(empty($data['tagid']) || empty($data['lang']) || empty($data['group'])) {
-            return $this->json()->fail();
+        if(empty($tagid) || empty($lang) || empty($group)) {
+            return $this->responses()->badRequest();
         }
         else {
-            $tagid = $data['tagid'];
-            $group = $data['group'];
-            $lang = $data['lang'];
-
             $def = $this->system()->getTagDefinition($group, $tagid, $lang);
-
-            return $this->json()->success(['sentence' => $def]);
+            $def['tagid'] = $tagid;
+            return $this->json($def);
         }
     }
 
-    public function saveSentenceAction()
+    private function saveSentence($group, $lang, $tagid, $data)
     {
-        $def = $this->params()->fromPost('def');
-        $tag = $this->params()->fromPost('tag');
-        if(empty($def['choose']['group']) || empty($def['choose']['lang']) ||
-            empty($def['tag'])) {
-            return $this->json()->fail();
+        $data['tagid'] = $tagid;
+        if(empty($group) || empty($lang) || empty($data['tagid'])) {
+            return $this->responses()->badRequest();
         }
 
-        $group = $def['choose']['group'];
-        $lang  = $def['choose']['lang'];
-
-        $new_content = empty($tag['content']) ? '' : $tag['content'];
-        $entry = $this->system()->translation($group, $def['tag'], $lang);
+        $new_content = empty($data['content']) ? '' : $data['content'];
+        $entry = $this->system()->translation($group, $data['tagid'], $lang);
         $entry->setValue($new_content);
 
-        return $this->json()->success();
+        return $this->getSentence($group, $lang, $data['tagid']);
     }
 
     protected function system()

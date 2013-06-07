@@ -1,24 +1,28 @@
 'use strict';
 
 namespace('Alcarin.Admin', function(exports, Alcarin) {
-  angular.module('translations', ['@proxy', '@chosen']).factory('Translations', [
-    'ZF2Action', function(ZF2Action) {
-      return ZF2Action(urls.translations);
+  angular.module('translations', ['@proxy', '@chosen']).factory('Translation', [
+    'alc-resource', function($res) {
+      return $res(urls.translations + '/:tagid', {
+        tagid: "@tagid"
+      });
     }
   ]);
   exports.Translations = ngcontroller([
-    'Translations', function(Translations) {
-      this.selected = {
-        tag: '',
-        choose: {
-          lang: 'pl',
-          group: 'static'
-        }
+    'Translation', function(Translation) {
+      this.phrases = [];
+      this.choose = {
+        lang: 'pl',
+        group: 'static'
       };
+      this.selected = {};
       this.reloadSentences = function() {
+        var _this = this;
         this.$broadcast('sentence-clear');
-        this.selected.tag = '';
-        return this.phrases = Translations('get-sentences', this.selected.choose);
+        this.selected = '';
+        return Translation.query(this.choose, function(_ph) {
+          return _this.phrases = _ph;
+        });
       };
       return this.loadSentence = function() {
         return this.$broadcast('sentence-choosed');
@@ -26,27 +30,20 @@ namespace('Alcarin.Admin', function(exports, Alcarin) {
     }
   ]);
   return exports.SelectedTranslation = ngcontroller([
-    'Translations', function(Translations) {
+    'Translation', function(Translation) {
       var fetchSentence,
         _this = this;
       this.tag = null;
       this.saving = false;
       fetchSentence = function() {
-        var args;
-        args = angular.extend({
-          tagid: _this.selected.tag
-        }, _this.selected.choose);
-        return Translations('get-sentence', args, function(response) {
-          return _this.tag = response.sentence;
-        });
+        return _this.tag = Translation.get($.extend({
+          tagid: _this.selected.tagid
+        }, _this.choose));
       };
       this.saveSentence = function() {
         var _this = this;
         this.saving = true;
-        return Translations.post('save-sentence', {
-          def: this.selected,
-          tag: this.tag
-        }, function() {
+        return this.tag.$save(this.choose, function() {
           return _this.saving = false;
         });
       };
