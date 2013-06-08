@@ -19,9 +19,10 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
     }
   ]);
   return exports.App = ngcontroller([
-    '$routeParams', function(params) {
+    '$routeParams', 'MapInfo', function(params, MapInfo) {
       var _this = this;
       this.active_group = 0;
+      this.mapinfo = MapInfo();
       return this.$on('groupChanged', function(ev, group) {
         return _this.active_group = group;
       });

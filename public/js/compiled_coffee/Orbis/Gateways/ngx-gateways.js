@@ -21,5 +21,13 @@ namespace('Alcarin.Orbis.Gateways', function(exports, Alcarin) {
         id: "@id"
       });
     }
+  ]).factory('MapInfo', [
+    '$http', function($http) {
+      return function() {
+        return $http.get("" + urls.orbis.map + "/get-info").then(function(response) {
+          return response.data;
+        });
+      };
+    }
   ]);
 });

@@ -33,6 +33,16 @@ canvas {
 .minimap .flag div.ui-draggable-dragging {
   border-style: solid dashed;
 }
+.info-container {
+  margin: 10px;
+}
+.info-container h2 {
+  display: inline;
+}
+.info-container * {
+  margin-right: 5px;
+  vertical-align: middle;
+}
 .info-container .popover {
   max-width: 400px;
   width: 400px;

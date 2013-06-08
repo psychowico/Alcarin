@@ -27,6 +27,18 @@ return array(
                 ),
             ),
         ),
+        'orbis-map' => array(
+            'type'    => 'segment',
+            'options' => array(
+                'route'    => '/admin/orbis/map/:action',
+                'constraints' => array(
+                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                ),
+                'defaults' => array(
+                    'controller'    => 'Admin\Controller\Orbis\Map',
+                ),
+            ),
+        ),
         'translations' => array(
             'type'    => 'segment',
             'options' => array(

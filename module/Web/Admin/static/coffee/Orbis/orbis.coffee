@@ -19,8 +19,9 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
                         redirectTo:'/groups'
             ]
 
-    exports.App = ngcontroller ['$routeParams', (params)->
+    exports.App = ngcontroller ['$routeParams', 'MapInfo', (params, MapInfo)->
         @active_group = 0
+        @mapinfo = MapInfo()
         @$on 'groupChanged', (ev, group)=>
             @active_group = group
     ]

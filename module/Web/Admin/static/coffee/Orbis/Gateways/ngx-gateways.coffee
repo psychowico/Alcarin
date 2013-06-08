@@ -10,3 +10,7 @@ namespace 'Alcarin.Orbis.Gateways', (exports, Alcarin) ->
         .factory('Gateway', ['alc-resource', ($res)->
             $res urls.orbis.gateways + '/:id', {id: "@id"}
         ])
+        .factory('MapInfo', ['$http', ($http)->
+            ()->
+                $http.get("#{urls.orbis.map}/get-info").then (response)-> response.data
+        ])

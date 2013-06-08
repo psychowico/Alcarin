@@ -5,15 +5,16 @@
     <div class="row" ng-controller="Alcarin.Orbis.App">
         <div class="span6">
             <div class="info-container">
-                <h2 class="h2">
-                    {{ _('Minimap') }}
-                    <button class="map-info btn btn-inverse">
+                <div>
+                <h2 class="h2">{{ _('Minimap') }}</h2>
+                    <button class="map-info btn btn-inverse" alc-popover="{* mapinfo *}"
+                        data-placement="bottom" title="Map info" data-html="true">
                         Info
                     </button>
                     <button data-target="#change-radius-modal" data-toggle="modal" class="btn btn-inverse">
                         Change radius
                     </button>
-                </h2>
+                </div>
                 <div class="info-popover" data-placement="bottom" data-title="Global map information" data-content="">
                 </div>
             </div>
