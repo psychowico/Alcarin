@@ -55,6 +55,7 @@ return array(
                             '/js/compiled_coffee/Alcarin/Angular/ngx-chosen.js',
                             '/js/compiled_coffee/Alcarin/Angular/ngx-jquery-anims.js',
                             '/js/compiled_coffee/Alcarin/Angular/ngx-animate-in-place.js',
+                            '/js/compiled_coffee/Alcarin/Angular/ngx-slider.js',
                         ),
                     ),
                     //files enough for guest users

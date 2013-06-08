@@ -49,6 +49,7 @@ return array(
             'Admin\Controller\Orbis\GatewaysGroups' => [Resource::ADMIN_ORBIS],
             'Admin\Controller\Orbis\Gateways'       => [Resource::ADMIN_ORBIS],
             'Admin\Controller\Orbis\Map'            => [Resource::ADMIN_ORBIS],
+            'Admin\Controller\Orbis\WorldEditor'    => [Resource::ADMIN_ORBIS],
         ),
     ),
 

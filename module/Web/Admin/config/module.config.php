@@ -20,6 +20,7 @@ return array(
             'Admin\Controller\Orbis\GatewaysGroups' => 'Admin\Controller\Orbis\GatewaysGroupsController',
             'Admin\Controller\Orbis\GatewaysPanel' => 'Admin\Controller\Orbis\GatewaysPanelController',
             'Admin\Controller\Orbis\Map' => 'Admin\Controller\Orbis\OrbisMapController',
+            'Admin\Controller\Orbis\WorldEditor' => 'Admin\Controller\Orbis\WorldEditorController',
 
             'Admin\Controller\Users\Privilages' => 'Admin\Controller\Users\PrivilagesController',
 

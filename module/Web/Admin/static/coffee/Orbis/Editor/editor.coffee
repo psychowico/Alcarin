@@ -1,5 +1,34 @@
 namespace 'Alcarin.Orbis.Editor', (exports, Alcarin) ->
 
+    angular.module('orbis.editor', ['@slider'])
+       .config ['$routeProvider', ($routeProvider)->
+            $routeProvider
+                .when '/x=:x&y=:y&brushsize=:brushsize',
+                    controller: exports.Editor
+                .otherwise
+                    redirectTo: '/x=0&y=0&brushsize=4'
+        ]
+
+    exports.App = ngcontroller ['$route', ($r)->
+        @loc = {x: 0, y: 0}
+        @$on '$routeChangeSuccess', (e, route)=>
+            @loc.x = route.params.x
+            @loc.y = route.params.y
+    ]
+
+    exports.Map = ngcontroller ->
+
+    exports.Toolbar = ngcontroller ['$location', ($location)->
+        @brushsize = 4
+
+        @$on '$routeChangeSuccess', (e, route)=>
+            @brushsize = route.params.brushsize
+
+        @$watch 'brushsize', (t)=>
+            $location.path "/x=#{@loc.x}&y=#{@loc.y}&brushsize=#{@brushsize}" if t?
+    ]
+
+    return
     class exports.Editor
 
         constructor: (@base)->

@@ -17,7 +17,7 @@ return array(
             'options' => array(
                 'route'    => '/admin/orbis/:controller[/__:template][/:id]',
                 'constraints' => array(
-                    'controller' => 'gateways-panel|gateways-groups|gateways',
+                    'controller' => 'gateways-panel|gateways-groups|gateways|world-editor',
                     'id'         => '[a-zA-Z0-9%_-]+',
                     'template'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                 ),

@@ -58,3 +58,6 @@ ul .horizontal-divider {
   border: 2px dashed red;
   padding: 5px 10px 5px 10px;
 }
+.slider {
+  display: block;
+}

@@ -1,6 +1,44 @@
 var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
+  angular.module('orbis.editor', ['@slider']).config([
+    '$routeProvider', function($routeProvider) {
+      return $routeProvider.when('/x=:x&y=:y&brushsize=:brushsize', {
+        controller: exports.Editor
+      }).otherwise({
+        redirectTo: '/x=0&y=0&brushsize=4'
+      });
+    }
+  ]);
+  exports.App = ngcontroller([
+    '$route', function($r) {
+      var _this = this;
+      this.loc = {
+        x: 0,
+        y: 0
+      };
+      return this.$on('$routeChangeSuccess', function(e, route) {
+        _this.loc.x = route.params.x;
+        return _this.loc.y = route.params.y;
+      });
+    }
+  ]);
+  exports.Map = ngcontroller(function() {});
+  exports.Toolbar = ngcontroller([
+    '$location', function($location) {
+      var _this = this;
+      this.brushsize = 4;
+      this.$on('$routeChangeSuccess', function(e, route) {
+        return _this.brushsize = route.params.brushsize;
+      });
+      return this.$watch('brushsize', function(t) {
+        if (t != null) {
+          return $location.path("/x=" + _this.loc.x + "&y=" + _this.loc.y + "&brushsize=" + _this.brushsize);
+        }
+      });
+    }
+  ]);
+  return;
   return exports.Editor = (function() {
 
     function Editor(base) {

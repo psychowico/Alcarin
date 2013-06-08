@@ -1,12 +1,12 @@
 {% extends "admin-layout" %}
 
 {% block content %}
-<div class="map-editor" data-instance="Alcarin.Orbis.Editor.Editor">
-    <div class="row">
+<div class="map-editor" ng-app="orbis.editor">
+    <div class="row" ng-controller="Alcarin.Orbis.Editor.App">
         <div class="span6">
             <h2>Map Editor</h2>
 
-            <div class="map-viewport">
+            <div class="map-viewport" ng-controller="Alcarin.Orbis.Editor.Map">
                 <div class="top">
                     <button data-diff-y="-0.1" class="btn btn-block btn-inverse top10">
                         <i class="icon-chevron-up"></i>
@@ -74,7 +74,7 @@
                 </div>
             </div>
         </div>
-        <div class="span6">
+        <div class="span6" ng-controller="Alcarin.Orbis.Editor.Toolbar">
             <h2>Toolbar</h2>
             <div class="toolbar">
                 <div class="brushes">
@@ -85,10 +85,12 @@
                                 <a href="#" class="brush-color color-picker" data-color="rgb(0, 128, 0)" data-color-format="rgb">
                                 </a>
                             </div>
-                            <div class="span7 size">
-                                <label>Size:</label>
-                                <div class="slider"></div>
+                            <div class="size">
+                            <label class="span1">Size:</label>
+                            <div class="span9">
+                                <jslider options="{min: 1, max: 10}" value="brushsize"></jslider>
                             </div>
+                        </div>
                         </div>
                     </div>
                 </div>
