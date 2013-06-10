@@ -35,6 +35,7 @@ namespace 'Alcarin.Orbis.Editor', (exports, Alcarin) ->
     # route need be injected somewhere for angularjs routing working purposes
     exports.App = ngcontroller ['$route', '$window', ($r, $window)->
         @mapsaving = false
+        @has_changes = false
 
         @brush      =
             color: {r:0, g:128, b:0}

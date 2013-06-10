@@ -50,6 +50,7 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
     '$route', '$window', function($r, $window) {
       var _this = this;
       this.mapsaving = false;
+      this.has_changes = false;
       this.brush = {
         color: {
           r: 0,
