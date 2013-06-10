@@ -43,8 +43,6 @@ return array(
                             '/js/compiled_coffee/Alcarin/randoms.js',
                             '/js/compiled_coffee/Alcarin/Errors/errors-core.js',
                             '/js/compiled_coffee/Alcarin/event-proxy.js',
-                            '/js/compiled_coffee/Alcarin/active-view.js',
-                            '/js/compiled_coffee/Alcarin/active-list.js',
                             '/js/compiled_coffee/Alcarin/update-hash-link.js',
                             '/js/compiled_coffee/Alcarin/JQueryPlugins/RESTful.js',
                             '/js/compiled_coffee/Alcarin/JQueryPlugins/forms.js',
