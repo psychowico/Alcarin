@@ -58,7 +58,7 @@ namespace 'Alcarin.Orbis.Editor', (exports, Alcarin) ->
     exports.Map = ngcontroller ['Map',  '$location', (Map, $loc)->
         @maploading = false
         @loc        = {x: 0, y: 0}
-        @fields     = {}
+        @fields     = []
         @step       = 0
         @changes    = {}
 

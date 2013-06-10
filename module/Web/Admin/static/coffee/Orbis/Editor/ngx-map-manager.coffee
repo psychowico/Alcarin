@@ -52,7 +52,7 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
                         $scope.$apply -> $scope.onMapChange()
 
                 $scope.$watch 'mapFields', (val)->
-                    if val?.length
+                    if val? and $scope.mapSize > 0
                         map.set_center $scope.mapCenter.x, $scope.mapCenter.y
                         map.redraw $scope.mapSize, val
 

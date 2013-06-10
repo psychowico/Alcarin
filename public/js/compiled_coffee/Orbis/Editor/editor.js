@@ -85,7 +85,7 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
         x: 0,
         y: 0
       };
-      this.fields = {};
+      this.fields = [];
       this.step = 0;
       this.changes = {};
       this.$on('$locationChangeStart', function(ev) {

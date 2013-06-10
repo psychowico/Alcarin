@@ -19,7 +19,6 @@ return array(
                             //issue
                             // '/js/vendor/jquery/jquery-1.9.1.js',
                             // '/js/vendor/angular-1.1.5.js',
-                            '/js/vendor/jquery/jquery.ba-bbq-1.4pre.js',
                             '/js/vendor/jquery/jquery.cookie-1.3.1.js',
                             '/js/vendor/jquery/jquery.ui-1.10.2.js',
                             '/js/vendor/jquery/chosen.jquery-0.9.12.js',
@@ -42,7 +41,6 @@ return array(
                             '/js/compiled_coffee/Alcarin/color.js',
                             '/js/compiled_coffee/Alcarin/randoms.js',
                             '/js/compiled_coffee/Alcarin/Errors/errors-core.js',
-                            '/js/compiled_coffee/Alcarin/update-hash-link.js',
                             '/js/compiled_coffee/Alcarin/JQueryPlugins/RESTful.js',
                             '/js/compiled_coffee/Alcarin/JQueryPlugins/forms.js',
                             '/js/compiled_coffee/Alcarin/JQueryPlugins/others.js',

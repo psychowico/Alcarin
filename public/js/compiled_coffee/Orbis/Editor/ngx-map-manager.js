@@ -89,7 +89,7 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
             }
           };
           $scope.$watch('mapFields', function(val) {
-            if (val != null ? val.length : void 0) {
+            if ((val != null) && $scope.mapSize > 0) {
               map.set_center($scope.mapCenter.x, $scope.mapCenter.y);
               return map.redraw($scope.mapSize, val);
             }
