@@ -67,7 +67,7 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
         return _this.ignored_changes = _this.has_changes = false;
       });
       $($window).on('beforeunload', function() {
-        if (this.has_changes) {
+        if (_this.has_changes) {
           return 'You lost your unsaved changes! You are sure?';
         }
       });

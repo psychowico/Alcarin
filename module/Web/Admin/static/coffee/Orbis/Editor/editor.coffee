@@ -48,7 +48,7 @@ namespace 'Alcarin.Orbis.Editor', (exports, Alcarin) ->
         @$on 'map.reset', =>
             @ignored_changes = @has_changes = false
 
-        $($window).on 'beforeunload', -> 'You lost your unsaved changes! You are sure?' if @has_changes
+        $($window).on 'beforeunload', => 'You lost your unsaved changes! You are sure?' if @has_changes
 
         @saveChanges = =>
             @mapsaving=true
