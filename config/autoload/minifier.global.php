@@ -41,8 +41,6 @@ return array(
                             '/js/compiled_coffee/Alcarin/color.js',
                             '/js/compiled_coffee/Alcarin/randoms.js',
                             '/js/compiled_coffee/Alcarin/Errors/errors-core.js',
-                            '/js/compiled_coffee/Alcarin/JQueryPlugins/RESTful.js',
-                            '/js/compiled_coffee/Alcarin/JQueryPlugins/forms.js',
                             '/js/compiled_coffee/Alcarin/JQueryPlugins/others.js',
                             '/js/compiled_coffee/Dialogs/confirms.js',
                             '/js/compiled_coffee/Alcarin/Angular/ngx-proxy.js',
