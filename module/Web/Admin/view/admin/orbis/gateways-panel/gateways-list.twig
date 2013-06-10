@@ -31,7 +31,7 @@
                         <li class="gateway" ng-animate="{enter: '$slideDown', leave:'$slideUp'}" ng-repeat="gateway in group.gateways">
                             <button class="close" ng-click="deleteGateway(group, gateway)">&times;</button>
                             <a href="#/gateway/edit/{*gateway.id*}" class="edit btn-mini btn btn-inverse">EDIT</a>
-                            {% set _href = url('orbis', {controller: 'editor'}) ~ "#x={* gateway.x *}&y={* gateway.y *}" %}
+                            {% set _href = url('orbis', {controller: 'world-editor'}) ~ "#x={* gateway.x *}&y={* gateway.y *}" %}
                             <a ng-href="{{_href}}" ui-event="{mouseenter: 'hoverGateway(gateway)', mouseleave: 'leaveGateway()'}"
                                 title="{* gateway.description *}">
                                 <i class="icon-flag"></i><span class="name">{* gateway.name *}</span>

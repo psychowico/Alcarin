@@ -1,12 +1,11 @@
 namespace 'Alcarin.Orbis.Editor', (exports, Alcarin) ->
 
     class exports.MapManager
-        changes: {}
         background: [0, 0, 255]
         noise_density: 25
         noise_impact: 0.22
 
-        constructor: (@canvas, c_x, c_y)->
+        constructor: (@$scope, @canvas, c_x, c_y)->
             @set_center c_x, c_y
 
         noise: ->
@@ -151,7 +150,7 @@ namespace 'Alcarin.Orbis.Editor', (exports, Alcarin) ->
 
                 _data.color = (rgb[0] << 16) + (rgb[1] << 8) + rgb[2]
 
-                @changes["#{x},#{y}"] = {
+                @$scope.changes["#{x},#{y}"] = {
                     x: x
                     y: y
                     field: _data
@@ -161,8 +160,8 @@ namespace 'Alcarin.Orbis.Editor', (exports, Alcarin) ->
             @_buffer_to_front true
 
             @unsaved_changes = true
+            @change_happen() if @change_happen?
             @canvas.trigger 'mapchange'
-
 
         _buffer_to_front: (with_swap = false)->
             @backbuffer.putImageData @image_data, 0, 0 if with_swap

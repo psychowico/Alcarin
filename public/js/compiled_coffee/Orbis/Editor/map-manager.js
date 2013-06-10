@@ -2,15 +2,14 @@
 namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
   return exports.MapManager = (function() {
 
-    MapManager.prototype.changes = {};
-
     MapManager.prototype.background = [0, 0, 255];
 
     MapManager.prototype.noise_density = 25;
 
     MapManager.prototype.noise_impact = 0.22;
 
-    function MapManager(canvas, c_x, c_y) {
+    function MapManager($scope, canvas, c_x, c_y) {
+      this.$scope = $scope;
       this.canvas = canvas;
       this.set_center(c_x, c_y);
     }
@@ -166,7 +165,7 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
         }
         _data = $.extend({}, field_brush);
         _data.color = (rgb[0] << 16) + (rgb[1] << 8) + rgb[2];
-        return this.changes["" + x + "," + y] = {
+        return this.$scope.changes["" + x + "," + y] = {
           x: x,
           y: y,
           field: _data
@@ -177,6 +176,9 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
     MapManager.prototype.confirm_changes = function() {
       this._buffer_to_front(true);
       this.unsaved_changes = true;
+      if (this.change_happen != null) {
+        this.change_happen();
+      }
       return this.canvas.trigger('mapchange');
     };
 

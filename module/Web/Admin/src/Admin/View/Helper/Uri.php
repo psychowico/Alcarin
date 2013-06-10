@@ -18,14 +18,22 @@ class Uri extends AbstractHelper
 
     public function parent()
     {
+        return $this->up(1);
+    }
+
+    public function up($levels)
+    {
         $sl = $this->getView()->getHelperPluginManager()->getServiceLocator();
         $uri = $sl->get('request')->getUri()->normalize();
 
         $path = $uri->getPath();
-        $pos = strrpos($path, '/');
-        if($pos === false ) return null;
+        for($i = 0; $i < $levels; $i++) {
+            $pos = strrpos($path, '/');
+            if($pos === false ) return null;
+            $path = substr($path, 0, $pos);
+        }
 
-        return substr($path, 0, $pos);
+        return $path;
     }
 
     public function isAdmin()

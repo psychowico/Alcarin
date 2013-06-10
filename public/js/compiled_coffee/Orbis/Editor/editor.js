@@ -1,169 +1,127 @@
-var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
-  angular.module('orbis.editor', ['@slider']).config([
+  angular.module('orbis.editor', ['@slider', '@map-manager', '@spin', 'ui.event', '@disabled', '@color-picker']).config([
     '$routeProvider', function($routeProvider) {
-      return $routeProvider.when('/x=:x&y=:y&brushsize=:brushsize', {
+      return $routeProvider.when('/x=:x&y=:y', {
         controller: exports.Editor
       }).otherwise({
-        redirectTo: '/x=0&y=0&brushsize=4'
+        redirectTo: '/x=0&y=0'
       });
+    }
+  ]).factory('Map', [
+    '$http', function($http) {
+      return {
+        fetch: function(_x, _y, callback) {
+          var service;
+          service = $http.get("" + urls.orbis.map + "/fetch-fields", {
+            params: {
+              x: _x,
+              y: _y
+            }
+          }).then(function(response) {
+            return response.data;
+          });
+          if (callback != null) {
+            service.then(callback);
+          }
+          return service;
+        },
+        update: function(_fields, callback) {
+          var changes;
+          changes = $.map(_fields, function(value, key) {
+            return value;
+          });
+          changes = JSON.stringify(changes);
+          return $http({
+            url: "" + urls.orbis.map + "/update-fields",
+            method: 'POST',
+            data: $.param({
+              fields: changes
+            }),
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            }
+          }).then(callback);
+        }
+      };
     }
   ]);
   exports.App = ngcontroller([
-    '$route', function($r) {
+    '$route', '$window', function($r, $window) {
       var _this = this;
+      this.mapsaving = false;
+      this.brush = {
+        color: {
+          r: 0,
+          g: 128,
+          b: 0
+        },
+        size: 4
+      };
+      this.$on('map.changed', function() {
+        _this.has_changes = true;
+        return _this.ignored_changes = false;
+      });
+      this.$on('map.reset', function() {
+        return _this.ignored_changes = _this.has_changes = false;
+      });
+      $($window).on('beforeunload', function() {
+        if (this.has_changes) {
+          return 'You lost your unsaved changes! You are sure?';
+        }
+      });
+      return this.saveChanges = function() {
+        _this.mapsaving = true;
+        return _this.$broadcast('save.demand');
+      };
+    }
+  ]);
+  return exports.Map = ngcontroller([
+    'Map', '$location', function(Map, $loc) {
+      var _this = this;
+      this.maploading = false;
       this.loc = {
         x: 0,
         y: 0
       };
-      return this.$on('$routeChangeSuccess', function(e, route) {
-        _this.loc.x = route.params.x;
-        return _this.loc.y = route.params.y;
+      this.fields = {};
+      this.step = 0;
+      this.changes = {};
+      this.$on('$locationChangeStart', function(ev) {
+        if (_this.has_changes && !Alcarin.Dialogs.Confirms.admin('You lost your unsaved changes! You are sure?')) {
+          return ev.preventDefault();
+        }
       });
-    }
-  ]);
-  exports.Map = ngcontroller(function() {});
-  exports.Toolbar = ngcontroller([
-    '$location', function($location) {
-      var _this = this;
-      this.brushsize = 4;
       this.$on('$routeChangeSuccess', function(e, route) {
-        return _this.brushsize = route.params.brushsize;
+        _this.loc.x = parseInt(route.params.x);
+        _this.loc.y = parseInt(route.params.y);
+        _this.$emit('map.reset');
+        return _this.fetchFields();
       });
-      return this.$watch('brushsize', function(t) {
-        if (t != null) {
-          return $location.path("/x=" + _this.loc.x + "&y=" + _this.loc.y + "&brushsize=" + _this.brushsize);
+      this.dragMap = function(offsetx, offsety) {
+        this.loc.x += Math.round(offsetx * (this.step - 1));
+        this.loc.y += Math.round(offsety * (this.step - 1));
+        if (this.loc != null) {
+          return $loc.path("/x=" + this.loc.x + "&y=" + this.loc.y);
         }
-      });
-    }
-  ]);
-  return;
-  return exports.Editor = (function() {
-
-    function Editor(base) {
-      var canvas;
-      this.base = base;
-      this.on_fields_updated = __bind(this.on_fields_updated, this);
-
-      this.save_map = __bind(this.save_map, this);
-
-      this.on_fields_loaded = __bind(this.on_fields_loaded, this);
-
-      this.on_before_unload = __bind(this.on_before_unload, this);
-
-      this.move_btn_click = __bind(this.move_btn_click, this);
-
-      this.onhashchange = __bind(this.onhashchange, this);
-
-      this.proxy = new Alcarin.EventProxy(urls.orbis.map);
-      canvas = this.base.find('canvas');
-      this.renderer = new Alcarin.Orbis.Editor.MapManager(canvas);
-      this.step_size = 1;
-      this.toolbar = new Alcarin.Orbis.Editor.Toolbar(this.base.find('.toolbar'), this.renderer);
-    }
-
-    Editor.prototype.onhashchange = function() {
-      var state, _ref, _ref1;
-      state = $.bbq.getState();
-      state.x = parseInt(state.x || 0);
-      state.y = parseInt(state.y || 0);
-      if (state.x !== ((_ref = this.center) != null ? _ref.x : void 0) || state.y !== ((_ref1 = this.center) != null ? _ref1.y : void 0)) {
-        this.renderer.unsaved_changes = {};
-        this.center = {
-          x: state.x,
-          y: state.y
-        };
-        this.renderer.canvas.parent().spin(true);
-        this.proxy.emit('fields.fetch', {
-          x: this.center.x,
-          y: this.center.y
-        });
-      }
-      return false;
-    };
-
-    Editor.prototype.move_btn_click = function(e) {
-      var btn_click,
-        _this = this;
-      btn_click = function() {
-        var btn, diff_x, diff_y, new_center, step;
-        btn = $(e.currentTarget);
-        step = _this.step_size - 1;
-        diff_x = btn.data('diff-x');
-        diff_y = btn.data('diff-y');
-        new_center = $.extend({}, _this.center);
-        if (diff_x != null) {
-          new_center.x += Math.round(step * parseFloat(diff_x));
-        }
-        if (diff_y != null) {
-          new_center.y += Math.round(step * parseFloat(diff_y));
-        }
-        return $.bbq.pushState({
-          x: new_center.x,
-          y: new_center.y
+      };
+      this.fetchFields = function() {
+        _this.maploading = true;
+        return Map.fetch(_this.loc.x, _this.loc.y, function(result) {
+          _this.step = result.size;
+          _this.fields = result.fields;
+          return _this.maploading = false;
         });
       };
-      if (this.renderer.unsaved_changes) {
-        Alcarin.Dialogs.Confirms.admin('You will lost all unsaved changes. Are you sure you want to continue?', function() {
-          return btn_click();
+      this.$on('save.demand', function() {
+        return Map.update(_this.changes, function() {
+          _this.$parent.mapsaving = false;
+          return _this.$emit('map.reset');
         });
-      } else {
-        btn_click();
-      }
-      return false;
-    };
-
-    Editor.prototype.on_before_unload = function() {
-      if (this.renderer.unsaved_changes) {
-        return 'You lost your unsaved changes! You are sure?';
-      }
-    };
-
-    Editor.prototype.on_fields_loaded = function(response) {
-      this.renderer.canvas.parent().spin(false);
-      if (response.success) {
-        this.step_size = response.size;
-        this.renderer.set_center(this.center.x, this.center.y);
-        return this.renderer.redraw(response.size, response.fields);
-      }
-    };
-
-    Editor.prototype.save_map = function(e) {
-      var changes, map_c;
-      map_c = this.renderer.canvas.closest('.map-viewport');
-      map_c.disable(true).spin(true);
-      this.toolbar.save_btn.disable();
-      changes = $.map(this.renderer.changes, function(value, key) {
-        return value;
       });
-      return this.proxy.emit('fields.update', {
-        fields: JSON.stringify(changes)
-      });
-    };
-
-    Editor.prototype.on_fields_updated = function(response) {
-      var map_c;
-      if (response.success) {
-        map_c = this.renderer.canvas.closest('.map-viewport');
-        map_c.spin(false).enable(true, true);
-        this.toolbar.save_btn.closest('.alert').fadeOut();
-        this.renderer.unsaved_changes = false;
-        return this.renderer.changes = {};
-      }
-    };
-
-    Editor.prototype.init = function() {
-      $(window).on('hashchange', this.onhashchange).on('beforeunload', this.on_before_unload);
-      this.renderer.init();
-      this.proxy.on('fields.loaded', this.on_fields_loaded);
-      $('.map-viewport .btn').on('click', this.move_btn_click);
-      this.proxy.on('fields.updated', this.on_fields_updated);
-      this.toolbar.init();
-      return this.toolbar.save_btn.click(this.save_map);
-    };
-
-    return Editor;
-
-  })();
+      return this.mapChange = function() {
+        return _this.$emit('map.changed');
+      };
+    }
+  ]);
 });

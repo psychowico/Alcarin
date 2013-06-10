@@ -9,3 +9,4 @@ namespace 'Alcarin.Dialogs', (exports, Alcarin) ->
                 onconfirm()
             else if not result and onreject?
                 onreject()
+            return result

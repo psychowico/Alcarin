@@ -14,6 +14,20 @@ namespace('Alcarin', function(exports, Alcarin) {
       };
     };
 
+    Color.RGBToHex = function(rgb) {
+      var cth;
+      cth = function(c) {
+        var hex;
+        hex = c.toString(16);
+        if (hex.length === 1) {
+          return "0" + hex;
+        } else {
+          return hex;
+        }
+      };
+      return "#" + cth(rgb.r + cth(rgb.g + cth(rgb.b)));
+    };
+
     return Color;
 
   })();

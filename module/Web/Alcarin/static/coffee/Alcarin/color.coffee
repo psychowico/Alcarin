@@ -9,3 +9,9 @@ namespace 'Alcarin', (exports, Alcarin) ->
                 g: parseInt result[2], 16
                 b: parseInt result[3], 16
             }
+
+        @RGBToHex: (rgb)->
+            cth = (c)->
+                hex = c.toString 16
+                if hex.length == 1 then "0" + hex else hex
+            "#" + cth rgb.r + cth rgb.g + cth rgb.b

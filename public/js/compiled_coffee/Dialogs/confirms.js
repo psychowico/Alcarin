@@ -8,10 +8,11 @@ namespace('Alcarin.Dialogs', function(exports, Alcarin) {
       var result;
       result = confirm(query);
       if (result && (onconfirm != null)) {
-        return onconfirm();
+        onconfirm();
       } else if (!result && (onreject != null)) {
-        return onreject();
+        onreject();
       }
+      return result;
     };
 
     return Confirms;

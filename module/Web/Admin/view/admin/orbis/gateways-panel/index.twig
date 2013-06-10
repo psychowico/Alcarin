@@ -1,5 +1,11 @@
 {% extends "admin-layout" %}
 
+{% block userbar_right %}
+<li class="pull-right">
+    <a href="{{ uri().up(2) }}">Up</a>
+</li>
+{% endblock %}
+
 {% block content %}
 <div id="orbis" ng-app="orbis">
     <div class="row" ng-controller="Alcarin.Orbis.App">

@@ -42,10 +42,11 @@ class OrbisMapController extends AbstractAlcarinRestfulController
         return $this->getResponse()->setContent($map_info);
     }
 
-    protected function onFieldsFetch($data)
+    protected function fetchFieldsAction()
     {
+        $data = $this->params()->fromQuery();
         if(!isset($data['x']) || !isset($data['y'])) {
-            return $this->emit('fields.loaded', $this->fail());
+            return $this->responses()->badRequest();
         }
 
         $x = $data['x'];
@@ -53,15 +54,15 @@ class OrbisMapController extends AbstractAlcarinRestfulController
 
         $data = $this->orbis()->map()->fetchTerrainFields($x, $y, static::EDIT_RANGE);
 
-        $result = $this->success([
+        return $this->json([
             'size'   => 2 * static::EDIT_RANGE,
             'fields' => array_values($data),
         ]);
-        return $this->emit('fields.loaded', $result);
     }
 
-    protected function onFieldsUpdate($data)
+    protected function updateFieldsAction()
     {
+        $data = $this->params()->fromPost();
         $json_serialized_fields = empty($data['fields']) ? '' : $data['fields'];
 
         # we deserialize fields that are sending as json
@@ -86,8 +87,7 @@ class OrbisMapController extends AbstractAlcarinRestfulController
 
         $this->orbis()->map()->upsertFields($fields);
 
-        $result = $this->success(['count' => count($fields)]);
-        return $this->emit('fields.updated', $result);
+        return $this->json(['count' => count($fields)]);
     }
 
     private function orbis()

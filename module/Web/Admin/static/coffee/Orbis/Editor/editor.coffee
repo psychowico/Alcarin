@@ -1,123 +1,96 @@
 namespace 'Alcarin.Orbis.Editor', (exports, Alcarin) ->
 
-    angular.module('orbis.editor', ['@slider'])
-       .config ['$routeProvider', ($routeProvider)->
+    angular.module('orbis.editor', ['@slider', '@map-manager', '@spin', 'ui.event',
+        '@disabled', '@color-picker'])
+       .config(['$routeProvider', ($routeProvider)->
             $routeProvider
-                .when '/x=:x&y=:y&brushsize=:brushsize',
+                .when '/x=:x&y=:y',
                     controller: exports.Editor
                 .otherwise
-                    redirectTo: '/x=0&y=0&brushsize=4'
-        ]
+                    redirectTo: '/x=0&y=0'
+        ])
+        .factory('Map', ['$http', ($http)->
+            fetch: (_x, _y, callback)->
+                service = $http.get "#{urls.orbis.map}/fetch-fields",
+                    params: {x:_x, y:_y}
+                .then((response)-> response.data)
+                service.then callback if callback?
+                service
+            update: (_fields, callback)->
+                # cast to array, object are bigger (when sending)
+                changes = $.map _fields, (value, key) -> value
+                # we sending changes as json coded string, because if we send big
+                # number of fields, we will have problems with servers vars count limits
+                changes = JSON.stringify changes
+                $http
+                    url: "#{urls.orbis.map}/update-fields",
+                    method: 'POST',
+                    data: $.param
+                        fields: changes
+                    headers:
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                .then callback
+        ])
 
-    exports.App = ngcontroller ['$route', ($r)->
-        @loc = {x: 0, y: 0}
-        @$on '$routeChangeSuccess', (e, route)=>
-            @loc.x = route.params.x
-            @loc.y = route.params.y
+    # route need be injected somewhere for angularjs routing working purposes
+    exports.App = ngcontroller ['$route', '$window', ($r, $window)->
+        @mapsaving = false
+
+        @brush      =
+            color: {r:0, g:128, b:0}
+            size : 4
+
+        @$on 'map.changed', =>
+            @has_changes = true
+            @ignored_changes = false
+
+        @$on 'map.reset', =>
+            @ignored_changes = @has_changes = false
+
+        $($window).on 'beforeunload', -> 'You lost your unsaved changes! You are sure?' if @has_changes
+
+        @saveChanges = =>
+            @mapsaving=true
+            @$broadcast 'save.demand'
     ]
 
-    exports.Map = ngcontroller ->
+    exports.Map = ngcontroller ['Map',  '$location', (Map, $loc)->
+        @maploading = false
+        @loc        = {x: 0, y: 0}
+        @fields     = {}
+        @step       = 0
+        @changes    = {}
 
-    exports.Toolbar = ngcontroller ['$location', ($location)->
-        @brushsize = 4
+        @$on '$locationChangeStart', (ev)=>
+            if @has_changes and !Alcarin.Dialogs.Confirms.admin 'You lost your unsaved changes! You are sure?'
+                ev.preventDefault()
 
         @$on '$routeChangeSuccess', (e, route)=>
-            @brushsize = route.params.brushsize
+            @loc.x = parseInt route.params.x
+            @loc.y = parseInt route.params.y
+            @$emit 'map.reset'
+            @fetchFields()
 
-        @$watch 'brushsize', (t)=>
-            $location.path "/x=#{@loc.x}&y=#{@loc.y}&brushsize=#{@brushsize}" if t?
+        @dragMap = (offsetx, offsety)->
+            # if not @has_changes or
+            #  Alcarin.Dialogs.Confirms.admin 'You will lost all unsaved changes. Are you sure you want to continue?'
+            @loc.x += Math.round offsetx * (@step - 1)
+            @loc.y += Math.round offsety * (@step - 1)
+            $loc.path "/x=#{@loc.x}&y=#{@loc.y}" if @loc?
+
+        @fetchFields = =>
+            @maploading = true
+            Map.fetch @loc.x, @loc.y, (result)=>
+                @step       = result.size
+                @fields     = result.fields
+                @maploading = false
+
+        @$on 'save.demand', =>
+            Map.update @changes, =>
+                @$parent.mapsaving = false
+                @$emit 'map.reset'
+
+
+        @mapChange = =>
+            @$emit 'map.changed'
     ]
-
-    return
-    class exports.Editor
-
-        constructor: (@base)->
-            @proxy     = new Alcarin.EventProxy urls.orbis.map
-            canvas     = @base.find 'canvas'
-            @renderer  = new Alcarin.Orbis.Editor.MapManager canvas
-            @step_size = 1
-
-            @toolbar = new Alcarin.Orbis.Editor.Toolbar @base.find('.toolbar'), @renderer
-
-        onhashchange: =>
-            state = $.bbq.getState()
-            state.x = parseInt state.x or 0
-            state.y = parseInt state.y or 0
-            if state.x != @center?.x or state.y != @center?.y
-                @renderer.unsaved_changes = {}
-                @center = {
-                    x: state.x
-                    y: state.y
-                }
-                # let redraw map
-                @renderer.canvas.parent().spin true
-                @proxy.emit 'fields.fetch', {x: @center.x, y: @center.y}
-
-            false
-
-        move_btn_click: (e)=>
-            btn_click = =>
-                btn = $ e.currentTarget
-                # cauze we want see a fragment of now editing fields
-                step = @step_size - 1
-
-                diff_x = btn.data 'diff-x'
-                diff_y = btn.data 'diff-y'
-
-                new_center = $.extend {}, @center
-
-                new_center.x += Math.round step * parseFloat diff_x if diff_x?
-                new_center.y += Math.round step * parseFloat diff_y if diff_y?
-
-                $.bbq.pushState {x: new_center.x, y: new_center.y}
-
-            if @renderer.unsaved_changes
-                Alcarin.Dialogs.Confirms.admin 'You will lost all unsaved changes. Are you sure you want to continue?', =>
-                    btn_click()
-            else
-                btn_click()
-
-            false
-
-        on_before_unload: =>
-            'You lost your unsaved changes! You are sure?' if @renderer.unsaved_changes
-
-        on_fields_loaded: (response)=>
-            @renderer.canvas.parent().spin false
-            if response.success
-                @step_size = response.size
-                @renderer.set_center @center.x, @center.y
-                @renderer.redraw response.size, response.fields
-
-        save_map: (e)=>
-            map_c = @renderer.canvas.closest '.map-viewport'
-            map_c.disable(true).spin true
-
-            @toolbar.save_btn.disable()
-            # cast to array, object are bigger (when sending)
-            changes = $.map @renderer.changes, (value, key) -> value
-            # we sending changes as json coded string, because if we send big
-            # number of fields, we will have problems with servers vars count limits
-            @proxy.emit 'fields.update', { fields: JSON.stringify changes }
-
-        on_fields_updated: (response)=>
-            if response.success
-                map_c = @renderer.canvas.closest '.map-viewport'
-                map_c.spin(false).enable true, true
-                @toolbar.save_btn.closest('.alert').fadeOut()
-                @renderer.unsaved_changes = false
-                @renderer.changes = {}
-
-        init: ->
-            $(window).on('hashchange', @onhashchange)
-                     .on 'beforeunload', @on_before_unload
-
-            @renderer.init()
-
-            @proxy.on 'fields.loaded', @on_fields_loaded
-            $('.map-viewport .btn').on 'click', @move_btn_click
-            @proxy.on 'fields.updated', @on_fields_updated
-
-            @toolbar.init()
-            @toolbar.save_btn.click @save_map
-

@@ -1,21 +1,27 @@
 {% extends "admin-layout" %}
 
+{% block userbar_right %}
+<li class="pull-right">
+    <a href="{{ uri('orbis', {controller: 'gateways-panel'}) }}">Gateways</a>
+</li>
+{% endblock %}
+
 {% block content %}
 <div class="map-editor" ng-app="orbis.editor">
     <div class="row" ng-controller="Alcarin.Orbis.Editor.App">
         <div class="span6">
             <h2>Map Editor</h2>
 
-            <div class="map-viewport" ng-controller="Alcarin.Orbis.Editor.Map">
+            <div class="map-viewport" ng-controller="Alcarin.Orbis.Editor.Map" alc-disabled="mapsaving">
                 <div class="top">
-                    <button data-diff-y="-0.1" class="btn btn-block btn-inverse top10">
+                    <button ng-click="dragMap(0,-0.1)" class="btn btn-block btn-inverse top10">
                         <i class="icon-chevron-up"></i>
                     </button>
-                    <button data-diff-y="-0.4" class="btn btn-block btn-inverse top40">
+                    <button ng-click="dragMap(0,-0.4)" class="btn btn-block btn-inverse top40">
                         <i class="icon-chevron-up"></i>
                         <i class="icon-chevron-up"></i>
                     </button>
-                    <button data-diff-y="-1" class="active-link btn btn-block btn-inverse top100">
+                    <button ng-click="dragMap(0,-1)" class="active-link btn btn-block btn-inverse top100">
                         <i class="icon-chevron-up"></i>
                         <i class="icon-chevron-up"></i>
                         <i class="icon-chevron-up"></i>
@@ -23,14 +29,14 @@
                 </div>
 
                 <div class="right">
-                    <button data-diff-x="0.1" class="btn btn-block btn-inverse right10">
+                    <button ng-click="dragMap(0.1,0)" class="btn btn-block btn-inverse right10">
                         <i class="icon-chevron-right"></i>
                     </button>
-                    <button data-diff-x="0.4" class="btn btn-block btn-inverse right40">
+                    <button ng-click="dragMap(0.4,0)" class="btn btn-block btn-inverse right40">
                         <i class="icon-chevron-right"></i>
                         <i class="icon-chevron-right"></i>
                     </button>
-                    <button data-diff-x="1" class="btn btn-block btn-inverse right100">
+                    <button ng-click="dragMap(1,0)" class="btn btn-block btn-inverse right100">
                         <i class="icon-chevron-right"></i>
                         <i class="icon-chevron-right"></i>
                         <i class="icon-chevron-right"></i>
@@ -38,14 +44,14 @@
                 </div>
 
                 <div class="bottom">
-                    <button data-diff-y="0.1" class="btn btn-block btn-inverse bottom10">
+                    <button ng-click="dragMap(0,0.1)" class="btn btn-block btn-inverse bottom10">
                         <i class="icon-chevron-down"></i>
                     </button>
-                    <button data-diff-y="0.4" class="btn btn-block btn-inverse bottom40">
+                    <button ng-click="dragMap(0,0.4)" class="btn btn-block btn-inverse bottom40">
                         <i class="icon-chevron-down"></i>
                         <i class="icon-chevron-down"></i>
                     </button>
-                    <button data-diff-y="1" class="btn btn-block btn-inverse bottom100">
+                    <button ng-click="dragMap(0,1)" class="btn btn-block btn-inverse bottom100">
                         <i class="icon-chevron-down"></i>
                         <i class="icon-chevron-down"></i>
                         <i class="icon-chevron-down"></i>
@@ -53,28 +59,29 @@
                 </div>
 
                 <div class="left">
-                    <button data-diff-x="-0.1" class="btn btn-block btn-inverse left10">
+                    <button ng-click="dragMap(-0.1,0)" class="btn btn-block btn-inverse left10">
                         <i class="icon-chevron-left"></i>
                     </button>
-                    <button data-diff-x="-0.4" class="btn btn-block btn-inverse left40">
+                    <button ng-click="dragMap(-0.4,0)" class="btn btn-block btn-inverse left40">
                         <i class="icon-chevron-left"></i>
                         <i class="icon-chevron-left"></i>
                     </button>
-                    <button data-diff-x="-1" class="btn btn-block btn-inverse left100">
+                    <button ng-click="dragMap(-1,0)" class="btn btn-block btn-inverse left100">
                         <i class="icon-chevron-left"></i>
                         <i class="icon-chevron-left"></i>
                         <i class="icon-chevron-left"></i>
                     </button>
                 </div>
 
-                <div class="canvas-container">
-                    <canvas width="500" height="500">
+                <div class="canvas-container" alc-spin="maploading || mapsaving">
+                    <canvas width="500" height="500" alc-map-manager map-brush="brush" map-changes="changes"
+                        map-change="mapChange()" map-fields="fields" map-center="loc" map-size="step">
                         You browser don't support canvas, can not continue.
                     </canvas>
                 </div>
             </div>
         </div>
-        <div class="span6" ng-controller="Alcarin.Orbis.Editor.Toolbar">
+        <div class="span6" >
             <h2>Toolbar</h2>
             <div class="toolbar">
                 <div class="brushes">
@@ -82,22 +89,24 @@
                     <div class="well well-inverse current">
                         <div class="row-fluid">
                             <div class="span2">
-                                <a href="#" class="brush-color color-picker" data-color="rgb(0, 128, 0)" data-color-format="rgb">
+                                <a href="#" class="brush-color color-picker" alc-color-picker
+                                     data-color-format="rgb" ng-model="brush.color">
                                 </a>
                             </div>
                             <div class="size">
                             <label class="span1">Size:</label>
                             <div class="span9">
-                                <jslider options="{min: 1, max: 10}" value="brushsize"></jslider>
+                                <jslider options="{min: 1, max: 10}" value="brush.size"></jslider>
                             </div>
                         </div>
                         </div>
                     </div>
                 </div>
-                <div class="alert alert-error hide">
+                <div class="alert alert-error" ng-show="has_changes&&!ignored_changes"
+                    ng-animate="{show: 'animated bounceInRight', hide: 'animated bounceOutRight'}">
                     You have unsaved changes!
-                    <button type="button" class="close">&times;</button>
-                    <button class="btn btn-inverse btn-block">
+                    <button type="button" class="close" ng-click="ignored_changes=true">&times;</button>
+                    <button class="btn btn-inverse btn-block" ng-click="saveChanges()" ng-disabled="mapsaving">
                         Save changes
                     </button>
                 </div>
