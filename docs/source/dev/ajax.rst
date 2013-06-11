@@ -46,40 +46,11 @@ Here is few samples of use it:
         return $this->json(['text' => 'this is page information']);
     }
 
-    public function get($id)
-    {
-        if($id > 0) {
-            return $this->json()->success(['text' => 'It working nice']);
-        }
-        else {
-            return $this->json()->fail(['text' => 'It working bad']);
-        }
-    }
-
-Methods *success()* and *fail()* will generate response array like this:
-    ['success' => true/false]
-And merge it with array in their first argument(if any). It is generally
-good practice to add *'success'* flag to any requests response and check
-it in coffee code.
-
-On client side you can use default jquery ajax methods, but simplest will be use
-alcaring **Rest()** wrapper. It is lazy created instance of
-*Alcarin.JQueryPlugins.RESTful* class. It has 4 interesting methods:
-    1. *$get* - calling simple RESTful get/getList method (according from url argument)
-    2. *$create (alias $post)* - calling RESTful create method
-    3. *$update (alias $put)* - calling RESTful update method
-    4. *$delete* - calling RESTful delete method
-
-Any of this methods have 3 arguments:
-    1. *url* - url to call
-    2. *data* - data to send with requests
-    3. *on_done* - onsuccess/onfail response
-
-You can skip data argument and use just url and on_done, for sample
-
-.. code-block:: javascript
-    Rest().$get urls.test_page, (response)=>
-        alert response
+As long as we using AngularJS js framework to ajax calls you should use angular `$resource`_
+module (for REST requests) or angular `$http`_ module (if you want make not-REST requests).
+Check their documentations for API and examples.
 
 .. _RESTful: http://en.wikipedia.org/wiki/Representational_state_transfer
 .. _`Zend Restful Controller`: http://framework.zend.com/manual/2.1/en/modules/zend.mvc.controllers.html#the-abstractrestfulcontroller
+.. _$resource: http://docs.angularjs.org/api/ngResource.$resource
+.. _$http: http://docs.angularjs.org/api/ng.$http

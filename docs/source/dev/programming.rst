@@ -18,6 +18,7 @@ If you want developing new code you should know few technologies:
  - CoffeeScript_, this is a little language that compiles into JavaScript. Make work with JS much easier and enjoyable
  - LESS_, the dynamic stylesheet language, compiling to CSS.
  - TWIG_, the flexible, fast, and secure template engine for PHP
+ - AngularJS_, HTML enhanced for web apps
 
  .. _ZF2: http://framework.zend.com/
  .. _`there is good place to start`: http://framework.zend.com/manual/2.0/en/user-guide/overview.html
@@ -26,6 +27,7 @@ If you want developing new code you should know few technologies:
  .. _CoffeeScript: http://coffeescript.org/
  .. _LESS: http://lesscss.org/
  .. _TWIG: http://twig.sensiolabs.org/
+ .. _AngularJS: http://http://angularjs.org//
 
 Read about `guard configuration`_ to make you life easier with automate compile LESS, COFFEE, docs
 and reloading browser when you make any changes in project.
