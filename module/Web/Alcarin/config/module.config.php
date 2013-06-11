@@ -7,8 +7,8 @@ return array(
 
     'controllers' => array(
         'invokables' => array(
-            'Alcarin\Controller\Panel' => 'Alcarin\Controller\GamePanelController',
-            'Alcarin\Controller\CreateChar' => 'Alcarin\Controller\CreateCharController',
+            'Alcarin\Controller\Game\Panel'      => 'Alcarin\Controller\Game\GamePanelController',
+            'Alcarin\Controller\Game\CreateChar' => 'Alcarin\Controller\Game\CreateCharController',
         ),
     ),
 
@@ -36,21 +36,7 @@ return array(
     ),
 
 
-    'router' => array(
-        'routes' => array(
-            'alcarin' => array(
-                'type'    => 'alcarin',
-                'options' => array(
-                    'route'    => '/game',
-                    'namespace'=> 'Alcarin\Controller',
-                    'restmode' => true,
-                    'defaults' => array(
-                        'controller' => 'Panel',
-                    ),
-                ),
-            ),
-        ),
-    ),
+    'router' => include __DIR__ . '/router.config.php',
 
     'translator' => array(
         'locale' => 'en_US',

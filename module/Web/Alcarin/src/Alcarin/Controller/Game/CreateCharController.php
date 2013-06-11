@@ -1,6 +1,6 @@
 <?php
 
-namespace Alcarin\Controller;
+namespace Alcarin\Controller\Game;
 
 use Core\Controller\AbstractAlcarinRestfulController;
 use Zend\View\Model\ViewModel;

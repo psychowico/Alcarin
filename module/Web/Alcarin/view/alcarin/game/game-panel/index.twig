@@ -2,8 +2,7 @@
 
 {% block leftcontent %}
     {% for class in ['home', 'glass', 'plane', 'eye-close', 'circle-arrow-up', 'calendar'] %}
-    <div class="page-{{class}} {% if class != href %} hide{% endif %}">
-        {% for i in 0..118 %} {{class}}.. {% endfor %}
+    <div ng-view>
     </div>
     {% endfor %}
 {% endblock %}

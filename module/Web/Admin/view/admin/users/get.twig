@@ -9,12 +9,7 @@
     Krótkie info o użytkowniku.
 
     {% if isAllowed( 'ADMIN_PRIVILAGES_MANAGING' ) %}
-    <a href="{{ url('admin/subdefault', {
-                __NAMESPACE__: 'users',
-                controller: 'privilages',
-                id: context['id']
-            })
-        }}" class="btn">
+    <a href="{{ uri('admin/users', { controller: 'privilages', id: context['id'] }) }}" class="btn">
         Edytuj uprawnienia
     </a>
     {% endif %}

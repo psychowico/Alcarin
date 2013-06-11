@@ -24,7 +24,6 @@ return array(
 
             'Admin\Controller\Users\Privilages' => 'Admin\Controller\Users\PrivilagesController',
 
-
             'Admin\Controller\Modules' => 'Admin\Controller\ModulesController'
         ),
     ),

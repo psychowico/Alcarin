@@ -31,7 +31,7 @@
 
                 {% if isAllowed('ADMIN_MENU') %}
                 <li class="{{ uri().isAdmin() ? 'active' : null }}">
-                    <a href="{{ url('admin/default') }}">Admin</a>
+                    <a href="{{ uri('admin') }}">Admin</a>
                 </li>
                 {% endif %}
 
@@ -44,7 +44,7 @@
                 <li class="dropdown {{ uri().isGame() ? 'active' : null }}">
 
                     {% if player().chars().all()|length == 0 %}
-                    <a class="first-char-link" href="{{ url('alcarin/default', {controller: 'create-char'}) }}">
+                    <a class="first-char-link" href="{{ uri('alcarin/default', {controller: 'create-char'}) }}">
                         <span>Stwórz pierwszą postać</span>
                     </a>
                     {% else %}

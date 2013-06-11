@@ -2,53 +2,100 @@
 return array(
     'routes' => array(
         'admin' => array(
-            'type'    => 'alcarin',
+            'type'    => 'literal',
             'options' => array(
                 'route'    => '/admin',
-                'namespace'=> 'Admin\Controller',
-                'restmode' => true,
                 'defaults' => array(
-                    'controller' => 'Home',
+                    'controller'    => 'Home',
+                    '__NAMESPACE__' => 'Admin\Controller',
                 ),
             ),
-        ),
-        'orbis' => array(
-            'type'    => 'segment',
-            'options' => array(
-                'route'    => '/admin/orbis/:controller[/__:template][/:id]',
-                'constraints' => array(
-                    'controller' => 'gateways-panel|gateways-groups|gateways|world-editor',
-                    'id'         => '[a-zA-Z0-9%_-]+',
-                    'template'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+            'may_terminate' => true,
+            'child_routes' => array(
+                'modules' => array(
+                    'type' => 'literal',
+                    'options' => array(
+                        'route' => '/modules',
+                        'defaults' => array(
+                            'controller' => 'modules',
+                        ),
+                    ),
                 ),
-                'defaults' => array(
-                    'controller'    => 'GatewaysPanel',
-                    '__NAMESPACE__' => 'Admin\Controller\Orbis',
+                'translations' => array(
+                    'type'    => 'segment',
+                    'options' => array(
+                        'route'    => '/translations[/[:id[/[:action]]]]',
+                        'constraints' => array(
+                            'id'     => '[a-zA-Z0-9_-]+',
+                            'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        ),
+                        'defaults' => array(
+                            'controller' => 'translations',
+                        ),
+                    ),
                 ),
-            ),
-        ),
-        'orbis-map' => array(
-            'type'    => 'segment',
-            'options' => array(
-                'route'    => '/admin/orbis/map/:action',
-                'constraints' => array(
-                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                'users' => array(
+                    'type' => 'segment',
+                    'options' => array(
+                        'route' => '/users[/:id]',
+                        'defaults' => array(
+                            'controller' => 'users',
+                        ),
+                        'constraints' => array(
+                            'controller'    => '[a-zA-Z][a-zA-Z0-9_-]*',
+                            'id'            => '[a-zA-Z0-9_-]+',
+                            'action'        => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        ),
+                    ),
+                    'may_terminate' => true,
+                    'child_routes' => array(
+                        'privilages' => array(
+                            'type'    => 'literal',
+                            'options' => array(
+                                'route'    => '/privilages',
+                                'defaults' => array(
+                                    'controller' => 'privilages',
+                                    '__NAMESPACE__' => 'Admin\Controller\Users',
+                                ),
+                            ),
+                        ),
+                    ),
                 ),
-                'defaults' => array(
-                    'controller'    => 'Admin\Controller\Orbis\Map',
-                ),
-            ),
-        ),
-        'translations' => array(
-            'type'    => 'segment',
-            'options' => array(
-                'route'    => '/admin/translations[/[:id[/[:action]]]]',
-                'constraints' => array(
-                    'id'     => '[a-zA-Z0-9_-]+',
-                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                ),
-                'defaults' => array(
-                    'controller' => 'Admin\Controller\Translations',
+                'orbis' => array(
+                    'type'    => 'literal',
+                    'options' => array(
+                        'route' => '/orbis'
+                    ),
+                    'may_terminate' => false,
+                    'child_routes' => array(
+                        'default' => array(
+                            'type'    => 'segment',
+                            'options' => array(
+                                'route'    => '/:controller[/__:template][/:id]',
+                                'constraints' => array(
+                                    'controller' => 'gateways-panel|gateways-groups|gateways|world-editor',
+                                    'id'         => '[a-zA-Z0-9%_-]+',
+                                    'template'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                ),
+                                'defaults' => array(
+                                    'controller'    => 'GatewaysPanel',
+                                    '__NAMESPACE__' => 'Admin\Controller\Orbis',
+                                ),
+                            ),
+                        ),
+                        'map' => array(
+                            'type'    => 'segment',
+                            'options' => array(
+                                'route'    => '/map/:action',
+                                'constraints' => array(
+                                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                ),
+                                'defaults' => array(
+                                    'controller'    => 'Admin\Controller\Orbis\Map',
+                                ),
+                            ),
+                        ),
+                    ),
                 ),
             ),
         ),
@@ -58,7 +105,6 @@ return array(
         'admin/subdefault' => array(
             'users' => 'Admin\Controller\Users',
             'modules' => 'Admin\Controller\Modules',
-            // 'orbis' => 'Admin\Controller\Orbis',
         ),
     ),
 );

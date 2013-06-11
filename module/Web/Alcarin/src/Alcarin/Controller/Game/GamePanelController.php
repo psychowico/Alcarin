@@ -1,6 +1,6 @@
 <?php
 
-namespace Alcarin\Controller;
+namespace Alcarin\Controller\Game;
 
 use Core\Controller\AbstractAlcarinRestfulController;
 use Zend\View\Model\ViewModel;
@@ -16,7 +16,7 @@ class GamePanelController extends AbstractAlcarinRestfulController
         }
         else {
             return $this->redirect()->toRoute('alcarin/default',
-                ['controller' => 'panel', 'id' => current($chars)['id']]);
+                ['controller' => 'panel', 'id' => current($chars)->id()]);
         }
     }
 

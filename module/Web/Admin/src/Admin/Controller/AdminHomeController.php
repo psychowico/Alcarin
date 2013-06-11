@@ -21,9 +21,9 @@ class AdminHomeController extends AbstractAlcarinRestfulController
         [
             'controller' => 'GatewaysPanel',
             'namespace'  => 'Admin\Controller\Orbis',
-            'route'      => 'orbis',
             'title'      => '"Orbis" Editor',
             'icon'       => 'icon-globe',
+            'route'      => 'admin/orbis/default',
         ],
         [
             'controller' => 'modules',
@@ -41,7 +41,7 @@ class AdminHomeController extends AbstractAlcarinRestfulController
             $namespace = empty($data['namespace']) ? 'Admin\\Controller' : $data['namespace'];
             $full_controller = $namespace . '\\' . ucfirst($controller);
 
-            if( $authService->isAllowedToController($full_controller) || true ) {
+            if( $authService->isAllowedToController($full_controller) ) {
                 $result[$controller] = $this->pageData( $data );
             }
         }
@@ -62,7 +62,7 @@ class AdminHomeController extends AbstractAlcarinRestfulController
     }
 
     private function pageData( $data ) {
-        $route_name = empty($data['route']) ? 'admin/default' : $data['route'];
+        $route_name = empty($data['route']) ? ('admin/' . $data['controller']) : $data['route'];
         $controller = $this->routeFilter()->filter($data['controller']);
         return [
             'href' => $this->url()->fromRoute( $route_name, [ 'controller' => $controller ] ),
