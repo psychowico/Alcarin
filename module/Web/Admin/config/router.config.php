@@ -13,9 +13,12 @@ return array(
             'may_terminate' => true,
             'child_routes' => array(
                 'modules' => array(
-                    'type' => 'literal',
+                    'type' => 'segment',
                     'options' => array(
-                        'route' => '/modules',
+                        'route' => '/modules[/:id]',
+                        'constraints' => array(
+                            'id'     => '[a-zA-Z0-9_-]+',
+                        ),
                         'defaults' => array(
                             'controller' => 'modules',
                         ),
