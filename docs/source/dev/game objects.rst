@@ -183,6 +183,7 @@ Common services
 ===============
 
 There will described common services that can be get by GameServiceContainer.
+To load it call GameServiceContainer get method with lowercase module name.
 
 Time
 ----
@@ -197,3 +198,24 @@ Give information about game world time. Available methods:
  * **freeze()** - *freeze game time, all events will be stoped*
  * **unfreeze()** - *unfreeze game time, all events will be resume*
  * **isFreezed()** - *inform about game time freeze state*
+
+Players
+-------
+
+Managing players. Available methods:
+
+ * current() - *current player*
+ * get($id) - *specific player*
+
+Methods returns \EngineBase\GameObject\Player objects.
+It provides some basic information about player.
+
+Properties
+----------
+
+Giving some global world properties. Available methods:
+
+ * radius() - *game world radius*
+ * get($key) - *get specific property value*
+ * set($key) - *set specific property value*
+ * find() - *return all properties*

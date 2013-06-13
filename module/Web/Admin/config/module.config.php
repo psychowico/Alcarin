@@ -47,7 +47,6 @@ return array(
             'description'  => 'Administrative module',
             'game-objects' => array(
                 'orbis' => 'Admin\GameObject\Orbis',
-                'properties' => 'EngineBase\GameObject\Extension\WorldProperties',
                 'translations' => 'Admin\GameObject\DynamicTranslations',
             ),
             'game-objects-ext' => array(
