@@ -6,7 +6,7 @@ use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 use Zend\Http\Response;
 
 /**
- * simple plugin to faster returning "bad request" response for wrong REST request.
+ * plugin to faster returning "bad request" response for wrong REST request.
  */
 class Responses extends AbstractPlugin
 {

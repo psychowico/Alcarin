@@ -32,7 +32,6 @@ namespace('Alcarin.Errors', function(exports, Alcarin) {
       'url': url,
       'line': line
     };
-    Rest().$create(urls.api.errors, data);
     $.cookie.raw = false;
     return false;
   };
@@ -47,8 +46,7 @@ namespace('Alcarin.Errors', function(exports, Alcarin) {
     };
     _console._error = _console.error;
     _console.error = function() {
-      var caller_stack, data, msg, _i, _len, _msg, _results,
-        _this = this;
+      var caller_stack, data, msg, _i, _len, _msg, _results;
       _msg = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
       msg = _msg[0];
       caller_stack = printStackTrace()[4];
@@ -57,11 +55,6 @@ namespace('Alcarin.Errors', function(exports, Alcarin) {
         stack: caller_stack,
         msg: msg
       };
-      Rest().$create(urls.api.errors, data, function(response) {
-        if (!response.success) {
-          return _this.warn(response.errors);
-        }
-      });
       _results = [];
       for (_i = 0, _len = _msg.length; _i < _len; _i++) {
         msg = _msg[_i];

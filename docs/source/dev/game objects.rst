@@ -4,6 +4,9 @@
 Plugable game services
 ======================
 
+GameServiceContainer
+====================
+
 One of the objectives of the game engine is api divided into logical game modules.
 We achieve this by our *Plugable game services* system. It consists of the following elements:
  - **GameServiceContainer** - singleton class, that our plugable system heart
@@ -29,6 +32,9 @@ ZF2 ServiceManager. You can use it to retrieve registered GameObject's. For samp
 
 *GameServiceContainer* will load required class only when it will be needed - all services
 are lazy loaded.
+
+Custom GameObjects
+==================
 
 Often you need add you own GameObject service. For sample, you create
 this simple class, in hypothetical module "Test";
@@ -172,3 +178,22 @@ with all zf2 configuration entries:
     $game_modules_info = $service_manager->get('config')['game-modules'];
     $test_description  = $game_modules_info['TestModule']['discription'];
     echo $test_description;
+
+Common services
+===============
+
+There will described common services that can be get by GameServiceContainer.
+
+Time
+----
+
+Give information about game world time. Available methods:
+
+ * timestamp() - *seconds from world begining*
+ * day() - *days from world begining, remember that game day is equal to four real time days*
+ * hour() - *full hour of day (0-95)*
+ * min() - *minutes of hour (0-59)*
+ * sec() - *seconds of minute (0-59)*
+ * **freeze()** - *freeze game time, all events will be stoped*
+ * **unfreeze()** - *unfreeze game time, all events will be resume*
+ * **isFreezed()** - *inform about game time freeze state*

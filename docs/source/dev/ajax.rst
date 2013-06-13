@@ -30,8 +30,14 @@ better errors support (in JSON mode) and two shortcuts method:
     * mongo() - returing mongodb object, our wrapper for default Mongo php drivers
     * gameServices() -returning GameServiceContainer instance, use with our code subsystem: :ref:`plugable-game-services`.
 
+
 To work faster with JSON responses, you should use alcarin **"json()"** controller plugin.
 Here is few samples of use it:
+
+.. _`json-example`:
+
+Json Example
+------------
 
 .. code-block:: php
 

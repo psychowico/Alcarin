@@ -9,18 +9,23 @@ class Time extends \Core\GameObject
 {
     use \Core\AutoCacheTrait;
 
-    const DAY_SEC = 345600; //60 * 60 * 96;
+    const DAY_SEC = 345600; //60 * 60 * 24 * 4;
+
+    protected function properties()
+    {
+        return $this->getServicesContainer()->get('properties');
+    }
 
     public function fetchTimestamp()
     {
-        $time_struct = $this->getServicesContainer()->get('properties')->get('time');
+        $time_struct = $this->properties()->get('time');
         if($time_struct === null) {
             $time_struct = [
                 'last_game_timestamp' => 0,
                 'last_real_timestamp' => time(),
                 'freeze'              => false,
             ];
-            $this->getServicesContainer()->get('properties')->set('time', $time_struct);
+            $this->properties()->set('time', $time_struct);
         }
         $real = $time_struct['last_real_timestamp'];
         $time = $time_struct['last_game_timestamp'];
@@ -39,7 +44,8 @@ class Time extends \Core\GameObject
             'last_real_timestamp' => time(),
             'freeze' => true,
         ];
-        $this->getServicesContainer()->get('properties')->set('time', $time_struct);
+        $this->properties()->set('time', $time_struct);
+        $this->reset_cache('isFreezed');
     }
 
     public function unfreeze()
@@ -49,7 +55,14 @@ class Time extends \Core\GameObject
             'last_real_timestamp' => time(),
             'freeze' => false,
         ];
-        $this->getServicesContainer()->get('properties')->set('time', $time_struct);
+        $this->properties()->set('time', $time_struct);
+        $this->reset_cache('isFreezed');
+    }
+
+    public function fetchIsFreezed()
+    {
+        $time_struct = $this->properties()->get('time');
+        return !empty($time_struct['freeze']);
     }
 
     public function fetchDay()

@@ -25,4 +25,9 @@ trait AutoCacheTrait
         throw new \DomainException(sprintf('Method "%s" not found in object "%s".',
             $fullname, get_class($this)));
     }
+
+    public function reset_cache($property)
+    {
+        unset($this->storage[$property]);
+    }
 }

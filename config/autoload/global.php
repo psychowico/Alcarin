@@ -30,6 +30,7 @@ return array(
             'zfcuser'                           => [],
             'guest-home'                        => [],
             'external'                          => [],
+            'DevActionsController'              => [],
 
             'Alcarin\Controller\Game\Panel'          => Resource::PLAYER_PANEL,
             'Alcarin\Controller\Game\CreateChar'     => Resource::PLAYER_PANEL,

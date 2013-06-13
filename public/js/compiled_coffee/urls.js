@@ -15,5 +15,8 @@ this.urls = {
   api: {
     errors: '/api/errors/external'
   },
+  dev: {
+    action: '/dev'
+  },
   translations: '/admin/translations'
 };

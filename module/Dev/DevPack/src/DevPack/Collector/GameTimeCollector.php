@@ -44,9 +44,10 @@ class GameTimeCollector extends AbstractCollector
 
         //sprintf("%02d:%02d:%02d", $time->hour(), $time->min(), $time->sec());
         $this->data = [
-            'hour' => $time->hour(),
-            'min'  => $time->min(),
-            'sec'  => $time->sec(),
+            'freezed' => $time->isFreezed(),
+            'hour'    => $time->hour(),
+            'min'     => $time->min(),
+            'sec'     => $time->sec(),
         ];
     }
 

@@ -23,7 +23,7 @@ namespace 'Alcarin.Errors', (exports, Alcarin) ->
         url = url.split('/')[3..].join '/'
         data = {'msg': msg, 'url': url, 'line': line }
 
-        Rest().$create urls.api.errors, data
+        # Rest().$create urls.api.errors, data
 
         $.cookie.raw = false
         false
@@ -42,8 +42,8 @@ namespace 'Alcarin.Errors', (exports, Alcarin) ->
             msg = _msg[0]
             caller_stack = printStackTrace()[4]
             data = {mode: 'manual', stack: caller_stack, msg: msg}
-            Rest().$create urls.api.errors, data, (response)=>
-                @warn response.errors unless response.success
+            # Rest().$create urls.api.errors, data, (response)=>
+            #     @warn response.errors unless response.success
             @_error msg for msg in _msg
 
 

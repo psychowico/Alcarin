@@ -42,9 +42,7 @@ return array(
                             'controller' => 'users',
                         ),
                         'constraints' => array(
-                            'controller'    => '[a-zA-Z][a-zA-Z0-9_-]*',
                             'id'            => '[a-zA-Z0-9_-]+',
-                            'action'        => '[a-zA-Z][a-zA-Z0-9_-]*',
                         ),
                     ),
                     'may_terminate' => true,

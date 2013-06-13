@@ -49,6 +49,25 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'DevPack\DevConsoleController' => 'DevPack\Controller\DevConsoleController',
+            'DevActionsController' => 'DevPack\Controller\DevActionsController',
+
+        ),
+    ),
+
+    'router' => array(
+        'routes' => array(
+            'dev' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/dev/:action',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller'    => 'DevActionsController',
+                    ),
+                ),
+            ),
         ),
     ),
 
