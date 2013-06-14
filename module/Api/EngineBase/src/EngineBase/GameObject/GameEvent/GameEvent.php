@@ -4,7 +4,7 @@ namespace EngineBase\GameObject\GameEvent;
 
 class GameEvent extends \Core\GameObject
 {
-    use \Core\AutoCacheTrait;
+    // use \Core\AutoCacheTrait;
 
     protected $id;
     protected $args;
@@ -32,7 +32,7 @@ class GameEvent extends \Core\GameObject
 
     public function init()
     {
-        \Zend\Debug\Debug::dump($this->args());
+        // \Zend\Debug\Debug::dump($this->args());
 
     }
 }
