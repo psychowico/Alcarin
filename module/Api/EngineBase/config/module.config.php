@@ -8,6 +8,7 @@ return array(
                     'players'    => 'EngineBase\GameObject\Players',
                     'time'       => 'EngineBase\GameObject\Time',
                     'properties' => 'EngineBase\GameObject\Extension\WorldProperties',
+                    'world-units'=> 'EngineBase\GameObject\WorldUnitsService',
                 ),
                 'game-objects-ext' => array(
                     'EngineBase\GameObject\GameEvent\GameEvent' => array(

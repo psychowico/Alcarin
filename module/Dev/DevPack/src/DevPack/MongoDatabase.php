@@ -23,6 +23,22 @@ class MongoDatabase extends \Mongo_Database
     }
 
     /**
+     * translate default mongo php id system (_id->$id) to string in 'id' field.
+     * working on array reference.
+     */
+    public function translArr(&$_mongo_arr, $target_field = 'id')
+    {
+        foreach($_mongo_arr as $key => $_mongo_record) {
+            if(!empty($_mongo_arr[$key]['_id'])) {
+                $_mongo_arr[$key][$target_field] = $_mongo_record['_id']->{'$id'};
+                unset($_mongo_arr[$key]['_id']);
+            }
+        }
+
+        return $_mongo_arr;
+    }
+
+    /**
      * override default static to create this object.
      */
     public static function instance($name = NULL, array $config = NULL)

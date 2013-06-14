@@ -43,7 +43,7 @@
                 {% if isAllowed('PLAYER_PANEL') %}
                 <li class="dropdown {{ uri().isGame() ? 'active' : null }}">
 
-                    {% if player().chars().all()|length == 0 %}
+                    {% if player().chars().names()|length == 0 %}
                     <a class="first-char-link" href="{{ uri('alcarin/default', {controller: 'create-char'}) }}">
                         <span>Stwórz pierwszą postać</span>
                     </a>
@@ -53,7 +53,7 @@
                         <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="chars-list">
-                        {% for char in player().chars().all() %}
+                        {% for char in player().chars().names() %}
                         {% set char_url = url('alcarin/default', { controller: 'panel', id: char.id() }) %}
                         <li><a href="{{ char_url }}">{{ char.name() }}</a></li>
                         {% endfor %}

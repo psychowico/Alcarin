@@ -15,6 +15,7 @@ class GameObject implements GameServiceAwareInterface
     private $mongo;
     private $parent;
     private $lang;
+    private $current_char;
 
     public function __construct($parent = null)
     {
@@ -55,10 +56,20 @@ class GameObject implements GameServiceAwareInterface
     {
         if($this->lang == null) {
             $player = $this->getServicesContainer()->get('players')->current();
-            $this->lang = $this->current_lang = $player->lang();
+            $this->lang = $player->lang();
         }
         return $this->lang;
     }
+
+    protected function currentChar()
+    {
+        if($this->current_char == null) {
+            $player = $this->getServicesContainer()->get('players')->current();
+            $this->current_char = $player->currentChar();
+        }
+        return $this->current_char;
+    }
+
 
     /**
      * we will need it very often, so let create shortcut in this base class

@@ -11,7 +11,7 @@ class PlayerChars extends \Core\GameObject
         $this->initChildFactory('EngineBase\GameObject\Char\Character');
     }
 
-    public function fetchAll()
+    public function fetchNames()
     {
         $data = $this->mongo()->users->findOne(
             ['_id' => new \MongoId($this->parent()->id())],
@@ -25,6 +25,18 @@ class PlayerChars extends \Core\GameObject
         ])->fields(['name' => 1]);
 
         return $this->childrenFromArray($chars->toArray());
+    }
+
+    public function get($id)
+    {
+        $player_id = new \MongoId($this->parent()->id());
+        $char = $this->mongo()->{'map.chars'}->findOne([
+            '_id' => new \MongoId($id),
+            'owner' => $player_id,
+        ]);
+        $this->mongo()->transl($char);
+
+        return $this->createChild($char);
     }
 
     public function fromArray($data)

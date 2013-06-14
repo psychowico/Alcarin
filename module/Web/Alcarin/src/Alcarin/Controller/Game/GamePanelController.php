@@ -10,7 +10,7 @@ class GamePanelController extends AbstractAlcarinRestfulController
 {
     public function getList()
     {
-        $chars = $this->player()->chars()->all();
+        $chars = $this->player()->chars()->names();
         if(count($chars) == 0) {
             return $this->redirect()->toRoute('alcarin/default', ['controller' => 'create-char']);
         }
@@ -22,20 +22,23 @@ class GamePanelController extends AbstractAlcarinRestfulController
 
     public function get($id)
     {
-        $game_events = $this->gameServices()->get('game-events');
-        $event = $game_events->generate('public-talk', 'Trup przemówił');
-        $event->broadcast()->inRadius(10);
-
-        $all = $this->player()->chars()->all();
+        $chars = $this->player()->chars();
+        $all = $chars->names();
         if(empty($all[$id])) {
             return $this->redirect()->toRoute('alcarin/default', ['controller' => 'create-char']);
         }
-        $char = $all[$id];
+        $char = $chars->get($id);
         $this->player()->setCurrentChar($char);
         $char2 = $this->player()->currentChar();
 
         $builder = $this->getServiceLocator()->get('AnnotationBuilderService');
         $talking_form    = $builder->createForm(new \Alcarin\Form\TalkingForm(), true, "Mów");
+
+        //tests
+        $game_events = $this->gameServices()->get('game-events');
+        $event = $game_events->generate('public-talk', 'Trup przemówił');
+        $event->broadcast()->inRadius(10);
+
 
         return [
             'current_char'  => $char->name(),
