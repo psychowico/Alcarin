@@ -22,6 +22,9 @@ class Module
     {
         return array(
             'factories' => array(
+                'char-session' => function() {
+                    return new \Zend\Session\Container('char');
+                }
             ),
         );
     }

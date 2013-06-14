@@ -23,9 +23,16 @@ class GamePanelController extends AbstractAlcarinRestfulController
     public function get($id)
     {
         $game_events = $this->gameServices()->get('game-events');
-        $game_events->generate('test', 1, 2, 3)->broadcast()->test();
+        $event = $game_events->generate('public-talk', 'Trup przemówił');
+        $event->broadcast()->inRadius(10);
 
-        $char = $this->player()->chars()->all()[$id];
+        $all = $this->player()->chars()->all();
+        if(empty($all[$id])) {
+            return $this->redirect()->toRoute('alcarin/default', ['controller' => 'create-char']);
+        }
+        $char = $all[$id];
+        $this->player()->setCurrentChar($char);
+        $char2 = $this->player()->currentChar();
 
         $builder = $this->getServiceLocator()->get('AnnotationBuilderService');
         $talking_form    = $builder->createForm(new \Alcarin\Form\TalkingForm(), true, "Mów");

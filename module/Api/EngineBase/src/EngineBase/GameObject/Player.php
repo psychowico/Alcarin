@@ -6,6 +6,7 @@ class Player extends \Core\GameObject
 {
     protected $id   = null;
     protected $data = null;
+    protected $current_char = null;
 
     public function __construct($parent, $id, $data = null)
     {
@@ -40,5 +41,24 @@ class Player extends \Core\GameObject
             $this->data = $new_data;
         }
         $this->mongo()->users->updateById($this->id, $this->data);
+    }
+
+    public function setCurrentChar($char)
+    {
+        $char_session = $this->getServicesContainer()->get('char-session');
+        $char_session->id = $char->id();
+        $char_session->char = $char->toArray();
+    }
+
+    public function currentChar()
+    {
+        if($this->current_char == null) {
+            $char_session = $this->getServicesContainer()->get('char-session');
+            if(!isset($char_session->char)) {
+                throw new Exception('Can not use current char outside setted character scope.');
+            }
+            $this->current_char = $this->chars()->fromArray($char_session->char);
+        }
+        return $this->current_char;
     }
 }

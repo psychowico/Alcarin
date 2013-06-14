@@ -10,10 +10,11 @@ class GameObject implements GameServiceAwareInterface
     use GameServiceAwareTrait;
 
     protected $child_reflect;
-    protected $parent;
-    protected $mongo;
     protected $extManager;
     protected $plugins   = [];
+    private $mongo;
+    private $parent;
+    private $lang;
 
     public function __construct($parent = null)
     {
@@ -33,6 +34,7 @@ class GameObject implements GameServiceAwareInterface
         $this->parent = $parent;
     }
 
+
     protected function parent()
     {
         return $this->parent;
@@ -47,6 +49,15 @@ class GameObject implements GameServiceAwareInterface
             $this->mongo = $this->getServicesContainer()->get('mongo');
         }
         return $this->mongo;
+    }
+
+    protected function lang()
+    {
+        if($this->lang == null) {
+            $player = $this->getServicesContainer()->get('players')->current();
+            $this->lang = $this->current_lang = $player->lang();
+        }
+        return $this->lang;
     }
 
     /**

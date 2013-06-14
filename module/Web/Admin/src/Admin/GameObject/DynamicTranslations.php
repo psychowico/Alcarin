@@ -11,24 +11,15 @@ class DynamicTranslations extends \Core\GameObject
     public static $predefined_groups = ['static', 'events'];
     public static $languages = ['pl'];
 
-    protected $current_lang = 'pl';
-
     public function init()
     {
-        $player = $this->getServicesContainer()->get('players')->current();
-        $this->current_lang = $player->lang();
-
         $this->initChildFactory('Admin\GameObject\Extension\Translation\TranslationEntry');
     }
 
-    public function lang()
-    {
-        return $this->current_lang;
-    }
 
     public function translation($group, $tagid, $lang = null)
     {
-        $lang = $lang ?: $this->current_lang;
+        $lang = $lang ?: $this->lang();
 
         $key = $group . '.' . $tagid;
         if(empty($this->cache[$key])) {
@@ -39,7 +30,7 @@ class DynamicTranslations extends \Core\GameObject
 
     public function getAllTagsIdInGroup($group, $lang = null)
     {
-        $lang = $lang ?: $this->current_lang;
+        $lang = $lang ?: $this->lang();
         if(in_array($group, static::$predefined_groups)) {
             $all = $this->def()->get($group) ?: [];
             return array_keys($all);
@@ -69,7 +60,7 @@ class DynamicTranslations extends \Core\GameObject
 
     public function getTagDefinition($group, $tagid, $lang = null)
     {
-        $lang = $lang ?: $this->current_lang;
+        $lang = $lang ?: $this->lang();
         $key = sprintf('/%s\.%s\..*\.%s/', $group, $tagid, $lang);
 
         if(in_array($group, static::$predefined_groups)) {

@@ -4,9 +4,14 @@ namespace EngineBase\GameObject\Extension;
 
 class GameEventBroadcaster extends \Core\GameObject
 {
-    public function test()
+    const TABLE = 'map.chars';
+
+    public function inRadius($meters)
     {
-        // \Zend\Debug\Debug::dump($this->parent());
+
+        // $test = $this->mongo()->{static::TABLE}->find([])
+        //     ->fields(['_id'])->toArray();
+        // \Zend\Debug\Debug::dump($test);
 
     }
 }

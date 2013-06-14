@@ -20,11 +20,16 @@ class PlayerChars extends \Core\GameObject
 
         if(empty($data['chars'])) return [];
 
-        $chars = $this->mongo()->{'users.chars'}->find([
+        $chars = $this->mongo()->{'map.chars'}->find([
             '_id' => [ '$in' => $data['chars'] ]
         ])->fields(['name' => 1]);
 
         return $this->childrenFromArray($chars->toArray());
+    }
+
+    public function fromArray($data)
+    {
+        return $this->createChild($data);
     }
 
     /**
@@ -34,11 +39,20 @@ class PlayerChars extends \Core\GameObject
     {
         $player = $this->parent()->id();
 
-        $data = ['owner'=> new \MongoId($player), 'name'=> $name];
-        $this->mongo()->{'users.chars'}->insert($data);
+        //player only data for fast displaying
+        $data = [
+            'owner'=> new \MongoId($player),
+            'name'=> $name,
+            'loc' => ['x' => 0, 'y' => 0],
+        ];
+        $this->mongo()->{'map.chars'}->insert($data);
+
+        //real-player in world
 
         $char_id = $data['_id'];
         $this->mongo()->users->update( ['_id' => new \MongoId($player)],
             ['$push' => ['chars' => $char_id]]);
+
+        return $this->createChild($data);
     }
 }

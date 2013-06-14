@@ -54,6 +54,22 @@ return array(
         ),
     ),
 
+    'session' => array(
+        'config' => array(
+            'class' => 'Zend\Session\Config\SessionConfig',
+            'options' => array(
+                'name' => 'alcarin',
+                'remember_me_seconds' => 10800, //60 * 60 * 3
+            ),
+        ),
+        'storage' => 'Zend\Session\Storage\SessionArrayStorage',
+        'validators' => array(
+            'Zend\Session\Validator\RemoteAddr',
+            'Zend\Session\Validator\HttpUserAgent',
+        ),
+    ),
+
+
     'zfctwig' => array(
          /**
          * If set to true disables ZF's notion of parent/child layouts in favor of
