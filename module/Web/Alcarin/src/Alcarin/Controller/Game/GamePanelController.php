@@ -22,6 +22,9 @@ class GamePanelController extends AbstractAlcarinRestfulController
 
     public function get($id)
     {
+        $game_events = $this->gameServices()->get('game-events');
+        $game_events->generate('test', 1, 2, 3)->broadcast()->test();
+
         $char = $this->player()->chars()->all()[$id];
 
         $builder = $this->getServiceLocator()->get('AnnotationBuilderService');

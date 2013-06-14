@@ -32,7 +32,7 @@ class DynamicTranslations extends \Core\GameObject
 
         $key = $group . '.' . $tagid;
         if(empty($this->cache[$key])) {
-            $this->cache[$key] = $this->createChild([$group, $tagid]);
+            $this->cache[$key] = $this->createChild($group, $tagid);
         }
         return $this->cache[$key];
     }

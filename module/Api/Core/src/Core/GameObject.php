@@ -33,7 +33,7 @@ class GameObject implements GameServiceAwareInterface
         $this->parent = $parent;
     }
 
-    public function parent()
+    protected function parent()
     {
         return $this->parent;
     }
@@ -107,13 +107,13 @@ class GameObject implements GameServiceAwareInterface
         $this->child_reflect = new \ReflectionClass($child_class);
     }
 
-    protected function createChild($args = [])
+    protected function createChild()
     {
         if($this->child_reflect === null) {
             throw new \Exception("You need first initilize child factory before use it.");
         }
 
-        if(!is_array($args)) $args = [$args];
+        $args = func_get_args();
         $instance = $this->child_reflect->newInstanceArgs($args);
 
         if($instance instanceof GameServiceAwareInterface) {
@@ -129,7 +129,7 @@ class GameObject implements GameServiceAwareInterface
     protected function childrenFromArray($args_array)
     {
         return array_map(function($args) {
-            return $this->createChild([$args]);
+            return $this->createChild($args);
         }, $args_array);
     }
 }

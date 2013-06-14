@@ -98,7 +98,8 @@ return array(
              */
             'collectors' => array(
                 'db' => null,
-                'mongo'  => 'DevPack\MongoCollector'
+                'mongo'  => 'DevPack\MongoCollector',
+                'gametime'  => 'DevPack\GameTimeCollector'
              ),
         ),
          /**
@@ -159,7 +160,8 @@ return array(
              * Expects: array
              */
             'entries' => array(
-                'mongo'  => 'dev-pack/toolbar/mongo-collector'
+                'mongo'  => 'dev-pack/toolbar/mongo-collector',
+                'gametime'  => 'dev-pack/toolbar/game-time'
             ),
         ),
     ),
