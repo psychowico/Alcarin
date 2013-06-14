@@ -50,7 +50,7 @@ class GatewaysGroupsController extends AbstractAlcarinRestfulController
     public function delete($id)
     {
         if($this->orbis()->gateways()->delete_group($id)) {
-            return $this->json();
+            return $this->responses()->OK();
         }
         else {
             return $this->responses()->internalServerError();

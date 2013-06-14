@@ -29,7 +29,6 @@ namespace 'Alcarin.Orbis.Gateways', (exports, Alcarin) ->
                     group.$delete =>
                         #reload group when delete one
                         @gateways_groups.remove group
-                        console.log c_group.gateways
                         @gateways_groups[0].gateways.push _g for _g in c_group.gateways
                         @$emit 'groupChanged', 0
 

@@ -60,7 +60,6 @@ namespace('Alcarin.Orbis.Gateways', function(exports, Alcarin) {
           return group.$delete(function() {
             var _g, _i, _len, _ref;
             _this.gateways_groups.remove(group);
-            console.log(c_group.gateways);
             _ref = c_group.gateways;
             for (_i = 0, _len = _ref.length; _i < _len; _i++) {
               _g = _ref[_i];
