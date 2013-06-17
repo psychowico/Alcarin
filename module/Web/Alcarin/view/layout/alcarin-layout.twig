@@ -9,8 +9,8 @@
 
 {% block content %}
     <div ng-app="{% block ngapp '' %}">
-        <section id="game-pages" class="left-container">
-            <div class="pages">
+        <section class="left-container">
+            <div>
                 <div class="pages-container">
                     {% block leftcontent %}
                     {% endblock %}
@@ -21,8 +21,8 @@
         {% block middlecontent %}
         {% endblock %}
 
-        <section id="game-events" class="right-container">
-            <div class="events">
+        <section class="right-container">
+            <div>
                 <div class="events-container">
                     {% block rightcontent %}
                     {% endblock %}

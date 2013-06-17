@@ -17,9 +17,15 @@ class GameEventBroadcaster extends \Core\GameObject
 
     protected function pushEvent($char_id, $event)
     {
-        return $this->mongo()->{static::TABLE}->updateById($char_id,
-            ['$push' => ['events' => $event]]
-        );
+        return $this->mongo()->{static::TABLE}->updateById($char_id, [
+            '$push' => [
+                'events' => [
+                    '$each' => [$event],
+                    '$sort' => ['time' => -1],
+                    '$slice' => -999999999
+                ]
+            ]
+        ]);
     }
 
     public function byIds($ids)

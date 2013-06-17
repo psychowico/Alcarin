@@ -46,15 +46,13 @@
   margin-right: 20px;
   position: relative;
 }
-#game-events,
-#game-pages {
+.right-container,
+.left-container {
   position: relative;
   float: left;
 }
-#game-events .events,
-#game-pages .events,
-#game-events .pages,
-#game-pages .pages {
+.right-container > div,
+.left-container > div {
   min-height: 600px;
   float: left;
   width: 100%;
@@ -62,16 +60,19 @@
 .talking > form {
   width: 100%;
   display: table;
-  border-spacing: 5px 0;
+  margin-bottom: 9px;
 }
 .talking > form .content {
   width: auto;
   display: table-cell;
   overflow: hidden;
+  padding-right: 5px;
 }
-.talking > form .content input {
+.talking > form .content textarea {
   width: 100%;
-  height: auto;
+  height: 40px;
+  margin: 0;
+  resize: vertical;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -79,4 +80,19 @@
 .talking > form .submit {
   width: 60px;
   display: table-cell;
+}
+.talking > form .submit input {
+  height: 40px;
+}
+.events-container {
+  min-height: 600px;
+}
+.events-container .game-event {
+  border: 1px solid silver;
+  margin: 1px;
+  padding: 3px;
+}
+.events-container .game-event .time {
+  margin-right: 5px;
+  font-weight: bold;
 }

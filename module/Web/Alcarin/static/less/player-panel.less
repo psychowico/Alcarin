@@ -51,10 +51,10 @@
   }
 }
 
-#game-events, #game-pages {
+.right-container, .left-container {
   position: relative;
   float:left;
-  .events, .pages {
+  >div {
     min-height: 600px;
     float:left;
     width: 100%;
@@ -65,16 +65,42 @@
   >form {
     width:100%;
     display:table;
-      border-spacing: 5px 0;
+    margin-bottom: 9px;
     .content {
-      input { width:100%; height:auto; .border-box() }
-       width:auto;
-       display:table-cell;
-       overflow: hidden;
+      textarea {
+        width:100%;
+        height:40px;
+        margin: 0;
+        resize: vertical;
+        .border-box()
+      }
+      width:auto;
+      display:table-cell;
+      overflow: hidden;
+      padding-right: 5px;
     }
     .submit {
-       width:60px;
-       display:table-cell;
+      input {
+        height:40px;
+      }
+      width:60px;
+      display:table-cell;
+    }
+  }
+}
+
+.events-container {
+  min-height: 600px;
+  .game-event {
+    border: 1px solid silver;
+    margin: 1px;
+    padding:3px;
+    .time {
+      margin-right: 5px;
+      font-weight: bold;
+    }
+    .content {
+
     }
   }
 }

@@ -6,6 +6,11 @@ Hrefs shouldn't have '/' symbol at end.
 */
 
 this.urls = {
+  game: {
+    char: {
+      events: '/game/char-events'
+    }
+  },
   orbis: {
     panel: '/admin/orbis/gateways-panel',
     gateways: '/admin/orbis/gateways',

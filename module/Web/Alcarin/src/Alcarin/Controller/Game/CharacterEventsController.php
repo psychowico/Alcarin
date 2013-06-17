@@ -16,4 +16,17 @@ class CharacterEventsController extends AbstractAlcarinRestfulController
         }, $events);
         return $this->json($events);
     }
+
+    public function publicTalkAction()
+    {
+        $content = $this->params()->fromPost('content');
+        if(empty($content)) {
+            return $this->responses()->badRequest();
+        }
+        $gEvents = $this->gameServices()->get('game-events');
+
+        $event   = $gEvents->generate('public-talk', $content);
+        $event->broadcast()->inRadius(15);
+        return $this->responses()->OK();
+    }
 }
