@@ -1,5 +1,7 @@
 {% extends "alcarin-layout" %}
 
+{% block ngapp "game-panel" %}
+
 {% block leftcontent %}
     {% for class in ['home', 'glass', 'plane', 'eye-close', 'circle-arrow-up', 'calendar'] %}
     <div ng-view>
@@ -25,7 +27,25 @@
 
 {% block rightcontent %}
     {# do form.setAttribute('action', uri('orbis/default', {controller: 'gateways'}) ~ '/{item.id}') #}
-    <div class="talking">
-        {{ bootstrap(forms['talking'], 'inline') }}
+    <div class="game-events" ng-controller="Alcarin.Game.GameEvents">
+        <div class="talking">
+            <!-- layout trick to nice, flexible panel -->
+
+            {{ bootstrap().openTag(forms['talking']) | raw }}
+
+            <div class="content">
+                {{ formElement(forms['talking'].get('content')) }}
+            </div>
+            <div class="submit">
+                <input type="submit" class="btn" value="Mów">
+            </div>
+
+            {{ bootstrap().closeTag() | raw }}
+        </div>
+        <div class="events-container">
+            <div class="game-event" ng-repeat="event in events">
+                <span class="content">{* event.text *}</span>
+            </div>
+        </div>
     </div>
 {% endblock %}

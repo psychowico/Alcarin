@@ -78,6 +78,7 @@ return array(
                     //files for regular players
                     'player' => array(
                         'sources' => array(
+                            '/js/compiled_coffee/Alcarin/Game/game-panel.js',
                         ),
                     ),
                 ),

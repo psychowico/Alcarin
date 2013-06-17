@@ -25,15 +25,18 @@ class GameEventBroadcaster extends \Core\GameObject
     public function byIds($ids)
     {
         $game_event = $this->parent();
+        $current_id = $this->currentChar()->id();
+        $timestamp = $this->getServicesContainer()->get('time')->timestamp();
 
-        $text = $game_event->self();
-        \Zend\Debug\Debug::dump($text);
+        $event_data = $game_event->serialize('std');
+        $event_data['time'] = $timestamp;
+        $this->pushEvent($current_id, $event_data);
 
-        $this->pushEvent($this->currentChar()->id(), $text);
-
-        $text = $game_event->others();
+        $event_data = $game_event->serialize('others');
+        $event_data['time'] = $timestamp;
         foreach($ids as $char_id) {
-            $this->pushEvent($char_id, $text);
+            if($current_id === $char_id)continue;
+            $this->pushEvent($char_id, $event_data);
         }
     }
 
@@ -54,7 +57,6 @@ class GameEventBroadcaster extends \Core\GameObject
         ])->fields(['_id'])->toArray();
 
         $chars_in_radius = $this->mongo()->translArr($chars_in_radius);
-        unset($chars_in_radius[$this->currentChar()->id()]);
         $this->byIds(array_keys($chars_in_radius));
     }
 }

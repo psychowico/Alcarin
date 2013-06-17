@@ -34,6 +34,7 @@ return array(
 
             'Alcarin\Controller\Game\Panel'          => Resource::PLAYER_PANEL,
             'Alcarin\Controller\Game\CreateChar'     => Resource::PLAYER_PANEL,
+            'Alcarin\Controller\Game\CharEvents'     => Resource::PLAYER_PANEL,
 
             'Admin\Controller\Home'             => Resource::ADMIN_MENU,
             'Admin\Controller\Users'            => Resource::ADMIN_USERS,

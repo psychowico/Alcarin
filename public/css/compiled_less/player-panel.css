@@ -59,11 +59,24 @@
   float: left;
   width: 100%;
 }
-.talking {
-  float: right;
-  width: 95%;
+.talking > form {
+  width: 100%;
+  display: table;
+  border-spacing: 5px 0;
 }
-.talking > * input[type="text"] {
-  margin-right: 6px;
-  width: 83%;
+.talking > form .content {
+  width: auto;
+  display: table-cell;
+  overflow: hidden;
+}
+.talking > form .content input {
+  width: 100%;
+  height: auto;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+.talking > form .submit {
+  width: 60px;
+  display: table-cell;
 }

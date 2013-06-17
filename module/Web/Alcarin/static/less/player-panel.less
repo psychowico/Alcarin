@@ -62,12 +62,19 @@
 }
 
 .talking {
-  float:right;
-  width: 95%;
-  &>* {
-    input[type="text"] {
-      margin-right: 6px;
-      width:83%;
+  >form {
+    width:100%;
+    display:table;
+      border-spacing: 5px 0;
+    .content {
+      input { width:100%; height:auto; .border-box() }
+       width:auto;
+       display:table-cell;
+       overflow: hidden;
+    }
+    .submit {
+       width:60px;
+       display:table-cell;
     }
   }
 }

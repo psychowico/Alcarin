@@ -7,7 +7,7 @@ use Zend\Form\Annotation;
 /**
  * @Annotation\Hydrator("Zend\Stdlib\Hydrator\ObjectProperty")
  * @Annotation\Name("talking-form")
- * @Annotation\Attributes({"class":"ajax-form", "autocomplete":"off"})
+ * @Annotation\Attributes({"class":"form-inline", "autocomplete":"off"})
  */
 class TalkingForm
 {

@@ -13,7 +13,7 @@ class GameEvent extends \Core\GameObject
 
     public function __construct($game_event_id, $args)
     {
-        $this->id = $game_event_id;
+        $this->id   = $game_event_id;
         $this->args = $args;
     }
 
@@ -38,12 +38,12 @@ class GameEvent extends \Core\GameObject
     }
 
     /**
-     * resolve game event argument to text or hyperlink representation
+     * return tag event text for this gameevent
      */
-    protected function resolveArg($arg)
+    protected function tagContent($variety)
     {
-        //to do
-        return strval($arg);
+        return $this->getServicesContainer()->get('translations')
+             ->translation('events', $this->id, $this->lang())->val($variety);
     }
 
     public function id()
@@ -51,29 +51,22 @@ class GameEvent extends \Core\GameObject
         return $this->id;
     }
 
-    protected function content($variety)
-    {
-        $text = $this->getServicesContainer()->get('translations')
-             ->translation('events', $this->id, $this->lang())->val($variety);
-        $_args = $this->args();
-        for($i = 0; $i < count($_args); $i++) {
-            $arg = $this->resolveArg($_args[$i]);
-            $text = str_replace('%' . $i, $arg, $text);
-        }
-        return $text;
-    }
-
-    public function self()
-    {
-        return $this->content('std');
-    }
-
-    public function others()
-    {
-        return $this->content('others');
-    }
-
     public function init()
     {
+    }
+
+    public function serialize($variety = 'std')
+    {
+        $result = [];
+        $text = $this->tagContent($variety);
+        if(!empty($text)) {
+            $result['text'] = $text;
+        }
+        $args = $this->args();
+        if(!empty($args)) {
+            $result['args'] = $args;
+        }
+
+        return $result;
     }
 }
