@@ -19,6 +19,7 @@ guard 'less', :all_on_start => false, :output => 'public/css/compiled_less',
 end
 
 guard 'coffeescript', :output => 'public/js/compiled_coffee',
-                      :shallow => false, :bare => true do
+                      :shallow => false, :bare => true,
+                      :source_map => true, :source_root => 'file://' + Dir.pwd do
   watch(%r{^module/.+/static/coffee/(.+\.coffee)})
 end
