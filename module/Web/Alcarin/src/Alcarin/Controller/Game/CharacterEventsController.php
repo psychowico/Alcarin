@@ -14,7 +14,7 @@ class CharacterEventsController extends AbstractAlcarinRestfulController
         $events = array_map(function($e) {
             return $e->toArray();
         }, $events);
-        return $this->json($events);
+        return $this->json(array_values($events));
     }
 
     public function publicTalkAction()

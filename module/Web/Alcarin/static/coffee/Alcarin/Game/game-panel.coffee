@@ -4,8 +4,6 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
 
     angular.module 'game-panel', ['@game-events', '@spin', 'ui.event']
 
-    console.log 'test'
-
     exports.GameEvents = ngcontroller ['Events', (Events)->
         @events = null
         @talkContent = ''
@@ -38,5 +36,6 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
 
 
         Events.fetch().then (response)=>
+            console.log response.data
             @events = translate_events response.data
     ]

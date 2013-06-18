@@ -1,6 +1,5 @@
 'use strict';namespace('Alcarin.Game', function(exports, Alcarin) {
   angular.module('game-panel', ['@game-events', '@spin', 'ui.event']);
-  console.log('test');
   return exports.GameEvents = ngcontroller([
     'Events', function(Events) {
       var translate_events,
@@ -50,6 +49,7 @@
         return result;
       };
       return Events.fetch().then(function(response) {
+        console.log(response.data);
         return _this.events = translate_events(response.data);
       });
     }
