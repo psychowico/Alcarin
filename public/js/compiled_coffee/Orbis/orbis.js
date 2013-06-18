@@ -1,6 +1,4 @@
-'use strict';
-
-namespace('Alcarin.Orbis', function(exports, Alcarin) {
+'use strict';namespace('Alcarin.Orbis', function(exports, Alcarin) {
   angular.module('orbis', ['@popover', '@x-editable', '@gateways', '@minimap-renderer', '@animate', 'ui.event']).config([
     '$routeProvider', function($routeProvider) {
       return $routeProvider.when('/groups', {
@@ -20,6 +18,7 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
   return exports.App = ngcontroller([
     '$routeParams', 'MapInfo', function(params, MapInfo) {
       var _this = this;
+
       this.active_group = 0;
       this.mapinfo = MapInfo();
       return this.$on('groupChanged', function(ev, group) {
@@ -28,3 +27,7 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
     }
   ]);
 });
+
+/*
+//@ sourceMappingURL=orbis.js.map
+*/

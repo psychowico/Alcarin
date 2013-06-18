@@ -1,9 +1,10 @@
-
 namespace('Alcarin.Game', function(exports, Alcarin) {
   var GameTime;
+
   angular.module('@game-events').factory('Events', [
     '$http', function($http) {
       var meth;
+
       meth = function(action, _data) {
         if (_data != null) {
           return $http({
@@ -32,6 +33,7 @@ namespace('Alcarin.Game', function(exports, Alcarin) {
   ]).filter('EventTime', function() {
     return function(time) {
       var _time;
+
       if (isNaN(time)) {
         return time;
       }
@@ -80,3 +82,7 @@ namespace('Alcarin.Game', function(exports, Alcarin) {
 
   })();
 });
+
+/*
+//@ sourceMappingURL=ngx-game-events.js.map
+*/

@@ -2,11 +2,11 @@ var __slice = [].slice;
 
 namespace('Alcarin', function(exports, Alcarin) {
   return exports.Path = (function() {
-
     function Path() {}
 
     Path.combine = function() {
       var arg, last, part, path, _arg, _i, _len;
+
       arg = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
       path = '';
       for (_i = 0, _len = arg.length; _i < _len; _i++) {
@@ -31,3 +31,7 @@ namespace('Alcarin', function(exports, Alcarin) {
 
   })();
 });
+
+/*
+//@ sourceMappingURL=path.js.map
+*/

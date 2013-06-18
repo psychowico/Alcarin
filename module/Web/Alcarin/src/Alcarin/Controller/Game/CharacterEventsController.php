@@ -3,8 +3,8 @@
 namespace Alcarin\Controller\Game;
 
 use Core\Controller\AbstractAlcarinRestfulController;
-use Zend\Http\Header\ContentType
-;use Zend\View\Model\ViewModel;
+use Zend\Http\Header\ContentType;
+use Zend\View\Model\ViewModel;
 
 class CharacterEventsController extends AbstractAlcarinRestfulController
 {

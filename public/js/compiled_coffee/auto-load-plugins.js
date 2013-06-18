@@ -1,4 +1,3 @@
-
 $(function() {
   $('select.chosen').chosen({
     disable_search: true
@@ -6,6 +5,7 @@ $(function() {
   $('select.chosen-search').chosen({});
   $('select.chosen-always-visible').each(function() {
     var chosen, _;
+
     _ = $(this);
     _.chosen({});
     chosen = _.data('chosen');
@@ -22,3 +22,7 @@ $(function() {
     return e.preventDefault();
   });
 });
+
+/*
+//@ sourceMappingURL=auto-load-plugins.js.map
+*/

@@ -1,4 +1,3 @@
-
 namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
   angular.module('orbis.editor', ['@slider', '@map-manager', '@spin', 'ui.event', '@disabled', '@color-picker']).config([
     '$routeProvider', function($routeProvider) {
@@ -13,6 +12,7 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
       return {
         fetch: function(_x, _y, callback) {
           var service;
+
           service = $http.get("" + urls.orbis.map + "/fetch-fields", {
             params: {
               x: _x,
@@ -28,6 +28,7 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
         },
         update: function(_fields, callback) {
           var changes;
+
           changes = $.map(_fields, function(value, key) {
             return value;
           });
@@ -49,6 +50,7 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
   exports.App = ngcontroller([
     '$route', '$window', function($r, $window) {
       var _this = this;
+
       this.mapsaving = false;
       this.has_changes = false;
       this.brush = {
@@ -80,6 +82,7 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
   return exports.Map = ngcontroller([
     'Map', '$location', function(Map, $loc) {
       var _this = this;
+
       this.maploading = false;
       this.loc = {
         x: 0,
@@ -126,3 +129,7 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
     }
   ]);
 });
+
+/*
+//@ sourceMappingURL=editor.js.map
+*/

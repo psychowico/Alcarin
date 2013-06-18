@@ -1,16 +1,17 @@
-'use strict';
-
-namespace('Alcarin.Game', function(exports, Alcarin) {
+'use strict';namespace('Alcarin.Game', function(exports, Alcarin) {
   angular.module('game-panel', ['@game-events', '@spin', 'ui.event']);
+  console.log('test');
   return exports.GameEvents = ngcontroller([
     'Events', function(Events) {
       var translate_events,
         _this = this;
+
       this.events = null;
       this.talkContent = '';
       this.sending = false;
       this.talkToAll = function() {
         var content;
+
         _this.sending = true;
         content = _this.talkContent;
         _this.talkContent = '';
@@ -28,6 +29,7 @@ namespace('Alcarin.Game', function(exports, Alcarin) {
       };
       translate_events = function(events_data) {
         var arg, ev, ind, result, _i, _j, _len, _len1, _ref, _text;
+
         result = [];
         for (_i = 0, _len = events_data.length; _i < _len; _i++) {
           ev = events_data[_i];
@@ -53,3 +55,7 @@ namespace('Alcarin.Game', function(exports, Alcarin) {
     }
   ]);
 });
+
+/*
+//@ sourceMappingURL=game-panel.js.map
+*/

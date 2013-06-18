@@ -4,6 +4,8 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
 
     angular.module 'game-panel', ['@game-events', '@spin', 'ui.event']
 
+    console.log 'test'
+
     exports.GameEvents = ngcontroller ['Events', (Events)->
         @events = null
         @talkContent = ''
