@@ -43,16 +43,7 @@ class EditGatewayForm
     public $id;
 
     /**
-     * @Annotation\Type("hidden")
-     * @Annotation\Required(true)
-     * @Annotation\Validator({"name": "Int"})
+     * @Annotation\ComposedObject("Admin\Form\Location")
      */
-    public $x;
-
-    /**
-     * @Annotation\Type("hidden")
-     * @Annotation\Required(true)
-     * @Annotation\Validator({"name": "Int"})
-     */
-    public $y;
+    public $loc;
 }

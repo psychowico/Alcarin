@@ -4,7 +4,7 @@ namespace 'Alcarin.Orbis.Gateways', (exports, Alcarin) ->
         .factory('GatewaysGroup', ['alc-resource', ($res)->
             Group = $res urls.orbis.gatewaysgroups + '/:groupid', {groupid: '@id'}
             Group.prototype.displayname = ->
-                    if @name == "0" then 'Ungrouped' else @name
+                if @name == "0" then 'Ungrouped' else @name
             Group
         ])
         .factory('Gateway', ['alc-resource', ($res)->

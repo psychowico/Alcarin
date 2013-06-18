@@ -5,6 +5,7 @@ namespace 'Alcarin.Orbis.Gateways', (exports, Alcarin) ->
     exports.List = ngcontroller ['GatewaysGroup', 'Gateway', '@EventsBus',
         (GatewaysGroup, Gateway, EventsBus)->
             @gateways_groups = GatewaysGroup.query {full: true}
+
             @rename = (_group)=>
                 (ign, new_name)=>
                     return "Can not be empty." if not new_name
@@ -13,7 +14,7 @@ namespace 'Alcarin.Orbis.Gateways', (exports, Alcarin) ->
                     group.$save => @$emit 'groupChanged', new_name
 
             @hoverGateway = (gateway)=>
-                EventsBus.emit 'mouse-enter-gateway', gateway.x, gateway.y
+                EventsBus.emit 'mouse-enter-gateway', gateway.loc.x, gateway.loc.y
             @leaveGateway = (gateway)=>
                 EventsBus.emit 'mouse-leave-gateway'
 
@@ -22,7 +23,7 @@ namespace 'Alcarin.Orbis.Gateways', (exports, Alcarin) ->
                     Gateway.get {id: gateway.id}, ($gateway)=>
                         $gateway.$delete =>
                             group.gateways.remove gateway
-                            @gateways_groups.remove group if group.gateways.length == 0
+                            @gateways_groups.remove group if group.gateways.length == 0 and group.id != '0'
             @deleteGroup = (group)=>
                 Alcarin.Dialogs.Confirms.admin 'Really deleting? Gateways will be moved to "ungrouped" group.', =>
                     c_group = new GatewaysGroup group
@@ -59,7 +60,7 @@ namespace 'Alcarin.Orbis.Gateways', (exports, Alcarin) ->
                     @title = 'Edit gateway'
                     Gateway.get {id: $params.gatewayid}, (_gateway)=>
                         @rel = _gateway
-                        EventsBus.emit 'mouse-enter-gateway', _gateway.x, _gateway.y
+                        EventsBus.emit 'mouse-enter-gateway', _gateway.loc.x, _gateway.loc.y
                     @save = ()->
                         @rel.$save {}, @cancel
                 when 'create'
@@ -68,12 +69,13 @@ namespace 'Alcarin.Orbis.Gateways', (exports, Alcarin) ->
                         name: 'newGateway'
                         group: $params.group
                         description: 'new gateway..'
-                        x: 0
-                        y: 0
+                        loc:
+                            x: 0
+                            y: 0
                     @save = ()->
                         @rel.$create {}, @cancel
 
             EventsBus.on 'flag.updated', (x, y)=>
-                @rel?.x = x
-                @rel?.y = y
+                @rel?.loc.x = x
+                @rel?.loc.y = y
     ]

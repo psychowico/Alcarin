@@ -36,7 +36,7 @@ namespace('Alcarin.Orbis.Gateways', function(exports, Alcarin) {
         };
       };
       this.hoverGateway = function(gateway) {
-        return EventsBus.emit('mouse-enter-gateway', gateway.x, gateway.y);
+        return EventsBus.emit('mouse-enter-gateway', gateway.loc.x, gateway.loc.y);
       };
       this.leaveGateway = function(gateway) {
         return EventsBus.emit('mouse-leave-gateway');
@@ -48,7 +48,7 @@ namespace('Alcarin.Orbis.Gateways', function(exports, Alcarin) {
           }, function($gateway) {
             return $gateway.$delete(function() {
               group.gateways.remove(gateway);
-              if (group.gateways.length === 0) {
+              if (group.gateways.length === 0 && group.id !== '0') {
                 return _this.gateways_groups.remove(group);
               }
             });
@@ -106,7 +106,7 @@ namespace('Alcarin.Orbis.Gateways', function(exports, Alcarin) {
             id: $params.gatewayid
           }, function(_gateway) {
             _this.rel = _gateway;
-            return EventsBus.emit('mouse-enter-gateway', _gateway.x, _gateway.y);
+            return EventsBus.emit('mouse-enter-gateway', _gateway.loc.x, _gateway.loc.y);
           });
           this.save = function() {
             return this.rel.$save({}, this.cancel);
@@ -118,8 +118,10 @@ namespace('Alcarin.Orbis.Gateways', function(exports, Alcarin) {
             name: 'newGateway',
             group: $params.group,
             description: 'new gateway..',
-            x: 0,
-            y: 0
+            loc: {
+              x: 0,
+              y: 0
+            }
           });
           this.save = function() {
             return this.rel.$create({}, this.cancel);
@@ -129,9 +131,9 @@ namespace('Alcarin.Orbis.Gateways', function(exports, Alcarin) {
         var _ref, _ref1;
 
         if ((_ref = _this.rel) != null) {
-          _ref.x = x;
+          _ref.loc.x = x;
         }
-        return (_ref1 = _this.rel) != null ? _ref1.y = y : void 0;
+        return (_ref1 = _this.rel) != null ? _ref1.loc.y = y : void 0;
       });
     }
   ]);

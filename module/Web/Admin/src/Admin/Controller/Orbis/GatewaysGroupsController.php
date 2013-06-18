@@ -11,6 +11,9 @@ class GatewaysGroupsController extends AbstractAlcarinRestfulController
         $fullmode = $this->params()->fromQuery('full', false);
         if($fullmode){
             $gateways_data = $this->orbis()->gateways()->find();
+            if(empty($gateways_data['0'])) {
+                $gateways_data = array_merge(['0' => []], $gateways_data);
+            }
             $grouped_gateways = [];
             foreach($gateways_data as $key => $group) {
                 $grouped_gateways []= [
@@ -69,13 +72,15 @@ class GatewaysGroupsController extends AbstractAlcarinRestfulController
         $gateway = [
             'name' => 'Empty gateway',
             'description' => 'Please, add description here.',
-            'x' => 0,
-            'y' => 0,
+            'loc' => [
+                'x' => 0,
+                'y' => 0,
+            ],
             'group' => $group['id'],
         ];
         $result_id = $this->orbis()->gateways()->insert(
             $gateway['name'], $gateway['description'],
-            $gateway['x'], $gateway['y'], $gateway['group']);
+            $gateway['loc']['x'], $gateway['loc']['y'], $gateway['group']);
 
         if($result_id !== false) {
             $gateway['id'] = $result_id;

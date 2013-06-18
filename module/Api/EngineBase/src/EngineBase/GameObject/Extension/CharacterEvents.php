@@ -14,7 +14,7 @@ class CharacterEvents extends \Core\GameObject
         $char_id = $this->parent()->id();
         $data = $this->mongo()->{'map.chars.events'}->find(
             ['char' => new \MongoId($char_id)]
-        )->sort_desc('time')->toArray();
+        )->toArray();
 
         return $this->childrenFromArray($data);
     }

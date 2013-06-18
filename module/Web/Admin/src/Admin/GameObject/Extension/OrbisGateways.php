@@ -18,7 +18,7 @@ class OrbisGateways extends \Core\GameObject
             $gateways = $gateways->toArray();
             $grouped_gateways = [];
             foreach($gateways as $gateway) {
-                $_group = empty($gateway['group']) ? 0 : $gateway['group'];
+                $_group = empty($gateway['group']) ? "0" : $gateway['group'];
                 if(empty($grouped_gateways[$_group])) {
                     $grouped_gateways[$_group] = [];
                 }
@@ -61,13 +61,13 @@ class OrbisGateways extends \Core\GameObject
 
     public function delete_group($group_name)
     {
-        if($group_name === 0 || $group_name == 'Ungrouped') return false;
+        if($group_name === "0" || $group_name == 'Ungrouped') return false;
         $all = $this->find();
 
         if(empty($all[$group_name])) return false;
 
         foreach($all[$group_name] as $gateway) {
-            $gateway['group'] = 0;
+            $gateway['group'] = "0";
             $this->mongo()->{static::COLLECTION}->updateById($gateway['_id'], $gateway);
         }
 
@@ -76,27 +76,25 @@ class OrbisGateways extends \Core\GameObject
 
     public function update($id, $name, $description, $x, $y, $group = null)
     {
-        if($group == 'Ungrouped') $group = 0;
+        if($group == 'Ungrouped') $group = "0";
 
         return $this->mongo()->{static::COLLECTION}->updateById($id, [
             'name'        => $name,
             'description' => $description,
-            'x'           => $x,
-            'y'           => $y,
+            'loc'         => ['x' => $x, 'y' => $y],
             'group'       => $group,
         ]);
     }
 
     public function insert($name, $description, $x, $y, $group = null)
     {
-        if($group == 'Ungrouped') $group = 0;
+        if($group == 'Ungrouped') $group = "0";
 
         $data = [
             'name'        => $name,
             'description' => $description,
-            'x'           => $x,
-            'y'           => $y,
-            'group'       => $group === null ? 0 : $group,
+            'loc'         => ['x' => $x, 'y' => $y],
+            'group'       => $group === null ? "0" : $group,
         ];
         $result = $this->mongo()->{static::COLLECTION}->insert($data);
         if($result) return $data['_id']->{'$id'};
