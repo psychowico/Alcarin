@@ -1,6 +1,7 @@
 {% extends "alcarin-layout" %}
 
-{% block ngapp "game-panel" %}
+{% set root_app        = "game-panel" %}
+{% set root_controller = "Alcarin.Game.App" %}
 
 {% block leftcontent %}
     {% for class in ['home', 'glass', 'plane', 'eye-close', 'circle-arrow-up', 'calendar'] %}

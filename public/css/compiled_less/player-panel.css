@@ -27,9 +27,6 @@
   margin-left: 20px;
   padding-right: 15px;
 }
-.left-container > div > div div {
-  position: absolute;
-}
 .right-container {
   width: 61.8%;
 }
@@ -88,11 +85,13 @@
   min-height: 600px;
 }
 .events-container .game-event {
-  border: 1px solid silver;
   margin: 1px;
   padding: 3px;
 }
 .events-container .game-event .time {
   margin-right: 5px;
   font-weight: bold;
+}
+.events-container .game-event .content {
+  font-size: 10.5pt;
 }

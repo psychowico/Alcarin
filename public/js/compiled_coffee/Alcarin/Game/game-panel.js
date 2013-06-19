@@ -1,5 +1,19 @@
 'use strict';namespace('Alcarin.Game', function(exports, Alcarin) {
   angular.module('game-panel', ['@game-events', '@spin', 'ui.event']);
+  exports.App = ngcontroller([
+    '$timeout', function($timeout) {
+      var fetchGameEvents,
+        _this = this;
+
+      return fetchGameEvents = function() {
+        var socket;
+
+        socket = io.connect('http://localhost:8080');
+        socket.emit('japko');
+        return $timeout(fetchGameEvents, 1500);
+      };
+    }
+  ]);
   return exports.GameEvents = ngcontroller([
     'Events', function(Events) {
       var translate_events,
@@ -49,7 +63,6 @@
         return result;
       };
       return Events.fetch().then(function(response) {
-        console.log(response.data);
         return _this.events = translate_events(response.data);
       });
     }

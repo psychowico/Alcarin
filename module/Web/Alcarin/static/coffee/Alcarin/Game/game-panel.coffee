@@ -4,6 +4,14 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
 
     angular.module 'game-panel', ['@game-events', '@spin', 'ui.event']
 
+    exports.App = ngcontroller ['$timeout', ($timeout)->
+        fetchGameEvents = =>
+            socket = io.connect 'http://localhost:8080'
+            socket.emit 'japko'
+            $timeout fetchGameEvents, 1500
+        # $timeout fetchGameEvents
+    ]
+
     exports.GameEvents = ngcontroller ['Events', (Events)->
         @events = null
         @talkContent = ''
@@ -36,6 +44,5 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
 
 
         Events.fetch().then (response)=>
-            console.log response.data
             @events = translate_events response.data
     ]

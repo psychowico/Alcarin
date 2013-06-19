@@ -80,6 +80,7 @@ return array(
                         'sources' => array(
                             '/js/compiled_coffee/Alcarin/Game/ngx-game-events.js',
                             '/js/compiled_coffee/Alcarin/Game/game-panel.js',
+                            'http://' . $_SERVER['HTTP_HOST'] . ':8080/socket.io/socket.io.js'
                         ),
                     ),
                 ),
