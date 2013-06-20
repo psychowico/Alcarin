@@ -23,3 +23,8 @@ guard 'coffeescript', :output => 'public/js/compiled_coffee',
                       :source_map => true, :source_root => 'file://' + Dir.pwd do
   watch(%r{^module/.+/static/coffee/(.+\.coffee)})
 end
+
+guard 'coffeescript', :output => 'alcarin-cacher/output',
+                      :shallow => false, :bare => true do
+  watch(%r{^alcarin-cacher/src/(.+\.coffee)})
+end

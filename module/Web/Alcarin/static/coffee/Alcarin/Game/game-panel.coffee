@@ -2,7 +2,7 @@
 
 namespace 'Alcarin.Game', (exports, Alcarin) ->
 
-    angular.module 'game-panel', ['@game-events', '@spin', 'ui.event']
+    angular.module 'game-panel', ['@game-events', '@spin', 'ui.event', 'ngCookies']
 
     exports.App = ngcontroller ['$timeout', ($timeout)->
         fetchGameEvents = =>

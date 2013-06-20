@@ -1,5 +1,5 @@
 'use strict';namespace('Alcarin.Game', function(exports, Alcarin) {
-  angular.module('game-panel', ['@game-events', '@spin', 'ui.event']);
+  angular.module('game-panel', ['@game-events', '@spin', 'ui.event', 'ngCookies']);
   exports.App = ngcontroller([
     '$timeout', function($timeout) {
       var fetchGameEvents,

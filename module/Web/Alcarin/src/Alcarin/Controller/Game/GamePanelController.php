@@ -22,6 +22,10 @@ class GamePanelController extends AbstractAlcarinRestfulController
 
     public function get($id)
     {
+        $bridge = $this->getServiceLocator()->get('alcarin-cacher');
+        $bridge->connect();
+        $bridge->disconnect();
+
         $chars = $this->player()->chars();
         $all = $chars->names();
         if(empty($all[$id])) {
