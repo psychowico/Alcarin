@@ -2,14 +2,31 @@
 
 namespace 'Alcarin.Game', (exports, Alcarin) ->
 
+    socket_port = 8080
     angular.module 'game-panel', ['@game-events', '@spin', 'ui.event', 'ngCookies']
 
-    exports.App = ngcontroller ['$timeout', ($timeout)->
-        fetchGameEvents = =>
-            socket = io.connect 'http://localhost:8080'
-            socket.emit 'japko'
-            $timeout fetchGameEvents, 1500
-        # $timeout fetchGameEvents
+    exports.App = ngcontroller ['$timeout', '$location',
+        ($timeout, $location)->
+            #sessionid = $cookies.alcarin
+            @charid   = null
+
+            onGameEvent = =>
+                console.log 'event?'
+
+            authorize = =>
+                @socket.emit 'auth',
+                    charid : @charid
+
+            reinitalize_socket_connection = =>
+                if io
+                    @socket = socket = io.connect $location.host() + ":#{socket_port}"
+                    socket.on 'game-event', @onGameEvent
+                    socket.on 'reconnect', (_socket)-> authorize()
+                    authorize()
+
+            @$watch 'charid', =>
+                reinitalize_socket_connection() if @charid?
+
     ]
 
     exports.GameEvents = ngcontroller ['Events', (Events)->

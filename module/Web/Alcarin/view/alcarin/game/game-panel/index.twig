@@ -11,7 +11,7 @@
 {% endblock %}
 
 {% block middlecontent %}
-    <div id="main-nav">
+    <div id="main-nav" ng-init="charid = '{{ charid }}'">
         <nav>
             <ul class="nav-bar">
                 {% for class in ['list', 'glass', 'plane', 'eye-close', 'circle-arrow-up', 'calendar'] %}

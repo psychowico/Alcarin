@@ -22,9 +22,9 @@ class GamePanelController extends AbstractAlcarinRestfulController
 
     public function get($id)
     {
-        $bridge = $this->getServiceLocator()->get('alcarin-cacher');
-        $bridge->connect();
-        $bridge->disconnect();
+        // $bridge = $this->getServiceLocator()->get('alcarin-cacher');
+        // $bridge->connect();
+        // $bridge->disconnect();
 
         $chars = $this->player()->chars();
         $all = $chars->names();
@@ -50,10 +50,11 @@ class GamePanelController extends AbstractAlcarinRestfulController
 
 
         return [
-            'current_char'  => $char->name(),
-            'version' => \Zend\Version\Version::VERSION,
-            'href' => $this->getRequest()->getQuery('href'),
-            'forms' => [
+            'charid'       => $id,
+            'current_char' => $char->name(),
+            'version'      => \Zend\Version\Version::VERSION,
+            'href'         => $this->getRequest()->getQuery('href'),
+            'forms'        => [
                 'talking' => $talking_form,
             ]
         ];

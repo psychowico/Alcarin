@@ -63,7 +63,12 @@ return array(
                 'remember_me_seconds' => 10800, //60 * 60 * 3
             ),
         ),
-        'storage' => 'Zend\Session\Storage\SessionArrayStorage',
+        'storage'      => 'Zend\Session\Storage\SessionArrayStorage',
+        'save_handler' => 'Zend\Session\SaveHandler\MongoDB',
+        'save_handler_options' => array(
+            'database'   => 'alcarin',
+            'collection' => 'app.sessions',
+        ),
         'validators' => array(
             'Zend\Session\Validator\RemoteAddr',
             'Zend\Session\Validator\HttpUserAgent',

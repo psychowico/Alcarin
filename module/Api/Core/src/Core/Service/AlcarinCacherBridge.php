@@ -30,7 +30,7 @@ class AlcarinCacherBridge
         if($this->connected) return true;
 
         $socket = $this->socket();
-        $result = socket_connect($socket, $this->host, $this->port);
+        $result = socket_connect($socket, $this->host, $this->port) or false;
 
         $this->connected = ($result !== false);
         return ($result !== false);

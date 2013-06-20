@@ -1,17 +1,39 @@
 'use strict';namespace('Alcarin.Game', function(exports, Alcarin) {
+  var socket_port;
+
+  socket_port = 8080;
   angular.module('game-panel', ['@game-events', '@spin', 'ui.event', 'ngCookies']);
   exports.App = ngcontroller([
-    '$timeout', function($timeout) {
-      var fetchGameEvents,
+    '$timeout', '$location', function($timeout, $location) {
+      var authorize, onGameEvent, reinitalize_socket_connection,
         _this = this;
 
-      return fetchGameEvents = function() {
+      this.charid = null;
+      onGameEvent = function() {
+        return console.log('event?');
+      };
+      authorize = function() {
+        return _this.socket.emit('auth', {
+          charid: _this.charid
+        });
+      };
+      reinitalize_socket_connection = function() {
         var socket;
 
-        socket = io.connect('http://localhost:8080');
-        socket.emit('japko');
-        return $timeout(fetchGameEvents, 1500);
+        if (io) {
+          _this.socket = socket = io.connect($location.host() + (":" + socket_port));
+          socket.on('game-event', _this.onGameEvent);
+          socket.on('reconnect', function(_socket) {
+            return authorize();
+          });
+          return authorize();
+        }
       };
+      return this.$watch('charid', function() {
+        if (_this.charid != null) {
+          return reinitalize_socket_connection();
+        }
+      });
     }
   ]);
   return exports.GameEvents = ngcontroller([

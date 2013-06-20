@@ -59,4 +59,9 @@ class MongoDatabase extends \Mongo_Database
 
         return self::$instances[$name];
     }
+
+    public function exposeMongoObject()
+    {
+        return $this->_connection;
+    }
 }
