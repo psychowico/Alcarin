@@ -8,28 +8,29 @@
 {% endblock %}
 
 {% block content %}
-
-    <section id="game-pages" class="left-container">
-        <div class="pages">
-            <div class="pages-container">
-                {% block leftcontent %}
-                {% endblock %}
+    <div>
+        <section class="left-container">
+            <div>
+                <div class="pages-container">
+                    {% block leftcontent %}
+                    {% endblock %}
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    {% block middlecontent %}
-    {% endblock %}
+        {% block middlecontent %}
+        {% endblock %}
 
-    <section id="game-events" class="right-container">
-        <div class="events">
-            <div class="events-container">
-                {% block rightcontent %}
-                {% endblock %}
+        <section class="right-container">
+            <div>
+                <div class="events-container">
+                    {% block rightcontent %}
+                    {% endblock %}
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <div style="clear: both"></div>
+        <div style="clear: both"></div>
+    </div>
 
 {% endblock %}

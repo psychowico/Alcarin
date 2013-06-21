@@ -10,10 +10,12 @@ class GameObject implements GameServiceAwareInterface
     use GameServiceAwareTrait;
 
     protected $child_reflect;
-    protected $parent;
-    protected $mongo;
     protected $extManager;
     protected $plugins   = [];
+    private $mongo;
+    private $parent;
+    private $lang;
+    private $current_char;
 
     public function __construct($parent = null)
     {
@@ -33,6 +35,7 @@ class GameObject implements GameServiceAwareInterface
         $this->parent = $parent;
     }
 
+
     protected function parent()
     {
         return $this->parent;
@@ -48,6 +51,25 @@ class GameObject implements GameServiceAwareInterface
         }
         return $this->mongo;
     }
+
+    protected function lang()
+    {
+        if($this->lang == null) {
+            $player = $this->getServicesContainer()->get('players')->current();
+            $this->lang = $player->lang();
+        }
+        return $this->lang;
+    }
+
+    protected function currentChar()
+    {
+        if($this->current_char == null) {
+            $player = $this->getServicesContainer()->get('players')->current();
+            $this->current_char = $player->currentChar();
+        }
+        return $this->current_char;
+    }
+
 
     /**
      * we will need it very often, so let create shortcut in this base class

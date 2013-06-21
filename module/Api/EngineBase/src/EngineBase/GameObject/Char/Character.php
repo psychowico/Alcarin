@@ -20,4 +20,14 @@ class Character extends \Core\GameObject
     {
         return $this->source_data['id'];
     }
+
+    public function loc()
+    {
+        return (object)$this->source_data['loc'];
+    }
+
+    public function toArray()
+    {
+        return $this->source_data;
+    }
 }

@@ -1,5 +1,11 @@
 {% extends "alcarin-layout" %}
 
+{% do headScript().appendBundle('player') %}
+
+
+{% set root_app        = "game-panel" %}
+{% set root_controller = "Alcarin.Game.App" %}
+
 {% block leftcontent %}
     {% for class in ['home', 'glass', 'plane', 'eye-close', 'circle-arrow-up', 'calendar'] %}
     <div ng-view>
@@ -8,7 +14,7 @@
 {% endblock %}
 
 {% block middlecontent %}
-    <div id="main-nav">
+    <div id="main-nav" ng-init="charid = '{{ charid }}'">
         <nav>
             <ul class="nav-bar">
                 {% for class in ['list', 'glass', 'plane', 'eye-close', 'circle-arrow-up', 'calendar'] %}
@@ -25,7 +31,25 @@
 
 {% block rightcontent %}
     {# do form.setAttribute('action', uri('orbis/default', {controller: 'gateways'}) ~ '/{item.id}') #}
-    <div class="talking">
-        {{ bootstrap(forms['talking'], 'inline') }}
+    <div class="game-events" ng-controller="Alcarin.Game.GameEvents">
+        <div class="talking">
+            <!-- layout trick to nice, flexible panel -->
+
+            {{ bootstrap().openTag(forms['talking']) | raw }}
+
+            <div class="content" alc-spin="sending">
+                {{ formElement(forms['talking'].get('content')) }}
+            </div>
+            <div class="submit">
+                <input type="submit" class="btn" value="Mów">
+            </div>
+
+            {{ bootstrap().closeTag() | raw }}
+        </div>
+        <div class="events-container" alc-spin="events == null">
+            <div class="game-event" ng-repeat="event in events">
+                <span class="time">{* event.time | EventTime *}</span><span class="content">{* event.text *}</span>
+            </div>
+        </div>
     </div>
 {% endblock %}

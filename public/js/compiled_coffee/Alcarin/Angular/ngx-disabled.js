@@ -1,6 +1,4 @@
-'use strict';
-
-namespace('Alcarin.Angular', function(exports, Alcarin) {
+'use strict';namespace('Alcarin.Angular', function(exports, Alcarin) {
   return angular.module('@disabled').directive('alcDisabled', function() {
     return {
       restrict: 'A',
@@ -12,3 +10,7 @@ namespace('Alcarin.Angular', function(exports, Alcarin) {
     };
   });
 });
+
+/*
+//@ sourceMappingURL=ngx-disabled.js.map
+*/

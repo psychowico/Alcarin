@@ -14,7 +14,7 @@
         <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
 
         <script type="text/javascript" src="/js/vendor/jquery/jquery-1.9.1.js"></script>
-        <script type="text/javascript" src="/js/vendor/angular-1.1.5.js"></script>
+        <script type="text/javascript" src="/js/vendor/angularjs/angular-1.1.5.js"></script>
 
         {{ headLink().prependBundle('common').prependBundle('external') | raw }}
 
@@ -43,7 +43,7 @@
                 {% if isAllowed('PLAYER_PANEL') %}
                 <li class="dropdown {{ uri().isGame() ? 'active' : null }}">
 
-                    {% if player().chars().all()|length == 0 %}
+                    {% if player().chars().names()|length == 0 %}
                     <a class="first-char-link" href="{{ uri('alcarin/default', {controller: 'create-char'}) }}">
                         <span>Stwórz pierwszą postać</span>
                     </a>
@@ -53,7 +53,7 @@
                         <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="chars-list">
-                        {% for char in player().chars().all() %}
+                        {% for char in player().chars().names() %}
                         {% set char_url = url('alcarin/default', { controller: 'panel', id: char.id() }) %}
                         <li><a href="{{ char_url }}">{{ char.name() }}</a></li>
                         {% endfor %}
@@ -80,7 +80,7 @@
           </div>
         </nav>
 
-        <div class="container">
+        <div class="container" {% if root_app is defined %} ng-app="{{ root_app }}" {% endif %} {% if root_controller is defined %} ng-controller="{{ root_controller }}" {% endif %}>
             <div class="game-container">
                 {% block content %}
                 &nbsp;

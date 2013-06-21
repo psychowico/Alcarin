@@ -1,6 +1,4 @@
-'use strict';
-
-namespace('Admin.Angular', function(exports, Alcarin) {
+'use strict';namespace('Admin.Angular', function(exports, Alcarin) {
   $.fn.editable.defaults.ajaxOptions = {
     type: 'put',
     dataType: 'json'
@@ -13,6 +11,7 @@ namespace('Admin.Angular', function(exports, Alcarin) {
       },
       link: function($scope, element, attrs) {
         var options, _success;
+
         options = $scope.options();
         if (options.success) {
           _success = options.success;
@@ -31,3 +30,7 @@ namespace('Admin.Angular', function(exports, Alcarin) {
     };
   });
 });
+
+/*
+//@ sourceMappingURL=ngx-x-editable.js.map
+*/

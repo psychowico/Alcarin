@@ -1,22 +1,18 @@
 'use strict';
-
 var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 namespace('Alcarin.Orbis', function(exports, Alcarin) {
   var canvas_events;
+
   canvas_events = function($scope, map, element) {
     var events;
-    events = (function() {
 
+    events = (function() {
       function events() {
         this.mouse_painting = __bind(this.mouse_painting, this);
-
         this.mouse_move = __bind(this.mouse_move, this);
-
         this.mouse_up = __bind(this.mouse_up, this);
-
         this.mouse_down = __bind(this.mouse_down, this);
-
       }
 
       events.prototype.mouse_down = function(e) {
@@ -40,6 +36,7 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
 
       events.prototype.mouse_painting = function(e) {
         var brush, coords, ox, oy, range, range_2, _i, _j;
+
         coords = map.pixels_to_coords(e.offsetX, e.offsetY);
         brush = $scope.mapBrush;
         if (brush.size > 1) {
@@ -77,6 +74,7 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
         },
         link: function($scope, canvas, attrs) {
           var ev, map;
+
           map = new Alcarin.Orbis.Editor.MapManager($scope, canvas);
           map.init();
           map.change_happen = function() {
@@ -102,3 +100,7 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
     }
   ]);
 });
+
+/*
+//@ sourceMappingURL=ngx-map-manager.js.map
+*/

@@ -28,7 +28,7 @@ class GatewaysController extends AbstractAlcarinRestfulController
 
             $result_id = $this->orbis()->gateways()->insert(
                 $data['name'], $data['description'],
-                $data['x'], $data['y'], $data['group']);
+                $data['loc']['x'], $data['loc']['y'], $data['group']);
 
             if($result_id !== false) {
                 $data['id'] = $result_id;
@@ -51,7 +51,7 @@ class GatewaysController extends AbstractAlcarinRestfulController
 
             $this->orbis()->gateways()->update($id,
                 $new_data['name'], $new_data['description'],
-                $new_data['x'], $new_data['y'], $new_data['group'] );
+                $new_data['loc']['x'], $new_data['loc']['y'], $new_data['group'] );
             return $this->json($new_data);
         }
         return $this->responses()->badRequest();

@@ -16,9 +16,7 @@ class CreateCharController extends AbstractAlcarinRestfulController
     public function create($data)
     {
         if(!empty($data['name'])) {
-            $gServices = $this->getServiceLocator()->get('game-services');
-            $player = $gServices->get('players')->current();
-            $player->chars()->create($data['name']);
+            $this->player()->chars()->create($data['name']);
         }
         return $this->redirect()->toParent();
     }

@@ -1,4 +1,5 @@
 <?php
+
 //can be removed in production mode
 define('REQUEST_MICROTIME', microtime(true));
 

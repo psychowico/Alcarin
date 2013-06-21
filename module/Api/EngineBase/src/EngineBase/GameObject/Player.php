@@ -6,6 +6,7 @@ class Player extends \Core\GameObject
 {
     protected $id   = null;
     protected $data = null;
+    protected $current_char = null;
 
     public function __construct($parent, $id, $data = null)
     {
@@ -40,5 +41,18 @@ class Player extends \Core\GameObject
             $this->data = $new_data;
         }
         $this->mongo()->users->updateById($this->id, $this->data);
+    }
+
+    public function setCurrentChar($char)
+    {
+        $this->current_char = $char;
+    }
+
+    public function currentChar()
+    {
+        if($this->current_char == null) {
+            throw new \Exception('Current char wasnot choosed.');
+        }
+        return $this->current_char;
     }
 }

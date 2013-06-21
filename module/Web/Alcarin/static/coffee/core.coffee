@@ -39,7 +39,7 @@ angular.module = (args...)->
 
 $ =>
     # focus first input on site
-    $('input[type="text"]:first').focus()
+    $('input[type="text"],textarea:first').focus()
 
     $('.modal-footer .btn-primary').on 'click', (e)->
         result = $(@).trigger 'success', e

@@ -2,6 +2,7 @@ var __slice = [].slice;
 
 namespace('Alcarin.Errors', function(exports, Alcarin) {
   var cookie_name, day_limit, space;
+
   cookie_name = 'js-errors';
   /*errors nb will be stored in cookie and requests will be blocked when
   number reach this limit
@@ -10,6 +11,7 @@ namespace('Alcarin.Errors', function(exports, Alcarin) {
   day_limit = 5;
   this.onerror = function(msg, url, line) {
     var cookie, data;
+
     $.cookie.raw = true;
     cookie = $.cookie(cookie_name);
     if (!cookie) {
@@ -37,6 +39,7 @@ namespace('Alcarin.Errors', function(exports, Alcarin) {
   };
   space = function() {
     var _console;
+
     _console = window.console || {
       debug: function() {},
       log: function() {},
@@ -47,6 +50,7 @@ namespace('Alcarin.Errors', function(exports, Alcarin) {
     _console._error = _console.error;
     _console.error = function() {
       var caller_stack, data, msg, _i, _len, _msg, _results;
+
       _msg = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
       msg = _msg[0];
       caller_stack = printStackTrace()[4];
@@ -66,3 +70,7 @@ namespace('Alcarin.Errors', function(exports, Alcarin) {
   };
   return space();
 });
+
+/*
+//@ sourceMappingURL=errors-core.js.map
+*/

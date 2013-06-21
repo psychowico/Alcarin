@@ -64,7 +64,7 @@ angular.module = function() {
 };
 
 $(function() {
-  $('input[type="text"]:first').focus();
+  $('input[type="text"],textarea:first').focus();
   $('.modal-footer .btn-primary').on('click', function(e) {
     var result;
 
@@ -77,3 +77,7 @@ $(function() {
   });
   return $('body').disableSelection();
 });
+
+/*
+//@ sourceMappingURL=core.js.map
+*/

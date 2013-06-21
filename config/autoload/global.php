@@ -34,6 +34,7 @@ return array(
 
             'Alcarin\Controller\Game\Panel'          => Resource::PLAYER_PANEL,
             'Alcarin\Controller\Game\CreateChar'     => Resource::PLAYER_PANEL,
+            'Alcarin\Controller\Game\CharEvents'     => Resource::PLAYER_PANEL,
 
             'Admin\Controller\Home'             => Resource::ADMIN_MENU,
             'Admin\Controller\Users'            => Resource::ADMIN_USERS,
@@ -53,6 +54,27 @@ return array(
             'Admin\Controller\Orbis\WorldEditor'    => [Resource::ADMIN_ORBIS],
         ),
     ),
+
+    'session' => array(
+        'config' => array(
+            'class' => 'Zend\Session\Config\SessionConfig',
+            'options' => array(
+                'name' => 'alcarin',
+                'remember_me_seconds' => 10800, //60 * 60 * 3
+            ),
+        ),
+        'storage'      => 'Zend\Session\Storage\SessionArrayStorage',
+        'save_handler' => 'Zend\Session\SaveHandler\MongoDB',
+        'save_handler_options' => array(
+            'database'   => 'alcarin',
+            'collection' => 'app.sessions',
+        ),
+        'validators' => array(
+            'Zend\Session\Validator\RemoteAddr',
+            'Zend\Session\Validator\HttpUserAgent',
+        ),
+    ),
+
 
     'zfctwig' => array(
          /**

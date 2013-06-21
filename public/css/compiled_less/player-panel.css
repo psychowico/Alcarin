@@ -27,9 +27,6 @@
   margin-left: 20px;
   padding-right: 15px;
 }
-.left-container > div > div div {
-  position: absolute;
-}
 .right-container {
   width: 61.8%;
 }
@@ -46,24 +43,55 @@
   margin-right: 20px;
   position: relative;
 }
-#game-events,
-#game-pages {
+.right-container,
+.left-container {
   position: relative;
   float: left;
 }
-#game-events .events,
-#game-pages .events,
-#game-events .pages,
-#game-pages .pages {
+.right-container > div,
+.left-container > div {
   min-height: 600px;
   float: left;
   width: 100%;
 }
-.talking {
-  float: right;
-  width: 95%;
+.talking > form {
+  width: 100%;
+  display: table;
+  margin-bottom: 9px;
 }
-.talking > * input[type="text"] {
-  margin-right: 6px;
-  width: 83%;
+.talking > form .content {
+  width: auto;
+  display: table-cell;
+  overflow: hidden;
+  padding-right: 5px;
+}
+.talking > form .content textarea {
+  width: 100%;
+  height: 40px;
+  margin: 0;
+  resize: vertical;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+.talking > form .submit {
+  width: 60px;
+  display: table-cell;
+}
+.talking > form .submit input {
+  height: 40px;
+}
+.events-container {
+  min-height: 600px;
+}
+.events-container .game-event {
+  margin: 1px;
+  padding: 3px;
+}
+.events-container .game-event .time {
+  margin-right: 5px;
+  font-weight: bold;
+}
+.events-container .game-event .content {
+  font-size: 10.5pt;
 }

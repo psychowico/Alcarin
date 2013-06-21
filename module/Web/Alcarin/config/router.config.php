@@ -27,6 +27,20 @@ return array(
                         ),
                     ),
                 ),
+                'char-events' => array(
+                    'type' => 'segment',
+                    'options' => array(
+                        'route' => '/char-events/:charid/:action',
+                        'constraints' => array(
+                            'charid'   => '[a-fA-F0-9]+',
+                            'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        ),
+                        'defaults' => array(
+                            'controller'    => 'char-events',
+                            '__NAMESPACE__' => 'Alcarin\Controller\Game',
+                        ),
+                    ),
+                ),
             ),
         ),
     ),

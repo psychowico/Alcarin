@@ -9,6 +9,7 @@ return array(
         'invokables' => array(
             'Alcarin\Controller\Game\Panel'      => 'Alcarin\Controller\Game\GamePanelController',
             'Alcarin\Controller\Game\CreateChar' => 'Alcarin\Controller\Game\CreateCharController',
+            'Alcarin\Controller\Game\CharEvents' => 'Alcarin\Controller\Game\CharacterEventsController',
         ),
     ),
 

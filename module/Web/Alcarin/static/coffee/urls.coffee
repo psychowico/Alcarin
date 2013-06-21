@@ -4,18 +4,21 @@ if we change sites links in system. We saved it in global namespace, so can be
 used anywhere in js code.
 Hrefs shouldn't have '/' symbol at end.
 ###
-@urls = {
-    orbis: {
+@urls =
+    game:
+        character:
+            events:
+                '/game/char-events'
+    orbis:
         panel: '/admin/orbis/gateways-panel'
         gateways: '/admin/orbis/gateways'
         gatewaysgroups: '/admin/orbis/gateways-groups'
         map: '/admin/orbis/map'
-    }
-    api: {
+
+    api:
         errors: '/api/errors/external'
-    }
-    dev: {
+
+    dev:
         action: '/dev'
-    }
+
     translations: '/admin/translations'
-}

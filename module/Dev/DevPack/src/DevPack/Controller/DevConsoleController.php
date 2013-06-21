@@ -72,10 +72,18 @@ class DevConsoleController extends AbstractActionController
         $game_services = $this->getServiceLocator()->get('game-services');
         $radius = $game_services->get('orbis')->map()->properties()->radius();
 
-        $mongo->command( ['deleteIndexes' => 'map', 'index' => 'geo_world_index']);
-        $mongo->map->ensureIndex(['loc' => '2d'], ['name'=> 'geo_world_index', 'min' => -$radius, 'max' => $radius]);
-        $messages []= 'Done indexing "map" collection.';
+        //geo indexes
+        $geo_collections = ['map', 'map.chars', 'map.gateways'];
+        foreach($geo_collections as $collection) {
+            $mongo->command( ['deleteIndexes' => $collection, 'index' => 'geo_world_index']);
+            $mongo->{$collection}->ensureIndex(['loc' => '2d'], ['name'=> 'geo_world_index', 'min' => -$radius, 'max' => $radius]);
 
-        return implode( "\n", $messages ) . PHP_EOL;
+            echo 'Done indexing "' . $collection . '" collection.' . PHP_EOL;
+        }
+
+        //char events index (time and char id)
+        $mongo->command( ['deleteIndexes' => 'map.chars.events', 'index' => 'chars_time']);
+            $mongo->{'map.chars.events'}->ensureIndex(['char' => 1, 'time' => -1], ['name'=> 'chars_time']);
+        echo 'Done indexing "map.chars.events" collection.' . PHP_EOL;
     }
 }

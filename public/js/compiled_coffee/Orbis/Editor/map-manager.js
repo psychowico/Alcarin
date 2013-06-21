@@ -1,7 +1,5 @@
-
 namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
   return exports.MapManager = (function() {
-
     MapManager.prototype.background = [0, 0, 255];
 
     MapManager.prototype.noise_density = 25;
@@ -15,7 +13,7 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
     }
 
     MapManager.prototype.noise = function() {
-      if (!(this._noise != null)) {
+      if (this._noise == null) {
         this._noise = new ROT.Noise.Simplex;
       }
       return this._noise;
@@ -31,7 +29,8 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
 
     MapManager.prototype.draw_shadow = function(p, size) {
       var c, up, x, y, _size;
-      if (!(this.foreground != null)) {
+
+      if (this.foreground == null) {
         return false;
       }
       c = this.foreground_canvas[0];
@@ -51,6 +50,7 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
 
     MapManager.prototype.in_view_rect = function(x, y) {
       var _rect;
+
       _rect = this.rect || {
         left: this.center.x - this.size / 2,
         right: this.center.x + this.size / 2,
@@ -63,7 +63,8 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
 
     MapManager.prototype.init_backbuffer = function(sizeW, sizeH) {
       var _canvas;
-      if (!(this.backbuffer_canvas != null)) {
+
+      if (this.backbuffer_canvas == null) {
         this.backbuffer_canvas = $('<canvas>');
         _canvas = this.backbuffer_canvas[0];
         _canvas.width = sizeW;
@@ -78,7 +79,8 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
 
     MapManager.prototype.init_foreground = function() {
       var _canvas;
-      if (!(this.foreground != null)) {
+
+      if (this.foreground == null) {
         this.foreground_canvas = $('<canvas>', {
           "class": 'foreground'
         });
@@ -93,6 +95,7 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
 
     MapManager.prototype.init = function() {
       var bg;
+
       this.context = this.canvas[0].getContext('2d');
       bg = this.background;
       this.context.fillStyle = "rgb(" + bg[0] + ", " + bg[1] + ", " + bg[2] + ")";
@@ -102,6 +105,7 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
 
     MapManager.prototype.redraw = function(size, fields) {
       var backbuffer, c, color, field, i, image_data, mod, offset, _i, _j, _len, _offset, _x, _y;
+
       this.plain_colors = [];
       this.size = size;
       backbuffer = this.init_backbuffer(size, size);
@@ -135,6 +139,7 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
 
     MapManager.prototype.pixels_to_coords = function(x, y) {
       var offset;
+
       offset = {
         x: this.center.x - this.size / 2,
         y: this.center.y - this.size / 2
@@ -147,6 +152,7 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
 
     MapManager.prototype.put_field = function(x, y, field_brush) {
       var bb_pos, color, current, i, mod, offset, rgb, target, _data, _i;
+
       if ((x != null) && (y != null) && this.in_view_rect(x, y)) {
         mod = Math.abs(this.noise().get(x / this.noise_density, y / this.noise_density));
         color = field_brush.color;
@@ -184,6 +190,7 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
 
     MapManager.prototype._buffer_to_front = function(with_swap) {
       var _h, _w;
+
       if (with_swap == null) {
         with_swap = false;
       }
@@ -199,6 +206,7 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
 
     MapManager.prototype._coords_to_backbuffer_pixels = function(x, y) {
       var offset;
+
       offset = {
         x: this.center.x - this.size / 2,
         y: this.center.y - this.size / 2
@@ -213,3 +221,7 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
 
   })();
 });
+
+/*
+//@ sourceMappingURL=map-manager.js.map
+*/

@@ -10,7 +10,7 @@ class GamePanelController extends AbstractAlcarinRestfulController
 {
     public function getList()
     {
-        $chars = $this->player()->chars()->all();
+        $chars = $this->player()->chars()->names();
         if(count($chars) == 0) {
             return $this->redirect()->toRoute('alcarin/default', ['controller' => 'create-char']);
         }
@@ -22,19 +22,22 @@ class GamePanelController extends AbstractAlcarinRestfulController
 
     public function get($id)
     {
-        $game_events = $this->gameServices()->get('game-events');
-        $game_events->generate('test', 1, 2, 3)->broadcast()->test();
-
-        $char = $this->player()->chars()->all()[$id];
+        $chars = $this->player()->chars();
+        $all = $chars->names();
+        if(empty($all[$id])) {
+            return $this->redirect()->toRoute('alcarin/default', ['controller' => 'create-char']);
+        }
+        $char = $chars->get($id);
 
         $builder = $this->getServiceLocator()->get('AnnotationBuilderService');
         $talking_form    = $builder->createForm(new \Alcarin\Form\TalkingForm(), true, "Mów");
 
         return [
-            'current_char'  => $char->name(),
-            'version' => \Zend\Version\Version::VERSION,
-            'href' => $this->getRequest()->getQuery('href'),
-            'forms' => [
+            'charid'       => $id,
+            'current_char' => $char->name(),
+            'version'      => \Zend\Version\Version::VERSION,
+            'href'         => $this->getRequest()->getQuery('href'),
+            'forms'        => [
                 'talking' => $talking_form,
             ]
         ];

@@ -118,6 +118,16 @@ abstract class AbstractAlcarinRestfulController extends AbstractRestfulControlle
         $routeMatch = $e->getRouteMatch();
         $action   = $routeMatch->getParam('action', false);
         $template = $routeMatch->getParam('template', false);
+        $charid   = $routeMatch->getParam('charid', false);
+
+        # I need think where is the best place to manage charid
+        if($charid !== false) {
+            $has_belong_to_player = $this->player()->chars()->belong($charid);
+            if(!$has_belong_to_player) return $this->redirect()->toRoute('alcarin');
+            $char = $this->player()->chars()->get($charid);
+            $this->player()->setCurrentChar($char);
+            $routeMatch->setParam('id', $charid);
+        }
 
         if($template) {
             $response = $e->getResponse();

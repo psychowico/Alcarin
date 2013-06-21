@@ -40,3 +40,7 @@ namespace('Alcarin.Angular', function(exports, Alcarin) {
     return new EventsBus();
   });
 });
+
+/*
+//@ sourceMappingURL=ngx-core.js.map
+*/

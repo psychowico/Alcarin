@@ -5,6 +5,11 @@ used anywhere in js code.
 Hrefs shouldn't have '/' symbol at end.
 */
 this.urls = {
+  game: {
+    character: {
+      events: '/game/char-events'
+    }
+  },
   orbis: {
     panel: '/admin/orbis/gateways-panel',
     gateways: '/admin/orbis/gateways',
@@ -19,3 +24,7 @@ this.urls = {
   },
   translations: '/admin/translations'
 };
+
+/*
+//@ sourceMappingURL=urls.js.map
+*/

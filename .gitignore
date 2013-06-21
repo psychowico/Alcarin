@@ -10,3 +10,4 @@ composer.lock
 *.sublime-*
 *.ignore
 .tags*
+*.js.map

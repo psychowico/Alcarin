@@ -31,3 +31,7 @@ namespace('Alcarin.Orbis.Gateways', function(exports, Alcarin) {
     }
   ]);
 });
+
+/*
+//@ sourceMappingURL=ngx-gateways.js.map
+*/

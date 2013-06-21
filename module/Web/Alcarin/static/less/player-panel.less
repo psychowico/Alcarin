@@ -33,9 +33,9 @@
       .both-containers;
       margin-left: 20px;
       padding-right: 15px;
-      div {
-        position: absolute;
-      }
+      // div {
+      //   position: absolute;
+      // }
     }
   }
 }
@@ -51,10 +51,10 @@
   }
 }
 
-#game-events, #game-pages {
+.right-container, .left-container {
   position: relative;
   float:left;
-  .events, .pages {
+  >div {
     min-height: 600px;
     float:left;
     width: 100%;
@@ -62,12 +62,45 @@
 }
 
 .talking {
-  float:right;
-  width: 95%;
-  &>* {
-    input[type="text"] {
-      margin-right: 6px;
-      width:83%;
+  >form {
+    width:100%;
+    display:table;
+    margin-bottom: 9px;
+    .content {
+      textarea {
+        width:100%;
+        height:40px;
+        margin: 0;
+        resize: vertical;
+        .border-box()
+      }
+      width:auto;
+      display:table-cell;
+      overflow: hidden;
+      padding-right: 5px;
+    }
+    .submit {
+      input {
+        height:40px;
+      }
+      width:60px;
+      display:table-cell;
+    }
+  }
+}
+
+.events-container {
+  min-height: 600px;
+  .game-event {
+    // border: 1px solid silver;
+    margin: 1px;
+    padding:3px;
+    .time {
+      margin-right: 5px;
+      font-weight: bold;
+    }
+    .content {
+      font-size: 10.5pt;
     }
   }
 }

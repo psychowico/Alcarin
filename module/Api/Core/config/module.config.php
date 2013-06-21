@@ -49,6 +49,7 @@ return array(
                 $mapper->setMongoDriver( $mongo );
                 return $mapper;
             },
+            'alcarin-cacher' => 'Core\Factory\AlcarinCacherBridgeFactory',
         ),
         'aliases' => array(
             'annotation-builder' => 'AnnotationBuilderService',
