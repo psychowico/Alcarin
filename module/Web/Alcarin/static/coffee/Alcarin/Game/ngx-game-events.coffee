@@ -1,3 +1,5 @@
+'use strict'
+
 namespace 'Alcarin.Game', (exports, Alcarin) ->
 
     angular.module('@game-events')
