@@ -1,22 +1,24 @@
 'use-strict';
-
 var __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 namespace('Alcarin.Orbis.Gateways', function(exports, Alcarin) {
   exports.List = ngcontroller([
     'GatewaysGroup', 'Gateway', '@EventsBus', function(GatewaysGroup, Gateway, EventsBus) {
       var _this = this;
+
       this.gateways_groups = GatewaysGroup.query({
         full: true
       });
       this.rename = function(_group) {
         return function(ign, new_name) {
           var group;
+
           if (!new_name) {
             return "Can not be empty.";
           }
           if (__indexOf.call((function() {
             var _i, _len, _ref, _results;
+
             _ref = this.gateways_groups;
             _results = [];
             for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -56,9 +58,11 @@ namespace('Alcarin.Orbis.Gateways', function(exports, Alcarin) {
       this.deleteGroup = function(group) {
         return Alcarin.Dialogs.Confirms.admin('Really deleting? Gateways will be moved to "ungrouped" group.', function() {
           var c_group;
+
           c_group = new GatewaysGroup(group);
           return group.$delete(function() {
             var _g, _i, _len, _ref;
+
             _this.gateways_groups.remove(group);
             _ref = c_group.gateways;
             for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -71,6 +75,7 @@ namespace('Alcarin.Orbis.Gateways', function(exports, Alcarin) {
       };
       this.createGroup = function() {
         var group;
+
         group = new GatewaysGroup();
         group.name = 'new_group ...';
         group.id = 'new_group';
@@ -86,6 +91,7 @@ namespace('Alcarin.Orbis.Gateways', function(exports, Alcarin) {
     'GatewaysGroup', 'Gateway', '$routeParams', '$location', '@EventsBus', function(GatewaysGroup, Gateway, $params, $loc, EventsBus) {
       var mode,
         _this = this;
+
       this.groups = GatewaysGroup.query();
       this.title = '...';
       mode = $params.gatewayid != null ? 'edit' : 'create';
@@ -121,6 +127,7 @@ namespace('Alcarin.Orbis.Gateways', function(exports, Alcarin) {
       }
       return EventsBus.on('flag.updated', function(x, y) {
         var _ref, _ref1;
+
         if ((_ref = _this.rel) != null) {
           _ref.x = x;
         }
