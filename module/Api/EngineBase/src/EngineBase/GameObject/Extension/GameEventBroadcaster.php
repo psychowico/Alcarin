@@ -18,17 +18,36 @@ class GameEventBroadcaster extends \Core\GameObject
 
     protected function pushEvent($char_id, $event)
     {
-        if(!empty($event['char']) || !empty($event['time'])) {
+        if(!empty($event['char'])) {
             throw new \DomainException('Fields "char" and "time" are reserved in event structure.');
         }
-        $timestamp = $this->getServicesContainer()->get('time')->timestamp();
         $event_data = [
             'char' => new \MongoId($char_id),
-            'time' => $timestamp,
         ];
         $event_data += $event;
 
+        #pushing to database
         return $this->mongo()->{static::EVENTS_TABLE}->insert($event_data);
+    }
+
+    protected function sendToAlcarinCacher($sender_id, $target_ids,
+                                            $sender_struct, $others_struct)
+    {
+        $bridge = $this->getServicesContainer()->get('alcarin-cacher');
+        $bridge->connect();
+
+        $self_event = [
+            'ids' => [$sender_id],
+            'event' => $sender_struct,
+        ];
+        $others_event = [
+            'ids' => $target_ids,
+            'event' => $others_struct,
+        ];
+
+        $bridge->send([$self_event, $others_event]);
+
+        $bridge->disconnect();
     }
 
     public function byIds($ids)
@@ -36,14 +55,22 @@ class GameEventBroadcaster extends \Core\GameObject
         $game_event = $this->parent();
         $current_id = $this->currentChar()->id();
 
-        $event_data = $game_event->serialize('std');
-        $this->pushEvent($current_id, $event_data);
+        $ids = array_flip($ids);
+        unset($ids[$current_id]);
+        $ids = array_keys($ids);
 
-        $event_data = $game_event->serialize('others');
+        $timestamp = $this->getServicesContainer()->get('time')->timestamp();
+
+        $owner_event_data = array_merge(['time' => $timestamp], $game_event->serialize('std'));
+
+        $this->pushEvent($current_id, $owner_event_data);
+
+        $event_data = array_merge(['time' => $timestamp], $game_event->serialize('others'));
         foreach($ids as $char_id) {
-            if($current_id === $char_id)continue;
             $this->pushEvent($char_id, $event_data);
         }
+
+        $this->sendToAlcarinCacher($current_id, $ids, $owner_event_data, $event_data);
     }
 
     public function inRadius($meters)

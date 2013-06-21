@@ -1,34 +1,52 @@
+var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
 namespace('Alcarin.Game', function(exports, Alcarin) {
   var GameTime;
 
-  angular.module('@game-events').factory('Events', [
+  angular.module('@game-events').factory('GameEvents', [
     '$http', function($http) {
-      var meth;
+      var GameEvents;
 
-      meth = function(action, _data) {
-        if (_data != null) {
-          return $http({
-            url: "" + urls.game.character.events + "/" + action,
-            method: 'POST',
-            data: $.param(_data),
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded'
-            }
-          });
-        } else {
-          return $http.get("" + urls.game.character.events + "/" + action);
+      GameEvents = (function() {
+        function GameEvents() {
+          this.talk = __bind(this.talk, this);
+          this.fetch = __bind(this.fetch, this);
+          this.init = __bind(this.init, this);
         }
-      };
-      return {
-        fetch: function() {
-          return meth('fetch');
-        },
-        talk: function(_content) {
-          return meth('publicTalk', {
+
+        GameEvents.prototype.init = function(charid) {
+          return this.charid = charid;
+        };
+
+        GameEvents.prototype._meth = function(action, _data) {
+          if (_data != null) {
+            return $http({
+              url: "" + urls.game.character.events + "/" + this.charid + "/" + action,
+              method: 'POST',
+              data: $.param(_data),
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+              }
+            });
+          } else {
+            return $http.get("" + urls.game.character.events + "/" + this.charid + "/" + action);
+          }
+        };
+
+        GameEvents.prototype.fetch = function() {
+          return this._meth('fetch');
+        };
+
+        GameEvents.prototype.talk = function(_content) {
+          return this._meth('publicTalk', {
             content: _content
           });
-        }
-      };
+        };
+
+        return GameEvents;
+
+      })();
+      return new GameEvents();
     }
   ]).filter('EventTime', function() {
     return function(time) {

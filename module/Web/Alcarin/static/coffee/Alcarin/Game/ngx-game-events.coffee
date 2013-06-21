@@ -1,22 +1,26 @@
 namespace 'Alcarin.Game', (exports, Alcarin) ->
 
     angular.module('@game-events')
-        .factory('Events', ['$http', ($http)->
-            meth = (action, _data)->
-                if _data?
-                    $http
-                        url    : "#{urls.game.character.events}/#{action}",
-                        method : 'POST'
-                        data   : $.param _data
-                        headers:
-                            'Content-Type': 'application/x-www-form-urlencoded'
-                else
-                    $http.get "#{urls.game.character.events}/#{action}"
-            {
-                fetch: -> meth 'fetch'
-                talk: (_content)-> meth 'publicTalk',
+        .factory('GameEvents', ['$http', ($http)->
+            class GameEvents
+                init: (charid)=>
+                    @charid = charid
+
+                _meth: (action, _data)->
+                    if _data?
+                        $http
+                            url    : "#{urls.game.character.events}/#{@charid}/#{action}",
+                            method : 'POST'
+                            data   : $.param _data
+                            headers:
+                                'Content-Type': 'application/x-www-form-urlencoded'
+                    else
+                        $http.get "#{urls.game.character.events}/#{@charid}/#{action}"
+
+                fetch: => @_meth 'fetch'
+                talk: (_content)=> @_meth 'publicTalk',
                     content: _content
-            }
+            return new GameEvents()
         ])
         .filter('EventTime', ->
             (time)->

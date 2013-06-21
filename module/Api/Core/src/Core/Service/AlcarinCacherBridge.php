@@ -49,6 +49,13 @@ class AlcarinCacherBridge
         return ($result !== false);
     }
 
+    public function send($data)
+    {
+        if(!$this->connected) return false;
+        $json_data = json_encode($data);
+        return socket_write($this->socket(), $json_data);
+    }
+
     public function disconnect()
     {
         if(!$this->connected) return true;

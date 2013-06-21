@@ -27,6 +27,19 @@ class PlayerChars extends \Core\GameObject
         return $this->childrenFromArray($chars->toArray());
     }
 
+    /**
+     * check that character with specific id is related with this user.
+     */
+    public function belong($charid)
+    {
+        $player_id = new \MongoId($this->parent()->id());
+        $count = $this->mongo()->{'map.chars'}->count([
+            '_id' => new \MongoId($charid),
+            'owner' => $player_id,
+        ]);
+        return $count > 0;
+    }
+
     public function get($id)
     {
         $player_id = new \MongoId($this->parent()->id());

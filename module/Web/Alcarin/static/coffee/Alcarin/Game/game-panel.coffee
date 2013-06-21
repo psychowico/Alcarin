@@ -6,13 +6,16 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
 
     angular.module 'game-panel', ['@game-events', '@spin', 'ui.event', 'ngCookies']
 
-    exports.App = ngcontroller ['$timeout', '$location',
-        ($timeout, $location)->
+    exports.App = ngcontroller ['GameEvents', '$timeout', '$location',
+        (Events, $timeout, $location)->
             @initialized   = false
             @charid   = null
 
-            onGameEvent = =>
-                console.log 'event?'
+            @onGameEvent = (ev)=>
+                if @$root.$$phase
+                    @$broadcast 'game-event', ev
+                else
+                    @$apply => @$broadcast 'game-event', ev
 
             authorize = =>
                 @socket.emit 'auth',
@@ -27,6 +30,8 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
 
             @$watch 'charid', =>
                 if @charid?
+                    Events.init @charid
+                    @$broadcast 'page-init'
                     if not @initialized
                         host = $location.host()
                         # lazy load socket.io.js script
@@ -36,7 +41,7 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
                         reinitalize_socket_connection()
     ]
 
-    exports.GameEvents = ngcontroller ['Events', (Events)->
+    exports.GameEvents = ngcontroller ['GameEvents', (Events)->
         @events = null
         @talkContent = ''
         @sending = false
@@ -53,20 +58,27 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
                     @talkToAll()
                     event.preventDefault()
 
+        @$on 'game-event', (ev, data)=>
+            @events.splice 0, 0, translate_event data
+
+        translate_event = (ev)->
+            _text = ev.text
+            for arg, ind in ev.args
+                _text = _text.replace "%#{ind}", arg
+            return {
+                text: _text
+                time: ev.time
+            }
 
         translate_events = (events_data)->
             result = []
             for ev in events_data
-                _text = ev.text
+                _text = ev.text or ''
                 if _text.length is 0 then continue
-                for arg, ind in ev.args
-                    _text = _text.replace "%#{ind}", arg
-                result.push
-                    text: _text
-                    time: ev.time
+                result.push translate_event ev
             return result
 
-
-        Events.fetch().then (response)=>
-            @events = translate_events response.data
+        @$on 'page-init', =>
+            Events.fetch().then (response)=>
+                @events = translate_events response.data
     ]
