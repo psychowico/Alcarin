@@ -1,5 +1,8 @@
 {% extends "alcarin-layout" %}
 
+{% do headScript().appendBundle('player') %}
+
+
 {% set root_app        = "game-panel" %}
 {% set root_controller = "Alcarin.Game.App" %}
 

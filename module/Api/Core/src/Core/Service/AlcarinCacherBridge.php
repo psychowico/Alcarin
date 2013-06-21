@@ -9,6 +9,7 @@ namespace Core\Service;
 class AlcarinCacherBridge
 {
     use \Core\AutoCacheTrait;
+    use \Zend\ServiceManager\ServiceLocatorAwareTrait;
 
     protected $host;
     protected $port;
@@ -18,6 +19,11 @@ class AlcarinCacherBridge
     {
         $this->host = $host;
         $this->port = $port;
+    }
+
+    public function fetchLog()
+    {
+        return $this->getServiceLocator()->get('system-logger');
     }
 
     protected function fetchSocket()
@@ -31,6 +37,13 @@ class AlcarinCacherBridge
 
         $socket = $this->socket();
         $result = socket_connect($socket, $this->host, $this->port) or false;
+
+        if($result === false) {
+            $this->log()->err(sprintf(
+                '"%s" can not connect to server. Host: "%s". Port: "%d"',
+                __CLASS__, $this->host, $this->port)
+            );
+        }
 
         $this->connected = ($result !== false);
         return ($result !== false);

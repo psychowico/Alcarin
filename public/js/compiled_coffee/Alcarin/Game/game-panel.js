@@ -8,6 +8,7 @@
       var authorize, onGameEvent, reinitalize_socket_connection,
         _this = this;
 
+      this.initialized = false;
       this.charid = null;
       onGameEvent = function() {
         return console.log('event?');
@@ -18,20 +19,33 @@
         });
       };
       reinitalize_socket_connection = function() {
-        var socket;
+        var socket, x;
 
-        if (io) {
+        if (typeof io !== "undefined" && io !== null) {
           _this.socket = socket = io.connect($location.host() + (":" + socket_port));
           socket.on('game-event', _this.onGameEvent);
           socket.on('reconnect', function(_socket) {
             return authorize();
           });
-          return authorize();
+          authorize();
+          x = function() {
+            return _this.socket.disconnect();
+          };
+          return $timeout(x, 5000);
         }
       };
       return this.$watch('charid', function() {
+        var host;
+
         if (_this.charid != null) {
-          return reinitalize_socket_connection();
+          if (!_this.initialized) {
+            host = $location.host();
+            return $.getScript("http://" + host + ":" + socket_port + "/socket.io/socket.io.js", function() {
+              return reinitalize_socket_connection();
+            });
+          } else {
+            return reinitalize_socket_connection();
+          }
         }
       });
     }

@@ -22,7 +22,6 @@ class Logger extends AbstractPlugin
             $msg = $args[0];
             $args = array_splice($args, 1);
             $msg = vsprintf($msg, $args);
-
             return call_user_func([$logger, $method], $msg);
         }
         else {

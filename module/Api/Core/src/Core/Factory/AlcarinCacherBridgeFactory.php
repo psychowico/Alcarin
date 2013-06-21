@@ -20,6 +20,8 @@ class AlcarinCacherBridgeFactory implements FactoryInterface
         $config = $serviceLocator->get('config');
         $options = $config['alcarin-cacher'];
 
-        return new AlcarinCacherBridge($options['host'], $options['port']);
+        $bridge = new AlcarinCacherBridge($options['host'], $options['port']);
+        $bridge->setServiceLocator($serviceLocator);
+        return $bridge;
     }
 }

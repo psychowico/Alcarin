@@ -3,11 +3,12 @@
 namespace 'Alcarin.Game', (exports, Alcarin) ->
 
     socket_port = 8080
+
     angular.module 'game-panel', ['@game-events', '@spin', 'ui.event', 'ngCookies']
 
     exports.App = ngcontroller ['$timeout', '$location',
         ($timeout, $location)->
-            #sessionid = $cookies.alcarin
+            @initialized   = false
             @charid   = null
 
             onGameEvent = =>
@@ -18,14 +19,25 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
                     charid : @charid
 
             reinitalize_socket_connection = =>
-                if io
+                if io?
                     @socket = socket = io.connect $location.host() + ":#{socket_port}"
                     socket.on 'game-event', @onGameEvent
                     socket.on 'reconnect', (_socket)-> authorize()
                     authorize()
+                    x = => @socket.disconnect()
+                    $timeout x, 5000
 
             @$watch 'charid', =>
-                reinitalize_socket_connection() if @charid?
+                if @charid?
+                    if not @initialized
+                        host = $location.host()
+                        # lazy load socket.io.js script
+                        $.getScript "http://#{host}:#{socket_port}/socket.io/socket.io.js", ->
+                            reinitalize_socket_connection()
+                    else
+                        reinitalize_socket_connection()
+
+
 
     ]
 
