@@ -19,7 +19,7 @@
         });
       };
       reinitalize_socket_connection = function() {
-        var socket, x;
+        var socket;
 
         if (typeof io !== "undefined" && io !== null) {
           _this.socket = socket = io.connect($location.host() + (":" + socket_port));
@@ -27,11 +27,7 @@
           socket.on('reconnect', function(_socket) {
             return authorize();
           });
-          authorize();
-          x = function() {
-            return _this.socket.disconnect();
-          };
-          return $timeout(x, 5000);
+          return authorize();
         }
       };
       return this.$watch('charid', function() {

@@ -8,7 +8,7 @@ namespace('Alcarin.Game', function(exports, Alcarin) {
       meth = function(action, _data) {
         if (_data != null) {
           return $http({
-            url: "" + urls.game.char.events + "/" + action,
+            url: "" + urls.game.character.events + "/" + action,
             method: 'POST',
             data: $.param(_data),
             headers: {
@@ -16,7 +16,7 @@ namespace('Alcarin.Game', function(exports, Alcarin) {
             }
           });
         } else {
-          return $http.get("" + urls.game.char.events + "/" + action);
+          return $http.get("" + urls.game.character.events + "/" + action);
         }
       };
       return {
@@ -38,7 +38,7 @@ namespace('Alcarin.Game', function(exports, Alcarin) {
         return time;
       }
       _time = new GameTime(time);
-      return _time.long();
+      return _time.print_long();
     };
   });
   return GameTime = (function() {
@@ -57,7 +57,7 @@ namespace('Alcarin.Game', function(exports, Alcarin) {
       this.timestamp = timestamp;
     }
 
-    GameTime.prototype.resolve = function() {
+    GameTime.prototype._resolve = function() {
       if (this.resolved) {
         return true;
       }
@@ -68,13 +68,13 @@ namespace('Alcarin.Game', function(exports, Alcarin) {
       return this.resolved = true;
     };
 
-    GameTime.prototype.short = function() {
-      this.resolve();
+    GameTime.prototype.print_short = function() {
+      this._resolve();
       return "" + this.hour + ":" + this.min + ":" + this.sec;
     };
 
-    GameTime.prototype.long = function() {
-      this.resolve();
+    GameTime.prototype.print_long = function() {
+      this._resolve();
       return "" + this.day + " - " + this.hour + ":" + this.min + ":" + this.sec;
     };
 

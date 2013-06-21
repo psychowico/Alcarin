@@ -47,7 +47,7 @@ class MongoDBExt extends MongoDB
             $this->options->getDataField() => (string) $data,
             $this->options->getLifetimeField() => $this->lifetime,
             $this->options->getModifiedField() => new MongoDate(),
-            'player' => new MongoId($player->id()),
+            'player' => $player == null ? null : new MongoId($player->id()),
         ));
 
         /* Note: a MongoCursorException will be thrown if a record with this ID

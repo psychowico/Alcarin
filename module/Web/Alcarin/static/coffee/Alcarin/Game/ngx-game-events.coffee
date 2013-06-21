@@ -5,13 +5,13 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
             meth = (action, _data)->
                 if _data?
                     $http
-                        url    : "#{urls.game.char.events}/#{action}",
+                        url    : "#{urls.game.character.events}/#{action}",
                         method : 'POST'
                         data   : $.param _data
                         headers:
                             'Content-Type': 'application/x-www-form-urlencoded'
                 else
-                    $http.get "#{urls.game.char.events}/#{action}"
+                    $http.get "#{urls.game.character.events}/#{action}"
             {
                 fetch: -> meth 'fetch'
                 talk: (_content)-> meth 'publicTalk',
@@ -22,7 +22,7 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
             (time)->
                 return time if isNaN time
                 _time = new GameTime time
-                return _time.long()
+                return _time.print_long()
         )
 
     class GameTime
@@ -34,7 +34,7 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
 
         constructor: (@timestamp)->
 
-        resolve: ->
+        _resolve: ->
             return true if @resolved
             @day  = Math.floor @timestamp / 345600
             @hour = pad Math.floor (@timestamp % 345600) / 3600
@@ -42,10 +42,10 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
             @sec  = pad @timestamp % 60
             @resolved = true
 
-        short: ->
-            @resolve()
+        print_short: ->
+            @_resolve()
             "#{@hour}:#{@min}:#{@sec}"
 
-        long: ->
-            @resolve()
+        print_long: ->
+            @_resolve()
             "#{@day} - #{@hour}:#{@min}:#{@sec}"

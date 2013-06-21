@@ -24,8 +24,6 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
                     socket.on 'game-event', @onGameEvent
                     socket.on 'reconnect', (_socket)-> authorize()
                     authorize()
-                    x = => @socket.disconnect()
-                    $timeout x, 5000
 
             @$watch 'charid', =>
                 if @charid?
@@ -36,9 +34,6 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
                             reinitalize_socket_connection()
                     else
                         reinitalize_socket_connection()
-
-
-
     ]
 
     exports.GameEvents = ngcontroller ['Events', (Events)->

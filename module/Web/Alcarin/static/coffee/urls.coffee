@@ -6,7 +6,7 @@ Hrefs shouldn't have '/' symbol at end.
 ###
 @urls =
     game:
-        char:
+        character:
             events:
                 '/game/char-events'
     orbis:
