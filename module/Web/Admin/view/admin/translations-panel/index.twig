@@ -38,8 +38,14 @@
                     <legend>Translation panel: <span>{* selected.tagid *}</span></legend>
                     <div class="sentence-editor" ng-show='tag != null'>
                         <div class="row-fluid">
+                            <label>Viariety:
+                                <select name="descr" class="span12" ng-model="variety" ng-options="key as value for (key, value) in varieties">
+                                </select>
+                            </label>
+                        </div>
+                        <div class="row-fluid">
                             <label>Translation ({* choose.lang *}):
-                                <textarea name="descr" class="span12" ng-model="tag.content"></textarea>
+                                <textarea name="descr" class="span12" ng-model="tag.content[variety]"></textarea>
                             </label>
                         </div>
                         <div class="descr">

@@ -65,7 +65,12 @@ class DynamicTranslations extends \Core\GameObject
 
         if(in_array($group, static::$predefined_groups)) {
             $def     = $this->def()->get($group, $tagid) ?: [];
-            $def['content'] = $this->translation($group, $tagid, $lang)->val();
+
+            $entry = $this->translation($group, $tagid, $lang);
+            $def['content'] = [
+                'std' => $entry->val(),
+                'others' => $entry->val('others')
+            ];
             return $def;
         }
         else {

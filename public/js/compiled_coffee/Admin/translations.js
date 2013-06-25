@@ -9,6 +9,10 @@
   exports.Translations = ngcontroller([
     'Translation', function(Translation) {
       this.phrases = [];
+      this.varieties = {
+        std: 'visible by myself',
+        others: 'visible by others'
+      };
       this.choose = {
         lang: 'pl',
         group: 'static'
@@ -35,6 +39,7 @@
 
       this.tag = null;
       this.saving = false;
+      this.variety = 'std';
       fetchSentence = function() {
         return _this.tag = Translation.get($.extend({
           tagid: _this.selected.tagid

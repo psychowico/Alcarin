@@ -15,8 +15,7 @@ class TalkingForm
      * @Annotation\Type("textarea")
      * @Annotation\Options({"label":"mów do wszystkich"})
      * @Annotation\Required(true)
-     * @Annotation\Attributes({"autocomplete":"off", "data-ng-model":"talkContent"})
-     * @Annotation\Attributes({"autocomplete":"off", "data-ui-event":"{keydown: 'onKeyDown($event)'}"})
+     * @Annotation\Attributes({"autocomplete":"off", "data-ng-model":"talkContent", "data-ui-event":"{keydown: 'onKeyDown($event)'}", "tabindex" : "1"})
      */
     public $content;
 }

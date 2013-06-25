@@ -70,9 +70,11 @@ class TranslationsPanelController extends AbstractAlcarinRestfulController
             return $this->responses()->badRequest();
         }
 
-        $new_content = empty($data['content']) ? '' : $data['content'];
         $entry = $this->system()->translation($group, $data['tagid'], $lang);
-        $entry->setValue($new_content);
+        $new_content = empty($data['content']) ? [] : $data['content'];
+        foreach($new_content as $variety => $content) {
+            $entry->setValue($content, $variety);
+        }
 
         return $this->getSentence($group, $lang, $data['tagid']);
     }

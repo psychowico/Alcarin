@@ -30,7 +30,7 @@ class GamePanelController extends AbstractAlcarinRestfulController
         $char = $chars->get($id);
 
         $builder = $this->getServiceLocator()->get('AnnotationBuilderService');
-        $talking_form    = $builder->createForm(new \Alcarin\Form\TalkingForm(), true, "Mów");
+        $talking_form    = $builder->createForm(new \Alcarin\Form\TalkingForm(), false, "Mów");
 
         return [
             'charid'       => $id,
