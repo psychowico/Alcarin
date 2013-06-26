@@ -66,7 +66,6 @@ return array(
         'storage'      => 'Zend\Session\Storage\SessionArrayStorage',
         'save_handler' => 'Zend\Session\SaveHandler\MongoDB',
         'save_handler_options' => array(
-            'database'   => 'alcarin',
             'collection' => 'app.sessions',
         ),
         'validators' => array(

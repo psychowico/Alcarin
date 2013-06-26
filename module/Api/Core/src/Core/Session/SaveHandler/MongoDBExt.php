@@ -26,15 +26,11 @@ class MongoDBExt extends MongoDB
 
     public function __construct($mongo, MongoDBOptions $options)
     {
-        if (null === ($database = $options->getDatabase())) {
-            throw new InvalidArgumentException('The database option cannot be emtpy');
-        }
-
         if (null === ($collection = $options->getCollection())) {
             throw new InvalidArgumentException('The collection option cannot be emtpy');
         }
 
-        $this->mongoCollection = $mongo->selectCollection($database, $collection);
+        $this->mongoCollection = $mongo->selectCollection($collection);
         $this->options = $options;
     }
 
