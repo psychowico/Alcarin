@@ -21,12 +21,32 @@ class Profiler
 
     public function start($group, $query)
     {
+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 10);
+        $backtrace_obj = '';
+        $start_index = 1;
+        # trying to find backtrace frame with user true code that generate the query.
+        if(count($backtrace) > $start_index) {
+            $ignore = ['Mongo_Collection', 'Mongo_Database', 'DevPack\MongoCollection'];
+            for($i = $start_index; $i < count($backtrace); $i++) {
+                // if(\Mongo_Collection::$test) \Zend\Debug\Debug::dump($backtrace[$i]);
+
+                if(empty($backtrace[$i]['class'])) continue;
+                if(in_array($backtrace[$i]['class'], $ignore)) continue;
+                if(strpos($backtrace[$i]['class'], 'Zend\\') === 0) continue;
+                if(strpos($backtrace[$i]['function'], '{closure}') !== false) continue;
+
+                $backtrace_obj = print_r($backtrace[$i], true);
+                break;
+            }
+        }
+
         $key = $this->getKey( $group, $query );
 
         $this->current[ $key ] = [
             'begin' => microtime(true),
             'group' => $group,
             'query' => $query,
+            'backtrace' => print_r($backtrace_obj, true)
         ];
         return $key;
     }

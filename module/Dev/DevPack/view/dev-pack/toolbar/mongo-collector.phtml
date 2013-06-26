@@ -15,18 +15,26 @@
                     <a class="btn btn-mini" id="mongo-down" href="#"><i class="icon-arrow-down"></i></a>
                 </div>
                 <div id="queries-list">
-                <?php foreach($this->collector->getQueries() as $query => $time): ?>
+                <?php $i = 1; foreach($this->collector->getQueries() as $query => $data): ?>
                     <div class="hide mongo-query">
-                        <span class="zdt-detail-label"><?=$query ?></span>
-                        <span class="zdt-detail-value"><?=sprintf( '%01.1fms', $time ) ?></span>
+                        <button class="mongo-stack-trace btn btn-mini pull-left" href="#"
+                            data-toggle="tooltip" title="<?=$data['backtrace'] ?>">S</button>
+                        <span class="zdt-detail-label"><?=$i ?>. <?=$query ?></span>
+                        <span class="zdt-detail-value"><?=sprintf( '%01.1fms', $data['time'] ) ?></span>
                     </div>
-                <?php endforeach ?>
+                <?php $i++; endforeach ?>
                 </div>
             </div>
         </span>
         <style>
             #dev-mongo, #dev-mongo .zdt-toolbar-info { overflow: visible !important}
             #mongo-ctrl-btns { position: absolute; left: -28px; bottom: -4px;}
+            .mongo-stack-trace { margin-right: 5px; float: left;}
+            .mongo-query .tooltip-inner {
+                white-space:pre;
+                max-width:none;
+                text-align: left;
+            }
         </style>
         <script type="text/javascript">
             var $list = $('#queries-list').children();
@@ -39,6 +47,7 @@
             }; };
             $('#mongo-down').on('click', _click(1));
             $('#mongo-up').on('click', _click(-1));
+            $('.mongo-stack-trace').tooltip();
         </script>
     </div>
 </div>

@@ -22,8 +22,6 @@ return array(
     'mongo' => array(
         'server'    => 'mongodb://localhost:27017',
         'database'  => 'alcarin',
-        //profiling enable
-        'profiling' => DEBUG,
     ),
 
     'zfctwig' => array(

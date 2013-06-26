@@ -52,7 +52,7 @@ class MongoCollector extends AbstractCollector
     {
         $result = [];
         foreach( $this->data as $value ) {
-            $result[ $value['query'] ] = $value['time'];
+            $result[ $value['query'] ] = $value;
         }
         return $result;
     }
