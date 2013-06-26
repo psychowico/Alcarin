@@ -161,7 +161,7 @@ class Module
                 'Zend\Session\SaveHandler\MongoDB' => function($sm) {
                     $config = $sm->get('config')['session']['save_handler_options'];
 
-                    $mongo = $sm->get('mongo')->exposeMongoObject();
+                    $mongo = $sm->get('mongo');
                     $options = new \Zend\Session\SaveHandler\MongoDBOptions($config);
                     $mongo_handler = new \Core\Session\SaveHandler\MongoDBExt($mongo, $options);
                     $mongo_handler->setServicesContainer($sm->get('game-services'));

@@ -11,6 +11,8 @@
 namespace Core\Session\SaveHandler;
 
 use Zend\Session\SaveHandler\MongoDB;
+use Zend\Session\SaveHandler\MongoDBOptions;
+use Zend\Session\Exception\InvalidArgumentException;
 use Mongo;
 use MongoId;
 use MongoDate;
@@ -21,6 +23,20 @@ use MongoDate;
 class MongoDBExt extends MongoDB
 {
     use \Core\Service\GameServiceAwareTrait;
+
+    public function __construct($mongo, MongoDBOptions $options)
+    {
+        if (null === ($database = $options->getDatabase())) {
+            throw new InvalidArgumentException('The database option cannot be emtpy');
+        }
+
+        if (null === ($collection = $options->getCollection())) {
+            throw new InvalidArgumentException('The collection option cannot be emtpy');
+        }
+
+        $this->mongoCollection = $mongo->selectCollection($database, $collection);
+        $this->options = $options;
+    }
 
     /**
      * Write session data
