@@ -7,16 +7,38 @@
             ?>
         </span>
     </div>
-    <div class="zdt-toolbar-detail">
-        <!-- <span class="zdt-toolbar-info">
-            <span class="zdt-detail-label">Total time:</span>
-            <span class="zdt-detail-value"><?=sprintf( '%01.1fms',
-                 $this->collector->getTotalTime() ) ?></span>
-        </span>
+    <div class="zdt-toolbar-detail" id="dev-mongo">
         <span class="zdt-toolbar-info">
-            <span class="zdt-detail-label">Queries count:</span>
-            <span class="zdt-detail-value"><?=sprintf( '%s',
-                 count($this->collector->getQueries() ) ) ?></span>
-        </span> -->
+            <div>
+                <div id="mongo-ctrl-btns" class="btn-group btn-group-vertical">
+                    <a class="btn btn-mini" id="mongo-up" href="#"><i class="icon-arrow-up"></i></a>
+                    <a class="btn btn-mini" id="mongo-down" href="#"><i class="icon-arrow-down"></i></a>
+                </div>
+                <div id="queries-list">
+                <?php foreach($this->collector->getQueries() as $query => $time): ?>
+                    <div class="hide mongo-query">
+                        <span class="zdt-detail-label"><?=$query ?></span>
+                        <span class="zdt-detail-value"><?=sprintf( '%01.1fms', $time ) ?></span>
+                    </div>
+                <?php endforeach ?>
+                </div>
+            </div>
+        </span>
+        <style>
+            #dev-mongo, #dev-mongo .zdt-toolbar-info { overflow: visible !important}
+            #mongo-ctrl-btns { position: absolute; left: -28px; bottom: -4px;}
+        </style>
+        <script type="text/javascript">
+            var $list = $('#queries-list').children();
+            $list.eq(0).show();
+            var _click = function(dir) { return function() {
+                var index = $list.filter(':visible').index();
+                index = (index + dir) % $list.length;
+                $list.hide().eq(index).show();
+                return false;
+            }; };
+            $('#mongo-down').on('click', _click(1));
+            $('#mongo-up').on('click', _click(-1));
+        </script>
     </div>
 </div>
