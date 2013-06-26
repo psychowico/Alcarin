@@ -9,9 +9,6 @@ namespace 'Alcarin.Admin', (exports, Alcarin) ->
 
     exports.Translations = ngcontroller [ 'Translation', (Translation)->
         @phrases = []
-        @varieties =
-            std: 'visible by myself'
-            others: 'visible by others'
 
         @choose  =
             lang: 'pl'
@@ -28,16 +25,19 @@ namespace 'Alcarin.Admin', (exports, Alcarin) ->
 
         @loadSentence = ->
             @$broadcast 'sentence-choosed'
+
+        @reloadSentences()
     ]
 
 
     exports.SelectedTranslation = ngcontroller ['Translation', (Translation)->
         @tag = null
         @saving = false
-        @variety = 'std'
+        @variety = null
 
         fetchSentence = =>
-            @tag = Translation.get $.extend {tagid: @selected.tagid}, @choose
+            @tag = Translation.get $.extend({tagid: @selected.tagid}, @choose),
+                (response)=> @variety = response.defaults?[0]?.name
 
         @saveSentence = ->
             @saving = true

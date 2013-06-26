@@ -39,7 +39,9 @@
                     <div class="sentence-editor" ng-show='tag != null'>
                         <div class="row-fluid">
                             <label>Viariety:
-                                <select name="descr" class="span12" ng-model="variety" ng-options="key as value for (key, value) in varieties">
+                                <!-- key as value for (key, value) in varieties -->
+                                <select name="descr" class="span12" ng-model="variety"
+                                        ng-options="obj.name as obj.name for (key, obj) in tag.defaults">
                                 </select>
                             </label>
                         </div>
@@ -52,14 +54,14 @@
                             <h4>Description:</h4>
                             <span>{* tag.descr *}</span>
                         </div>
-                        <div class="defaults">
+                        {#<div class="defaults">
                             <h4>Defaults values:</h4>
                             <ul>
                                 <li ng-repeat="def in tag.defaults">
                                     <span>{* def.name *}</span> - <span>{* def.value *}</span>
                                 </li>
                             </ul>
-                        </div>
+                        </div>#}
                         <div class="pull-right">
                             <button class="btn span2" ng-disabled="!sentenceForm.$dirty || saving">Save</button>
                         </div>

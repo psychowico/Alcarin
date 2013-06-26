@@ -9,10 +9,6 @@
   exports.Translations = ngcontroller([
     'Translation', function(Translation) {
       this.phrases = [];
-      this.varieties = {
-        std: 'visible by myself',
-        others: 'visible by others'
-      };
       this.choose = {
         lang: 'pl',
         group: 'static'
@@ -27,9 +23,10 @@
           return _this.phrases = _ph;
         });
       };
-      return this.loadSentence = function() {
+      this.loadSentence = function() {
         return this.$broadcast('sentence-choosed');
       };
+      return this.reloadSentences();
     }
   ]);
   return exports.SelectedTranslation = ngcontroller([
@@ -39,11 +36,15 @@
 
       this.tag = null;
       this.saving = false;
-      this.variety = 'std';
+      this.variety = null;
       fetchSentence = function() {
         return _this.tag = Translation.get($.extend({
           tagid: _this.selected.tagid
-        }, _this.choose));
+        }, _this.choose), function(response) {
+          var _ref, _ref1;
+
+          return _this.variety = (_ref = response.defaults) != null ? (_ref1 = _ref[0]) != null ? _ref1.name : void 0 : void 0;
+        });
       };
       this.saveSentence = function() {
         var _this = this;

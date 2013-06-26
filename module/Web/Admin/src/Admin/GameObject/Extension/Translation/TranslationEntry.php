@@ -49,7 +49,18 @@ class TranslationEntry extends \Core\GameObject
 
             $key = $this->generateKey();
             $entry = $this->mongo()->translations->findOne(['_id' => $key]);
-            $this->cache[$variety] = empty($entry['val']) ? '' : $entry['val'];
+            $value = '';
+            if(empty($entry['val'])) {
+                $def = $this->parent()->def()->get($this->group, $this->tagid);
+                if(!empty($def['defaults'][$variety])) {
+                    $value = $def['defaults'][$variety];
+                }
+            }
+            else {
+                $value = $entry['val'];
+            }
+
+            $this->cache[$variety] = $value;
         }
         return $this->cache[$variety];
     }
