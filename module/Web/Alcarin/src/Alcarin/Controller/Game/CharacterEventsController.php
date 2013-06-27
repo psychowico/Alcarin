@@ -25,7 +25,8 @@ class CharacterEventsController extends AbstractAlcarinRestfulController
         }
         $gEvents = $this->gameServices()->get('game-events');
 
-        $event   = $gEvents->generate('public-talk', $content);
+        $speaker = $this->player()->currentChar();
+        $event   = $gEvents->generate('public-talk', $content, $speaker);
         $event->broadcast()->inRadius(15);
         return $this->responses()->OK();
     }

@@ -48,6 +48,7 @@ return array(
             'game-objects' => array(
                 'orbis' => 'Admin\GameObject\Orbis',
                 'translations' => 'Admin\GameObject\DynamicTranslations',
+                'translations-defs' => 'Admin\GameObject\Extension\Translation\DynamicTranslationsDefinitions',
             ),
             'game-objects-ext' => array(
                 'Admin\GameObject\DynamicTranslations' => array(

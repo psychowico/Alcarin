@@ -16,6 +16,11 @@ class Time extends \Core\GameObject
         return $this->getServicesContainer()->get('properties');
     }
 
+    protected function fetchGameTime()
+    {
+        return new \Core\GameTime($this->timestamp());
+    }
+
     public function fetchTimestamp()
     {
         $time_struct = $this->properties()->get('time');
@@ -65,24 +70,23 @@ class Time extends \Core\GameObject
         return !empty($time_struct['freeze']);
     }
 
-    public function fetchDay()
+    public function day()
     {
-        //sec * min * {hours in day}
-        return floor($this->timestamp() / static::DAY_SEC);
+        return $this->gameTime()->day();
     }
 
-    public function fetchHour()
+    public function hour()
     {
-        return floor( ($this->timestamp() % static::DAY_SEC) / (60 * 60) );
+        return $this->gameTime()->hour();
     }
 
-    public function fetchMin()
+    public function min()
     {
-        return floor( ($this->timestamp() % (60 * 60)) / 60 );
+        return $this->gameTime()->min();
     }
 
-    public function fetchSec()
+    public function sec()
     {
-        return $this->timestamp() % 60;
+        return $this->gameTime()->sec();
     }
 }
