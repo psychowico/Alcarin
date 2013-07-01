@@ -6,7 +6,13 @@ namespace 'Alcarin.Angular', (exports, Alcarin) ->
     # when we will have many of scopes.
     # I use "angular._module" defined in "core.coffee" to avoid cross-reference
     angular._module('@core', [])
-        .factory('@EventsBus', ->
+        .run(['$rootScope', ($rootScope)->
+            $rootScope.$safeApply = (_meth)->
+                if $rootScope.$$phase
+                    _meth()
+                else
+                    $rootScope.$apply => _meth()
+        ]).factory('@EventsBus', ->
             class EventsBus
                 listeners = {}
 

@@ -18,8 +18,8 @@ class DynamicTranslationsDefinitions extends \Core\GameObject
             'public-talk' => [
                 'descr'     => 'Talking that can be hear by characters on specific distance - and by staying really close, in part.',
                 'args'      => [
-                    ['type' => DynamicTranslationsDefinitions::TEXT, 'descr' => 'Talking content.'],
-                    ['type' => DynamicTranslationsDefinitions::CHARNAME, 'descr' => 'Speaking person name.']
+                    ['type' => self::TEXT, 'descr' => 'Talking content.'],
+                    ['type' => self::CHARNAME, 'descr' => 'Speaking person name.']
                 ],
                 'defaults'  => [
                     'std' => 'You say: %0',

@@ -10,11 +10,21 @@ class CharacterEventsController extends AbstractAlcarinRestfulController
 {
     public function fetchAction()
     {
-        $events = $this->player()->currentChar()->events()->all();
-        $events = array_map(function($e) {
-            return $e->toArray();
-        }, $events);
-        return $this->json(array_values($events));
+        $events = $this->player()->currentChar()->events()->fetchPlain();
+
+        if($this->params()->fromQuery('json', false)) {
+            return $this->json($events);
+        }
+        else {
+            # send events to logged user, by alcarin cacher service
+            $bridge = $this->gameServices()->get('alcarin-cacher');
+            $bridge->connect();
+            $bridge->resetEvents($this->player()->currentChar()->id(), array_values($events));
+
+            $bridge->disconnect();
+        }
+
+        return $this->responses()->ok();
     }
 
     public function publicTalkAction()

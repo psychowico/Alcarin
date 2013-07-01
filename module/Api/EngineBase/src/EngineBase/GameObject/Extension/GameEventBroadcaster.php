@@ -36,16 +36,8 @@ class GameEventBroadcaster extends \Core\GameObject
         $bridge = $this->getServicesContainer()->get('alcarin-cacher');
         $bridge->connect();
 
-        $self_event = [
-            'ids' => [$sender_id],
-            'event' => $sender_struct,
-        ];
-        $others_event = [
-            'ids' => $target_ids,
-            'event' => $others_struct,
-        ];
-
-        $bridge->send([$self_event, $others_event]);
+        $bridge->sendEvent($sender_id, $sender_struct);
+        $bridge->sendEvent($target_ids, $others_struct);
 
         $bridge->disconnect();
     }
@@ -61,11 +53,14 @@ class GameEventBroadcaster extends \Core\GameObject
 
         $timestamp = $this->getServicesContainer()->get('time')->timestamp();
 
-        $owner_event_data = array_merge(['time' => $timestamp], $game_event->serialize('std'));
+        $owner_event_data = $game_event->squeeze('std');
+        $owner_event_data['time'] = $timestamp;
 
         $this->pushEvent($current_id, $owner_event_data);
 
-        $event_data = array_merge(['time' => $timestamp], $game_event->serialize('others'));
+        $event_data = $game_event->squeeze('others');
+        $event_data['time']  = $timestamp;
+
         foreach($ids as $char_id) {
             $this->pushEvent($char_id, $event_data);
         }

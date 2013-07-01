@@ -37,7 +37,7 @@
 
             {{ bootstrap().openTag(forms['talking']) | raw }}
 
-            <div class="content" alc-spin="sending">
+            <div class="content" alc-spin="waiting || sending">
                 {{ formElement(forms['talking'].get('content')) }}
             </div>
             <div class="submit">

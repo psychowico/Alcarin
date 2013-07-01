@@ -2,7 +2,21 @@
 var __slice = [].slice;
 
 namespace('Alcarin.Angular', function(exports, Alcarin) {
-  return angular._module('@core', []).factory('@EventsBus', function() {
+  return angular._module('@core', []).run([
+    '$rootScope', function($rootScope) {
+      return $rootScope.$safeApply = function(_meth) {
+        var _this = this;
+
+        if ($rootScope.$$phase) {
+          return _meth();
+        } else {
+          return $rootScope.$apply(function() {
+            return _meth();
+          });
+        }
+      };
+    }
+  ]).factory('@EventsBus', function() {
     var EventsBus;
 
     EventsBus = (function() {

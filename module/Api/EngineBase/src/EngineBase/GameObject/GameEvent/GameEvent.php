@@ -14,15 +14,17 @@ class GameEvent extends \Core\GameObject
     public function __construct($game_event_id, $args)
     {
         $this->id   = $game_event_id;
-        $this->args = $args;
+        $this->args = $this->squeezeArgs($args);
     }
 
-    protected function args()
+    /**
+     * iterate arguments, simple arguments (string, numbers) cast to text,
+     * for object return "squeeze()" function value
+     */
+    protected function squeezeArgs($_args)
     {
-        if($this->resolved_args !== null) return $this->resolved_args;
-
         $args = [];
-        foreach($this->args as $arg) {
+        foreach($_args as $arg) {
             if(is_object($arg)) {
                 if(!$arg instanceof SqueezableInterface) {
                     throw new \InvalidArgumentException('All gameevent arguments must provide SqueezableInterface or be non-object.');
@@ -33,40 +35,23 @@ class GameEvent extends \Core\GameObject
                 $args []= strval($arg);
             }
         }
-        $this->resolved_args = $args;
         return $args;
     }
 
     /**
-     * return tag event text for this gameevent
+     * serialize event in specific language in database store form
      */
-    protected function tagContent($variety)
+    public function squeeze($variety = 'std', $lang = 'pl')
     {
-        return $this->getServicesContainer()->get('translations')
-             ->translation('events', $this->id, $this->lang())->val($variety);
+        return [
+            'tagid'   => $this->id,
+            'variety' => $variety,
+            'args'    => $this->args,
+        ];
     }
 
     public function id()
     {
         return $this->id;
-    }
-
-    public function init()
-    {
-    }
-
-    public function serialize($variety = 'std')
-    {
-        $result = [];
-        $text = $this->tagContent($variety);
-        if(!empty($text)) {
-            $result['text'] = $text;
-        }
-        $args = $this->args();
-        if(!empty($args)) {
-            $result['args'] = $args;
-        }
-
-        return $result;
     }
 }

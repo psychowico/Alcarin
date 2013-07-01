@@ -12,10 +12,10 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
             @charid   = null
 
             @onGameEvent = (ev)=>
-                if @$root.$$phase
-                    @$broadcast 'game-event', ev
-                else
-                    @$apply => @$broadcast 'game-event', ev
+                @$safeApply => @$broadcast 'game-event', ev
+
+            @onGameEventReset = (events)=>
+                @$safeApply => @$broadcast 'reset-events', events
 
             authorize = =>
                 @socket.emit 'auth',
@@ -24,14 +24,15 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
             reinitalize_socket_connection = =>
                 if io?
                     @socket = socket = io.connect $location.host() + ":#{socket_port}"
+                    socket.on 'reset-events', @onGameEventReset
                     socket.on 'game-event', @onGameEvent
                     socket.on 'reconnect', (_socket)-> authorize()
+                    socket.on 'authorized', => @$safeApply => @$broadcast 'initialized'
                     authorize()
 
             @$watch 'charid', =>
                 if @charid?
                     Events.init @charid
-                    @$broadcast 'page-init'
                     if not @initialized
                         host = $location.host()
                         # lazy load socket.io.js script
@@ -42,9 +43,9 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
     ]
 
     exports.GameEvents = ngcontroller ['GameEvents', (Events)->
-        @events = null
+        @events = []
         @talkContent = ''
-        @sending = false
+        @sending = @waiting = false
 
         @talkToAll = =>
             @sending = true
@@ -58,13 +59,18 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
                     @talkToAll()
                     event.preventDefault()
 
+        @$on 'reset-events', (ev, data)=>
+            @waiting = false
+            @events  = (translate_event ev for ev in data)
+
         @$on 'game-event', (ev, data)=>
             @events.splice 0, 0, translate_event data
 
         translate_event = (ev)->
             _text = ev.text
             for arg, ind in ev.args
-                _text = _text.replace "%#{ind}", arg
+                text = if $.isPlainObject arg then arg.text else arg
+                _text = _text.replace "%#{ind}", text
             return {
                 text: _text
                 time: ev.time
@@ -78,7 +84,7 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
                 result.push translate_event ev
             return result
 
-        @$on 'page-init', =>
-            Events.fetch().then (response)=>
-                @events = translate_events response.data
+        @$on 'initialized', =>
+            @waiting = true
+            Events.fetch()
     ]
