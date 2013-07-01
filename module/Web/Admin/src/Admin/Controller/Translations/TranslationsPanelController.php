@@ -60,8 +60,8 @@ class TranslationsPanelController extends AbstractAlcarinRestfulController
             $def = $this->system()->getTagDefinition($group, $tagid, $lang);
             if(!empty($def['defaults'])) {
                 $defaults = [];
-                foreach($def['defaults'] as $tagid => $value) {
-                    $defaults []= ['name' => $tagid, 'value' => $value];
+                foreach($def['defaults'] as $_tagid => $value) {
+                    $defaults []= ['name' => $_tagid, 'value' => $value];
                 }
                 $def['defaults'] = $defaults;
             }
