@@ -30,6 +30,7 @@ return array(
                             '/js/vendor/stacktrace-0.5.js',
                             '/js/vendor/spin-1.2.8.js',
                             '/js/vendor/bootstrap/bootstrap-colorpicker.js',
+                            '/js/vendor/q-0.9.6.js',
                             '/js/vendor/rot-0.4.js',
                         ),
                     ),
@@ -80,6 +81,8 @@ return array(
                     'player' => array(
                         'sources' => array(
                             '/js/compiled_coffee/Alcarin/Game/ngx-game-events.js',
+                            '/js/compiled_coffee/Alcarin/Game/ngx-game-event.js',
+                            '/js/compiled_coffee/Alcarin/Game/socket.io-loader.js',
                             '/js/compiled_coffee/Alcarin/Game/game-panel.js',
                         ),
                     ),

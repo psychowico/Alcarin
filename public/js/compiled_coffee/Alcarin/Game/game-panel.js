@@ -1,8 +1,8 @@
 'use strict';namespace('Alcarin.Game', function(exports, Alcarin) {
-  var socket_port;
+  var module, socket_port;
 
   socket_port = 8080;
-  angular.module('game-panel', ['@game-events', '@spin', 'ui.event', 'ngCookies']);
+  module = angular.module('game-panel', ['@game-events', '@spin', '@game-event', 'ui.event', 'ngCookies']);
   exports.App = ngcontroller([
     'GameEvents', '$timeout', '$location', function(Events, $timeout, $location) {
       var authorize, reinitalize_socket_connection,
@@ -44,15 +44,14 @@
         }
       };
       return this.$watch('charid', function() {
-        var host;
+        var host, loading;
 
         if (_this.charid != null) {
           Events.init(_this.charid);
           if (!_this.initialized) {
             host = $location.host();
-            return $.getScript("http://" + host + ":" + socket_port + "/socket.io/socket.io.js", function() {
-              return reinitalize_socket_connection();
-            });
+            loading = Alcarin.Game.loadSocketLibrary(host, socket_port);
+            return loading.then(reinitalize_socket_connection);
           } else {
             return reinitalize_socket_connection();
           }
@@ -62,7 +61,7 @@
   ]);
   return exports.GameEvents = ngcontroller([
     'GameEvents', function(Events) {
-      var translate_event, translate_events,
+      var reg, translate_event, translate_events,
         _this = this;
 
       this.events = [];
@@ -102,18 +101,34 @@
       this.$on('game-event', function(ev, data) {
         return _this.events.splice(0, 0, translate_event(data));
       });
+      reg = /%([0-9])+/g;
       translate_event = function(ev) {
-        var arg, ind, text, _i, _len, _ref, _text;
+        var arg, arg_index, fArg, match, offset, output, pre_text, _text;
 
         _text = ev.text;
-        _ref = ev.args;
-        for (ind = _i = 0, _len = _ref.length; _i < _len; ind = ++_i) {
-          arg = _ref[ind];
-          text = $.isPlainObject(arg) ? arg.text : arg;
-          _text = _text.replace("%" + ind, text);
+        output = [];
+        offset = 0;
+        while (match = reg.exec(_text)) {
+          arg_index = parseInt(match[1]);
+          arg = ev.args[arg_index];
+          fArg = $.isPlainObject(arg) ? $.extend(arg.__base, {
+            text: arg.text
+          }) : {
+            text: arg,
+            type: 'text'
+          };
+          pre_text = _text.substr(offset, match.index);
+          if (pre_text.length > 0) {
+            output.push({
+              text: pre_text,
+              type: 'text'
+            });
+          }
+          output.push(fArg);
+          _text = _text.substr(match.index + match[0].length);
         }
         return {
-          text: _text,
+          body: output,
           time: ev.time
         };
       };
@@ -130,6 +145,9 @@
           result.push(translate_event(ev));
         }
         return result;
+      };
+      this.charClicked = function(_char) {
+        return _char.text = window.prompt('Przezwisko:', _char.text);
       };
       return this.$on('initialized', function() {
         _this.waiting = true;
