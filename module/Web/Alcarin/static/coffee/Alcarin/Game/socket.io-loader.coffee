@@ -2,12 +2,10 @@
 
 namespace 'Alcarin.Game', (exports, Alcarin) ->
 
-    success = (x)-> console.log 'success: ' + x
-    fail = (x)-> console.log 'fail: ' + x
+    # we need use this trick, because error callback is never call by
+    # jquery when we use crossdomain (diffrent port is crossdomain :/)
+    # GET.
     exports.loadSocketLibrary = (host, socket_port)->
-        # we need use this trick, because error callback is never call by
-        # jquery when we use crossdomain (diffrent port is crossdomain :/)
-        # GET.
         deffered = Q.defer()
 
         loaded = false

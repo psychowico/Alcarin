@@ -89,7 +89,11 @@ abstract class AbstractAlcarinRestfulController extends AbstractRestfulControlle
     //we want throw notices and warnings as exceptions
     //so we can easly debuging ajax controllers
     public function custom_warning_handler($errno, $errstr) {
-        throw new \Exception($errstr);
+        if (error_reporting() === 0) {
+            $this->log()->warn('Supressed error: ' . $errstr);
+            return;
+        }
+        throw new \Exception($errno + ' : ' + $errstr);
     }
 
     /**

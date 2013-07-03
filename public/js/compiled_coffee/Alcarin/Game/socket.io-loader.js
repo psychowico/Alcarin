@@ -1,12 +1,4 @@
 'use strict';namespace('Alcarin.Game', function(exports, Alcarin) {
-  var fail, success;
-
-  success = function(x) {
-    return console.log('success: ' + x);
-  };
-  fail = function(x) {
-    return console.log('fail: ' + x);
-  };
   return exports.loadSocketLibrary = function(host, socket_port) {
     var deffered, intId, loadScript, loaded, url;
 

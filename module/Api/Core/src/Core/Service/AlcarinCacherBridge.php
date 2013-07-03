@@ -32,7 +32,7 @@ class AlcarinCacherBridge
     {
         if($this->connected) return true;
 
-        $result = fsockopen($this->host, $this->port) or false;
+        $result = @fsockopen($this->host, $this->port);
 
         if($result === false) {
             $this->log()->err(sprintf(
