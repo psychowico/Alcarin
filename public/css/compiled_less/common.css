@@ -8,6 +8,9 @@ body {
   background: #323232;
   background: url('/img/pattern.gif') repeat top left;
 }
+body .container.main {
+  padding: 40px 0;
+}
 h2 {
   font-family: dosissemibold;
   font-size: 34.5px;
