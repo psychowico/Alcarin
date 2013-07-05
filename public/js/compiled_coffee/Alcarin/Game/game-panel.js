@@ -85,9 +85,12 @@
           }
         }
       };
+      this.t = function(x) {
+        return console.log(x);
+      };
       this.$on('reset-events', function(ev, data) {
         _this.waiting = false;
-        return _this.events = (function() {
+        _this.events = (function() {
           var _i, _len, _results;
 
           _results = [];
@@ -97,6 +100,7 @@
           }
           return _results;
         })();
+        return console.log(_this.events);
       });
       this.$on('game-event', function(ev, data) {
         return _this.events.splice(0, 0, translate_event(data));
@@ -111,12 +115,17 @@
         while (match = reg.exec(_text)) {
           arg_index = parseInt(match[1]);
           arg = ev.args[arg_index];
-          fArg = $.isPlainObject(arg) ? $.extend(arg.__base, {
-            text: arg.text
-          }) : {
-            text: arg,
-            type: 'text'
-          };
+          if ($.isPlainObject(arg)) {
+            fArg = $.extend({
+              text: arg.text
+            }, arg.__base);
+            Alcarin.GameObject.Factory(fArg);
+          } else {
+            fArg = {
+              text: arg,
+              type: 'text'
+            };
+          }
           pre_text = _text.substr(offset, match.index);
           if (pre_text.length > 0) {
             output.push({
@@ -147,7 +156,9 @@
         return result;
       };
       this.charClicked = function(_char) {
-        return _char.text = window.prompt('Przezwisko:', _char.text);
+        return _char.resolve().then(function(c) {
+          return console.log(c);
+        });
       };
       return this.$on('initialized', function() {
         _this.waiting = true;

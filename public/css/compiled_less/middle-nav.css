@@ -7,7 +7,7 @@
 }
 #main-nav nav {
   width: 6px;
-  position: absolute;
+  position: fixed;
 }
 #main-nav nav ul {
   width: 100%;

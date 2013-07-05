@@ -25,17 +25,28 @@
   margin: 0px auto;
 }
 
+.right-container, .left-container {
+  position: relative;
+  float:left;
+  >div {
+    min-height: 600px;
+    float:left;
+    width: 100%;
+  }
+}
+
+
 .left-container {
   width: @left-ratio;
   &>div {
-    width:100%;
+    position: fixed;
+    left: 0;
+    top: 40px;
+    width: 38.2%;
     &>div {
       .both-containers;
       margin-left: 20px;
       padding-right: 15px;
-      // div {
-      //   position: absolute;
-      // }
     }
   }
 }
@@ -48,16 +59,6 @@
       margin-right: 20px;
       position: relative;
     }
-  }
-}
-
-.right-container, .left-container {
-  position: relative;
-  float:left;
-  >div {
-    min-height: 600px;
-    float:left;
-    width: 100%;
   }
 }
 

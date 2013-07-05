@@ -77,12 +77,14 @@ return array(
                             '/js/compiled_coffee/Admin/translations.js',
                         ),
                     ),
-                    //files for regular players
+                    # files for regular players
                     'player' => array(
                         'sources' => array(
                             '/js/compiled_coffee/Alcarin/Game/ngx-game-events.js',
                             '/js/compiled_coffee/Alcarin/Game/ngx-game-event.js',
                             '/js/compiled_coffee/Alcarin/Game/socket.io-loader.js',
+                            '/js/compiled_coffee/Alcarin/GameObject/factory.js',
+                            '/js/compiled_coffee/Alcarin/GameObject/character.js',
                             '/js/compiled_coffee/Alcarin/Game/game-panel.js',
                         ),
                     ),

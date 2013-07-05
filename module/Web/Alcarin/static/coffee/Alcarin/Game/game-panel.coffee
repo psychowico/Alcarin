@@ -4,20 +4,7 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
 
     socket_port = 8080
 
-    #only test code
-    # my333 = ['$routeParams', (params)->
-    #     console.log params
-    # ]
-
-
     module = angular.module 'game-panel', ['@game-events', '@spin', '@game-event', 'ui.event', 'ngCookies']
-    # module.config ['$routeProvider', ($routeProvider)->
-    #     $routeProvider
-    #         .when '/action/:type/:id',
-    #             resolve: {controller: my333}
-    #         .otherwise
-    #             redirectTo:'/'
-    # ]
 
     exports.App = ngcontroller ['GameEvents', '$timeout', '$location',
         (Events, $timeout, $location)->
@@ -48,7 +35,7 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
                     Events.init @charid
                     if not @initialized
                         host = $location.host()
-                        # lazy load socket.io.js script
+                        # lazy loadlocation socket.io.js script
                         loading = Alcarin.Game.loadSocketLibrary(host, socket_port)
                         loading.then reinitalize_socket_connection
                     else
@@ -72,9 +59,13 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
                     @talkToAll()
                     event.preventDefault()
 
+        @t = (x)=>
+            console.log x
+
         @$on 'reset-events', (ev, data)=>
             @waiting = false
             @events  = (translate_event ev for ev in data)
+            console.log @events
 
         @$on 'game-event', (ev, data)=>
             @events.splice 0, 0, translate_event data
@@ -89,11 +80,13 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
                 arg_index = parseInt match[1]
                 arg = ev.args[arg_index]
 
-                fArg = if $.isPlainObject arg
-                    $.extend arg.__base, {text: arg.text}
+                if $.isPlainObject arg
+                    fArg = $.extend {text: arg.text}, arg.__base
+                    Alcarin.GameObject.Factory fArg
                 else
-                    text: arg
-                    type: 'text'
+                    fArg =
+                        text: arg
+                        type: 'text'
 
                 pre_text = _text.substr offset, match.index
                 output.push {text: pre_text, type: 'text'} if pre_text.length > 0
@@ -114,7 +107,9 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
             return result
 
         @charClicked = (_char)=>
-            _char.text = window.prompt 'Przezwisko:', _char.text
+            # _char.text = window.prompt 'Przezwisko:', _char.text
+            _char.resolve().then (c)->
+                console.log c
 
         @$on 'initialized', =>
             @waiting = true
