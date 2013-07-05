@@ -12,13 +12,15 @@ Base introduction you can find on :ref:`installation` page.
 
 Alcarin has been written in PHP language, as persistent mechanism MongoDB_ has been used.
 
-If you want developing new code you should know few technologies:
+If you want developing new code you should have minimum knowledge about the following technologies:
  - ZF2_, php framework used to create this game, if you want to learn about it `there is good place to start`_
  - MongoDB_, NoSQL database system. We use `mongodb-php-odm php library`_ from *colinmollenhour*, it is easy and intuitive - if you know MongoDB
  - CoffeeScript_, this is a little language that compiles into JavaScript. Make work with JS much easier and enjoyable
  - LESS_, the dynamic stylesheet language, compiling to CSS.
  - TWIG_, the flexible, fast, and secure template engine for PHP
  - AngularJS_, HTML enhanced for web apps
+ - `Node.js`_, a server-side software system designed for writing scalable Internet applications, notably web servers
+ - `socket.io`_, aims to make realtime apps possible in every browser and mobile device, blurring the differences between the different transport mechanisms
 
  .. _ZF2: http://framework.zend.com/
  .. _`there is good place to start`: http://framework.zend.com/manual/2.0/en/user-guide/overview.html
@@ -28,6 +30,8 @@ If you want developing new code you should know few technologies:
  .. _LESS: http://lesscss.org/
  .. _TWIG: http://twig.sensiolabs.org/
  .. _AngularJS: http://http://angularjs.org//
+ .. _`Node.js`: http://nodejs.org/
+ .. _`socket.io`: http://socket.io/
 
 Read about `guard configuration`_ to make you life easier with automate compile LESS, COFFEE, docs
 and reloading browser when you make any changes in project.
@@ -35,6 +39,13 @@ and reloading browser when you make any changes in project.
 
 Architecture design
 ===================
+
+----------------------
+ZF2 - Alcarin Web Page
+----------------------
+
+Web interface for Alcarin game - written in PHP. You can found code on github:
+https://github.com/psychowico/Alcarin
 
 .. note:: You should have basic understand of Zend Framework 2 to read this.
 
@@ -68,6 +79,15 @@ ZendDeveloperTools_.
 .. _ZendDeveloperTools: https://github.com/zendframework/ZendDeveloperTools
 
 Remember to read samples code before writing anything.
+
+---------------------
+AlcarinGameplayServer
+---------------------
+
+Server application writed in *Node.js* and *socket.io*. It provide real-time event-based
+communication system for main Alcarin web interface page - character page. It listening
+on specific port, accepting browser connections and provide communication between logged
+players without database.
 
 .. _`guard-configuration`:
 

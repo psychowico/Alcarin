@@ -2,8 +2,9 @@ Welcome to Alcarin documentation!
 ===================================
 
 Alcarin will be a fantasy, persistent browser-based role-playing game.
-This documentation is divided into few parts. I try hold developing things
-in eglish, but for my convenience other parts will be only in polish for now, sorry!
+This documentation is divided into few parts. I would eventually translate all docs
+to english, but for my convenience most parts will be only in polish until I
+developing this project myself - sorry!
 
 Contents:
 
