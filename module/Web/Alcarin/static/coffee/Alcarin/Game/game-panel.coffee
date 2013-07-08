@@ -4,7 +4,16 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
 
     socket_port = 8080
 
-    module = angular.module 'game-panel', ['@game-events', '@spin', 'ui.event', 'ngCookies']
+    module = angular.module('game-panel', ['@game-events', '@spin', 'ui.event',
+            'ngCookies', '@area-map'])
+           .config ['$routeProvider', ($routeProvider)->
+                $routeProvider
+                    .when '/home',
+                        controller: Alcarin.Game.Views.Home
+                        templateUrl: urls.game.panel + '/__home'
+                    .otherwise
+                        redirectTo:'/home'
+            ]
 
     exports.App = ngcontroller ['$timeout', '$location', '$cookies',
         ($timeout, $location, cookies)->
@@ -30,7 +39,7 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
                     socket.on 'reset-events', @onGameEventReset
                     socket.on 'game-event', @onGameEvent
                     socket.on 'reconnect', authorize
-                    socket.on 'authorized', -> socket.emit 'test-event'
+                    socket.on 'authorized', => @$broadcast 'initialized', socket
                     authorize()
 
             @$watch 'charid', =>

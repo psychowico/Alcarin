@@ -2,7 +2,16 @@
   var module, socket_port;
 
   socket_port = 8080;
-  module = angular.module('game-panel', ['@game-events', '@spin', 'ui.event', 'ngCookies']);
+  module = angular.module('game-panel', ['@game-events', '@spin', 'ui.event', 'ngCookies', '@area-map']).config([
+    '$routeProvider', function($routeProvider) {
+      return $routeProvider.when('/home', {
+        controller: Alcarin.Game.Views.Home,
+        templateUrl: urls.game.panel + '/__home'
+      }).otherwise({
+        redirectTo: '/home'
+      });
+    }
+  ]);
   exports.App = ngcontroller([
     '$timeout', '$location', '$cookies', function($timeout, $location, cookies) {
       var authorize, reinitalize_socket_connection,
@@ -37,7 +46,7 @@
           socket.on('game-event', _this.onGameEvent);
           socket.on('reconnect', authorize);
           socket.on('authorized', function() {
-            return socket.emit('test-event');
+            return _this.$broadcast('initialized', socket);
           });
           return authorize();
         }

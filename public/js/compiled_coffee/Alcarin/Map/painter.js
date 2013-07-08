@@ -16,8 +16,12 @@ namespace('Alcarin.Map', function(exports, Alcarin) {
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         layerInstance = _ref[_i];
-        _args = [name].concat(args);
-        _results.push(layerInstance.$emit.apply(layerInstance, _args));
+        if (layerInstance.$emit) {
+          _args = [name].concat(args);
+          _results.push(layerInstance.$emit.apply(layerInstance, _args));
+        } else {
+          _results.push(void 0);
+        }
       }
       return _results;
     };
@@ -32,9 +36,11 @@ namespace('Alcarin.Map', function(exports, Alcarin) {
           throw Error("Painter layer class not exists.");
         }
         layerInstance = new layerClass(element);
-        layerInstance.$on('*', function(obj) {
-          return _this.$emit.apply(_this, [obj.name].concat(obj.args));
-        });
+        if (layerInstance.$on) {
+          layerInstance.$on('*', function(obj) {
+            return _this.$emit.apply(_this, [obj.name].concat(obj.args));
+          });
+        }
         this.layers.push(layerInstance);
       }
     }

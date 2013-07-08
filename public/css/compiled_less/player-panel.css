@@ -98,3 +98,18 @@
 .events-container .game-event .content {
   font-size: 10.5pt;
 }
+.area-map {
+  width: 185px;
+  height: 185px;
+  float: right;
+  margin-right: 15px;
+  border-style: double;
+  padding: 1px;
+  background-color: #DCDCED;
+  -webkit-border-radius: 15px;
+  -moz-border-radius: 15px;
+  -ms-border-radius: 15px;
+  -o-border-radius: 15px;
+  border-radius: 15px;
+  overflow: hidden;
+}

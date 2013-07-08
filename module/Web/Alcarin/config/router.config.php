@@ -16,10 +16,11 @@ return array(
                 'default' => array(
                     'type' => 'segment',
                     'options' => array(
-                        'route' => '/:controller[/:id]',
+                        'route' => '/:controller[/__:template][/:id]',
                         'constraints' => array(
                             'controller' => 'panel|create-char',
                             'id'         => '[a-zA-Z0-9_-]+',
+                            'template'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                         ),
                         'defaults' => array(
                             'controller'    => 'Panel',

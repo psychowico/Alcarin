@@ -87,7 +87,11 @@ return array(
                             '/js/compiled_coffee/Alcarin/Game/socket.io-loader.js',
                             '/js/compiled_coffee/Alcarin/GameObject/factory.js',
                             '/js/compiled_coffee/Alcarin/GameObject/character.js',
+
+                            '/js/compiled_coffee/Alcarin/Map/ngx-area-map.js',
+                            '/js/compiled_coffee/Alcarin/Game/Views/home.js',
                             '/js/compiled_coffee/Alcarin/Game/game-panel.js',
+
                         ),
                     ),
                 ),
