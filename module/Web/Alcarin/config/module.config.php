@@ -1,9 +1,6 @@
 <?php
 
 return array(
-    'module_layouts' => array(
-        'Alcarin' => 'alcarin-layout',
-    ),
 
     'controllers' => array(
         'invokables' => array(

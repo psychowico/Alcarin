@@ -1,25 +1,104 @@
-namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
-  return exports.MapManager = (function() {
-    MapManager.prototype.background = [0, 0, 255];
+var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-    MapManager.prototype.noise_density = 25;
+namespace('Admin.Map.Layers', function(exports, Alcarin) {
+  var canvas_events;
 
-    MapManager.prototype.noise_impact = 0.22;
+  canvas_events = function(map, element) {
+    var events;
 
-    function MapManager($scope, canvas, c_x, c_y) {
-      this.$scope = $scope;
+    events = (function() {
+      function events() {
+        this.mouse_painting = __bind(this.mouse_painting, this);
+        this.mouse_move = __bind(this.mouse_move, this);
+        this.mouse_up = __bind(this.mouse_up, this);
+        this.mouse_down = __bind(this.mouse_down, this);
+      }
+
+      events.prototype.mouse_down = function(e) {
+        if ($(e.currentTarget).disabled()) {
+          return false;
+        }
+        element.on('mousemove', this.mouse_painting);
+        return this.mouse_painting(e);
+      };
+
+      events.prototype.mouse_up = function() {
+        return element.off('mousemove', this.mouse_painting);
+      };
+
+      events.prototype.mouse_move = function(e) {
+        return map.draw_shadow({
+          x: e.offsetX,
+          y: e.offsetY
+        }, map.mapBrush);
+      };
+
+      events.prototype.mouse_painting = function(e) {
+        var brush, coords, ox, oy, range, range_2, _i, _j;
+
+        coords = map.pixels_to_coords(e.offsetX, e.offsetY);
+        brush = map.mapBrush;
+        if (brush.size > 1) {
+          range = brush.size - 1;
+          range_2 = range * range;
+          for (oy = _i = -range; -range <= range ? _i <= range : _i >= range; oy = -range <= range ? ++_i : --_i) {
+            for (ox = _j = -range; -range <= range ? _j <= range : _j >= range; ox = -range <= range ? ++_j : --_j) {
+              if (oy * oy + ox * ox <= range_2) {
+                map.put_field(coords.x + ox, coords.y + oy, brush);
+              }
+            }
+          }
+        } else {
+          map.put_field(coords.x, coords.y, brush);
+        }
+        return map.confirm_changes();
+      };
+
+      return events;
+
+    })();
+    return new events();
+  };
+  return exports.EditableTerrain = (function(_super) {
+    __extends(EditableTerrain, _super);
+
+    EditableTerrain.prototype.background = [0, 0, 255];
+
+    EditableTerrain.prototype.noise_density = 25;
+
+    EditableTerrain.prototype.noise_impact = 0.22;
+
+    EditableTerrain.prototype.mapBrush = null;
+
+    function EditableTerrain(canvas, c_x, c_y) {
+      var ev,
+        _this = this;
+
       this.canvas = canvas;
+      this.redraw = __bind(this.redraw, this);
+      this.set_center = __bind(this.set_center, this);
       this.set_center(c_x, c_y);
+      this.$on('set-center', this.set_center);
+      this.$on('fields-fetched', this.redraw);
+      this.$on('brush-changed', function(brush) {
+        return _this.mapBrush = brush;
+      });
+      this.init();
+      ev = canvas_events(this, this.canvas.parent());
+      this.canvas.parent().on('mousedown', ev.mouse_down).on('mousemove', ev.mouse_move);
+      $(document).on('mouseup', ev.mouse_up);
     }
 
-    MapManager.prototype.noise = function() {
+    EditableTerrain.prototype.noise = function() {
       if (this._noise == null) {
         this._noise = new ROT.Noise.Simplex;
       }
       return this._noise;
     };
 
-    MapManager.prototype.set_center = function(c_x, c_y) {
+    EditableTerrain.prototype.set_center = function(c_x, c_y) {
       this.rect = void 0;
       return this.center = {
         x: c_x,
@@ -27,7 +106,7 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
       };
     };
 
-    MapManager.prototype.draw_shadow = function(p, size) {
+    EditableTerrain.prototype.draw_shadow = function(p, size) {
       var c, up, x, y, _size;
 
       if (this.foreground == null) {
@@ -48,7 +127,7 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
       }
     };
 
-    MapManager.prototype.in_view_rect = function(x, y) {
+    EditableTerrain.prototype.in_view_rect = function(x, y) {
       var _rect;
 
       _rect = this.rect || {
@@ -61,7 +140,7 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
       return (_rect.left <= x && x < _rect.right) && (_rect.top <= y && y < _rect.bottom);
     };
 
-    MapManager.prototype.init_backbuffer = function(sizeW, sizeH) {
+    EditableTerrain.prototype.init_backbuffer = function(sizeW, sizeH) {
       var _canvas;
 
       if (this.backbuffer_canvas == null) {
@@ -77,7 +156,7 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
       return this.backbuffer;
     };
 
-    MapManager.prototype.init_foreground = function() {
+    EditableTerrain.prototype.init_foreground = function() {
       var _canvas;
 
       if (this.foreground == null) {
@@ -93,7 +172,7 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
       return this.foreground;
     };
 
-    MapManager.prototype.init = function() {
+    EditableTerrain.prototype.init = function() {
       var bg;
 
       this.context = this.canvas[0].getContext('2d');
@@ -103,7 +182,7 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
       return $(this.context).disableSmoothing();
     };
 
-    MapManager.prototype.redraw = function(size, fields) {
+    EditableTerrain.prototype.redraw = function(size, fields) {
       var backbuffer, c, color, field, i, image_data, mod, offset, _i, _j, _len, _offset, _x, _y;
 
       this.plain_colors = [];
@@ -133,11 +212,11 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
       return this.unsaved_changes = false;
     };
 
-    MapManager.prototype.unit_pixel_size = function() {
+    EditableTerrain.prototype.unit_pixel_size = function() {
       return this.canvas[0].width / this.backbuffer_canvas[0].width;
     };
 
-    MapManager.prototype.pixels_to_coords = function(x, y) {
+    EditableTerrain.prototype.pixels_to_coords = function(x, y) {
       var offset;
 
       offset = {
@@ -150,7 +229,7 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
       };
     };
 
-    MapManager.prototype.put_field = function(x, y, field_brush) {
+    EditableTerrain.prototype.put_field = function(x, y, field_brush) {
       var bb_pos, color, current, i, mod, offset, rgb, target, _data, _i;
 
       if ((x != null) && (y != null) && this.in_view_rect(x, y)) {
@@ -171,24 +250,25 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
         }
         _data = $.extend({}, field_brush);
         _data.color = (rgb[0] << 16) + (rgb[1] << 8) + rgb[2];
-        return this.$scope.changes["" + x + "," + y] = {
+        return this.$emit('field-changed', {
+          x: x,
+          y: y
+        }, {
           x: x,
           y: y,
           field: _data
-        };
+        });
       }
     };
 
-    MapManager.prototype.confirm_changes = function() {
+    EditableTerrain.prototype.confirm_changes = function() {
       this._buffer_to_front(true);
       this.unsaved_changes = true;
-      if (this.change_happen != null) {
-        this.change_happen();
-      }
+      this.$emit('changes-confirmed');
       return this.canvas.trigger('mapchange');
     };
 
-    MapManager.prototype._buffer_to_front = function(with_swap) {
+    EditableTerrain.prototype._buffer_to_front = function(with_swap) {
       var _h, _w;
 
       if (with_swap == null) {
@@ -204,7 +284,7 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
       return this.context.restore();
     };
 
-    MapManager.prototype._coords_to_backbuffer_pixels = function(x, y) {
+    EditableTerrain.prototype._coords_to_backbuffer_pixels = function(x, y) {
       var offset;
 
       offset = {
@@ -217,11 +297,11 @@ namespace('Alcarin.Orbis.Editor', function(exports, Alcarin) {
       };
     };
 
-    return MapManager;
+    return EditableTerrain;
 
-  })();
+  })(Alcarin.EventsEmitter);
 });
 
 /*
-//@ sourceMappingURL=map-manager.js.map
+//@ sourceMappingURL=editable-terrain.js.map
 */

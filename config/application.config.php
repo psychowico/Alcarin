@@ -9,7 +9,6 @@ return array(
         'ZfcBase',
         'ZfcUser',
         'TwbBundle',
-        'EdpModuleLayouts',
 
         'EngineBase',
         'Errors',

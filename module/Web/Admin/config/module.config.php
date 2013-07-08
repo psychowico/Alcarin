@@ -2,10 +2,6 @@
 
 return array(
 
-    'module_layouts' => array(
-        'Admin' => 'admin-layout',
-    ),
-
     'controllers' => array(
         'invokables' => array(
             'Admin\Controller\Home'  => 'Admin\Controller\AdminHomeController',

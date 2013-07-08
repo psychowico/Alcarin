@@ -1,18 +1,58 @@
-namespace 'Alcarin.Orbis.Editor', (exports, Alcarin) ->
+namespace 'Admin.Map.Layers', (exports, Alcarin) ->
 
-    class exports.MapManager
+    canvas_events = (map, element)->
+        class events
+            mouse_down: (e)=>
+                return false if $(e.currentTarget).disabled()
+                element.on 'mousemove', @mouse_painting
+                @mouse_painting e
+
+            mouse_up:  =>
+                element.off 'mousemove', @mouse_painting
+
+            mouse_move: (e)=>
+                map.draw_shadow {x: e.offsetX, y: e.offsetY}, map.mapBrush
+
+            mouse_painting: (e)=>
+                coords = map.pixels_to_coords e.offsetX, e.offsetY
+                brush = map.mapBrush
+                if brush.size > 1
+                    range   = brush.size - 1
+                    range_2 = range * range
+                    for oy in [-range..range]
+                        for ox in [-range..range]
+                            if oy * oy + ox * ox <= range_2
+                                map.put_field coords.x + ox, coords.y + oy, brush
+                else
+                    map.put_field coords.x, coords.y, brush
+
+                map.confirm_changes()
+        new events()
+
+    class exports.EditableTerrain extends Alcarin.EventsEmitter
         background: [0, 0, 255]
         noise_density: 25
         noise_impact: 0.22
+        mapBrush: null
 
-        constructor: (@$scope, @canvas, c_x, c_y)->
+        constructor: (@canvas, c_x, c_y)->
             @set_center c_x, c_y
+            @$on 'set-center', @set_center
+            @$on 'fields-fetched', @redraw
+            @$on 'brush-changed', (brush)=> @mapBrush = brush
+            @init()
+
+            ev = canvas_events @, @canvas.parent()
+            @canvas.parent()
+                .on('mousedown', ev.mouse_down)
+                .on('mousemove', ev.mouse_move)
+            $(document).on 'mouseup', ev.mouse_up
 
         noise: ->
             @_noise = new ROT.Noise.Simplex if not @_noise?
             @_noise
 
-        set_center: (c_x, c_y)->
+        set_center: (c_x, c_y)=>
             @rect  = undefined
             @center = {x: c_x, y: c_y}
 
@@ -85,7 +125,7 @@ namespace 'Alcarin.Orbis.Editor', (exports, Alcarin) ->
 
             $(@context).disableSmoothing()
 
-        redraw: (size, fields)->
+        redraw: (size, fields)=>
             @plain_colors = []
 
             @size = size
@@ -150,17 +190,16 @@ namespace 'Alcarin.Orbis.Editor', (exports, Alcarin) ->
 
                 _data.color = (rgb[0] << 16) + (rgb[1] << 8) + rgb[2]
 
-                @$scope.changes["#{x},#{y}"] = {
+                @$emit 'field-changed', {x: x, y: y},
                     x: x
                     y: y
                     field: _data
-                }
 
         confirm_changes: ->
             @_buffer_to_front true
 
             @unsaved_changes = true
-            @change_happen() if @change_happen?
+            @$emit 'changes-confirmed'
             @canvas.trigger 'mapchange'
 
         _buffer_to_front: (with_swap = false)->

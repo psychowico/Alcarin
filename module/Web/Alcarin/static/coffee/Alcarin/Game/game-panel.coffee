@@ -4,12 +4,13 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
 
     socket_port = 8080
 
-    module = angular.module 'game-panel', ['@game-events', '@spin', '@game-event', 'ui.event', 'ngCookies']
+    module = angular.module 'game-panel', ['@game-events', '@spin', 'ui.event', 'ngCookies']
 
-    exports.App = ngcontroller ['GameEvents', '$timeout', '$location',
-        (Events, $timeout, $location)->
-            @initialized   = false
-            @charid   = null
+    exports.App = ngcontroller ['$timeout', '$location', '$cookies',
+        ($timeout, $location, cookies)->
+            @waiting     = false
+            @initialized = false
+            @charid      = null
 
             @onGameEvent = (ev)=>
                 @$safeApply => @$broadcast 'game-event', ev
@@ -18,21 +19,23 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
                 @$safeApply => @$broadcast 'reset-events', events
 
             authorize = =>
+                @waiting = true
                 @socket.emit 'auth',
                     charid : @charid
+                    session: cookies.alcarin
 
             reinitalize_socket_connection = =>
                 if io?
                     @socket = socket = io.connect $location.host() + ":#{socket_port}"
                     socket.on 'reset-events', @onGameEventReset
                     socket.on 'game-event', @onGameEvent
-                    socket.on 'reconnect', (_socket)-> authorize()
-                    socket.on 'authorized', => @$safeApply => @$broadcast 'initialized'
+                    socket.on 'reconnect', authorize
+                    socket.on 'authorized', -> socket.emit 'test-event'
                     authorize()
 
             @$watch 'charid', =>
                 if @charid?
-                    Events.init @charid
+                    # Events.init @charid
                     if not @initialized
                         host = $location.host()
                         # lazy loadlocation socket.io.js script
@@ -42,16 +45,16 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
                         reinitalize_socket_connection()
     ]
 
-    exports.GameEvents = ngcontroller ['GameEvents', (Events)->
+    exports.GameEvents = ngcontroller ->
         @events = []
         @talkContent = ''
-        @sending = @waiting = false
+        @sending = false
 
         @talkToAll = =>
             @sending = true
             content = @talkContent
             @talkContent = ''
-            Events.talk(content).then => @sending = false
+            @socket.emit 'public-talk', content
 
         @onKeyDown = (event)=>
             if event.keyCode is 13
@@ -65,7 +68,6 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
         @$on 'reset-events', (ev, data)=>
             @waiting = false
             @events  = (translate_event ev for ev in data)
-            console.log @events
 
         @$on 'game-event', (ev, data)=>
             @events.splice 0, 0, translate_event data
@@ -110,8 +112,3 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
             # _char.text = window.prompt 'Przezwisko:', _char.text
             _char.resolve().then (c)->
                 console.log c
-
-        @$on 'initialized', =>
-            @waiting = true
-            Events.fetch()
-    ]

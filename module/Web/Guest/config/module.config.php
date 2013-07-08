@@ -1,8 +1,5 @@
 <?php
 return array(
-    'module_layouts' => array(
-        'Guest' => 'guest-layout',
-    ),
 
     'controllers' => array(
         'invokables' => array(
