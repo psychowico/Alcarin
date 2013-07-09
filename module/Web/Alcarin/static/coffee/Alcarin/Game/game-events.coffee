@@ -2,26 +2,27 @@
 
 namespace 'Alcarin.Game', (exports, Alcarin) ->
 
-    exports.GameEvents = ngcontroller ['GameServer', 'GameEventsTranslator', (GameServer, Translate)->
-        @gameEvents  = null
-        @sending     = false
+    exports.GameEvents = ngcontroller ['GameServer', 'GameEventsTranslator',
+        (GameServer, Translate)->
+            @gameEvents  = null
+            @sending     = false
 
-        GameServer.on 'game-event.swap', (data)=>
-            @gameEvents  = (Translate ev for ev in data)
-        GameServer.on 'game-event.add', (evData)=>
-            gameEvent = Translate evData
-            @gameEvents.splice 0, 0, gameEvent
-            @sending = false if evData.response
+            GameServer.on 'game-event.swap', (data)=>
+                @gameEvents  = (Translate ev for ev in data)
+            GameServer.on 'game-event.add', (evData)=>
+                gameEvent = Translate evData
+                @gameEvents.splice 0, 0, gameEvent
+                @sending = false if evData.response
 
-        @talkToAll = (content)=>
-            return if content.length == 0
-            @sending = true
-            GameServer.emit 'public-talk', content
+            @talkToAll = (content)=>
+                return if content.length == 0
+                @sending = true
+                GameServer.emit 'public-talk', content
 
-        @charClicked = (_char)=>
-            # _char.text = window.prompt 'Przezwisko:', _char.text
-            _char.resolve().then (c)->
-                console.log c
+            @charClicked = (_char)=>
+                # _char.text = window.prompt 'Przezwisko:', _char.text
+                _char.resolve().then (c)->
+                    console.log c
     ]
 
     Alcarin.Game.module.filter('EventTime', ->
@@ -29,7 +30,7 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
             return time if isNaN time
             _time = new GameTime time
             return _time.print_long()
-    ).factory('GameEventsTranslator', ->
+    ).factory('GameEventsTranslator', ['GameObjectFactory', (GameObjectFactory)->
         reg = /%([0-9])+/g
         return (gameEvent)->
             _text = gameEvent.text
@@ -42,7 +43,7 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
 
                 if $.isPlainObject arg
                     fArg = $.extend {text: arg.text}, arg.__base
-                    Alcarin.GameObject.Factory fArg
+                    GameObjectFactory fArg
                 else
                     fArg =
                         text: arg
@@ -57,7 +58,7 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
                 body: output
                 time: gameEvent.time
             }
-    )
+    ])
 
     class GameTime
         @resolved = false

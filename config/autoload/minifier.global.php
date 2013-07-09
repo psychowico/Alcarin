@@ -83,14 +83,15 @@ return array(
                     # files for regular players
                     'player' => array(
                         'sources' => array(
-                            '/js/compiled_coffee/Alcarin/GameObject/factory.js',
-                            '/js/compiled_coffee/Alcarin/GameObject/character.js',
                             '/js/compiled_coffee/Alcarin/Game/Services/ngx-server-io.js',
-                            '/js/compiled_coffee/Alcarin/Map/ngx-area-map.js',
-                            '/js/compiled_coffee/Alcarin/Game/Views/home.js',
+                            '/js/compiled_coffee/Alcarin/Game/Services/GameObject/factory.js',
+                            '/js/compiled_coffee/Alcarin/Game/Services/GameObject/character.js',
+                            '/js/compiled_coffee/Alcarin/Game/Services/ngx-current-character.js',
 
                             '/js/compiled_coffee/Alcarin/Game/Directives/ngx-talking-input.js',
 
+                            '/js/compiled_coffee/Alcarin/Map/ngx-area-map.js',
+                            '/js/compiled_coffee/Alcarin/Game/Views/home.js',
                             '/js/compiled_coffee/Alcarin/Game/game-panel.js',
                             '/js/compiled_coffee/Alcarin/Game/game-events.js',
 

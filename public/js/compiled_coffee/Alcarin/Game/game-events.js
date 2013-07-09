@@ -54,46 +54,48 @@
       _time = new GameTime(time);
       return _time.print_long();
     };
-  }).factory('GameEventsTranslator', function() {
-    var reg;
+  }).factory('GameEventsTranslator', [
+    'GameObjectFactory', function(GameObjectFactory) {
+      var reg;
 
-    reg = /%([0-9])+/g;
-    return function(gameEvent) {
-      var arg, arg_index, fArg, match, offset, output, pre_text, _text;
+      reg = /%([0-9])+/g;
+      return function(gameEvent) {
+        var arg, arg_index, fArg, match, offset, output, pre_text, _text;
 
-      _text = gameEvent.text;
-      output = [];
-      offset = 0;
-      while (match = reg.exec(_text)) {
-        arg_index = parseInt(match[1]);
-        arg = gameEvent.args[arg_index];
-        if ($.isPlainObject(arg)) {
-          fArg = $.extend({
-            text: arg.text
-          }, arg.__base);
-          Alcarin.GameObject.Factory(fArg);
-        } else {
-          fArg = {
-            text: arg,
-            type: 'text'
-          };
+        _text = gameEvent.text;
+        output = [];
+        offset = 0;
+        while (match = reg.exec(_text)) {
+          arg_index = parseInt(match[1]);
+          arg = gameEvent.args[arg_index];
+          if ($.isPlainObject(arg)) {
+            fArg = $.extend({
+              text: arg.text
+            }, arg.__base);
+            GameObjectFactory(fArg);
+          } else {
+            fArg = {
+              text: arg,
+              type: 'text'
+            };
+          }
+          pre_text = _text.substr(offset, match.index);
+          if (pre_text.length > 0) {
+            output.push({
+              text: pre_text,
+              type: 'text'
+            });
+          }
+          output.push(fArg);
+          _text = _text.substr(match.index + match[0].length);
         }
-        pre_text = _text.substr(offset, match.index);
-        if (pre_text.length > 0) {
-          output.push({
-            text: pre_text,
-            type: 'text'
-          });
-        }
-        output.push(fArg);
-        _text = _text.substr(match.index + match[0].length);
-      }
-      return {
-        body: output,
-        time: gameEvent.time
+        return {
+          body: output,
+          time: gameEvent.time
+        };
       };
-    };
-  });
+    }
+  ]);
   return GameTime = (function() {
     var pad;
 

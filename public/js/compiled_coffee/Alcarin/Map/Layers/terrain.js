@@ -1,10 +1,16 @@
+var __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
 namespace('Alcarin.Map.Layers', function(exports, Alcarin) {
-  return exports.Terrain = (function() {
+  return exports.Terrain = (function(_super) {
+    __extends(Terrain, _super);
+
     Terrain.prototype.background = [0, 0, 255];
 
     function Terrain(element) {
       this.table = $(element);
       this.table.append(this.prepareCanvas());
+      this.$on('terrain.swap', this.onTerrainSwap);
     }
 
     Terrain.prototype.width = function() {
@@ -39,9 +45,11 @@ namespace('Alcarin.Map.Layers', function(exports, Alcarin) {
       return this.canvas;
     };
 
+    Terrain.prototype.onTerrainSwap = function(radius, fields) {};
+
     return Terrain;
 
-  })();
+  })(Alcarin.EventsEmitter);
 });
 
 /*

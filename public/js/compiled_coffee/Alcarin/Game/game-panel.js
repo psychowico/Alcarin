@@ -2,7 +2,7 @@
   var socket_port;
 
   socket_port = 8080;
-  exports.module = angular.module('game', ['@spin', 'ui.event', '@talk-input', '@area-map', '@game-server']).config([
+  exports.module = angular.module('game', ['@spin', 'ui.event', '@talk-input', '@area-map', '@game-services']).config([
     '$routeProvider', function($routeProvider) {
       return $routeProvider.when('/home', {
         controller: Alcarin.Game.Views.Home,
@@ -13,8 +13,12 @@
     }
   ]);
   return exports.App = ngcontroller([
-    '$window', 'GameServer', function($window, GameServer) {
-      return GameServer.init($window.charid);
+    '$window', 'CurrentCharacter', 'GameServer', function($window, CurrentCharacter, GameServer) {
+      var charid;
+
+      charid = $window.charid;
+      GameServer.init(charid);
+      return CurrentCharacter.init(charid);
     }
   ]);
 });
