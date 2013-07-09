@@ -3,7 +3,7 @@
 {% do headScript().appendBundle('player') %}
 
 
-{% set root_app        = "game-panel" %}
+{% set root_app        = "game" %}
 {% set root_controller = "Alcarin.Game.App" %}
 
 {% block leftcontent %}
@@ -14,7 +14,10 @@
 {% endblock %}
 
 {% block middlecontent %}
-    <div id="main-nav" ng-init="charid = '{{ charid }}'">
+    <script type="text/javascript">
+        window.charid = '{{ charid }}';
+    </script>
+    <div id="main-nav">
         <nav>
             <ul class="nav-bar">
                 {% for class in ['list', 'glass', 'plane', 'eye-close', 'circle-arrow-up', 'calendar'] %}
@@ -47,7 +50,7 @@
             {{ bootstrap().closeTag() | raw }}
         </div>
         <div class="events-container" alc-spin="events == null">
-            <div class="game-event" ng-repeat="event in events">
+            <div class="game-event" ng-repeat="event in gameEvents">
                 <span class="time">{* event.time | EventTime *}</span>
                 <span class="content">
                     <span ng-repeat="part in event.body">
