@@ -25,7 +25,9 @@ namespace 'Alcarin.Game.Services', (exports, Alcarin) ->
             @authorization      = @authorizationToken.promise
             # after authorization we ask server or all full pack
             # of datas, to swap events, map, etc.
-            @authorization.then => @emit 'swap.all'
+            @authorization.then =>
+                console.log 'authorized..'
+                @emit 'swap.all'
 
         init: (@charid)->
             @initSocket.then @socketInitialized
@@ -33,13 +35,14 @@ namespace 'Alcarin.Game.Services', (exports, Alcarin) ->
         on: (eventId, callback)->
             scope = @$scope
             safeCallback = (args...)-> scope.$safeApply -> callback.apply @, args
-            @initSocket.then (socket)->
+            @initSocket.done (socket)->
                 socket.on eventId, safeCallback
             return @
 
-        emit: (eventId, _args)->
-            Q.all(@initSocket, @authorization).then (socket)->
-                socket.emit.apply socket, [eventId].concat _args
+        emit: (eventId, _args...)->
+            emitting = Q.all([@initSocket, @authorization]).spread (socket)->
+                socket.emit eventId, _args...
+            emitting.done()
             return @
 
         socketInitialized: (socket)=>
@@ -47,7 +50,7 @@ namespace 'Alcarin.Game.Services', (exports, Alcarin) ->
             socket.on 'disconnect', =>
                 console.warn 'GameServer disconnected.'
                 @resetAuth()
-            socket.on 'authorized', => @authorizationToken.resolve()
+            socket.on 'client.authorized', => @authorizationToken.resolve()
 
         authorize: =>
             @initSocket.then (socket)=>

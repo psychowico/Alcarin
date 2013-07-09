@@ -34,6 +34,7 @@ namespace('Alcarin.Game.Services', function(exports, Alcarin) {
       this.authorizationToken = Q.defer();
       this.authorization = this.authorizationToken.promise;
       return this.authorization.then(function() {
+        console.log('authorized..');
         return _this.emit('swap.all');
       });
     };
@@ -55,16 +56,20 @@ namespace('Alcarin.Game.Services', function(exports, Alcarin) {
           return callback.apply(this, args);
         });
       };
-      this.initSocket.then(function(socket) {
+      this.initSocket.done(function(socket) {
         return socket.on(eventId, safeCallback);
       });
       return this;
     };
 
-    ServerConnector.prototype.emit = function(eventId, _args) {
-      Q.all(this.initSocket, this.authorization).then(function(socket) {
-        return socket.emit.apply(socket, [eventId].concat(_args));
+    ServerConnector.prototype.emit = function() {
+      var emitting, eventId, _args;
+
+      eventId = arguments[0], _args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+      emitting = Q.all([this.initSocket, this.authorization]).spread(function(socket) {
+        return socket.emit.apply(socket, [eventId].concat(__slice.call(_args)));
       });
+      emitting.done();
       return this;
     };
 
@@ -76,7 +81,7 @@ namespace('Alcarin.Game.Services', function(exports, Alcarin) {
         console.warn('GameServer disconnected.');
         return _this.resetAuth();
       });
-      return socket.on('authorized', function() {
+      return socket.on('client.authorized', function() {
         return _this.authorizationToken.resolve();
       });
     };

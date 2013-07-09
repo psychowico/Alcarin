@@ -25,6 +25,10 @@ namespace('Alcarin.Map.Layers', function(exports, Alcarin) {
       return (_ref = this.canvas[0]) != null ? _ref.height : void 0;
     };
 
+    Terrain.prototype.setTarget = function(charPromise) {
+      this.charPromise = charPromise;
+    };
+
     Terrain.prototype.prepareCanvas = function() {
       var bg;
 
@@ -45,7 +49,12 @@ namespace('Alcarin.Map.Layers', function(exports, Alcarin) {
       return this.canvas;
     };
 
-    Terrain.prototype.onTerrainSwap = function(radius, fields) {};
+    Terrain.prototype.onTerrainSwap = function(radius, fields) {
+      return this.charPromise.then(function(character) {
+        console.log('tutaj');
+        return console.log(radius);
+      });
+    };
 
     return Terrain;
 

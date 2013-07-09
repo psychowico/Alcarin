@@ -21,23 +21,38 @@ char.resolve().then (charGameObject)->
 
 namespace 'Alcarin.Game.Services.GameObject', (exports, Alcarin) ->
 
+    _GameServer = null
+
     factories = []
-    resolvingGameObject = (resolving_method, GameServer, obj)->
-        -> Q resolving_method GameServer, obj
+    resolvingGameObject = (resolving_method, obj)->
+        -> Q resolving_method obj
 
     exports.Factory =
-        register: (can_resolve, resolving_method)->
-            factories.push
+        register: (initFun, can_resolve, resolving_method)->
+            factory =
+                init     : initFun
                 condition: can_resolve
                 resolving: resolving_method
+            if _GameServer
+                factory.init _GameServer
+                delete factory.init
+            factories.push factory
+
+
 
     module = Alcarin.Game.Services.module
     module.factory 'GameObjectFactory', ['GameServer', (GameServer)->
+        _GameServer = GameServer
+
         (arg)->
             for factory in factories
+                if factory.init?
+                    factory.init? GameServer
+                    delete factory.init
+
                 if factory.condition arg
                     do (factory, arg)=>
-                        arg.resolve = resolvingGameObject factory.resolving, GameServer, arg
+                        arg.resolve = resolvingGameObject factory.resolving, arg
                     return arg
                     #return new Alcarin.GameObject.LazyGameObject arg, factory.resolving
             throw Error 'Can not resolve object: ' + JSON.stringify arg

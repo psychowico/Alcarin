@@ -20,3 +20,6 @@ namespace 'Alcarin.Map', (exports, Alcarin) ->
                         @$emit.apply @, [obj.name].concat obj.args
 
                 @layers.push layerInstance
+
+        setTarget: (@charPromise)->
+            layer.setTarget @charPromise for layer in @layers when layer.setTarget

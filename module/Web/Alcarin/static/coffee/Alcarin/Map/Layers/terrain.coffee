@@ -12,6 +12,8 @@ namespace 'Alcarin.Map.Layers', (exports, Alcarin) ->
         width: -> @canvas[0]?.width
         height: -> @canvas[0]?.height
 
+        setTarget: (@charPromise)->
+
         prepareCanvas: ->
             if @canvas
                 @context = null
@@ -31,7 +33,9 @@ namespace 'Alcarin.Map.Layers', (exports, Alcarin) ->
             return @canvas
 
         onTerrainSwap: (radius, fields)->
-            # console.log fields[0]
+            @charPromise.then (character)->
+                console.log 'tutaj'
+                console.log radius
             # image_data = @context.getImageData 0, 0, size, size
 
             # offset = {x: @center.x - size / 2, y: @center.y - size / 2}

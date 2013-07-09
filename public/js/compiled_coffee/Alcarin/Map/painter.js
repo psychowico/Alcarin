@@ -45,6 +45,21 @@ namespace('Alcarin.Map', function(exports, Alcarin) {
       }
     }
 
+    Painter.prototype.setTarget = function(charPromise) {
+      var layer, _i, _len, _ref, _results;
+
+      this.charPromise = charPromise;
+      _ref = this.layers;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        layer = _ref[_i];
+        if (layer.setTarget) {
+          _results.push(layer.setTarget(this.charPromise));
+        }
+      }
+      return _results;
+    };
+
     return Painter;
 
   })(Alcarin.EventsEmitter);

@@ -8,11 +8,9 @@ angular.module('@area-map', ['@game-services']).directive('alcAreaMap', [
       link: function($scope, element, attrs) {
         var layers, painter;
 
-        Character.then(function(character) {
-          return console.log(character);
-        });
         layers = [Alcarin.Map.Layers.Terrain];
         painter = new Alcarin.Map.Painter(element, layers);
+        painter.setTarget(Character);
         element.data('map-painter', painter);
         return ['terrain.swap'].forEach(function(eventId) {
           return GameServer.on(eventId, function() {

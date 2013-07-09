@@ -4,12 +4,11 @@ angular.module('@area-map', ['@game-services'])
     .directive 'alcAreaMap', ['GameServer', 'CurrentCharacter', (GameServer, Character)->
             restrict:'A'
             link: ($scope, element, attrs)->
-                Character.then (character)->
-                    console.log character
                 layers = [
                     Alcarin.Map.Layers.Terrain
                 ]
                 painter = new Alcarin.Map.Painter element, layers
+                painter.setTarget Character
                 element.data 'map-painter', painter
 
                 ['terrain.swap'].forEach (eventId)->
