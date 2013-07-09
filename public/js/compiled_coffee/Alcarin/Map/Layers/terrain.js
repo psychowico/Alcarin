@@ -55,15 +55,18 @@ namespace('Alcarin.Map.Layers', function(exports, Alcarin) {
     };
 
     Terrain.prototype.getBackbuffer = function(sizeW, sizeH) {
-      if (this.backbuffer == null) {
-        this.backbuffer = $('<canvas>');
-        $.extend(this.backbuffer[0], {
-          width: sizeW,
-          height: sizeH
-        });
-        this.backbufferContext = this.backbuffer[0].getContext('2d');
-        $(this.backbufferContext).disableSmoothing();
+      var _ref;
+
+      if ((_ref = this.backbuffer) != null) {
+        _ref.remove();
       }
+      this.backbuffer = $('<canvas>');
+      $.extend(this.backbuffer[0], {
+        width: sizeW,
+        height: sizeH
+      });
+      this.backbufferContext = this.backbuffer[0].getContext('2d');
+      $(this.backbufferContext).disableSmoothing();
       this.backbufferContext.fillStyle = "rgb(0, 0, 255)";
       this.backbufferContext.fillRect(0, 0, sizeW, sizeH);
       return this.backbufferContext;

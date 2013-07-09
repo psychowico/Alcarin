@@ -37,11 +37,12 @@ namespace 'Alcarin.Map.Layers', (exports, Alcarin) ->
             return @canvas
 
         getBackbuffer: (sizeW, sizeH)->
-            if not @backbuffer?
-                @backbuffer = $ '<canvas>'
-                $.extend @backbuffer[0], {width: sizeW, height: sizeH}
-                @backbufferContext = @backbuffer[0].getContext '2d'
-                $(@backbufferContext).disableSmoothing()
+            @backbuffer?.remove()
+
+            @backbuffer = $ '<canvas>'
+            $.extend @backbuffer[0], {width: sizeW, height: sizeH}
+            @backbufferContext = @backbuffer[0].getContext '2d'
+            $(@backbufferContext).disableSmoothing()
 
             @backbufferContext.fillStyle = "rgb(0, 0, 255)";
             @backbufferContext.fillRect 0, 0, sizeW, sizeH
