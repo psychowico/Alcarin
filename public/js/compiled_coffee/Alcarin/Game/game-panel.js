@@ -14,7 +14,6 @@
   ]);
   return exports.App = ngcontroller([
     '$window', 'GameServer', function($window, GameServer) {
-      this.waiting = true;
       return GameServer.init($window.charid);
     }
   ]);

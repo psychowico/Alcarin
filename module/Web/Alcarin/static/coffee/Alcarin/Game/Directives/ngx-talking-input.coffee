@@ -2,7 +2,7 @@
 
 namespace 'Alcarin.Game.Directives', (exports, Alcarin) ->
 
-    angular.module('@talk-input').directive 'alcTalkingInput', ->
+    angular.module('@talk-input').directive 'alcTalkingInput', ($rootScope)->
         restrict:'A'
         scope:
             alcTalkingInput: '&'
@@ -13,4 +13,4 @@ namespace 'Alcarin.Game.Directives', (exports, Alcarin) ->
                     ev.preventDefault()
                     content = input.val()
                     input.val ''
-                    $scope.alcTalkingInput {$content: content}
+                    $rootScope.$safeApply -> $scope.alcTalkingInput {$content: content}

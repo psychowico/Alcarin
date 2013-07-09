@@ -16,7 +16,5 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
             ]
 
     exports.App = ngcontroller ['$window', 'GameServer', ($window, GameServer)->
-        @waiting     = true
-
         GameServer.init $window.charid
     ]

@@ -3,11 +3,10 @@
 namespace 'Alcarin.Game', (exports, Alcarin) ->
 
     exports.GameEvents = ngcontroller ['GameServer', 'GameEventsTranslator', (GameServer, Translate)->
-        @gameEvents  = []
+        @gameEvents  = null
         @sending     = false
 
         GameServer.on 'reset-events', (data)=>
-            @waiting = false
             @gameEvents  = (Translate ev for ev in data)
         GameServer.on 'game-event', (evData)=>
             gameEvent = Translate evData

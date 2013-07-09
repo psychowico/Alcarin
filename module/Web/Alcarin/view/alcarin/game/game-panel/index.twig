@@ -40,7 +40,7 @@
 
             {{ bootstrap().openTag(forms['talking']) | raw }}
 
-            <div class="content" alc-spin="waiting || sending">
+            <div class="content" alc-spin="sending">
                 {{ formElement(forms['talking'].get('content')) }}
             </div>
             <div class="submit">
@@ -49,7 +49,7 @@
 
             {{ bootstrap().closeTag() | raw }}
         </div>
-        <div class="events-container" alc-spin="events == null">
+        <div class="events-container" alc-spin="gameEvents == null">
             <div class="game-event" ng-repeat="event in gameEvents">
                 <span class="time">{* event.time | EventTime *}</span>
                 <span class="content">

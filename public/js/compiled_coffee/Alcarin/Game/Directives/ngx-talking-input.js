@@ -1,5 +1,5 @@
 'use strict';namespace('Alcarin.Game.Directives', function(exports, Alcarin) {
-  return angular.module('@talk-input').directive('alcTalkingInput', function() {
+  return angular.module('@talk-input').directive('alcTalkingInput', function($rootScope) {
     return {
       restrict: 'A',
       scope: {
@@ -14,8 +14,10 @@
             ev.preventDefault();
             content = input.val();
             input.val('');
-            return $scope.alcTalkingInput({
-              $content: content
+            return $rootScope.$safeApply(function() {
+              return $scope.alcTalkingInput({
+                $content: content
+              });
             });
           }
         });

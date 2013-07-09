@@ -5,12 +5,11 @@
     'GameServer', 'GameEventsTranslator', function(GameServer, Translate) {
       var _this = this;
 
-      this.gameEvents = [];
+      this.gameEvents = null;
       this.sending = false;
       GameServer.on('reset-events', function(data) {
         var ev;
 
-        _this.waiting = false;
         return _this.gameEvents = (function() {
           var _i, _len, _results;
 
