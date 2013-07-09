@@ -1,5 +1,9 @@
 namespace 'Alcarin.Map.Layers', (exports, Alcarin) ->
 
+    NOISE_DENSITY = 25
+    NOISE_IMPACT  = 0.22
+    noise         = new ROT.Noise.Simplex()
+
     class exports.Terrain extends Alcarin.EventsEmitter
         background: [0, 0, 255]
 
@@ -32,31 +36,48 @@ namespace 'Alcarin.Map.Layers', (exports, Alcarin) ->
 
             return @canvas
 
+        getBackbuffer: (sizeW, sizeH)->
+            if not @backbuffer?
+                @backbuffer = $ '<canvas>'
+                $.extend @backbuffer[0], {width: sizeW, height: sizeH}
+                @backbufferContext = @backbuffer[0].getContext '2d'
+                $(@backbufferContext).disableSmoothing()
+
+            @backbufferContext.fillStyle = "rgb(0, 0, 255)";
+            @backbufferContext.fillRect 0, 0, sizeW, sizeH
+            @backbufferContext
+
+        swapBuffer: ->
+            @context.save()
+            w = @backbuffer[0].width
+            h = @backbuffer[0].height
+            @context.drawImage @backbuffer[0], 0, 0, w, h, 0, 0, @width(), @height()
+            @context.restore()
+
         onTerrainSwap: (radius, fields)->
-            @charPromise.then (character)->
-                console.log 'tutaj'
-                console.log radius
-            # image_data = @context.getImageData 0, 0, size, size
+            @charPromise.done (character)=>
+                center        = character.loc
+                size          = radius * 2
+                bufferContext = @getBackbuffer size, size
 
-            # offset = {x: @center.x - size / 2, y: @center.y - size / 2}
+                imageData = bufferContext.getImageData 0, 0, size, size
+                offset = {x: center.x - radius, y: center.y - radius}
 
-            # for field in fields
-            #     color = field.land.color
+                for field in fields
+                    color = field.land.color
 
-            #     _x = field.loc.x - offset.x
-            #     _y = field.loc.y - offset.y
+                    pixelX = field.loc.x - offset.x
+                    pixelY = field.loc.y - offset.y
 
-            #     mod = Math.abs @noise().get field.loc.x / @noise_density, field.loc.y / @noise_density
+                    mod = Math.abs noise.get field.loc.x / NOISE_DENSITY, field.loc.y / NOISE_DENSITY
 
-            #     _offset = 4 * (_y * size + _x)
+                    dataOffset = 4 * (pixelY * size + pixelX)
 
-            #     for i in [0..2]
-            #         c = ((color >> (8 * (2 - i) ) ) & 0xFF)
-            #         @plain_colors[_offset + i] = c
+                    for i in [0..2]
+                        c = ((color >> (8 * (2 - i) ) ) & 0xFF)
+                        # @plain_colors[_offset + i] = c
+                        c *= 1 - NOISE_IMPACT * ( 1 - mod )
+                        imageData.data[dataOffset + i] = ~~c
 
-            #         c *= 1 - @noise_impact * ( 1 - mod )
-            #         image_data.data[_offset + i] = ~~c
-
-            # @_buffer_to_front true
-            # @init_foreground()
-            # @unsaved_changes = false
+                bufferContext.putImageData imageData, 0, 0
+                @swapBuffer()
