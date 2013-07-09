@@ -7,7 +7,7 @@
 
       this.gameEvents = null;
       this.sending = false;
-      GameServer.on('reset-events', function(data) {
+      GameServer.on('game-event.swap', function(data) {
         var ev;
 
         return _this.gameEvents = (function() {
@@ -21,7 +21,7 @@
           return _results;
         })();
       });
-      GameServer.on('game-event', function(evData) {
+      GameServer.on('game-event.add', function(evData) {
         var gameEvent;
 
         gameEvent = Translate(evData);

@@ -6,9 +6,9 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
         @gameEvents  = null
         @sending     = false
 
-        GameServer.on 'reset-events', (data)=>
+        GameServer.on 'game-event.swap', (data)=>
             @gameEvents  = (Translate ev for ev in data)
-        GameServer.on 'game-event', (evData)=>
+        GameServer.on 'game-event.add', (evData)=>
             gameEvent = Translate evData
             @gameEvents.splice 0, 0, gameEvent
             @sending = false if evData.response

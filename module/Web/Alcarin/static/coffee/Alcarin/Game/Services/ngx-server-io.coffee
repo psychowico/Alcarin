@@ -11,6 +11,9 @@ class ServerConnector
     resetAuth: =>
         @authorizationToken = Q.defer()
         @authorization      = @authorizationToken.promise
+        # after authorization we ask server or all full pack
+        # of datas, to swap events, map, etc.
+        @authorization.then => @emit 'swap.all'
 
     init: (@charid)->
         @initSocket.then @socketInitialized
@@ -32,7 +35,6 @@ class ServerConnector
         socket.on 'disconnect', =>
             console.warn 'GameServer disconnected.'
             @resetAuth()
-        socket.on 'reconnect', @authorize
         socket.on 'authorized', => @authorizationToken.resolve()
 
     authorize: =>

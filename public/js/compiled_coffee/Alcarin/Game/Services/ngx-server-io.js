@@ -19,8 +19,13 @@ ServerConnector = (function() {
   }
 
   ServerConnector.prototype.resetAuth = function() {
+    var _this = this;
+
     this.authorizationToken = Q.defer();
-    return this.authorization = this.authorizationToken.promise;
+    this.authorization = this.authorizationToken.promise;
+    return this.authorization.then(function() {
+      return _this.emit('swap.all');
+    });
   };
 
   ServerConnector.prototype.init = function(charid) {
@@ -61,7 +66,6 @@ ServerConnector = (function() {
       console.warn('GameServer disconnected.');
       return _this.resetAuth();
     });
-    socket.on('reconnect', this.authorize);
     return socket.on('authorized', function() {
       return _this.authorizationToken.resolve();
     });
