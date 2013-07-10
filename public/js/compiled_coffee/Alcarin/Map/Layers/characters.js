@@ -30,6 +30,10 @@ namespace('Alcarin.Map.Layers', function(exports, Alcarin) {
       return this.charsRepresentation = [];
     };
 
+    Characters.prototype.setTarget = function(charPromise) {
+      this.charPromise = charPromise;
+    };
+
     Characters.prototype.createCharacterElement = function(pLoc, character) {
       var $element, distance, element, loc, title, _i, _len, _ref;
 
@@ -42,7 +46,7 @@ namespace('Alcarin.Map.Layers', function(exports, Alcarin) {
           title = $element.children().attr('title');
           $element.children().attr('title', "" + title + "\n" + character.name);
           $element.data('rel').push(character);
-          return;
+          return $element;
         }
       }
       element = $('<div>', {
@@ -63,18 +67,25 @@ namespace('Alcarin.Map.Layers', function(exports, Alcarin) {
     Characters.prototype.onCharactersSwap = function(chars) {
       var _this = this;
 
-      this.clearChars();
-      return this.Services.get('CoordConverter').done(function(Coords) {
-        var $element, character, loc, pLoc, _i, _len, _results;
+      return this.charPromise.done(function(currChar) {
+        _this.clearChars();
+        return _this.Services.get('CoordConverter').done(function(Coords) {
+          var $element, character, loc, pLoc, _i, _len, _results;
 
-        _results = [];
-        for (_i = 0, _len = chars.length; _i < _len; _i++) {
-          character = chars[_i];
-          loc = character.loc;
-          pLoc = Coords.toPixels(loc.x, loc.y);
-          _results.push($element = _this.createCharacterElement(pLoc, character));
-        }
-        return _results;
+          _results = [];
+          for (_i = 0, _len = chars.length; _i < _len; _i++) {
+            character = chars[_i];
+            loc = character.loc;
+            pLoc = Coords.toPixels(loc.x, loc.y);
+            $element = _this.createCharacterElement(pLoc, character);
+            if (currChar._id === character._id) {
+              _results.push($element.addClass('current'));
+            } else {
+              _results.push(void 0);
+            }
+          }
+          return _results;
+        });
       });
     };
 

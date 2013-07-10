@@ -19,7 +19,7 @@
     return MapAreaServices;
 
   })();
-  mapLayers = [Alcarin.Map.Layers.Terrain, Alcarin.Map.Layers.Characters, Alcarin.Map.Layers.CharViewRange];
+  mapLayers = [Alcarin.Map.Layers.Terrain, Alcarin.Map.Layers.CharViewRange, Alcarin.Map.Layers.Characters];
   return angular.module('@area-map', ['@game-services']).directive('alcAreaMap', [
     'GameServer', 'CurrentCharacter', function(GameServer, Character) {
       return {

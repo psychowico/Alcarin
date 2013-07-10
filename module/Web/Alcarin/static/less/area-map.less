@@ -1,10 +1,10 @@
 @import 'core';
 
-.center(@size) {
+.center(@size, @offset) {
   width: @size;
   height: @size;
-  left: -@size / 2;
-  top: -@size / 2;
+  left: @offset;
+  top: @offset;
 }
 
 .area-map {
@@ -19,37 +19,45 @@
   .rounded-corners(50%);
   overflow: hidden;
   .terrain {
+    z-index: 0;
     position: absolute;
     left: -4px;
     top: -4px;
   }
-  .characters {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    .character {
-      position: absolute;
-      div {
-        position: relative;
-        border-style: double;
-        padding: 0px;
-        background-color: #3300CC;
-        .rounded-corners(50%);
-        .center(10px);
-        &:hover {
-          cursor: pointer;
-          .center(12px);
-        }
-      }
-    }
-  }
   .shadow {
+    z-index: 1;
     position: absolute;
     div {
       position: relative;
       .rounded-corners(50%);
       background: navy;
       opacity: 0.13;
+    }
+  }
+  .characters {
+    z-index: 2;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    .character.current div {
+      background: #1100CC;
+    }
+    .character {
+      position: absolute;
+      div {
+        position: relative;
+        border-style: double;
+        border-width: 3px;
+
+        padding: 0px;
+        background-color: #3300CC;
+        .rounded-corners(50%);
+        .center(10px, -8px);
+        &:hover {
+          cursor: pointer;
+          .center(12px, -9px);
+        }
+      }
     }
   }
 }

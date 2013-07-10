@@ -15,41 +15,13 @@
   overflow: hidden;
 }
 .area-map .terrain {
+  z-index: 0;
   position: absolute;
   left: -4px;
   top: -4px;
 }
-.area-map .characters {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-}
-.area-map .characters .character {
-  position: absolute;
-}
-.area-map .characters .character div {
-  position: relative;
-  border-style: double;
-  padding: 0px;
-  background-color: #3300CC;
-  -webkit-border-radius: 50%;
-  -moz-border-radius: 50%;
-  -ms-border-radius: 50%;
-  -o-border-radius: 50%;
-  border-radius: 50%;
-  width: 10px;
-  height: 10px;
-  left: -5px;
-  top: -5px;
-}
-.area-map .characters .character div:hover {
-  cursor: pointer;
-  width: 12px;
-  height: 12px;
-  left: -6px;
-  top: -6px;
-}
 .area-map .shadow {
+  z-index: 1;
   position: absolute;
 }
 .area-map .shadow div {
@@ -61,4 +33,39 @@
   border-radius: 50%;
   background: navy;
   opacity: 0.13;
+}
+.area-map .characters {
+  z-index: 2;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+.area-map .characters .character.current div {
+  background: #1100CC;
+}
+.area-map .characters .character {
+  position: absolute;
+}
+.area-map .characters .character div {
+  position: relative;
+  border-style: double;
+  border-width: 3px;
+  padding: 0px;
+  background-color: #3300CC;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  left: -8px;
+  top: -8px;
+}
+.area-map .characters .character div:hover {
+  cursor: pointer;
+  width: 12px;
+  height: 12px;
+  left: -9px;
+  top: -9px;
 }

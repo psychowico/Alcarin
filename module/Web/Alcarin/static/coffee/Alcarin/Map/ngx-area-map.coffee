@@ -10,8 +10,8 @@ namespace 'Alcarin.Map', (exports, Alcarin) ->
 
     mapLayers = [
         Alcarin.Map.Layers.Terrain
-        Alcarin.Map.Layers.Characters
         Alcarin.Map.Layers.CharViewRange
+        Alcarin.Map.Layers.Characters
     ]
 
     angular.module('@area-map', ['@game-services'])

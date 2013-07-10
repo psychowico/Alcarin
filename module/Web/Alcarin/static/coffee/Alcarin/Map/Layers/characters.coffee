@@ -13,6 +13,8 @@ namespace 'Alcarin.Map.Layers', (exports, Alcarin) ->
             element.remove() for element in @charsRepresentation
             @charsRepresentation = []
 
+        setTarget: (@charPromise)->
+
         createCharacterElement: (pLoc, character)->
             # grouping characters
             for $element in @charsRepresentation
@@ -22,7 +24,7 @@ namespace 'Alcarin.Map.Layers', (exports, Alcarin) ->
                     title = $element.children().attr 'title'
                     $element.children().attr 'title', "#{title}\n#{character.name}"
                     $element.data('rel').push character
-                    return
+                    return $element
 
             element = $ '<div>', {class: 'character'}
             element.position {left: pLoc.x, top: pLoc.y}
@@ -35,10 +37,12 @@ namespace 'Alcarin.Map.Layers', (exports, Alcarin) ->
             return element
 
         onCharactersSwap: (chars)=>
-            @clearChars()
-            @Services.get('CoordConverter').done (Coords)=>
-                for character in chars
-                    loc  = character.loc
-                    pLoc = Coords.toPixels loc.x, loc.y
-                    $element = @createCharacterElement pLoc, character
+            @charPromise.done (currChar)=>
+                @clearChars()
+                @Services.get('CoordConverter').done (Coords)=>
+                    for character in chars
+                        loc  = character.loc
+                        pLoc = Coords.toPixels loc.x, loc.y
+                        $element = @createCharacterElement pLoc, character
+                        $element.addClass 'current' if currChar._id == character._id
 
