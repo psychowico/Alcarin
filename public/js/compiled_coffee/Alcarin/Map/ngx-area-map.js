@@ -1,29 +1,43 @@
-'use strict';
-var __slice = [].slice;
+'use strict';namespace('Alcarin.Map', function(exports, Alcarin) {
+  var MapAreaServices, mapLayers;
 
-angular.module('@area-map', ['@game-services']).directive('alcAreaMap', [
-  'GameServer', 'CurrentCharacter', function(GameServer, Character) {
-    return {
-      restrict: 'A',
-      link: function($scope, element, attrs) {
-        var layers, painter;
+  MapAreaServices = (function() {
+    function MapAreaServices() {}
 
-        layers = [Alcarin.Map.Layers.Terrain];
-        painter = new Alcarin.Map.Painter(element, layers);
-        painter.setTarget(Character);
-        element.data('map-painter', painter);
-        return ['terrain.swap'].forEach(function(eventId) {
-          return GameServer.on(eventId, function() {
-            var args;
+    MapAreaServices.prototype.services = {};
 
-            args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-            return painter.$broadcast.apply(painter, [eventId].concat(__slice.call(args)));
-          });
-        });
+    MapAreaServices.prototype.set = function(key, service) {
+      return this.services[key] = service;
+    };
+
+    MapAreaServices.prototype.get = function(key) {
+      if (this.services[key]) {
+        return this.services[key];
       }
     };
-  }
-]);
+
+    return MapAreaServices;
+
+  })();
+  mapLayers = [Alcarin.Map.Layers.Terrain, Alcarin.Map.Layers.Characters, Alcarin.Map.Layers.CharViewRange];
+  return angular.module('@area-map', ['@game-services']).directive('alcAreaMap', [
+    'GameServer', 'CurrentCharacter', function(GameServer, Character) {
+      return {
+        restrict: 'A',
+        link: function($scope, element, attrs) {
+          var painter, services;
+
+          services = new MapAreaServices();
+          services.set('GameServer', GameServer);
+          services.set('CoordConverter', Alcarin.Map.CoordConverter);
+          painter = new Alcarin.Map.Painter(element, mapLayers, services);
+          painter.setTarget(Character);
+          return element.data('map-painter', painter);
+        }
+      };
+    }
+  ]);
+});
 
 /*
 //@ sourceMappingURL=ngx-area-map.js.map

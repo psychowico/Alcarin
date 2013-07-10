@@ -47,7 +47,6 @@ return array(
                             '/js/compiled_coffee/Alcarin/JQueryPlugins/others.js',
                             '/js/compiled_coffee/Dialogs/confirms.js',
                             '/js/compiled_coffee/Alcarin/Map/painter.js',
-                            '/js/compiled_coffee/Alcarin/Map/Layers/terrain.js',
                             '/js/compiled_coffee/Alcarin/Angular/ngx-proxy.js',
                             '/js/compiled_coffee/Alcarin/Angular/ngx-core.js',
                             '/js/compiled_coffee/Alcarin/Angular/ngx-disabled.js',
@@ -90,6 +89,11 @@ return array(
 
                             '/js/compiled_coffee/Alcarin/Game/Directives/ngx-talking-input.js',
 
+                            '/js/compiled_coffee/Alcarin/Map/Layers/terrain.js',
+                            '/js/compiled_coffee/Alcarin/Map/Layers/characters.js',
+                            '/js/compiled_coffee/Alcarin/Map/Layers/char-view-range.js',
+
+                            '/js/compiled_coffee/Alcarin/Map/coord-converter.js',
                             '/js/compiled_coffee/Alcarin/Map/ngx-area-map.js',
                             '/js/compiled_coffee/Alcarin/Game/Views/home.js',
                             '/js/compiled_coffee/Alcarin/Game/game-panel.js',
@@ -138,6 +142,7 @@ return array(
                         'sources' => array(
                             '/css/compiled_less/middle-nav.css',
                             '/css/compiled_less/player-panel.css',
+                            '/css/compiled_less/area-map.css',
                         ),
                     ),
                 ),

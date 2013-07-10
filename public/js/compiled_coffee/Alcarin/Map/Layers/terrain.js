@@ -1,4 +1,5 @@
-var __hasProp = {}.hasOwnProperty,
+var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+  __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 namespace('Alcarin.Map.Layers', function(exports, Alcarin) {
@@ -12,10 +13,15 @@ namespace('Alcarin.Map.Layers', function(exports, Alcarin) {
 
     Terrain.prototype.background = [0, 0, 255];
 
-    function Terrain(element) {
+    function Terrain(element, Services) {
+      var GameServer;
+
+      this.Services = Services;
+      this.onTerrainSwap = __bind(this.onTerrainSwap, this);
       this.table = $(element);
       this.table.append(this.prepareCanvas());
-      this.$on('terrain.swap', this.onTerrainSwap);
+      GameServer = this.Services.get('GameServer');
+      GameServer.on('terrain.swap', this.onTerrainSwap);
     }
 
     Terrain.prototype.width = function() {
@@ -35,16 +41,19 @@ namespace('Alcarin.Map.Layers', function(exports, Alcarin) {
     };
 
     Terrain.prototype.prepareCanvas = function() {
-      var bg;
+      var bg, pixelSize;
 
       if (this.canvas) {
         this.context = null;
         this.canvas.remove();
       }
-      this.canvas = $('<canvas>');
+      this.canvas = $('<canvas>', {
+        "class": 'terrain'
+      });
+      pixelSize = this.table.width() + 5;
       $.extend(this.canvas[0], {
-        width: this.table.width(),
-        height: this.table.height()
+        width: pixelSize,
+        height: pixelSize
       });
       this.context = this.canvas[0].getContext('2d');
       bg = this.background;
@@ -82,7 +91,7 @@ namespace('Alcarin.Map.Layers', function(exports, Alcarin) {
       return this.context.restore();
     };
 
-    Terrain.prototype.onTerrainSwap = function(radius, fields) {
+    Terrain.prototype.onTerrainSwap = function(fields, radius) {
       var _this = this;
 
       return this.charPromise.done(function(character) {
@@ -91,6 +100,7 @@ namespace('Alcarin.Map.Layers', function(exports, Alcarin) {
         center = character.loc;
         size = radius * 2;
         bufferContext = _this.getBackbuffer(size, size);
+        _this.Services.get('CoordConverter').init(center, radius, _this.width() / 2);
         imageData = bufferContext.getImageData(0, 0, size, size);
         offset = {
           x: center.x - radius,

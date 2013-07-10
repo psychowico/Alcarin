@@ -1,17 +1,28 @@
 'use strict'
 
-angular.module('@area-map', ['@game-services'])
-    .directive 'alcAreaMap', ['GameServer', 'CurrentCharacter', (GameServer, Character)->
-            restrict:'A'
-            link: ($scope, element, attrs)->
-                layers = [
-                    Alcarin.Map.Layers.Terrain
-                ]
-                painter = new Alcarin.Map.Painter element, layers
-                painter.setTarget Character
-                element.data 'map-painter', painter
+namespace 'Alcarin.Map', (exports, Alcarin) ->
 
-                ['terrain.swap'].forEach (eventId)->
-                    GameServer.on eventId, (args...)->
-                        painter.$broadcast eventId, args...
-]
+    class MapAreaServices
+        services : {}
+
+        set: (key, service)-> @services[key] = service
+        get: (key)-> return @services[key] if @services[key]
+
+    mapLayers = [
+        Alcarin.Map.Layers.Terrain
+        Alcarin.Map.Layers.Characters
+        Alcarin.Map.Layers.CharViewRange
+    ]
+
+    angular.module('@area-map', ['@game-services'])
+        .directive 'alcAreaMap', ['GameServer', 'CurrentCharacter', (GameServer, Character)->
+                restrict:'A'
+                link: ($scope, element, attrs)->
+                    services = new MapAreaServices()
+                    services.set 'GameServer', GameServer
+                    services.set 'CoordConverter', Alcarin.Map.CoordConverter
+
+                    painter = new Alcarin.Map.Painter element, mapLayers, services
+                    painter.setTarget Character
+                    element.data 'map-painter', painter
+    ]

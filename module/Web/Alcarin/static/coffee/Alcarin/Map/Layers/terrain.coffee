@@ -7,11 +7,12 @@ namespace 'Alcarin.Map.Layers', (exports, Alcarin) ->
     class exports.Terrain extends Alcarin.EventsEmitter
         background: [0, 0, 255]
 
-        constructor: (element)->
+        constructor: (element, @Services)->
             @table = $(element)
             @table.append @prepareCanvas()
 
-            @$on 'terrain.swap', @onTerrainSwap
+            GameServer = @Services.get 'GameServer'
+            GameServer.on 'terrain.swap', @onTerrainSwap
 
         width: -> @canvas[0]?.width
         height: -> @canvas[0]?.height
@@ -23,8 +24,10 @@ namespace 'Alcarin.Map.Layers', (exports, Alcarin) ->
                 @context = null
                 @canvas.remove()
 
-            @canvas  = $ '<canvas>'
-            $.extend @canvas[0], {width: @table.width(), height: @table.height()}
+            @canvas  = $ '<canvas>', {class: 'terrain'}
+
+            pixelSize = @table.width() + 5
+            $.extend @canvas[0], {width: pixelSize, height: pixelSize}
 
             @context = @canvas[0].getContext '2d'
 
@@ -55,14 +58,19 @@ namespace 'Alcarin.Map.Layers', (exports, Alcarin) ->
             @context.drawImage @backbuffer[0], 0, 0, w, h, 0, 0, @width(), @height()
             @context.restore()
 
-        onTerrainSwap: (radius, fields)->
+        onTerrainSwap: (fields, radius)=>
             @charPromise.done (character)=>
                 center        = character.loc
                 size          = radius * 2
                 bufferContext = @getBackbuffer size, size
 
+                @Services.get('CoordConverter').init center, radius, @width() / 2
+
                 imageData = bufferContext.getImageData 0, 0, size, size
                 offset = {x: center.x - radius, y: center.y - radius}
+
+                # canvasTitle = "View radius: #{radius / 10}km"
+                # @canvas.parent().tooltip {title: canvasTitle, placement: 'bottom'}
 
                 for field in fields
                     color = field.land.color

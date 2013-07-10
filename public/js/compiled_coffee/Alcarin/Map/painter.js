@@ -26,16 +26,17 @@ namespace('Alcarin.Map', function(exports, Alcarin) {
       return _results;
     };
 
-    function Painter(element, layers) {
+    function Painter(element, layers, services) {
       var layerClass, layerInstance, _i, _len,
         _this = this;
 
+      this.services = services;
       for (_i = 0, _len = layers.length; _i < _len; _i++) {
         layerClass = layers[_i];
         if (layerClass == null) {
           throw Error("Painter layer class not exists.");
         }
-        layerInstance = new layerClass(element);
+        layerInstance = new layerClass(element, this.services);
         if (layerInstance.$on) {
           layerInstance.$on('*', function(obj) {
             return _this.$emit.apply(_this, [obj.name].concat(obj.args));
