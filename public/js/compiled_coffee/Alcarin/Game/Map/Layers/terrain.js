@@ -97,7 +97,11 @@ namespace('Alcarin.Game.Map.Layers', function(exports, Alcarin) {
       return this.charPromise.done(function(character) {
         var bufferContext, c, center, color, dataOffset, field, i, imageData, mod, offset, pixelX, pixelY, size, _i, _j, _len;
 
-        center = character.loc;
+        center = {
+          x: Math.round(character.loc.x),
+          y: Math.round(character.loc.y)
+        };
+        console.log(center);
         size = radius * 2;
         bufferContext = _this.getBackbuffer(size, size);
         _this.Services.get('CoordConverter').init(center, radius, _this.width() / 2);

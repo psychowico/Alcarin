@@ -60,7 +60,10 @@ namespace 'Alcarin.Game.Map.Layers', (exports, Alcarin) ->
 
         onTerrainSwap: (fields, radius)=>
             @charPromise.done (character)=>
-                center        = character.loc
+                center =
+                    x: Math.round character.loc.x
+                    y: Math.round character.loc.y
+                console.log center
                 size          = radius * 2
                 bufferContext = @getBackbuffer size, size
 

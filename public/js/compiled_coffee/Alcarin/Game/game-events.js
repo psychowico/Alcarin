@@ -24,10 +24,12 @@
       GameServer.on('game-event.add', function(evData) {
         var gameEvent;
 
-        gameEvent = Translate(evData);
-        _this.gameEvents.splice(0, 0, gameEvent);
-        if (evData.response) {
-          return _this.sending = false;
+        if (!evData.system) {
+          gameEvent = Translate(evData);
+          _this.gameEvents.splice(0, 0, gameEvent);
+          if (evData.response) {
+            return _this.sending = false;
+          }
         }
       });
       this.talkToAll = function(content) {

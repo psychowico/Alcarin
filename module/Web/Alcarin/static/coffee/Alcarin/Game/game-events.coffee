@@ -10,9 +10,10 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
             GameServer.on 'game-event.swap', (data)=>
                 @gameEvents  = (Translate ev for ev in data)
             GameServer.on 'game-event.add', (evData)=>
-                gameEvent = Translate evData
-                @gameEvents.splice 0, 0, gameEvent
-                @sending = false if evData.response
+                if not evData.system
+                    gameEvent = Translate evData
+                    @gameEvents.splice 0, 0, gameEvent
+                    @sending = false if evData.response
 
             @talkToAll = (content)=>
                 return if content.length == 0

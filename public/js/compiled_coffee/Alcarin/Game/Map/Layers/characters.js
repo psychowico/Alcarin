@@ -6,28 +6,54 @@ namespace('Alcarin.Game.Map.Layers', function(exports, Alcarin) {
   return exports.Characters = (function(_super) {
     __extends(Characters, _super);
 
-    Characters.prototype.charsRepresentation = [];
+    Characters.prototype.charsbyId = {};
 
     function Characters(element, Services) {
+      var GameServer;
+
       this.Services = Services;
       this.onCharactersSwap = __bind(this.onCharactersSwap, this);
+      this.onGameEvent = __bind(this.onGameEvent, this);
       this.table = $('<div>', {
         "class": 'characters',
         position: 'relative'
       });
       $(element).append(this.table);
-      this.Services.get('GameServer').on('chars.swap', this.onCharactersSwap);
+      GameServer = this.Services.get('GameServer');
+      this.CoordConverter = this.Services.get('CoordConverter');
+      GameServer.on('chars.swap', this.onCharactersSwap);
+      GameServer.on('game-event.add', this.onGameEvent);
     }
 
-    Characters.prototype.clearChars = function() {
-      var element, _i, _len, _ref;
+    Characters.prototype.onGameEvent = function(gameEvent) {
+      var charid, element, loc,
+        _this = this;
 
-      _ref = this.charsRepresentation;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        element = _ref[_i];
+      if (gameEvent.system && gameEvent.id === 'char.update') {
+        charid = gameEvent.args[0];
+        loc = gameEvent.args[1];
+        element = this.charsbyId[charid];
+        return this.CoordConverter.done(function(Coords) {
+          var pLoc;
+
+          pLoc = Coords.toPixels(loc.x, loc.y);
+          return element.position({
+            left: pLoc.x,
+            top: pLoc.y
+          });
+        });
+      }
+    };
+
+    Characters.prototype.clearChars = function() {
+      var element, id, _ref;
+
+      _ref = this.charsbyId;
+      for (id in _ref) {
+        element = _ref[id];
         element.remove();
       }
-      return this.charsRepresentation = [];
+      return this.charsbyId = {};
     };
 
     Characters.prototype.setTarget = function(charPromise) {
@@ -35,20 +61,8 @@ namespace('Alcarin.Game.Map.Layers', function(exports, Alcarin) {
     };
 
     Characters.prototype.createCharacterElement = function(pLoc, character) {
-      var $element, distance, element, loc, title, _i, _len, _ref;
+      var element;
 
-      _ref = this.charsRepresentation;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        $element = _ref[_i];
-        loc = $element.position();
-        distance = Math.sqrt(Math.pow(loc.left - pLoc.x, 2) + Math.pow(loc.top - pLoc.y, 2));
-        if (distance < 5) {
-          title = $element.children().attr('title');
-          $element.children().attr('title', "" + title + "\n" + character.name);
-          $element.data('rel').push(character);
-          return $element;
-        }
-      }
       element = $('<div>', {
         "class": 'character'
       });
@@ -60,7 +74,7 @@ namespace('Alcarin.Game.Map.Layers', function(exports, Alcarin) {
       element.children().attr('title', "" + character.name);
       element.data('rel', [character]);
       this.table.append(element);
-      this.charsRepresentation.push(element);
+      this.charsbyId[character._id] = element;
       return element;
     };
 
@@ -69,7 +83,7 @@ namespace('Alcarin.Game.Map.Layers', function(exports, Alcarin) {
 
       return this.charPromise.done(function(currChar) {
         _this.clearChars();
-        return _this.Services.get('CoordConverter').done(function(Coords) {
+        return _this.CoordConverter.done(function(Coords) {
           var $element, character, loc, pLoc, _i, _len, _results;
 
           _results = [];

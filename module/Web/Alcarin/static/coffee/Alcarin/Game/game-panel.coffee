@@ -21,4 +21,5 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
 
             GameServer.init charid
             CurrentCharacter.init charid
+
     ]
