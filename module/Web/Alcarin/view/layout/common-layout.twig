@@ -14,11 +14,6 @@
         <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
 
         {{ headLink().prependBundle('common').prependBundle('external') | raw }}
-
-        <!-- Scripts -->
-        {{ headScript().prependFile(
-            basePath( '/js/html5.js' ), 'text/javascript', { 'conditional': 'lt IE 9' }
-        ).prependBundle('common').prependBundle('external') | raw }}
     </head>
     <body>
         <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -90,6 +85,14 @@
                 {% endblock %}
             </footer>
         </div>
+
+        <script type="text/javascript" src="/js/jquery-1.9.1.js"></script>
+        <script type="text/javascript" src="/js/angular-1.1.5.js"></script>
+
+        <!-- Scripts -->
+        {{ headScript().prependFile(
+            basePath( '/js/html5.js' ), 'text/javascript', { 'conditional': 'lt IE 9' }
+        ).prependBundle('common').prependBundle('external') | raw }}
         {{ inlineScript() | raw }}
     </body>
 </html>

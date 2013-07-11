@@ -17,8 +17,8 @@ return array(
                             //because angularsjs cant be packed by default minifier config
                             //I moved it to common.layout directly - to time when I fix this
                             //issue
-                            '/js/vendor/jquery/jquery-1.9.1.js',
-                            '/js/vendor/angularjs/angular-1.1.5.js',
+                            // '/js/vendor/jquery/jquery-1.9.1.js',
+                            // '/js/vendor/angularjs/angular-1.1.5.js',
                         ),
                         'directories' => array(
                             '/js/vendor',
