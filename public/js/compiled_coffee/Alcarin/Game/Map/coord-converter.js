@@ -1,4 +1,4 @@
-'use strict';namespace('Alcarin.Map', function(exports, Alcarin) {
+'use strict';namespace('Alcarin.Game.Map', function(exports, Alcarin) {
   var CoordConverter, deffered;
 
   CoordConverter = (function() {

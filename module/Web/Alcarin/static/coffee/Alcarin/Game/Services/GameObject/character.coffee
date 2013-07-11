@@ -32,4 +32,5 @@ namespace 'Alcarin.Game.Services.GameObject', (exports, Alcarin) ->
             @GameServer.emit 'fetch.char', obj.id
             deffered.promise
 
-    exports.Factory.register Factory.init, Factory.condition, Factory.factory
+    $ ->
+        exports.Factory.register Factory.init, Factory.condition, Factory.factory

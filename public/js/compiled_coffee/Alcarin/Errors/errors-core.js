@@ -3,6 +3,7 @@ var __slice = [].slice;
 namespace('Alcarin.Errors', function(exports, Alcarin) {
   var cookie_name, day_limit, space;
 
+  return;
   cookie_name = 'js-errors';
   /*errors nb will be stored in cookie and requests will be blocked when
   number reach this limit

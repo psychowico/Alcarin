@@ -1,4 +1,4 @@
-namespace 'Alcarin.Map.Layers', (exports, Alcarin) ->
+namespace 'Alcarin.Game.Map.Layers', (exports, Alcarin) ->
 
     NOISE_DENSITY = 25
     NOISE_IMPACT  = 0.22

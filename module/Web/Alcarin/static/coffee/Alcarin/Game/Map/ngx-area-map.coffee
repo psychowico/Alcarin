@@ -1,6 +1,6 @@
 'use strict'
 
-namespace 'Alcarin.Map', (exports, Alcarin) ->
+namespace 'Alcarin.Game.Map', (exports, Alcarin) ->
 
     class MapAreaServices
         services : {}
@@ -8,19 +8,21 @@ namespace 'Alcarin.Map', (exports, Alcarin) ->
         set: (key, service)-> @services[key] = service
         get: (key)-> return @services[key] if @services[key]
 
-    mapLayers = [
-        Alcarin.Map.Layers.Terrain
-        Alcarin.Map.Layers.CharViewRange
-        Alcarin.Map.Layers.Characters
-    ]
 
     angular.module('@area-map', ['@game-services'])
         .directive 'alcAreaMap', ['GameServer', 'CurrentCharacter', (GameServer, Character)->
-                restrict:'A'
-                link: ($scope, element, attrs)->
+            restrict:'A'
+            link: ($scope, element, attrs)->
+                $ ->
+                    mapLayers = [
+                        Alcarin.Game.Map.Layers.Terrain
+                        Alcarin.Game.Map.Layers.CharViewRange
+                        Alcarin.Game.Map.Layers.Characters
+                    ]
+
                     services = new MapAreaServices()
                     services.set 'GameServer', GameServer
-                    services.set 'CoordConverter', Alcarin.Map.CoordConverter
+                    services.set 'CoordConverter', Alcarin.Game.Map.CoordConverter
 
                     painter = new Alcarin.Map.Painter element, mapLayers, services
                     painter.setTarget Character

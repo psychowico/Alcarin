@@ -61,7 +61,9 @@
     return Factory;
 
   }).call(this);
-  return exports.Factory.register(Factory.init, Factory.condition, Factory.factory);
+  return $(function() {
+    return exports.Factory.register(Factory.init, Factory.condition, Factory.factory);
+  });
 });
 
 /*

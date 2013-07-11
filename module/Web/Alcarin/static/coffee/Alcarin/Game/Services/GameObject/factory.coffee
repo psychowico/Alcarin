@@ -39,7 +39,6 @@ namespace 'Alcarin.Game.Services.GameObject', (exports, Alcarin) ->
             factories.push factory
 
 
-
     module = Alcarin.Game.Services.module
     module.factory 'GameObjectFactory', ['GameServer', (GameServer)->
         _GameServer = GameServer

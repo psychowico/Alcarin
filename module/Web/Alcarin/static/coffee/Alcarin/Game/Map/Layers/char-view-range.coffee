@@ -1,4 +1,4 @@
-namespace 'Alcarin.Map.Layers', (exports, Alcarin) ->
+namespace 'Alcarin.Game.Map.Layers', (exports, Alcarin) ->
 
     class exports.CharViewRange extends Alcarin.EventsEmitter
 
@@ -13,8 +13,6 @@ namespace 'Alcarin.Map.Layers', (exports, Alcarin) ->
         onTerrainSwap: (fields, radius, charViewRange)=>
             @characterPromise.done (character)=>
                 @Services.get('CoordConverter').done (Coords)=>
-                    console.log charViewRange
-                    console.log radius
                     shadowRadius = charViewRange * Coords.pixelRadius / Coords.radius
                     @shadow.remove() if @shadow?
                     @shadow = $ '<div>', {class: 'shadow'}

@@ -2,7 +2,7 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-namespace('Alcarin.Map.Layers', function(exports, Alcarin) {
+namespace('Alcarin.Game.Map.Layers', function(exports, Alcarin) {
   return exports.CharViewRange = (function(_super) {
     __extends(CharViewRange, _super);
 
@@ -27,8 +27,6 @@ namespace('Alcarin.Map.Layers', function(exports, Alcarin) {
         return _this.Services.get('CoordConverter').done(function(Coords) {
           var $child, center, pos, shadowRadius;
 
-          console.log(charViewRange);
-          console.log(radius);
           shadowRadius = charViewRange * Coords.pixelRadius / Coords.radius;
           if (_this.shadow != null) {
             _this.shadow.remove();

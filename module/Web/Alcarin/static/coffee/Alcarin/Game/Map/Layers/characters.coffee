@@ -1,4 +1,4 @@
-namespace 'Alcarin.Map.Layers', (exports, Alcarin) ->
+namespace 'Alcarin.Game.Map.Layers', (exports, Alcarin) ->
 
     class exports.Characters extends Alcarin.EventsEmitter
         charsRepresentation: []

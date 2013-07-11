@@ -1,5 +1,5 @@
-'use strict';namespace('Alcarin.Map', function(exports, Alcarin) {
-  var MapAreaServices, mapLayers;
+'use strict';namespace('Alcarin.Game.Map', function(exports, Alcarin) {
+  var MapAreaServices;
 
   MapAreaServices = (function() {
     function MapAreaServices() {}
@@ -19,20 +19,22 @@
     return MapAreaServices;
 
   })();
-  mapLayers = [Alcarin.Map.Layers.Terrain, Alcarin.Map.Layers.CharViewRange, Alcarin.Map.Layers.Characters];
   return angular.module('@area-map', ['@game-services']).directive('alcAreaMap', [
     'GameServer', 'CurrentCharacter', function(GameServer, Character) {
       return {
         restrict: 'A',
         link: function($scope, element, attrs) {
-          var painter, services;
+          return $(function() {
+            var mapLayers, painter, services;
 
-          services = new MapAreaServices();
-          services.set('GameServer', GameServer);
-          services.set('CoordConverter', Alcarin.Map.CoordConverter);
-          painter = new Alcarin.Map.Painter(element, mapLayers, services);
-          painter.setTarget(Character);
-          return element.data('map-painter', painter);
+            mapLayers = [Alcarin.Game.Map.Layers.Terrain, Alcarin.Game.Map.Layers.CharViewRange, Alcarin.Game.Map.Layers.Characters];
+            services = new MapAreaServices();
+            services.set('GameServer', GameServer);
+            services.set('CoordConverter', Alcarin.Game.Map.CoordConverter);
+            painter = new Alcarin.Map.Painter(element, mapLayers, services);
+            painter.setTarget(Character);
+            return element.data('map-painter', painter);
+          });
         }
       };
     }

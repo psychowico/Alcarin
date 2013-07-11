@@ -1,6 +1,6 @@
 'use strict'
 
-namespace 'Alcarin.Map', (exports, Alcarin) ->
+namespace 'Alcarin.Game.Map', (exports, Alcarin) ->
 
     class CoordConverter
 
