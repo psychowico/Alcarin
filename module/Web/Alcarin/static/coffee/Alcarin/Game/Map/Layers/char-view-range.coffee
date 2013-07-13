@@ -8,10 +8,8 @@ namespace 'Alcarin.Game.Map.Layers', (exports, Alcarin) ->
             GameServer = @Services.get 'GameServer'
             GameServer.on 'terrain.swap', @onTerrainSwap
 
-        setTarget: (@characterPromise)->
-
         onTerrainSwap: (fields, radius, charViewRange)=>
-            @characterPromise.done (character)=>
+            @Services.get('CurrentCharacter').done (character)=>
                 @Services.get('CoordConverter').done (Coords)=>
                     shadowRadius = charViewRange * Coords.pixelRadius / Coords.radius
                     @shadow.remove() if @shadow?

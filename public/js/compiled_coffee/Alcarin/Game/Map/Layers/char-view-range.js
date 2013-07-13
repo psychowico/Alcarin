@@ -16,14 +16,10 @@ namespace('Alcarin.Game.Map.Layers', function(exports, Alcarin) {
       GameServer.on('terrain.swap', this.onTerrainSwap);
     }
 
-    CharViewRange.prototype.setTarget = function(characterPromise) {
-      this.characterPromise = characterPromise;
-    };
-
     CharViewRange.prototype.onTerrainSwap = function(fields, radius, charViewRange) {
       var _this = this;
 
-      return this.characterPromise.done(function(character) {
+      return this.Services.get('CurrentCharacter').done(function(character) {
         return _this.Services.get('CoordConverter').done(function(Coords) {
           var $child, center, pos, shadowRadius;
 

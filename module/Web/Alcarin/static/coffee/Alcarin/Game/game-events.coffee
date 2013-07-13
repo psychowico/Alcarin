@@ -44,7 +44,7 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
 
                 if $.isPlainObject arg
                     fArg = $.extend {text: arg.text}, arg.__base
-                    GameObjectFactory fArg
+                    # GameObjectFactory fArg
                 else
                     fArg =
                         text: arg

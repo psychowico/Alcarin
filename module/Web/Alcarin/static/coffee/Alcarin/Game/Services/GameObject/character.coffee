@@ -2,35 +2,33 @@
 
 namespace 'Alcarin.Game.Services.GameObject', (exports, Alcarin) ->
 
-    class Character
+    class exports.Character
         @count : 0
 
-        constructor: (_id)->
+        constructor: ->
             Character.count++
 
-    class Factory
-        @cache: {}
-        @waitingPromises: {}
+    class exports.CharacterFactory extends exports.BaseFactory
+        waitingPromises: {}
 
-        @init: (@GameServer)=>
-            @GameServer.on 'char.fetch', (charData)=>
-                @cache[charData._id] = character = new Character charData._id
-                character[key] = val for key, val of charData
-                if @waitingPromises[charData._id]?
-                    for deffered in @waitingPromises[charData._id]
-                        deffered.resolve character
-                    @waitingPromises[charData._id] = []
+        constructor: (@GameServer, @$q)->
+            super @$q, exports.Character, '_id'
+            @GameServer.on 'char.fetch', @onServerResponse
 
-        @condition: (obj)-> obj.type == 'char'
+        onServerResponse: (obj)=>
+            throw Error 'Wrong server answer.' if typeof obj is 'string'
+            _id = obj[@idKey]
+            result = @factory obj
+            if @waitingPromises[_id]?
+                deffered.resolve result for deffered in @waitingPromises[_id]
 
-        @factory: (obj)=>
-            return @cache[obj.id] if @cache[obj.id]?
-
-            deffered = Q.defer()
-            @waitingPromises[obj.id] = [] if not @waitingPromises[obj.id]
-            @waitingPromises[obj.id].push deffered
-            @GameServer.emit 'fetch.char', obj.id
-            deffered.promise
-
-    $ ->
-        exports.Factory.register Factory.init, Factory.condition, Factory.factory
+        factory: (objOrId)=>
+            if typeof objOrId is 'string'
+                _id = objOrId
+                deffered = @$q.defer()
+                @waitingPromises[_id] = [] if not @waitingPromises[_id]
+                @waitingPromises[_id].push deffered
+                @GameServer.emit 'fetch.char', _id
+                deffered.promise
+            else
+                super objOrId

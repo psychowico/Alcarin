@@ -16,7 +16,19 @@ namespace('Alcarin.Angular', function(exports, Alcarin) {
         }
       };
     }
-  ]).factory('@EventsBus', function() {
+  ]).factory('$safeApply', function() {
+    return function(scope, _meth) {
+      var _this = this;
+
+      if (scope.$$phase) {
+        return _meth();
+      } else {
+        return scope.$apply(function() {
+          return _meth();
+        });
+      }
+    };
+  }).factory('@EventsBus', function() {
     var EventsBus;
 
     EventsBus = (function() {

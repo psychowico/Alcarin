@@ -74,7 +74,6 @@
             fArg = $.extend({
               text: arg.text
             }, arg.__base);
-            GameObjectFactory(fArg);
           } else {
             fArg = {
               text: arg,

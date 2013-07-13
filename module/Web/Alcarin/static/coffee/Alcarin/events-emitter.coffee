@@ -5,6 +5,8 @@ namespace 'Alcarin', (exports, Alcarin) ->
     class exports.EventsEmitter
 
         $on: (name, meth)->
+            if not meth?
+                throw Error "Can not react on undefined event. Event name: #{name}"
             @$_listeners = @$_listeners or {}
 
             @$_listeners[name] = [] if not @$_listeners[name]?

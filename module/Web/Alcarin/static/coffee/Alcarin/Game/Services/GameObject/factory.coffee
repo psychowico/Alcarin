@@ -21,38 +21,39 @@ char.resolve().then (charGameObject)->
 
 namespace 'Alcarin.Game.Services.GameObject', (exports, Alcarin) ->
 
-    _GameServer = null
+    class exports.BaseFactory
+        cache          : {}
 
-    factories = []
-    resolvingGameObject = (resolving_method, obj)->
-        -> Q resolving_method obj
+        constructor: (@$q, @_class, @idKey='_id')->
 
-    exports.Factory =
-        register: (initFun, can_resolve, resolving_method)->
-            factory =
-                init     : initFun
-                condition: can_resolve
-                resolving: resolving_method
-            if _GameServer
-                factory.init _GameServer
-                delete factory.init
-            factories.push factory
+        _factoryObject: (obj)->
+            id = obj[@idKey]
+            if not id?
+                throw Error "Factory: Can not create object withot '#{@idKey}' id key."
+
+            if @cache[id]?
+                instance = @cache[id]
+            else
+                instance = new @_class()
+            instance[key] = val for key, val of obj
+            instance.update obj if instance.update
+            return instance
+
+        factory: (obj)->
+            @$q.when @_factoryObject obj
+
+    class GameObjectFactory
+
+        constructor: (@GameServer, $q)->
+            CharacterFactory = Alcarin.Game.Services.GameObject.CharacterFactory
+            @factories =
+                chars: new CharacterFactory @GameServer, $q
+
+        character: (charObjOrId)=> @factories.chars.factory charObjOrId
 
 
     module = Alcarin.Game.Services.module
-    module.factory 'GameObjectFactory', ['GameServer', (GameServer)->
-        _GameServer = GameServer
-
-        (arg)->
-            for factory in factories
-                if factory.init?
-                    factory.init? GameServer
-                    delete factory.init
-
-                if factory.condition arg
-                    do (factory, arg)=>
-                        arg.resolve = resolvingGameObject factory.resolving, arg
-                    return arg
-                    #return new Alcarin.GameObject.LazyGameObject arg, factory.resolving
-            throw Error 'Can not resolve object: ' + JSON.stringify arg
+    module.factory 'GameObjectFactory', ['GameServer', '$q',
+        (GameServer, $q)->
+            return new GameObjectFactory GameServer, $q
     ]

@@ -17,57 +17,73 @@ Alcarin.GameObject.Factory(char)
 char.resolve().then (charGameObject)->
     console.log charGameObject.name
 */
+
+var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
 namespace('Alcarin.Game.Services.GameObject', function(exports, Alcarin) {
-  var factories, module, resolvingGameObject, _GameServer;
+  var GameObjectFactory, module;
 
-  _GameServer = null;
-  factories = [];
-  resolvingGameObject = function(resolving_method, obj) {
-    return function() {
-      return Q(resolving_method(obj));
-    };
-  };
-  exports.Factory = {
-    register: function(initFun, can_resolve, resolving_method) {
-      var factory;
+  exports.BaseFactory = (function() {
+    BaseFactory.prototype.cache = {};
 
-      factory = {
-        init: initFun,
-        condition: can_resolve,
-        resolving: resolving_method
-      };
-      if (_GameServer) {
-        factory.init(_GameServer);
-        delete factory.init;
-      }
-      return factories.push(factory);
+    function BaseFactory($q, _class, idKey) {
+      this.$q = $q;
+      this._class = _class;
+      this.idKey = idKey != null ? idKey : '_id';
     }
-  };
+
+    BaseFactory.prototype._factoryObject = function(obj) {
+      var id, instance, key, val;
+
+      id = obj[this.idKey];
+      if (id == null) {
+        throw Error("Factory: Can not create object withot '" + this.idKey + "' id key.");
+      }
+      if (this.cache[id] != null) {
+        instance = this.cache[id];
+      } else {
+        instance = new this._class();
+      }
+      for (key in obj) {
+        val = obj[key];
+        instance[key] = val;
+      }
+      if (instance.update) {
+        instance.update(obj);
+      }
+      return instance;
+    };
+
+    BaseFactory.prototype.factory = function(obj) {
+      return this.$q.when(this._factoryObject(obj));
+    };
+
+    return BaseFactory;
+
+  })();
+  GameObjectFactory = (function() {
+    function GameObjectFactory(GameServer, $q) {
+      var CharacterFactory;
+
+      this.GameServer = GameServer;
+      this.character = __bind(this.character, this);
+      CharacterFactory = Alcarin.Game.Services.GameObject.CharacterFactory;
+      this.factories = {
+        chars: new CharacterFactory(this.GameServer, $q)
+      };
+    }
+
+    GameObjectFactory.prototype.character = function(charObjOrId) {
+      return this.factories.chars.factory(charObjOrId);
+    };
+
+    return GameObjectFactory;
+
+  })();
   module = Alcarin.Game.Services.module;
   return module.factory('GameObjectFactory', [
-    'GameServer', function(GameServer) {
-      _GameServer = GameServer;
-      return function(arg) {
-        var factory, _i, _len,
-          _this = this;
-
-        for (_i = 0, _len = factories.length; _i < _len; _i++) {
-          factory = factories[_i];
-          if (factory.init != null) {
-            if (typeof factory.init === "function") {
-              factory.init(GameServer);
-            }
-            delete factory.init;
-          }
-          if (factory.condition(arg)) {
-            (function(factory, arg) {
-              return arg.resolve = resolvingGameObject(factory.resolving, arg);
-            })(factory, arg);
-            return arg;
-          }
-        }
-        throw Error('Can not resolve object: ' + JSON.stringify(arg));
-      };
+    'GameServer', '$q', function(GameServer, $q) {
+      return new GameObjectFactory(GameServer, $q);
     }
   ]);
 });

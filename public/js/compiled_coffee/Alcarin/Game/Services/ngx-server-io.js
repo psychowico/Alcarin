@@ -47,6 +47,9 @@ namespace('Alcarin.Game.Services', function(exports, Alcarin) {
     ServerConnector.prototype.on = function(eventId, callback) {
       var safeCallback, scope;
 
+      if (callback == null) {
+        throw Error("Can not react on undefined event. Event name: " + eventId);
+      }
       scope = this.$scope;
       safeCallback = function() {
         var args;

@@ -12,7 +12,13 @@ namespace 'Alcarin.Angular', (exports, Alcarin) ->
                     _meth()
                 else
                     $rootScope.$apply => _meth()
-        ]).factory('@EventsBus', ->
+        ]).factory('$safeApply', ->
+            (scope, _meth)->
+                if scope.$$phase
+                    _meth()
+                else
+                    scope.$apply => _meth()
+        ).factory('@EventsBus', ->
             class EventsBus
                 listeners = {}
 

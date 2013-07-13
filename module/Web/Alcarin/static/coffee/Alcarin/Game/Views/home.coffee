@@ -2,6 +2,4 @@
 
 namespace 'Alcarin.Game.Views', (exports, Alcarin) ->
 
-    exports.Home = ngcontroller ['GameServer', (GameServer)->
-
-    ]
+    exports.Home = ngcontroller ->

@@ -6,6 +6,9 @@ namespace('Alcarin', function(exports, Alcarin) {
     function EventsEmitter() {}
 
     EventsEmitter.prototype.$on = function(name, meth) {
+      if (meth == null) {
+        throw Error("Can not react on undefined event. Event name: " + name);
+      }
       this.$_listeners = this.$_listeners || {};
       if (this.$_listeners[name] == null) {
         this.$_listeners[name] = [];

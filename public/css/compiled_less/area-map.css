@@ -15,13 +15,19 @@
   overflow: hidden;
 }
 .area-map .terrain {
-  z-index: 0;
+  width: 193px;
+  height: 193px;
   position: absolute;
-  left: -4px;
-  top: -4px;
+  left: -6px;
+  top: -6px;
+  overflow: hidden;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  border-radius: 50%;
 }
 .area-map .shadow {
-  z-index: 1;
   position: absolute;
 }
 .area-map .shadow div {
@@ -35,13 +41,19 @@
   opacity: 0.13;
 }
 .area-map .characters {
-  z-index: 2;
+  overflow: hidden;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  border-radius: 50%;
   position: absolute;
   width: 100%;
   height: 100%;
 }
 .area-map .characters .character.current div {
   background: #1100CC;
+  z-index: 1;
 }
 .area-map .characters .character {
   position: absolute;

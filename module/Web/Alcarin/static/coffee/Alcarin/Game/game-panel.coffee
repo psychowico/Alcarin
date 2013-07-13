@@ -5,7 +5,7 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
     socket_port = 8080
 
     exports.module = angular.module('game', ['@spin', 'ui.event', '@talk-input',
-            '@area-map', '@game-services'])
+            '@area-map', '@game-services', '@character-token'])
            .config ['$routeProvider', ($routeProvider)->
                 $routeProvider
                     .when '/home',
@@ -17,7 +17,7 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
 
     exports.App = ngcontroller ['$window', 'CurrentCharacter', 'GameServer',
         ($window, CurrentCharacter, GameServer)->
-            charid = $window.charid
+            @charid = $window.charid
 
             GameServer.init charid
             CurrentCharacter.init charid

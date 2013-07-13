@@ -14,6 +14,7 @@ namespace 'Alcarin.Game.Services', (exports, Alcarin) ->
 
     socket_port = 8080
 
+    # in ServerConnector we use normal Q promises, not angularjs $q
     class ServerConnector
 
         constructor: (@host, @port, @sessionid, @$scope)->
@@ -33,6 +34,8 @@ namespace 'Alcarin.Game.Services', (exports, Alcarin) ->
             @initSocket.then @socketInitialized
 
         on: (eventId, callback)->
+            if not callback?
+                throw Error "Can not react on undefined event. Event name: #{eventId}"
             scope = @$scope
             safeCallback = (args...)-> scope.$safeApply -> callback.apply @, args
             @initSocket.done (socket)->

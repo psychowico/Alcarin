@@ -19,13 +19,15 @@
   .rounded-corners(50%);
   overflow: hidden;
   .terrain {
-    z-index: 0;
+    width: 193px;
+    height:193px;
     position: absolute;
-    left: -4px;
-    top: -4px;
+    left: -6px;
+    top: -6px;
+    overflow: hidden;
+    .rounded-corners(50%);
   }
   .shadow {
-    z-index: 1;
     position: absolute;
     div {
       position: relative;
@@ -35,12 +37,14 @@
     }
   }
   .characters {
-    z-index: 2;
+    overflow: hidden;
+    .rounded-corners(50%);
     position: absolute;
     width: 100%;
     height: 100%;
     .character.current div {
       background: #1100CC;
+      z-index: 1;
     }
     .character {
       position: absolute;
