@@ -57,6 +57,8 @@
 }
 .area-map .characters .character {
   position: absolute;
+  width: 0;
+  height: 0;
 }
 .area-map .characters .character div {
   position: relative;
