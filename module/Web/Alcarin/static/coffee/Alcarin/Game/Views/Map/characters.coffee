@@ -4,8 +4,8 @@ namespace 'Alcarin.Game.Views.Map', (exports, Alcarin) ->
 
     pixelRadius = 0
 
-    exports.Chars = ngcontroller ['GameServer', 'CurrentCharacter', '$safeApply', 'GameObjectFactory',
-        (GameServer, CurrentCharacter, $safeApply, Factory)->
+    exports.Chars = ngcontroller ['GameServer', 'CurrentCharacter', 'CharEnvironment',
+        (GameServer, CurrentCharacter, CharEnvironment)->
             @charslist  = {}
 
             GameServer.on 'chars.swap', (chars)=>
@@ -14,7 +14,7 @@ namespace 'Alcarin.Game.Views.Map', (exports, Alcarin) ->
                     for _char in chars
                         _char.pixelLoc = units.toPixels(_char.loc.x, _char.loc.y)
                         _char.type = 'char'
-                        Factory.character(_char).then (obj)=>
+                        CharEnvironment.character(_char).then (obj)=>
                             @charslist[obj._id] = obj
 
             GameServer.on 'game-event.add', (gameEvent)=>
@@ -32,7 +32,6 @@ namespace 'Alcarin.Game.Views.Map', (exports, Alcarin) ->
                         _char.loc = loc
                         @BackgroundReady.then (units)=>
                             _char.pixelLoc = units.toPixels _char.loc.x, _char.loc.y
-                            console.log _char.pixelLoc
     ]
 
     class exports.Characters extends Alcarin.EventsEmitter

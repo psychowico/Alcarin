@@ -8,7 +8,7 @@ namespace('Alcarin.Game.Views.Map', function(exports, Alcarin) {
 
   pixelRadius = 0;
   exports.Chars = ngcontroller([
-    'GameServer', 'CurrentCharacter', '$safeApply', 'GameObjectFactory', function(GameServer, CurrentCharacter, $safeApply, Factory) {
+    'GameServer', 'CurrentCharacter', 'CharEnvironment', function(GameServer, CurrentCharacter, CharEnvironment) {
       var _this = this;
 
       this.charslist = {};
@@ -22,7 +22,7 @@ namespace('Alcarin.Game.Views.Map', function(exports, Alcarin) {
             _char = chars[_i];
             _char.pixelLoc = units.toPixels(_char.loc.x, _char.loc.y);
             _char.type = 'char';
-            _results.push(Factory.character(_char).then(function(obj) {
+            _results.push(CharEnvironment.character(_char).then(function(obj) {
               return _this.charslist[obj._id] = obj;
             }));
           }
@@ -46,8 +46,7 @@ namespace('Alcarin.Game.Views.Map', function(exports, Alcarin) {
             _char = _this.charslist[charid];
             _char.loc = loc;
             return _this.BackgroundReady.then(function(units) {
-              _char.pixelLoc = units.toPixels(_char.loc.x, _char.loc.y);
-              return console.log(_char.pixelLoc);
+              return _char.pixelLoc = units.toPixels(_char.loc.x, _char.loc.y);
             });
           }
         }

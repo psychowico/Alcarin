@@ -31,7 +31,7 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
             return time if isNaN time
             _time = new GameTime time
             return _time.print_long()
-    ).factory('GameEventsTranslator', ['GameObjectFactory', (GameObjectFactory)->
+    ).factory('GameEventsTranslator', [->#'GameObjectFactory', (GameObjectFactory)->
         reg = /%([0-9])+/g
         return (gameEvent)->
             _text = gameEvent.text

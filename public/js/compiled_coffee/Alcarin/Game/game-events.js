@@ -57,7 +57,7 @@
       return _time.print_long();
     };
   }).factory('GameEventsTranslator', [
-    'GameObjectFactory', function(GameObjectFactory) {
+    function() {
       var reg;
 
       reg = /%([0-9])+/g;

@@ -13,14 +13,11 @@ namespace('Alcarin.Game.Views', function(exports, Alcarin) {
       BackgroundReadyDefer = $q.defer();
       this.BackgroundReady = BackgroundReadyDefer.promise;
       this.onTerrainReady = function() {
-        console.log('drawn');
-        return $safeApply(_this, function() {
-          return BackgroundReadyDefer.resolve(UnitsConverter);
-        });
+        return BackgroundReadyDefer.resolve(UnitsConverter);
       };
       this.redrawMap = function() {
         return $safeApply(_this, function() {
-          _this.fields = null;
+          _this.center = null;
           _this.radius = null;
           _this.terrain = null;
           BackgroundReadyDefer.reject();
@@ -31,7 +28,6 @@ namespace('Alcarin.Game.Views', function(exports, Alcarin) {
       };
       GameServer.on('terrain.swap', function(terrain, radius) {
         return CurrentCharacter.then(function(character) {
-          console.log(character.loc);
           _this.center = {
             x: character.loc.x,
             y: character.loc.y
@@ -61,8 +57,8 @@ namespace('Alcarin.Game.Views', function(exports, Alcarin) {
         y: center.y - radius
       };
       return {
-        x: Math.round((x - offset.x) * pixelRadius / radius),
-        y: Math.round((y - offset.y) * pixelRadius / radius)
+        x: Math.round(Math.round(x - offset.x) * pixelRadius / radius),
+        y: Math.round(Math.round(y - offset.y) * pixelRadius / radius)
       };
     };
 

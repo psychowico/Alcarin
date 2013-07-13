@@ -4,6 +4,8 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 namespace('Alcarin.Game.Services.GameObject', function(exports, Alcarin) {
+  var BaseFactory;
+
   exports.Character = (function() {
     Character.count = 0;
 
@@ -14,6 +16,7 @@ namespace('Alcarin.Game.Services.GameObject', function(exports, Alcarin) {
     return Character;
 
   })();
+  BaseFactory = Alcarin.Game.Services.BaseFactory;
   return exports.CharacterFactory = (function(_super) {
     __extends(CharacterFactory, _super);
 
@@ -66,7 +69,7 @@ namespace('Alcarin.Game.Services.GameObject', function(exports, Alcarin) {
 
     return CharacterFactory;
 
-  })(exports.BaseFactory);
+  })(BaseFactory);
 });
 
 /*

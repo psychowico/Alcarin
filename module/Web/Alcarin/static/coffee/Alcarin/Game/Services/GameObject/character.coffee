@@ -8,7 +8,8 @@ namespace 'Alcarin.Game.Services.GameObject', (exports, Alcarin) ->
         constructor: ->
             Character.count++
 
-    class exports.CharacterFactory extends exports.BaseFactory
+    BaseFactory = Alcarin.Game.Services.BaseFactory
+    class exports.CharacterFactory extends BaseFactory
         waitingPromises: {}
 
         constructor: (@GameServer, @$q)->

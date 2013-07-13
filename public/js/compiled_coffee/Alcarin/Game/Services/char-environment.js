@@ -1,26 +1,17 @@
 'use strict';
 /*
-We need getting all GameObject from this factory. This provides us that this same
-GameObject will be related with this same GameObject instance.
-To use it, first you need register GameObject factory type (one time, when adding new
-GameObject) type to system.
-Alcarin.GameObject.Factory.register can_resolve, resolving
-Where "can_resolve" is method, that will be called with base object and return true/false
-if you factory can resolve this object. Registered factory should take care about
-caching they results.
+We need ensure that in all palce in code when we working with this same
+Character/other GameObject we use this same object class instance. So when we
+change character name it will automatically updated in all places in code.
 
-Next, when we have base object, we call Alcarin.GameObject.Factory(arg) method for it.
-From now, "arg" will have "resolve()" method that return GameObject promise (Q promise).
-It is because we want lazy resolving game objects.
-
-Alcarin.GameObject.Factory(char)
-char.resolve().then (charGameObject)->
-    console.log charGameObject.name
+This factory retreving all GameObject's available for player - so, visible characters,
+things on ground etc.
+It shouldn't storing things not related with player char surroundings.
 */
 
 var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
-namespace('Alcarin.Game.Services.GameObject', function(exports, Alcarin) {
+namespace('Alcarin.Game.Services', function(exports, Alcarin) {
   var GameObjectFactory, module;
 
   exports.BaseFactory = (function() {
@@ -81,7 +72,7 @@ namespace('Alcarin.Game.Services.GameObject', function(exports, Alcarin) {
 
   })();
   module = Alcarin.Game.Services.module;
-  return module.factory('GameObjectFactory', [
+  return module.factory('CharEnvironment', [
     'GameServer', '$q', function(GameServer, $q) {
       return new GameObjectFactory(GameServer, $q);
     }
@@ -89,5 +80,5 @@ namespace('Alcarin.Game.Services.GameObject', function(exports, Alcarin) {
 });
 
 /*
-//@ sourceMappingURL=factory.js.map
+//@ sourceMappingURL=char-environment.js.map
 */

@@ -61,7 +61,7 @@ return array(
                     'player' => array(
                         'sources' => array(
                             '/js/compiled_coffee/Alcarin/Game/Services/ngx-server-io.js',
-                            '/js/compiled_coffee/Alcarin/Game/Services/GameObject/factory.js',
+                            '/js/compiled_coffee/Alcarin/Game/Services/char-environment.js',
                         ),
                         'directories' => array(
                             '/js/compiled_coffee/Alcarin/Game',

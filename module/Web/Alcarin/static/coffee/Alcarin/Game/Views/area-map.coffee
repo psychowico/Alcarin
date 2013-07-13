@@ -9,13 +9,13 @@ namespace 'Alcarin.Game.Views', (exports, Alcarin) ->
             @BackgroundReady     = BackgroundReadyDefer.promise
 
             @onTerrainReady = =>
-                console.log 'drawn'
-                $safeApply @, => BackgroundReadyDefer.resolve UnitsConverter
+                # $safeApply @, =>
+                BackgroundReadyDefer.resolve UnitsConverter
 
             @redrawMap = =>
                 $safeApply @, =>
-                    @fields = null
-                    @radius = null
+                    @center  = null
+                    @radius  = null
                     @terrain = null
 
                     BackgroundReadyDefer.reject()
@@ -26,7 +26,6 @@ namespace 'Alcarin.Game.Views', (exports, Alcarin) ->
 
             GameServer.on 'terrain.swap', (terrain, radius)=>
                 CurrentCharacter.then (character)=>
-                    console.log character.loc
                     @center =
                         x: character.loc.x
                         y: character.loc.y
@@ -48,8 +47,8 @@ namespace 'Alcarin.Game.Views', (exports, Alcarin) ->
             pixelRadius = @parent.pixelRadius
             offset = {x: center.x - radius, y: center.y - radius}
             return {
-                x: Math.round (x - offset.x) * pixelRadius / radius
-                y: Math.round (y - offset.y) * pixelRadius / radius
+                x: Math.round Math.round(x - offset.x) * pixelRadius / radius
+                y: Math.round Math.round(y - offset.y) * pixelRadius / radius
             }
 
         toUnits: (pixelX, pixelY)=>

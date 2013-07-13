@@ -3,12 +3,12 @@
 
   Character = Alcarin.Game.Services.GameObject.Character;
   return exports.module.factory('CurrentCharacter', [
-    'GameObjectFactory', '$rootScope', '$q', function(GameObjectFactory, $rootScope, $q) {
+    'CharEnvironment', '$rootScope', '$q', function(CharEnvironment, $rootScope, $q) {
       var charPromise, deferred, waitingId;
 
       deferred = $q.defer();
       waitingId = deferred.promise;
-      charPromise = waitingId.then(GameObjectFactory.character);
+      charPromise = waitingId.then(CharEnvironment.character);
       charPromise.init = function(_charid) {
         return deferred.resolve(_charid);
       };
