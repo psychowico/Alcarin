@@ -6,7 +6,9 @@
         _content: "@alcPopover"
       },
       link: function($scope, element, attrs) {
+        console.log('param');
         $scope.$watch('_content', function(val) {
+          console.log(val);
           return element.data('popover').options.content = val;
         });
         return element.popover();

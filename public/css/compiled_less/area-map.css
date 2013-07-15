@@ -16,10 +16,13 @@
 }
 .area-map {
   position: relative;
-  width: 185px;
-  height: 185px;
   float: right;
   margin-right: 15px;
+}
+.area-map .main {
+  position: relative;
+  width: 185px;
+  height: 185px;
   border-style: double;
   padding: 0px;
   background-color: #DCDCED;
@@ -30,7 +33,7 @@
   border-radius: 50%;
   overflow: hidden;
 }
-.area-map .terrain {
+.area-map .main .terrain {
   width: 193px;
   height: 193px;
   position: absolute;
@@ -43,10 +46,10 @@
   -o-border-radius: 50%;
   border-radius: 50%;
 }
-.area-map .shadow {
+.area-map .main .shadow {
   position: absolute;
 }
-.area-map .shadow div {
+.area-map .main .shadow div {
   position: relative;
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
@@ -56,11 +59,11 @@
   background: yellow;
   opacity: 0.07;
 }
-.area-map .move-target {
+.area-map .main .move-target {
   position: absolute;
   display: none;
 }
-.area-map .move-target div {
+.area-map .main .move-target div {
   cursor: pointer;
   position: relative;
   -webkit-border-radius: 50%;
@@ -79,7 +82,7 @@
   animation: targetpulse 0.5s linear 0s infinite alternate;
   -webkit-animation: targetpulse 0.5s linear 0s infinite alternate;
 }
-.area-map .characters {
+.area-map .main .characters {
   overflow: hidden;
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
@@ -90,16 +93,17 @@
   width: 100%;
   height: 100%;
 }
-.area-map .characters .character.current div {
+.area-map .main .characters .character.current div {
   background: #1100CC;
   z-index: 1;
 }
-.area-map .characters .character {
+.area-map .main .characters .character {
   position: absolute;
   width: 0;
   height: 0;
 }
-.area-map .characters .character div {
+.area-map .main .characters .character div {
+  cursor: pointer;
   position: relative;
   border-style: double;
   border-width: 3px;
@@ -115,10 +119,28 @@
   left: -8px;
   top: -8px;
 }
-.area-map .characters .character div:hover {
-  cursor: pointer;
+.area-map .main .characters .character div:hover {
   width: 12px;
   height: 12px;
+  left: -9px;
+  top: -9px;
+}
+.area-map .great-tower {
+  position: absolute;
+}
+.area-map .great-tower span {
+  cursor: pointer;
+  position: absolute;
+  padding: 0;
+  width: 14px;
+  height: 14px;
+  left: -7px;
+  top: -7px;
+}
+.area-map .great-tower span:hover {
+  padding: 2px;
+  width: 14px;
+  height: 14px;
   left: -9px;
   top: -9px;
 }

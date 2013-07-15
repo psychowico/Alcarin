@@ -7,7 +7,7 @@
           return MapBackground.$on('drawn', function(units) {
             var $child, pos, shadowRadius;
 
-            pos = units.center();
+            pos = units.pixelCenter();
             $shadow.position({
               left: pos.x,
               top: pos.y

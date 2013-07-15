@@ -1,16 +1,21 @@
-<div class="area-map" ng-controller="Alcarin.Game.Views.AreaMap">
-    <canvas class="terrain" map-radius="radius" map-fields="terrain"
-            map-center="center" on-drawn="onTerrainReady()" alc-area-map>
-    </canvas>
-    <div class="shadow" alc-range-limits><div></div></div>
-    <div class="characters" ng-controller="Alcarin.Game.Views.Map.Chars" ng-click="mapClicked($event)">
-        <div class="character" alc-character-token="char" ng-repeat="char in charslist"
-            player-character="charid">
-            <div></div>
+<div class="area-map">
+    <div class="main" ng-controller="Alcarin.Game.Views.AreaMap">
+        <canvas class="terrain" map-radius="radius" map-fields="terrain"
+                map-center="center" on-drawn="onTerrainReady()" alc-area-map>
+        </canvas>
+        <div class="shadow" alc-range-limits><div></div></div>
+        <div class="characters" ng-controller="Alcarin.Game.Views.Map.Chars" ng-click="mapClicked($event)">
+            <div class="character" alc-character-token="char" ng-repeat="char in charslist"
+                player-character="charid">
+                <div></div>
+            </div>
         </div>
+        <div class="move-target" alc-move-target title="Cel Twojej podróży"><div></div></div>
     </div>
-    <div class="move-target" alc-move-target title="Cel Twojej podróży"><div></div></div>
-    <div class="great-tower" alc-world-center>
-        <i class="icon-cog"></i>
+
+    <div class="great-tower hide" alc-world-center>
+        <span class="label label-warning" title="W oddali widzisz olbrzymią skalną konstrukcję której szczyt emanuje jasnym, ciepłym światłem.">
+            <i class="icon-cog"></i>
+        </span>
     </div>
 </div>

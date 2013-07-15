@@ -21,8 +21,8 @@
               });
             });
           }
+          return lastClick = current;
         }
-        return lastClick = current;
       };
       this.redrawMap = function() {
         return $safeApply(_this, function() {

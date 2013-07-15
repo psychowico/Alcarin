@@ -6,12 +6,15 @@ namespace 'Alcarin.Game.Services', (exports, Alcarin) ->
 
         constructor: (@parent)->
 
-        center: -> @toPixels(@parent.center.x, @parent.center.y)
+        pixelCenter: -> @toPixels(@parent.center.x, @parent.center.y)
+        center: -> @parent.center
+        pixelRadius: -> @parent.pixelRadius
+        radius: -> @parent.radius
 
         toPixels: (x, y)=>
-            center = @parent.center
-            radius = @parent.radius
-            pixelRadius = @parent.pixelRadius
+            center = @center()
+            radius = @radius()
+            pixelRadius = @pixelRadius()
             offset = {x: center.x - radius, y: center.y - radius}
             return {
                 x: Math.round Math.round(x - offset.x) * pixelRadius / radius
@@ -19,9 +22,9 @@ namespace 'Alcarin.Game.Services', (exports, Alcarin) ->
             }
 
         toUnits: (pixelX, pixelY)=>
-            center = @parent.center
-            radius = @parent.radius
-            pixelRadius = @parent.pixelRadius
+            center = @center()
+            radius = @radius()
+            pixelRadius = @pixelRadius()
             offset = {x: center.x - radius, y: center.y - radius}
             return {
                 x: offset.x + Math.round pixelX * radius / pixelRadius

@@ -6,7 +6,7 @@ namespace 'Alcarin.Game.Directives.Map', (exports, Alcarin) ->
         restrict: 'A'
         link: ($scope,$shadow,attrs)->
             MapBackground.$on 'drawn', (units)->
-                pos = units.center()
+                pos = units.pixelCenter()
                 $shadow.position {left: pos.x, top: pos.y}
 
                 shadowRadius = MapBackground.charViewRadius * MapBackground.pixelRadius / MapBackground.radius

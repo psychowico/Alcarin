@@ -1,25 +1,25 @@
 'use strict';namespace('Alcarin.Game.Directives.Map', function(exports, Alcarin) {
-  return angular.module('@world-center').directive('alcRangeLimits', [
+  return exports.module.directive('alcWorldCenter', [
     'MapBackground', function(MapBackground) {
       return {
         restrict: 'A',
-        link: function($scope, $shadow, attrs) {
+        link: function($scope, $icon, attrs) {
           return MapBackground.$on('drawn', function(units) {
-            var $child, pos, shadowRadius;
+            var c, length, nvector, pc, pradius;
 
-            pos = units.center();
-            $shadow.position({
-              left: pos.x,
-              top: pos.y
+            c = units.center();
+            length = Math.sqrt(c.x * c.x + c.y * c.y);
+            nvector = {
+              x: -c.x / length,
+              y: -c.y / length
+            };
+            pradius = units.pixelRadius();
+            pc = units.pixelCenter();
+            $icon.position({
+              left: pc.x + nvector.x * pradius,
+              top: pc.y + nvector.y * pradius
             });
-            shadowRadius = MapBackground.charViewRadius * MapBackground.pixelRadius / MapBackground.radius;
-            $child = $shadow.children();
-            $child.width(2 * shadowRadius);
-            $child.height(2 * shadowRadius);
-            return $child.position({
-              left: -shadowRadius,
-              top: -shadowRadius
-            });
+            return $icon.show();
           });
         }
       };

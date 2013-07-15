@@ -2,16 +2,16 @@
 
 namespace 'Alcarin.Game.Directives.Map', (exports, Alcarin) ->
 
-    exports.module.directive 'alcRangeLimits', ['MapBackground', (MapBackground)->
+    exports.module.directive 'alcWorldCenter', ['MapBackground', (MapBackground)->
         restrict: 'A'
-        link: ($scope,$shadow,attrs)->
+        link: ($scope,$icon,attrs)->
             MapBackground.$on 'drawn', (units)->
-                pos = units.center()
-                $shadow.position {left: pos.x, top: pos.y}
+                c = units.center()
+                length = Math.sqrt c.x * c.x + c.y * c.y
+                nvector = {x: -c.x / length, y: -c.y / length}
 
-                shadowRadius = MapBackground.charViewRadius * MapBackground.pixelRadius / MapBackground.radius
-                $child = $shadow.children()
-                $child.width 2 * shadowRadius
-                $child.height 2 * shadowRadius
-                $child.position {left: -shadowRadius, top: -shadowRadius}
+                pradius = units.pixelRadius()
+                pc = units.pixelCenter()
+                $icon.position {left: pc.x + nvector.x * pradius, top: pc.y + nvector.y * pradius}
+                $icon.show()
     ]

@@ -13,16 +13,28 @@ namespace('Alcarin.Game.Services', function(exports, Alcarin) {
       this.toPixels = __bind(this.toPixels, this);
     }
 
-    Units.prototype.center = function() {
+    Units.prototype.pixelCenter = function() {
       return this.toPixels(this.parent.center.x, this.parent.center.y);
+    };
+
+    Units.prototype.center = function() {
+      return this.parent.center;
+    };
+
+    Units.prototype.pixelRadius = function() {
+      return this.parent.pixelRadius;
+    };
+
+    Units.prototype.radius = function() {
+      return this.parent.radius;
     };
 
     Units.prototype.toPixels = function(x, y) {
       var center, offset, pixelRadius, radius;
 
-      center = this.parent.center;
-      radius = this.parent.radius;
-      pixelRadius = this.parent.pixelRadius;
+      center = this.center();
+      radius = this.radius();
+      pixelRadius = this.pixelRadius();
       offset = {
         x: center.x - radius,
         y: center.y - radius
@@ -36,9 +48,9 @@ namespace('Alcarin.Game.Services', function(exports, Alcarin) {
     Units.prototype.toUnits = function(pixelX, pixelY) {
       var center, offset, pixelRadius, radius;
 
-      center = this.parent.center;
-      radius = this.parent.radius;
-      pixelRadius = this.parent.pixelRadius;
+      center = this.center();
+      radius = this.radius();
+      pixelRadius = this.pixelRadius();
       offset = {
         x: center.x - radius,
         y: center.y - radius
