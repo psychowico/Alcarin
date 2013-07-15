@@ -45,7 +45,6 @@
 }
 .area-map .shadow {
   position: absolute;
-  display: none;
 }
 .area-map .shadow div {
   position: relative;
@@ -59,8 +58,10 @@
 }
 .area-map .move-target {
   position: absolute;
+  display: none;
 }
 .area-map .move-target div {
+  cursor: pointer;
   position: relative;
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;

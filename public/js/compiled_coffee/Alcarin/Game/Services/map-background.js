@@ -44,8 +44,8 @@ namespace('Alcarin.Game.Services', function(exports, Alcarin) {
         y: center.y - radius
       };
       return {
-        x: offset.x + Math.round(x * radius / pixelRadius),
-        y: offset.y + Math.round(y * radius / pixelRadius)
+        x: offset.x + Math.round(pixelX * radius / pixelRadius),
+        y: offset.y + Math.round(pixelY * radius / pixelRadius)
       };
     };
 
@@ -61,6 +61,8 @@ namespace('Alcarin.Game.Services', function(exports, Alcarin) {
 
         Background.prototype.BackgroundReadyDefer = null;
 
+        Background.prototype.isReady = false;
+
         function Background() {
           this.onDrawn = __bind(this.onDrawn, this);          this.reset();
         }
@@ -70,7 +72,8 @@ namespace('Alcarin.Game.Services', function(exports, Alcarin) {
 
           UnitsConverter = new Units(this);
           this.BackgroundReadyDefer.resolve(UnitsConverter);
-          return this.$emit('drawn', UnitsConverter);
+          this.$emit('drawn', UnitsConverter);
+          return this.isReady = true;
         };
 
         Background.prototype.init = function(center, info) {
@@ -92,7 +95,8 @@ namespace('Alcarin.Game.Services', function(exports, Alcarin) {
           if (this.BackgroundReadyDefer != null) {
             this.BackgroundReadyDefer.reject();
           }
-          return this.BackgroundReadyDefer = $q.defer();
+          this.BackgroundReadyDefer = $q.defer();
+          return this.isReady = false;
         };
 
         Background.prototype.then = function(what) {

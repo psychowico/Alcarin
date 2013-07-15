@@ -12,27 +12,6 @@ It shouldn't storing things not related with player char surroundings.
 
 namespace 'Alcarin.Game.Services', (exports, Alcarin) ->
 
-    class exports.BaseFactory
-        cache          : {}
-
-        constructor: (@$q, @_class, @idKey='_id')->
-
-        _factoryObject: (obj)->
-            id = obj[@idKey]
-            if not id?
-                throw Error "Factory: Can not create object withot '#{@idKey}' id key."
-
-            if @cache[id]?
-                instance = @cache[id]
-            else
-                instance = new @_class()
-            instance[key] = val for key, val of obj
-            instance.update obj if instance.update
-            return instance
-
-        factory: (obj)->
-            @$q.when @_factoryObject obj
-
     class GameObjectFactory
 
         constructor: (@GameServer, $q)->
@@ -41,7 +20,6 @@ namespace 'Alcarin.Game.Services', (exports, Alcarin) ->
                 chars: new CharacterFactory @GameServer, $q
 
         character: (charObjOrId)=> @factories.chars.factory charObjOrId
-
 
     module = Alcarin.Game.Services.module
     module.factory 'CharEnvironment', ['GameServer', '$q',

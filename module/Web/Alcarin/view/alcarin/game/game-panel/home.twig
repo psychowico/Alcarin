@@ -3,11 +3,11 @@
             map-center="center" on-drawn="onTerrainReady()" alc-area-map>
     </canvas>
     <div class="shadow" alc-range-limits><div></div></div>
-    <div class="characters" ng-controller="Alcarin.Game.Views.Map.Chars">
+    <div class="characters" ng-controller="Alcarin.Game.Views.Map.Chars" ng-click="mapClicked($event)">
         <div class="character" alc-character-token="char" ng-repeat="char in charslist"
             player-character="charid">
             <div></div>
         </div>
     </div>
-    <div class="move-target" alc-move-target><div></div></div>
+    <div class="move-target" alc-move-target title="Cel Twojej podróży"><div></div></div>
 </div>

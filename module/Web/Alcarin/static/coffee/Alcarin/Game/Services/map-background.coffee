@@ -24,14 +24,15 @@ namespace 'Alcarin.Game.Services', (exports, Alcarin) ->
             pixelRadius = @parent.pixelRadius
             offset = {x: center.x - radius, y: center.y - radius}
             return {
-                x: offset.x + Math.round x * radius / pixelRadius
-                y: offset.y + Math.round y * radius / pixelRadius
+                x: offset.x + Math.round pixelX * radius / pixelRadius
+                y: offset.y + Math.round pixelY * radius / pixelRadius
             }
 
     exports.module.factory 'MapBackground', ['$q', ($q)->
 
         class Background extends Alcarin.EventsEmitter
             BackgroundReadyDefer: null
+            isReady: false
 
             constructor: -> @reset()
 
@@ -39,6 +40,7 @@ namespace 'Alcarin.Game.Services', (exports, Alcarin) ->
                 UnitsConverter = new Units @
                 @BackgroundReadyDefer.resolve UnitsConverter
                 @$emit 'drawn', UnitsConverter
+                @isReady = true
 
             init: (@center, info)->
                 @radius = info.radius
@@ -51,6 +53,7 @@ namespace 'Alcarin.Game.Services', (exports, Alcarin) ->
             reset: ->
                 @BackgroundReadyDefer.reject() if @BackgroundReadyDefer?
                 @BackgroundReadyDefer = $q.defer()
+                @isReady = false
 
             then: (what)-> @BackgroundReadyDefer.promise.then what
 

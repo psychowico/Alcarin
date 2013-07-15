@@ -2,18 +2,33 @@
 
 namespace 'Alcarin.Game.Services.GameObject', (exports, Alcarin) ->
 
-    class exports.Character
+    class Character extends Alcarin.EventsEmitter
         @count : 0
 
-        constructor: ->
+        constructor: (@GameServer)->
             Character.count++
 
-    BaseFactory = Alcarin.Game.Services.BaseFactory
-    class exports.CharacterFactory extends BaseFactory
+        moveTo: (target)->
+            @GameServer.emit 'move.char', target
+
+    class exports.CharacterFactory
         waitingPromises: {}
+        cache          : {}
+
+        _factoryObject: (obj)->
+            id = obj._id
+            if not id?
+                throw Error "Factory: Can not create Character withot '_id' id key."
+
+            if @cache[id]?
+                instance = @cache[id]
+            else
+                @cache[id] = instance = new Character @GameServer
+            instance[key] = val for key, val of obj
+            instance.update obj if instance.update
+            return instance
 
         constructor: (@GameServer, @$q)->
-            super @$q, exports.Character, '_id'
             @GameServer.on 'char.fetch', @onServerResponse
             @GameServer.on 'chars.swap', @onCharsSwap
 
@@ -28,8 +43,13 @@ namespace 'Alcarin.Game.Services.GameObject', (exports, Alcarin) ->
 
         onServerResponse: (obj)=>
             throw Error 'Wrong server answer.' if typeof obj is 'string'
-            _id = obj[@idKey]
+            _id = obj._id
             result = @factory obj
+
+            if @cache[_id]?
+                character = @cache[_id]
+                character[key]= val for key, val of obj
+                character.$emit 'update'
             if @waitingPromises[_id]?
                 deffered.resolve result for deffered in @waitingPromises[_id]
 
@@ -40,6 +60,6 @@ namespace 'Alcarin.Game.Services.GameObject', (exports, Alcarin) ->
                 @waitingPromises[_id] = [] if not @waitingPromises[_id]
                 @waitingPromises[_id].push deffered
                 @GameServer.emit 'fetch.char', _id
-                deffered.promise
+                return deffered.promise
             else
-                super objOrId
+                return @$q.when @_factoryObject objOrId

@@ -1,8 +1,29 @@
 'use strict';namespace('Alcarin.Game.Views', function(exports, Alcarin) {
   return exports.AreaMap = ngcontroller([
     'GameServer', 'CurrentCharacter', '$q', '$safeApply', 'MapBackground', function(GameServer, CurrentCharacter, $q, $safeApply, MapBackground) {
-      var _this = this;
+      var lastClick,
+        _this = this;
 
+      lastClick = new Date();
+      this.mapClicked = function(ev) {
+        var current, diff;
+
+        current = new Date();
+        diff = (current.getTime() - lastClick.getTime()) / 1000;
+        if (diff > 1) {
+          if (MapBackground.isReady) {
+            MapBackground.then(function(units) {
+              var target;
+
+              target = units.toUnits(ev.offsetX, ev.offsetY);
+              return CurrentCharacter.then(function(character) {
+                return character.moveTo(target);
+              });
+            });
+          }
+        }
+        return lastClick = current;
+      };
       this.redrawMap = function() {
         return $safeApply(_this, function() {
           MapBackground.reset();

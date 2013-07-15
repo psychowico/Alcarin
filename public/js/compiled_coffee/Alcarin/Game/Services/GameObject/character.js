@@ -1,26 +1,54 @@
 'use strict';
-var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-  __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+var __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 namespace('Alcarin.Game.Services.GameObject', function(exports, Alcarin) {
-  var BaseFactory;
+  var Character;
 
-  exports.Character = (function() {
+  Character = (function(_super) {
+    __extends(Character, _super);
+
     Character.count = 0;
 
-    function Character() {
+    function Character(GameServer) {
+      this.GameServer = GameServer;
       Character.count++;
     }
 
+    Character.prototype.moveTo = function(target) {
+      return this.GameServer.emit('move.char', target);
+    };
+
     return Character;
 
-  })();
-  BaseFactory = Alcarin.Game.Services.BaseFactory;
-  return exports.CharacterFactory = (function(_super) {
-    __extends(CharacterFactory, _super);
-
+  })(Alcarin.EventsEmitter);
+  return exports.CharacterFactory = (function() {
     CharacterFactory.prototype.waitingPromises = {};
+
+    CharacterFactory.prototype.cache = {};
+
+    CharacterFactory.prototype._factoryObject = function(obj) {
+      var id, instance, key, val;
+
+      id = obj._id;
+      if (id == null) {
+        throw Error("Factory: Can not create Character withot '_id' id key.");
+      }
+      if (this.cache[id] != null) {
+        instance = this.cache[id];
+      } else {
+        this.cache[id] = instance = new Character(this.GameServer);
+      }
+      for (key in obj) {
+        val = obj[key];
+        instance[key] = val;
+      }
+      if (instance.update) {
+        instance.update(obj);
+      }
+      return instance;
+    };
 
     function CharacterFactory(GameServer, $q) {
       this.GameServer = GameServer;
@@ -28,7 +56,6 @@ namespace('Alcarin.Game.Services.GameObject', function(exports, Alcarin) {
       this.factory = __bind(this.factory, this);
       this.onServerResponse = __bind(this.onServerResponse, this);
       this.onCharsSwap = __bind(this.onCharsSwap, this);
-      CharacterFactory.__super__.constructor.call(this, this.$q, exports.Character, '_id');
       this.GameServer.on('char.fetch', this.onServerResponse);
       this.GameServer.on('chars.swap', this.onCharsSwap);
     }
@@ -36,13 +63,21 @@ namespace('Alcarin.Game.Services.GameObject', function(exports, Alcarin) {
     CharacterFactory.prototype.onCharsSwap = function(chars) {};
 
     CharacterFactory.prototype.onServerResponse = function(obj) {
-      var deffered, result, _i, _id, _len, _ref, _results;
+      var character, deffered, key, result, val, _i, _id, _len, _ref, _results;
 
       if (typeof obj === 'string') {
         throw Error('Wrong server answer.');
       }
-      _id = obj[this.idKey];
+      _id = obj._id;
       result = this.factory(obj);
+      if (this.cache[_id] != null) {
+        character = this.cache[_id];
+        for (key in obj) {
+          val = obj[key];
+          character[key] = val;
+        }
+        character.$emit('update');
+      }
       if (this.waitingPromises[_id] != null) {
         _ref = this.waitingPromises[_id];
         _results = [];
@@ -67,13 +102,13 @@ namespace('Alcarin.Game.Services.GameObject', function(exports, Alcarin) {
         this.GameServer.emit('fetch.char', _id);
         return deffered.promise;
       } else {
-        return CharacterFactory.__super__.factory.call(this, objOrId);
+        return this.$q.when(this._factoryObject(objOrId));
       }
     };
 
     return CharacterFactory;
 
-  })(BaseFactory);
+  })();
 });
 
 /*

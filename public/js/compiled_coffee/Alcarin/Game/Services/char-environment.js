@@ -14,44 +14,6 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
 namespace('Alcarin.Game.Services', function(exports, Alcarin) {
   var GameObjectFactory, module;
 
-  exports.BaseFactory = (function() {
-    BaseFactory.prototype.cache = {};
-
-    function BaseFactory($q, _class, idKey) {
-      this.$q = $q;
-      this._class = _class;
-      this.idKey = idKey != null ? idKey : '_id';
-    }
-
-    BaseFactory.prototype._factoryObject = function(obj) {
-      var id, instance, key, val;
-
-      id = obj[this.idKey];
-      if (id == null) {
-        throw Error("Factory: Can not create object withot '" + this.idKey + "' id key.");
-      }
-      if (this.cache[id] != null) {
-        instance = this.cache[id];
-      } else {
-        instance = new this._class();
-      }
-      for (key in obj) {
-        val = obj[key];
-        instance[key] = val;
-      }
-      if (instance.update) {
-        instance.update(obj);
-      }
-      return instance;
-    };
-
-    BaseFactory.prototype.factory = function(obj) {
-      return this.$q.when(this._factoryObject(obj));
-    };
-
-    return BaseFactory;
-
-  })();
   GameObjectFactory = (function() {
     function GameObjectFactory(GameServer, $q) {
       var CharacterFactory;

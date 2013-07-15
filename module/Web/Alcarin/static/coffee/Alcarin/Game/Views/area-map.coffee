@@ -4,6 +4,17 @@ namespace 'Alcarin.Game.Views', (exports, Alcarin) ->
 
     exports.AreaMap = ngcontroller ['GameServer', 'CurrentCharacter', '$q', '$safeApply', 'MapBackground',
         (GameServer, CurrentCharacter, $q, $safeApply, MapBackground)->
+            lastClick = new Date()
+            @mapClicked = (ev)=>
+                current = new Date()
+                diff = (current.getTime() - lastClick.getTime()) / 1000
+                # we can click one per second
+                if diff > 1
+                    if MapBackground.isReady
+                        MapBackground.then (units)->
+                            target = units.toUnits ev.offsetX, ev.offsetY
+                            CurrentCharacter.then (character)-> character.moveTo target
+                lastClick = current
 
             @redrawMap = =>
                 $safeApply @, =>
