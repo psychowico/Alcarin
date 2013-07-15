@@ -1,5 +1,5 @@
 'use strict';namespace('Alcarin.Game.Directives.Map', function(exports, Alcarin) {
-  return angular.module('@character-token').directive('alcCharacterToken', function() {
+  return exports.module.directive('alcCharacterToken', function() {
     return {
       restrict: 'A',
       scope: {

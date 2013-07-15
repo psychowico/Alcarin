@@ -6,7 +6,7 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
 namespace('Alcarin.Game.Directives.Map', function(exports, Alcarin) {
   var NOISE_DENSITY, NOISE_IMPACT, Terrain, noise;
 
-  angular.module('@area-map', ['@game-services']).directive('alcAreaMap', [
+  exports.module.directive('alcAreaMap', [
     'MapBackground', function(MapBackground) {
       return {
         restrict: 'A',

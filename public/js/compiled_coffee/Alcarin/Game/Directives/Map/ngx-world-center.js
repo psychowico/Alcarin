@@ -1,5 +1,5 @@
 'use strict';namespace('Alcarin.Game.Directives.Map', function(exports, Alcarin) {
-  return exports.module.directive('alcRangeLimits', [
+  return angular.module('@world-center').directive('alcRangeLimits', [
     'MapBackground', function(MapBackground) {
       return {
         restrict: 'A',
@@ -28,5 +28,5 @@
 });
 
 /*
-//@ sourceMappingURL=ngx-range-limits.js.map
+//@ sourceMappingURL=ngx-world-center.js.map
 */

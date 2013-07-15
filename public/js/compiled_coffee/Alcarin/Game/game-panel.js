@@ -2,7 +2,7 @@
   var socket_port;
 
   socket_port = 8080;
-  exports.module = angular.module('game', ['@spin', 'ui.event', '@talk-input', '@move-target', '@area-map', '@game-services', '@character-token', '@range-limits']).config([
+  exports.module = angular.module('game', ['@spin', 'ui.event', '@talk-input', '@game-services', '@alcarin-map']).config([
     '$routeProvider', function($routeProvider) {
       return $routeProvider.when('/home', {
         controller: Alcarin.Game.Views.Home,

@@ -2,7 +2,7 @@
 
 namespace 'Alcarin.Game.Directives.Map', (exports, Alcarin) ->
 
-    angular.module('@move-target').directive 'alcMoveTarget', ['CurrentCharacter', 'MapBackground',
+    exports.module.directive 'alcMoveTarget', ['CurrentCharacter', 'MapBackground',
         (CurrentCharacter, MapBackground) ->
             restrict: 'A'
             link: ($scope, $token,attrs)->

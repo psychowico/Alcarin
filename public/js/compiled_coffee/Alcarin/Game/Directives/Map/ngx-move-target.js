@@ -1,5 +1,5 @@
 'use strict';namespace('Alcarin.Game.Directives.Map', function(exports, Alcarin) {
-  return angular.module('@move-target').directive('alcMoveTarget', [
+  return exports.module.directive('alcMoveTarget', [
     'CurrentCharacter', 'MapBackground', function(CurrentCharacter, MapBackground) {
       return {
         restrict: 'A',

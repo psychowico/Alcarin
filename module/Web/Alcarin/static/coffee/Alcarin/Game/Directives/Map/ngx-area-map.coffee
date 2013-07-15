@@ -2,8 +2,7 @@
 
 namespace 'Alcarin.Game.Directives.Map', (exports, Alcarin) ->
 
-    angular.module('@area-map', ['@game-services'])
-        .directive 'alcAreaMap', ['MapBackground', (MapBackground)->
+    exports.module.directive 'alcAreaMap', ['MapBackground', (MapBackground)->
             restrict:'A'
             link: ($scope, element, attrs)->
                 $ ->
@@ -14,11 +13,6 @@ namespace 'Alcarin.Game.Directives.Map', (exports, Alcarin) ->
                         terrain.setRadius MapBackground.radius
                         terrain.setFields MapBackground.fields
                         terrain.redraw()
-
-                    # $scope.onDrawn() if $scope.onDrawn
-                    # $scope.$watch 'mapRadius', (val)-> terrain.setRadius val
-                    # $scope.$watch 'mapFields', (val)-> terrain.setFields val
-                    # $scope.$watch 'mapCenter', (val)-> terrain.setCenter val
 
                     element.data 'rel', terrain
     ]
