@@ -46,8 +46,9 @@ namespace 'Alcarin.Game.Services', (exports, Alcarin) ->
                 @isReady = true
 
             init: (@center, info)->
-                @radius = info.radius
+                @radius         = info.radius
                 @charViewRadius = info.charViewRadius
+                @lighting       = info.lighting
 
             setPixelRadius: (@pixelRadius)->
             setFields: (@fields)->

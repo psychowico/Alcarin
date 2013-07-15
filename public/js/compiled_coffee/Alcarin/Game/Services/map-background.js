@@ -91,7 +91,8 @@ namespace('Alcarin.Game.Services', function(exports, Alcarin) {
         Background.prototype.init = function(center, info) {
           this.center = center;
           this.radius = info.radius;
-          return this.charViewRadius = info.charViewRadius;
+          this.charViewRadius = info.charViewRadius;
+          return this.lighting = info.lighting;
         };
 
         Background.prototype.setPixelRadius = function(pixelRadius) {

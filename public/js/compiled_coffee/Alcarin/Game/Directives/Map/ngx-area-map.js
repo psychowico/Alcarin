@@ -20,6 +20,7 @@ namespace('Alcarin.Game.Directives.Map', function(exports, Alcarin) {
               terrain.setCenter(MapBackground.center);
               terrain.setRadius(MapBackground.radius);
               terrain.setFields(MapBackground.fields);
+              terrain.setLighting(MapBackground.lighting);
               return terrain.redraw();
             });
             return element.data('rel', terrain);
@@ -58,6 +59,17 @@ namespace('Alcarin.Game.Directives.Map', function(exports, Alcarin) {
 
     Terrain.prototype.setFields = function(fields) {
       this.fields = fields;
+    };
+
+    Terrain.prototype.setLighting = function(lighting) {
+      this.lighting = lighting;
+      console.log(this.lighting);
+      if (this.lighting) {
+        lighting = 1 - (this.lighting + 0.4) / 1.4;
+        this.canvas.css('filter', 'url(filters.svg#grayscale)');
+        this.canvas.css('filter', 'gray');
+        return this.canvas.css('-webkit-filter', "grayscale(" + lighting + ")");
+      }
     };
 
     Terrain.prototype.width = function() {

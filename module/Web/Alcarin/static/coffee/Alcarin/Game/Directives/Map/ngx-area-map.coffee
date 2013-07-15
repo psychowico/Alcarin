@@ -12,6 +12,7 @@ namespace 'Alcarin.Game.Directives.Map', (exports, Alcarin) ->
                         terrain.setCenter MapBackground.center
                         terrain.setRadius MapBackground.radius
                         terrain.setFields MapBackground.fields
+                        terrain.setLighting MapBackground.lighting
                         terrain.redraw()
 
                     element.data 'rel', terrain
@@ -34,6 +35,13 @@ namespace 'Alcarin.Game.Directives.Map', (exports, Alcarin) ->
                     y: Math.round center.y
         setRadius: (@radius)->
         setFields: (@fields)->
+        setLighting: (@lighting)->
+            # we transform lighting and enable grayscale
+            if @lighting
+                lighting = 1 - (@lighting + 0.4) / 1.4
+                # @canvas.css 'filter', 'url(filters.svg#grayscale)'
+                # @canvas.css 'filter', 'gray'
+                @canvas.css '-webkit-filter', "grayscale(#{lighting})"
 
         width: -> @canvas[0]?.width
         height: -> @canvas[0]?.height
