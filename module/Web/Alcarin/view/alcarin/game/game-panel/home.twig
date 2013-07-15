@@ -2,10 +2,11 @@
     <canvas class="terrain" map-radius="radius" map-fields="terrain"
             map-center="center" on-drawn="onTerrainReady()" alc-area-map>
     </canvas>
-    <div class="characters" ng-controller="Alcarin.Game.Views.Map.Chars" ng-click="test()">
+    <div class="characters" ng-controller="Alcarin.Game.Views.Map.Chars">
         <div class="character" alc-character-token="char" ng-repeat="char in charslist"
             player-character="charid">
             <div></div>
         </div>
     </div>
+    <div class="shadow" alc-range-limits><div></div></div>
 </div>

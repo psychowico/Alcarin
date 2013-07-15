@@ -5,7 +5,7 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
     socket_port = 8080
 
     exports.module = angular.module('game', ['@spin', 'ui.event', '@talk-input',
-            '@area-map', '@game-services', '@character-token'])
+            '@area-map', '@game-services', '@character-token', '@range-limits'])
            .config ['$routeProvider', ($routeProvider)->
                 $routeProvider
                     .when '/home',

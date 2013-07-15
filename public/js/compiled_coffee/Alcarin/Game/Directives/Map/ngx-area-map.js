@@ -3,42 +3,31 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-namespace('Alcarin.Game.Map', function(exports, Alcarin) {
+namespace('Alcarin.Game.Directives.Map', function(exports, Alcarin) {
   var NOISE_DENSITY, NOISE_IMPACT, Terrain, noise;
 
-  angular.module('@area-map', ['@game-services']).directive('alcAreaMap', function() {
-    return {
-      restrict: 'A',
-      scope: {
-        mapRadius: '=',
-        mapFields: '=',
-        mapCenter: '=',
-        onDrawn: '&'
-      },
-      link: function($scope, element, attrs) {
-        return $(function() {
-          var terrain;
+  angular.module('@area-map', ['@game-services']).directive('alcAreaMap', [
+    'MapBackground', function(MapBackground) {
+      return {
+        restrict: 'A',
+        link: function($scope, element, attrs) {
+          return $(function() {
+            var terrain;
 
-          terrain = new Terrain(element);
-          terrain.$on('drawn', function() {
-            if ($scope.onDrawn) {
-              return $scope.onDrawn();
-            }
+            terrain = new Terrain(element);
+            terrain.$on('drawn', MapBackground.onDrawn);
+            MapBackground.$on('fieldsChanged', function() {
+              terrain.setCenter(MapBackground.center);
+              terrain.setRadius(MapBackground.radius);
+              terrain.setFields(MapBackground.fields);
+              return terrain.redraw();
+            });
+            return element.data('rel', terrain);
           });
-          $scope.$watch('mapRadius', function(val) {
-            return terrain.setRadius(val);
-          });
-          $scope.$watch('mapFields', function(val) {
-            return terrain.setFields(val);
-          });
-          $scope.$watch('mapCenter', function(val) {
-            return terrain.setCenter(val);
-          });
-          return element.data('rel', terrain);
-        });
-      }
-    };
-  });
+        }
+      };
+    }
+  ]);
   NOISE_DENSITY = 25;
   NOISE_IMPACT = 0.22;
   noise = new ROT.Noise.Simplex();
@@ -46,8 +35,6 @@ namespace('Alcarin.Game.Map', function(exports, Alcarin) {
     __extends(Terrain, _super);
 
     Terrain.prototype.background = 'rgb(0,0,255)';
-
-    Terrain.prototype.needRedraw = false;
 
     function Terrain(canvas) {
       this.canvas = canvas;
@@ -58,26 +45,19 @@ namespace('Alcarin.Game.Map', function(exports, Alcarin) {
     Terrain.prototype.setCenter = function(center) {
       this.center = center;
       if (this.center) {
-        this.center = {
+        return this.center = {
           x: Math.round(center.x),
           y: Math.round(center.y)
         };
-      }
-      if (this.needRedraw) {
-        return this.redraw();
       }
     };
 
     Terrain.prototype.setRadius = function(radius) {
       this.radius = radius;
-      if (this.needRedraw) {
-        return this.redraw();
-      }
     };
 
     Terrain.prototype.setFields = function(fields) {
       this.fields = fields;
-      return this.redraw();
     };
 
     Terrain.prototype.width = function() {
@@ -131,34 +111,29 @@ namespace('Alcarin.Game.Map', function(exports, Alcarin) {
     Terrain.prototype.redraw = function() {
       var bufferContext, c, color, dataOffset, field, i, imageData, mod, offset, pixelX, pixelY, size, _i, _j, _len, _ref;
 
-      if ((this.fields != null) && (this.center != null) && (this.radius != null)) {
-        this.needRedraw = false;
-        size = this.radius * 2;
-        bufferContext = this.getBackbuffer(size, size);
-        imageData = bufferContext.getImageData(0, 0, size, size);
-        offset = {
-          x: this.center.x - this.radius,
-          y: this.center.y - this.radius
-        };
-        _ref = this.fields;
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          field = _ref[_i];
-          color = field.land.color;
-          pixelX = field.loc.x - offset.x;
-          pixelY = field.loc.y - offset.y;
-          mod = Math.abs(noise.get(field.loc.x / NOISE_DENSITY, field.loc.y / NOISE_DENSITY));
-          dataOffset = 4 * (pixelY * size + pixelX);
-          for (i = _j = 0; _j <= 2; i = ++_j) {
-            c = (color >> (8 * (2 - i))) & 0xFF;
-            c *= 1 - NOISE_IMPACT * (1 - mod);
-            imageData.data[dataOffset + i] = ~~c;
-          }
+      size = this.radius * 2;
+      bufferContext = this.getBackbuffer(size, size);
+      imageData = bufferContext.getImageData(0, 0, size, size);
+      offset = {
+        x: this.center.x - this.radius,
+        y: this.center.y - this.radius
+      };
+      _ref = this.fields;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        field = _ref[_i];
+        color = field.land.color;
+        pixelX = field.loc.x - offset.x;
+        pixelY = field.loc.y - offset.y;
+        mod = Math.abs(noise.get(field.loc.x / NOISE_DENSITY, field.loc.y / NOISE_DENSITY));
+        dataOffset = 4 * (pixelY * size + pixelX);
+        for (i = _j = 0; _j <= 2; i = ++_j) {
+          c = (color >> (8 * (2 - i))) & 0xFF;
+          c *= 1 - NOISE_IMPACT * (1 - mod);
+          imageData.data[dataOffset + i] = ~~c;
         }
-        bufferContext.putImageData(imageData, 0, 0);
-        return this.swapBuffer();
-      } else {
-        return this.needRedraw = true;
       }
+      bufferContext.putImageData(imageData, 0, 0);
+      return this.swapBuffer();
     };
 
     return Terrain;

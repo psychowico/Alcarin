@@ -2,14 +2,12 @@
 
 namespace 'Alcarin.Game.Views.Map', (exports, Alcarin) ->
 
-    pixelRadius = 0
-
-    exports.Chars = ngcontroller ['GameServer', 'CurrentCharacter', 'CharEnvironment',
-        (GameServer, CurrentCharacter, CharEnvironment)->
+    exports.Chars = ngcontroller ['GameServer', 'CurrentCharacter', 'CharEnvironment', 'MapBackground',
+        (GameServer, CurrentCharacter, CharEnvironment, MapBackground)->
             @charslist  = {}
 
             GameServer.on 'chars.swap', (chars)=>
-                @BackgroundReady.then (units)=>
+                MapBackground.then (units)=>
                     @charslist = {}
                     for _char in chars
                         _char.pixelLoc = units.toPixels(_char.loc.x, _char.loc.y)
@@ -30,7 +28,7 @@ namespace 'Alcarin.Game.Views.Map', (exports, Alcarin) ->
                     else
                         _char = @charslist[charid]
                         _char.loc = loc
-                        @BackgroundReady.then (units)=>
+                        MapBackground.then (units)=>
                             _char.pixelLoc = units.toPixels _char.loc.x, _char.loc.y
     ]
 

@@ -15,6 +15,16 @@ namespace 'Alcarin.Game.Services.GameObject', (exports, Alcarin) ->
         constructor: (@GameServer, @$q)->
             super @$q, exports.Character, '_id'
             @GameServer.on 'char.fetch', @onServerResponse
+            @GameServer.on 'chars.swap', @onCharsSwap
+
+        onCharsSwap: (chars)=>
+            # @BackgroundReady.then (units)=>
+            #     @charslist = {}
+            #     for _char in chars
+            #         _char.pixelLoc = units.toPixels(_char.loc.x, _char.loc.y)
+            #         _char.type = 'char'
+            #         CharEnvironment.character(_char).then (obj)=>
+            #             @charslist[obj._id] = obj
 
         onServerResponse: (obj)=>
             throw Error 'Wrong server answer.' if typeof obj is 'string'

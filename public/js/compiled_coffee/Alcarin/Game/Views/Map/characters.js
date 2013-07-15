@@ -4,16 +4,13 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 namespace('Alcarin.Game.Views.Map', function(exports, Alcarin) {
-  var pixelRadius;
-
-  pixelRadius = 0;
   exports.Chars = ngcontroller([
-    'GameServer', 'CurrentCharacter', 'CharEnvironment', function(GameServer, CurrentCharacter, CharEnvironment) {
+    'GameServer', 'CurrentCharacter', 'CharEnvironment', 'MapBackground', function(GameServer, CurrentCharacter, CharEnvironment, MapBackground) {
       var _this = this;
 
       this.charslist = {};
       GameServer.on('chars.swap', function(chars) {
-        return _this.BackgroundReady.then(function(units) {
+        return MapBackground.then(function(units) {
           var _char, _i, _len, _results;
 
           _this.charslist = {};
@@ -45,7 +42,7 @@ namespace('Alcarin.Game.Views.Map', function(exports, Alcarin) {
           } else {
             _char = _this.charslist[charid];
             _char.loc = loc;
-            return _this.BackgroundReady.then(function(units) {
+            return MapBackground.then(function(units) {
               return _char.pixelLoc = units.toPixels(_char.loc.x, _char.loc.y);
             });
           }

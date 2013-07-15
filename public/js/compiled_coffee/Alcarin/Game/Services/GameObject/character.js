@@ -27,9 +27,13 @@ namespace('Alcarin.Game.Services.GameObject', function(exports, Alcarin) {
       this.$q = $q;
       this.factory = __bind(this.factory, this);
       this.onServerResponse = __bind(this.onServerResponse, this);
+      this.onCharsSwap = __bind(this.onCharsSwap, this);
       CharacterFactory.__super__.constructor.call(this, this.$q, exports.Character, '_id');
       this.GameServer.on('char.fetch', this.onServerResponse);
+      this.GameServer.on('chars.swap', this.onCharsSwap);
     }
+
+    CharacterFactory.prototype.onCharsSwap = function(chars) {};
 
     CharacterFactory.prototype.onServerResponse = function(obj) {
       var deffered, result, _i, _id, _len, _ref, _results;
