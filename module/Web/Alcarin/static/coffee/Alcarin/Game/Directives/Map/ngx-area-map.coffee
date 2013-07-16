@@ -41,8 +41,11 @@ namespace 'Alcarin.Game.Directives.Map', (exports, Alcarin) ->
         setFields: (@fields)->
         setLighting: (lighting)->
             # we transform lighting and enable grayscale
-            if lighting
-                @lighting = (lighting + 0.4) / 1.4
+            if lighting?
+                if lighting == 1
+                    @lighting = undefined
+                else
+                    @lighting = (lighting + 0.4) / 1.4
 
         width: -> @canvas[0]?.width
         height: -> @canvas[0]?.height

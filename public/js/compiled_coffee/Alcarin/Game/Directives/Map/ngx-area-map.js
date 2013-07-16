@@ -67,8 +67,12 @@ namespace('Alcarin.Game.Directives.Map', function(exports, Alcarin) {
     };
 
     Terrain.prototype.setLighting = function(lighting) {
-      if (lighting) {
-        return this.lighting = (lighting + 0.4) / 1.4;
+      if (lighting != null) {
+        if (lighting === 1) {
+          return this.lighting = void 0;
+        } else {
+          return this.lighting = (lighting + 0.4) / 1.4;
+        }
       }
     };
 
