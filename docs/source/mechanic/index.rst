@@ -8,6 +8,41 @@ Pełen cykl dobowy będzie trwał 24 * 4 = 96 godzin. Czyli dzień będzie trwa�
 po którym nastąpi noc, trwająca podobnie. Wszelkie wystąpiania słowa "dzień" poniżej odnoszą
 się do dnia świata gry.
 
+W grze istnieje absolutny czas, zgodny w każdym fragmencie świata (z dokładnością do sekundy).
+Możemy także określić czas lokalny - to jest zależny od pozycji w przestrzeni. Jest przydatny
+przykładowo przy obliczaniu oświetlenia.
+Godziny liczymy od 0 do 96, ale w świecie używamy określeń od 0 do 24 dniowa i od 0 do 24 nocna.
+
+-----------
+Współrzędne
+-----------
+
+Świat używa kartezjańskiego systemu współrzędnych o odbitej osi Y, z punktem (0, 0) w centrum świata.
+Czyli Y rośnie w dół mapy, X rośnie w jej prawą stronę.
+
+-----------
+Oświetlenie
+-----------
+
+Świat Alcarin jest oświetlany przez Wielką Latarnię (Great Lighthouse) postawioną w jego
+centrum poprzez bogów. Latarnia jest umiejscowiona na olbrzymim tworze skalnym o prawie płaskich
+ścianach, o wysokości około 5 kilometrów i szerokości przy podstawie około jednego kilometra.
+Jest także źródłem ciepła - tereny położone najbliżej jej przypominają okolice równikowe na
+Ziemi - zaś ziemie położone najdalej - Antarktydę.
+
+Wielka Latarnia cyklicznie pulsuje, świecąc przez 48h i gasnąc na kolejne 48h - tworząc w ten sposób
+system dobowy.
+
+Pory Dnia
+---------
+
+Godzinę 0 uznajemy za początek dnia. Latarnia wtedy się rozgrzewa, zaczyna robić się jasno.
+Pory prezentują się następująco:
+ * od 44N.(nocnej) do 4D.(dziennej) mamy poranek
+ * od 4D. do 44D. mamy pełnię dnia (pełne oświetlenie)
+ * od 44D. do 4N. mamy wieczór
+ * od 4N. do 44N. mamy noc (praktyczny brak oświetlenia)
+
 Zwykli gracze
 =============
 

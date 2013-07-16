@@ -36,8 +36,10 @@ $time = $this->collector->getTime();
             return function(input) {
                 //this filter just print our object {hour:x, min:y, sec:z} as string
                 if((typeof input) == 'string') return input;
+                var hourCaption = input.hour > 48 ? 'N' : 'D';
+                var _hour = (input.hour % 48);
                 var t = function(val) { return val < 10 ? '0' + val : val.toString(); };
-                return t(input.hour) + ':' + t(input.min) + ':' + t(input.sec);
+                return hourCaption + '. ' + t(_hour) + ':' + t(input.min) + ':' + t(input.sec);
             };
         })
         window.Dev = {
