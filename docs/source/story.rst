@@ -10,9 +10,9 @@ ta część będzie ważniejsza w przyszłości.
 
 Świat w Alcarin nie przypomina naszej planety. Jest mieszanką mitologii indyjskiej, książek Tolkiena,
 Pratchett'a i innych.
-Planeta jest płaska, opiera się o plecy czterech słonii, które stoją na wielkich żółwiu pływającym
+Planeta ma kształt dysku, opiera się o plecy czterech słonii, które stoją na wielkich żółwiu pływającym
 w przestrzeniach wszechświata. Światło i ciepło planecie daje olbrzymia latarnia znajdująca się na
-szczycie wielkiej kolumny postawionej przez bogów w centrum świata. Latarnia ta obraca się, tak
+szczycie wielkiej kolumny postawionej przez bogów w centrum świata. Latarnia ta pulsuje, tak
 że mamy atmosferę podobną do naszego dnia i nocy. Jednak dzień trwa dwie nasze doby (48h), tak samo
 jak i noc. Z tego wynika, że pełny obrót latarnii zajmuje jej 4 doby czasu naszego świata.
 Na planecie nie ma wyraźnych pór roku, za to są obszary znacznie różniące się klimatem - na obrzeżach

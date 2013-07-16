@@ -1,23 +1,49 @@
 <span class="home-description">
-    <div class="area-map">
-        <div class="main" ng-controller="Alcarin.Game.Views.AreaMap">
+    <div class="area-map" ng-controller="Alcarin.Game.Views.AreaMap">
+        <div class="main">
             <canvas class="terrain" map-radius="radius" map-fields="terrain"
                     map-center="center" on-drawn="onTerrainReady()" alc-area-map>
             </canvas>
-            <div class="shadow" alc-range-limits><div></div></div>
-            <div class="characters" ng-controller="Alcarin.Game.Views.Map.Chars" ng-click="mapClicked($event)">
+            <div class="shadow" ng-show="showEyeRange" alc-range-limits><div></div></div>
+            <div class="characters" ng-controller="Alcarin.Game.Views.Map.Chars"
+                ng-click="mapClicked($event)" ng-show="showChars">
                 <div class="character" alc-character-token="char" ng-repeat="char in charslist"
                     player-character="charid">
                     <div></div>
                 </div>
             </div>
-            <div class="move-target" alc-move-target title="Cel Twojej podróży"><div></div></div>
+            <div ng-show="showMoveTarget">
+                <div class="move-target" alc-move-target title="Cel Twojej podróży">
+                    <div></div>
+                </div>
+            </div>
         </div>
 
-        <div class="great-tower hide" alc-world-center>
-            <span class="label label-warning" title="W oddali widzisz olbrzymią skalną konstrukcję której szczyt emanuje jasnym, ciepłym światłem.">
-                <i class="icon-cog"></i>
-            </span>
+        <div ng-show="showGreatTower">
+            <div class="great-tower hide" alc-world-center>
+                <span class="label label-warning" title="W oddali widzisz olbrzymią skalną konstrukcję której szczyt emanuje jasnym, ciepłym światłem.">
+                    <i class="icon-cog"></i>
+                </span>
+            </div>
+        </div>
+
+        <div class="btn-group toolbar">
+            <button type="button" class="btn btn-mini btn-inverse" ng-class="{active: showEyeRange}"
+                title="Zasięg rozpoznawania postaci">
+                <i class="icon-eye-close" ng-click="showEyeRange = !showEyeRange"></i>
+            </button>
+            <button type="button" class="btn btn-mini btn-inverse" ng-class="{active: showChars}"
+                title="Postacie">
+                <i class="icon-user" ng-click="showChars = !showChars"></i>
+            </button>
+            <button type="button" class="btn btn-mini btn-inverse" ng-class="{active: showMoveTarget}"
+                title="Cel podróży">
+                <i class="icon-move" ng-click="showMoveTarget = !showMoveTarget"></i>
+            </button>
+            <button type="button" class="btn btn-mini btn-inverse" ng-class="{active: showGreatTower}"
+                title="Wielka Latarnia">
+                <i class="icon-cog" ng-click="showGreatTower = !showGreatTower"></i>
+            </button>
         </div>
     </div>
     {* mainDescription *}

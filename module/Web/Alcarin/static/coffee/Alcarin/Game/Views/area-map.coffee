@@ -4,6 +4,15 @@ namespace 'Alcarin.Game.Views', (exports, Alcarin) ->
 
     exports.AreaMap = ngcontroller ['GameServer', 'CurrentCharacter', '$q', '$safeApply', 'MapBackground',
         (GameServer, CurrentCharacter, $q, $safeApply, MapBackground)->
+            @showGreatTower = true
+            @showMoveTarget = true
+            @showChars      = true
+            @showEyeRange   = true
+
+            @redrawMap = =>
+                $safeApply @, =>
+                    MapBackground.reset()
+                    GameServer.emit 'swap.all'
 
             lastClick = new Date()
             @mapClicked = (ev)=>
@@ -16,11 +25,6 @@ namespace 'Alcarin.Game.Views', (exports, Alcarin) ->
                             target = units.toUnits ev.offsetX, ev.offsetY
                             CurrentCharacter.then (character)-> character.moveTo target
                     lastClick = current
-
-            @redrawMap = =>
-                $safeApply @, =>
-                    MapBackground.reset()
-                    GameServer.emit 'swap.all'
 
             GameServer.on 'terrain.swap', (terrain, info)=>
                 CurrentCharacter.then (character)=>

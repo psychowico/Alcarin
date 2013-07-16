@@ -4,6 +4,16 @@
       var lastClick,
         _this = this;
 
+      this.showGreatTower = true;
+      this.showMoveTarget = true;
+      this.showChars = true;
+      this.showEyeRange = true;
+      this.redrawMap = function() {
+        return $safeApply(_this, function() {
+          MapBackground.reset();
+          return GameServer.emit('swap.all');
+        });
+      };
       lastClick = new Date();
       this.mapClicked = function(ev) {
         var current, diff;
@@ -23,12 +33,6 @@
           }
           return lastClick = current;
         }
-      };
-      this.redrawMap = function() {
-        return $safeApply(_this, function() {
-          MapBackground.reset();
-          return GameServer.emit('swap.all');
-        });
       };
       GameServer.on('terrain.swap', function(terrain, info) {
         return CurrentCharacter.then(function(character) {
