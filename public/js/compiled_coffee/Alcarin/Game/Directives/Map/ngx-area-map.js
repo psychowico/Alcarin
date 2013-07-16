@@ -4,7 +4,7 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 namespace('Alcarin.Game.Directives.Map', function(exports, Alcarin) {
-  var NOISE_DENSITY, NOISE_IMPACT, Terrain, noise;
+  var GRAYSCALE, NOISE_DENSITY, NOISE_IMPACT, Terrain, noise;
 
   exports.module.directive('alcAreaMap', [
     'MapBackground', function(MapBackground) {
@@ -32,10 +32,15 @@ namespace('Alcarin.Game.Directives.Map', function(exports, Alcarin) {
   NOISE_DENSITY = 25;
   NOISE_IMPACT = 0.22;
   noise = new ROT.Noise.Simplex();
+  GRAYSCALE = [0.3, 0.59, 0.11];
   return Terrain = (function(_super) {
     __extends(Terrain, _super);
 
-    Terrain.prototype.background = 'rgb(0,0,255)';
+    Terrain.prototype.background = {
+      r: 0,
+      g: 0,
+      b: 255
+    };
 
     function Terrain(canvas) {
       this.canvas = canvas;
@@ -62,13 +67,8 @@ namespace('Alcarin.Game.Directives.Map', function(exports, Alcarin) {
     };
 
     Terrain.prototype.setLighting = function(lighting) {
-      this.lighting = lighting;
-      console.log(this.lighting);
-      if (this.lighting) {
-        lighting = 1 - (this.lighting + 0.4) / 1.4;
-        this.canvas.css('filter', 'url(filters.svg#grayscale)');
-        this.canvas.css('filter', 'gray');
-        return this.canvas.css('-webkit-filter', "grayscale(" + lighting + ")");
+      if (lighting) {
+        return this.lighting = (lighting + 0.4) / 1.4;
       }
     };
 
@@ -86,13 +86,13 @@ namespace('Alcarin.Game.Directives.Map', function(exports, Alcarin) {
 
     Terrain.prototype.prepareCanvas = function() {
       this.context = this.canvas[0].getContext('2d');
-      this.context.fillStyle = this.background;
+      this.context.fillStyle = "black";
       this.context.fillRect(0, 0, this.width(), this.height());
       return $(this.context).disableSmoothing();
     };
 
     Terrain.prototype.getBackbuffer = function(sizeW, sizeH) {
-      var _ref;
+      var c, _ref;
 
       if ((_ref = this.backbuffer) != null) {
         _ref.remove();
@@ -104,7 +104,11 @@ namespace('Alcarin.Game.Directives.Map', function(exports, Alcarin) {
       });
       this.backbufferContext = this.backbuffer[0].getContext('2d');
       $(this.backbufferContext).disableSmoothing();
-      this.backbufferContext.fillStyle = this.background;
+      c = this.background;
+      if (this.lighting) {
+        c = this.applyGrayscale(c, this.lighting);
+      }
+      this.backbufferContext.fillStyle = "rgb(" + (~~c.r) + "," + (~~c.g) + "," + (~~c.b) + ")";
       this.backbufferContext.fillRect(0, 0, sizeW, sizeH);
       return this.backbufferContext;
     };
@@ -120,8 +124,20 @@ namespace('Alcarin.Game.Directives.Map', function(exports, Alcarin) {
       return this.$emit('drawn');
     };
 
+    Terrain.prototype.applyGrayscale = function(color, lighting) {
+      var gray;
+
+      gray = GRAYSCALE[0] * color.r + GRAYSCALE[1] * color.g + GRAYSCALE[2] * color.b;
+      gray *= 1 - lighting;
+      return {
+        r: (lighting * color.r) + gray,
+        g: (lighting * color.g) + gray,
+        b: (lighting * color.b) + gray
+      };
+    };
+
     Terrain.prototype.redraw = function() {
-      var bufferContext, c, color, dataOffset, field, i, imageData, mod, offset, pixelX, pixelY, size, _i, _j, _len, _ref;
+      var bufferContext, c, cmp, color, dataOffset, field, i, imageData, lighting, mod, offset, pixelX, pixelY, result, size, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2;
 
       size = this.radius * 2;
       bufferContext = this.getBackbuffer(size, size);
@@ -130,6 +146,8 @@ namespace('Alcarin.Game.Directives.Map', function(exports, Alcarin) {
         x: this.center.x - this.radius,
         y: this.center.y - this.radius
       };
+      lighting = this.lighting;
+      c = {};
       _ref = this.fields;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         field = _ref[_i];
@@ -138,10 +156,20 @@ namespace('Alcarin.Game.Directives.Map', function(exports, Alcarin) {
         pixelY = field.loc.y - offset.y;
         mod = Math.abs(noise.get(field.loc.x / NOISE_DENSITY, field.loc.y / NOISE_DENSITY));
         dataOffset = 4 * (pixelY * size + pixelX);
-        for (i = _j = 0; _j <= 2; i = ++_j) {
-          c = (color >> (8 * (2 - i))) & 0xFF;
-          c *= 1 - NOISE_IMPACT * (1 - mod);
-          imageData.data[dataOffset + i] = ~~c;
+        result = 0;
+        _ref1 = ['r', 'g', 'b'];
+        for (i = _j = 0, _len1 = _ref1.length; _j < _len1; i = ++_j) {
+          cmp = _ref1[i];
+          c[cmp] = (color >> (8 * (2 - i))) & 0xFF;
+          c[cmp] *= 1 - NOISE_IMPACT * (1 - mod);
+        }
+        if (lighting) {
+          c = this.applyGrayscale(c, lighting);
+        }
+        _ref2 = ['r', 'g', 'b'];
+        for (i = _k = 0, _len2 = _ref2.length; _k < _len2; i = ++_k) {
+          cmp = _ref2[i];
+          imageData.data[dataOffset + i] = ~~c[cmp];
         }
       }
       bufferContext.putImageData(imageData, 0, 0);

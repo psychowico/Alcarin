@@ -21,9 +21,13 @@ namespace 'Alcarin.Game.Directives.Map', (exports, Alcarin) ->
     NOISE_DENSITY = 25
     NOISE_IMPACT  = 0.22
     noise         = new ROT.Noise.Simplex()
+    GRAYSCALE     = [0.3, 0.59, 0.11]
 
     class Terrain extends Alcarin.EventsEmitter
-        background: 'rgb(0,0,255)'
+        background:
+            r: 0
+            g: 0
+            b: 255
 
         constructor: (@canvas)->
             @prepareCanvas()
@@ -35,20 +39,17 @@ namespace 'Alcarin.Game.Directives.Map', (exports, Alcarin) ->
                     y: Math.round center.y
         setRadius: (@radius)->
         setFields: (@fields)->
-        setLighting: (@lighting)->
+        setLighting: (lighting)->
             # we transform lighting and enable grayscale
-            if @lighting
-                lighting = 1 - (@lighting + 0.4) / 1.4
-                # @canvas.css 'filter', 'url(filters.svg#grayscale)'
-                # @canvas.css 'filter', 'gray'
-                @canvas.css '-webkit-filter', "grayscale(#{lighting})"
+            if lighting
+                @lighting = (lighting + 0.4) / 1.4
 
         width: -> @canvas[0]?.width
         height: -> @canvas[0]?.height
 
         prepareCanvas: ->
             @context = @canvas[0].getContext '2d'
-            @context.fillStyle = @background
+            @context.fillStyle = "black"
             @context.fillRect 0, 0, @width(), @height()
             $(@context).disableSmoothing()
 
@@ -60,7 +61,10 @@ namespace 'Alcarin.Game.Directives.Map', (exports, Alcarin) ->
             @backbufferContext = @backbuffer[0].getContext '2d'
             $(@backbufferContext).disableSmoothing()
 
-            @backbufferContext.fillStyle = @background
+            c = @background
+            c = @applyGrayscale c, @lighting if @lighting
+
+            @backbufferContext.fillStyle = "rgb(#{~~c.r},#{~~c.g},#{~~c.b})"
             @backbufferContext.fillRect 0, 0, sizeW, sizeH
             @backbufferContext
 
@@ -72,6 +76,15 @@ namespace 'Alcarin.Game.Directives.Map', (exports, Alcarin) ->
             @context.restore()
             @$emit 'drawn'
 
+        applyGrayscale: (color, lighting)->
+            gray = GRAYSCALE[0] * color.r + GRAYSCALE[1] * color.g + GRAYSCALE[2] * color.b
+            gray *= (1 - lighting)
+            return {
+                r: (lighting * color.r) + gray
+                g: (lighting * color.g) + gray
+                b: (lighting * color.b) + gray
+            }
+
         redraw: =>
             size          = @radius * 2
             bufferContext = @getBackbuffer size, size
@@ -82,6 +95,9 @@ namespace 'Alcarin.Game.Directives.Map', (exports, Alcarin) ->
             # canvasTitle = "View radius: #{radius / 10}km"
             # @canvas.parent().tooltip {title: canvasTitle, placement: 'bottom'}
 
+            lighting = @lighting
+            # console.log lighting
+            c = {}
             for field in @fields
                 color = field.land.color
 
@@ -92,11 +108,19 @@ namespace 'Alcarin.Game.Directives.Map', (exports, Alcarin) ->
 
                 dataOffset = 4 * (pixelY * size + pixelX)
 
-                for i in [0..2]
-                    c = ((color >> (8 * (2 - i) ) ) & 0xFF)
+                # color =
+                #     r: unpack color, 0, mod
+                #     g: unpack color, 1, mod
+                #     b: unpack color, 2, mod
+                result = 0
+                for cmp, i in ['r', 'g', 'b']
+                    c[cmp] = ((color >> (8 * (2 - i) ) ) & 0xFF)
                     # @plain_colors[_offset + i] = c
-                    c *= 1 - NOISE_IMPACT * ( 1 - mod )
-                    imageData.data[dataOffset + i] = ~~c
+                    c[cmp] *= 1 - NOISE_IMPACT * ( 1 - mod )
+                if lighting
+                    c = @applyGrayscale c, lighting
+                for cmp, i in ['r', 'g', 'b']
+                    imageData.data[dataOffset + i] = ~~c[cmp]
 
             bufferContext.putImageData imageData, 0, 0
             @swapBuffer()
