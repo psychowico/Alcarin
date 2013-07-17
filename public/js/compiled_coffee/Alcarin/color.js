@@ -29,6 +29,18 @@ namespace('Alcarin', function(exports, Alcarin) {
       return "#" + cth(rgb.r + cth(rgb.g + cth(rgb.b)));
     };
 
+    Color.intToRGB = function(color) {
+      var c, cmp, i, _i, _len, _ref;
+
+      c = {};
+      _ref = ['r', 'g', 'b'];
+      for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
+        cmp = _ref[i];
+        c[cmp] = (color >> (8 * (2 - i))) & 0xFF;
+      }
+      return c;
+    };
+
     return Color;
 
   })();

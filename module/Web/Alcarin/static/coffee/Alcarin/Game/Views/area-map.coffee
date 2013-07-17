@@ -18,6 +18,13 @@ namespace 'Alcarin.Game.Views', (exports, Alcarin) ->
                 @zoomMap = !@zoomMap
                 MapBackground.enableZoom @zoomMap
 
+            @radiusWithUnits = =>
+                if MapBackground.radius
+                    km = MapBackground.radius / 10
+                    return "#{km*1000}m" if km < 1
+                    return "#{km}km"
+
+
             lastClick = new Date()
             @mapClicked = (ev)=>
                 current = new Date()

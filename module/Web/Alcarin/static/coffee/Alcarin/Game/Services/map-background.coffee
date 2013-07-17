@@ -4,7 +4,8 @@ namespace 'Alcarin.Game.Services', (exports, Alcarin) ->
 
     class Units
 
-        constructor: (@parent)->
+        constructor: (@parent, round=true)->
+            @round = if round then Math.round else (x)->x
 
         pixelCenter: -> @toPixels(@parent.center.x, @parent.center.y)
         center: -> @parent.center
@@ -15,28 +16,32 @@ namespace 'Alcarin.Game.Services', (exports, Alcarin) ->
             center = @center()
             radius = @radius()
             pixelRadius = @pixelRadius()
-            offset = {x: Math.round(center.x) - radius, y: Math.round(center.y) - radius}
+
+            round = @round
+            offset = {x: round(center.x) - radius, y: round(center.y) - radius}
             return {
-                x: Math.round Math.round(x - offset.x) * pixelRadius / radius
-                y: Math.round Math.round(y - offset.y) * pixelRadius / radius
+                x: Math.round round(x - offset.x) * pixelRadius / radius
+                y: Math.round round(y - offset.y) * pixelRadius / radius
             }
 
         toUnits: (pixelX, pixelY)=>
             center = @center()
             radius = @radius()
             pixelRadius = @pixelRadius()
-            offset = {x: Math.round(center.x) - radius, y: Math.round(center.y) - radius}
+            round = @round
+            offset = {x: round(center.x) - radius, y: round(center.y) - radius}
             return {
-                x: offset.x + Math.round pixelX * radius / pixelRadius
-                y: offset.y + Math.round pixelY * radius / pixelRadius
+                x: offset.x + round pixelX * radius / pixelRadius
+                y: offset.y + round pixelY * radius / pixelRadius
             }
 
-    ZOOM_FACTOR = 5
+    ZOOM_FACTOR = 20
     exports.module.factory 'MapBackground', ['$q', 'GameServer', 'CurrentCharacter',
         ($q, GameServer, CurrentCharacter)->
 
             class Background extends Alcarin.EventsEmitter
                 dataReadyDeffered: null
+                zoom: false
 
                 constructor: -> @reset()
 
@@ -47,6 +52,7 @@ namespace 'Alcarin.Game.Services', (exports, Alcarin) ->
                 enableZoom: (@zoom)->
                     factor = if @zoom then 1 / ZOOM_FACTOR else ZOOM_FACTOR
                     @radius *= factor
+                    @_units = new Units @, not @zoom
                     @$emit 'zoom', @zoom
 
                 onDataReady: (args)=>
@@ -61,7 +67,7 @@ namespace 'Alcarin.Game.Services', (exports, Alcarin) ->
                     @charViewRadius = info.charViewRadius
                     @lighting       = info.lighting
 
-                    @_units = new Units @
+                    @_units = new Units @, not @zoom
                     @dataReadyDeffered.resolve @
 
                 reset: ->

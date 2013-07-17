@@ -15,3 +15,9 @@ namespace 'Alcarin', (exports, Alcarin) ->
                 hex = c.toString 16
                 if hex.length == 1 then "0" + hex else hex
             "#" + cth rgb.r + cth rgb.g + cth rgb.b
+
+        @intToRGB: (color)->
+            c = {}
+            for cmp, i in ['r', 'g', 'b']
+                c[cmp] = ((color >> (8 * (2 - i) ) ) & 0xFF)
+            return c

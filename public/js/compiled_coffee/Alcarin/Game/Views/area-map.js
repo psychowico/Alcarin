@@ -18,6 +18,17 @@
         _this.zoomMap = !_this.zoomMap;
         return MapBackground.enableZoom(_this.zoomMap);
       };
+      this.radiusWithUnits = function() {
+        var km;
+
+        if (MapBackground.radius) {
+          km = MapBackground.radius / 10;
+          if (km < 1) {
+            return "" + (km * 1000) + "m";
+          }
+          return "" + km + "km";
+        }
+      };
       lastClick = new Date();
       this.mapClicked = function(ev) {
         var current, diff;

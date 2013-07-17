@@ -7,10 +7,16 @@ namespace('Alcarin.Game.Services', function(exports, Alcarin) {
   var Units, ZOOM_FACTOR;
 
   Units = (function() {
-    function Units(parent) {
+    function Units(parent, round) {
       this.parent = parent;
+      if (round == null) {
+        round = true;
+      }
       this.toUnits = __bind(this.toUnits, this);
       this.toPixels = __bind(this.toPixels, this);
+      this.round = round ? Math.round : function(x) {
+        return x;
+      };
     }
 
     Units.prototype.pixelCenter = function() {
@@ -30,41 +36,43 @@ namespace('Alcarin.Game.Services', function(exports, Alcarin) {
     };
 
     Units.prototype.toPixels = function(x, y) {
-      var center, offset, pixelRadius, radius;
+      var center, offset, pixelRadius, radius, round;
 
       center = this.center();
       radius = this.radius();
       pixelRadius = this.pixelRadius();
+      round = this.round;
       offset = {
-        x: Math.round(center.x) - radius,
-        y: Math.round(center.y) - radius
+        x: round(center.x) - radius,
+        y: round(center.y) - radius
       };
       return {
-        x: Math.round(Math.round(x - offset.x) * pixelRadius / radius),
-        y: Math.round(Math.round(y - offset.y) * pixelRadius / radius)
+        x: Math.round(round(x - offset.x) * pixelRadius / radius),
+        y: Math.round(round(y - offset.y) * pixelRadius / radius)
       };
     };
 
     Units.prototype.toUnits = function(pixelX, pixelY) {
-      var center, offset, pixelRadius, radius;
+      var center, offset, pixelRadius, radius, round;
 
       center = this.center();
       radius = this.radius();
       pixelRadius = this.pixelRadius();
+      round = this.round;
       offset = {
-        x: Math.round(center.x) - radius,
-        y: Math.round(center.y) - radius
+        x: round(center.x) - radius,
+        y: round(center.y) - radius
       };
       return {
-        x: offset.x + Math.round(pixelX * radius / pixelRadius),
-        y: offset.y + Math.round(pixelY * radius / pixelRadius)
+        x: offset.x + round(pixelX * radius / pixelRadius),
+        y: offset.y + round(pixelY * radius / pixelRadius)
       };
     };
 
     return Units;
 
   })();
-  ZOOM_FACTOR = 5;
+  ZOOM_FACTOR = 20;
   return exports.module.factory('MapBackground', [
     '$q', 'GameServer', 'CurrentCharacter', function($q, GameServer, CurrentCharacter) {
       var Background;
@@ -73,6 +81,8 @@ namespace('Alcarin.Game.Services', function(exports, Alcarin) {
         __extends(Background, _super);
 
         Background.prototype.dataReadyDeffered = null;
+
+        Background.prototype.zoom = false;
 
         function Background() {
           this.onDataReady = __bind(this.onDataReady, this);          this.reset();
@@ -92,6 +102,7 @@ namespace('Alcarin.Game.Services', function(exports, Alcarin) {
           this.zoom = zoom;
           factor = this.zoom ? 1 / ZOOM_FACTOR : ZOOM_FACTOR;
           this.radius *= factor;
+          this._units = new Units(this, !this.zoom);
           return this.$emit('zoom', this.zoom);
         };
 
@@ -108,7 +119,7 @@ namespace('Alcarin.Game.Services', function(exports, Alcarin) {
           }
           this.charViewRadius = info.charViewRadius;
           this.lighting = info.lighting;
-          this._units = new Units(this);
+          this._units = new Units(this, !this.zoom);
           return this.dataReadyDeffered.resolve(this);
         };
 
