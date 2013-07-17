@@ -27,6 +27,7 @@
           CurrentCharacter.then(function(character) {
             return character.$on('update', updateTarget);
           });
+          MapBackground.$on('zoom', updateTarget);
           return updateTarget();
         }
       };

@@ -19,5 +19,6 @@ namespace 'Alcarin.Game.Directives.Map', (exports, Alcarin) ->
 
                 CurrentCharacter.then (character)->
                     character.$on 'update', updateTarget
+                MapBackground.$on 'zoom', updateTarget
                 updateTarget()
         ]

@@ -149,7 +149,7 @@ namespace('Admin.Map.Layers', function(exports, Alcarin) {
         _canvas.width = sizeW;
         _canvas.height = sizeH;
         this.backbuffer = _canvas.getContext('2d');
-        $(this.backbuffer).disableSmoothing();
+        $(this.backbuffer).enableSmoothing();
       }
       this.backbuffer.fillStyle = "rgb(0, 0, 255)";
       this.backbuffer.fillRect(0, 0, sizeW, sizeH);
@@ -179,7 +179,7 @@ namespace('Admin.Map.Layers', function(exports, Alcarin) {
       bg = this.background;
       this.context.fillStyle = "rgb(" + bg[0] + ", " + bg[1] + ", " + bg[2] + ")";
       this.context.fillRect(0, 0, this.canvas.width(), this.canvas.height());
-      return $(this.context).disableSmoothing();
+      return $(this.context).enableSmoothing();
     };
 
     EditableTerrain.prototype.redraw = function(size, fields) {

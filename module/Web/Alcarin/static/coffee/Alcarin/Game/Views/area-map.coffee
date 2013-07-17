@@ -14,6 +14,10 @@ namespace 'Alcarin.Game.Views', (exports, Alcarin) ->
                     MapBackground.reset()
                     GameServer.emit 'swap.all'
 
+            @toggleZoomMap = =>
+                @zoomMap = !@zoomMap
+                MapBackground.enableZoom @zoomMap
+
             lastClick = new Date()
             @mapClicked = (ev)=>
                 current = new Date()

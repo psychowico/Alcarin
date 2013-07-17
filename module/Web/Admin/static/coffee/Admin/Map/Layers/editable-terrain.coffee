@@ -96,7 +96,7 @@ namespace 'Admin.Map.Layers', (exports, Alcarin) ->
                 _canvas.height = sizeH
 
                 @backbuffer = _canvas.getContext '2d'
-                $(@backbuffer).disableSmoothing()
+                $(@backbuffer).enableSmoothing()
 
             @backbuffer.fillStyle = "rgb(0, 0, 255)";
             @backbuffer.fillRect 0, 0, sizeW, sizeH
@@ -112,7 +112,7 @@ namespace 'Admin.Map.Layers', (exports, Alcarin) ->
 
                 @foreground = _canvas.getContext '2d'
                 @foreground_canvas.appendTo @canvas.parent()
-                #$(@backbuffer).disableSmoothing()
+                #$(@backbuffer).enableSmoothing()
 
             @foreground
 
@@ -123,7 +123,7 @@ namespace 'Admin.Map.Layers', (exports, Alcarin) ->
             @context.fillStyle = "rgb(#{bg[0]}, #{bg[1]}, #{bg[2]})";
             @context.fillRect 0, 0, @canvas.width(), @canvas.height()
 
-            $(@context).disableSmoothing()
+            $(@context).enableSmoothing()
 
         redraw: (size, fields)=>
             @plain_colors = []

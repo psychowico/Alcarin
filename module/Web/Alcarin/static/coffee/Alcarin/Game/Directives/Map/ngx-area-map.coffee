@@ -16,10 +16,11 @@ namespace 'Alcarin.Game.Directives.Map', (exports, Alcarin) ->
 
                 element.data 'rel', terrain
                 MapBackground.$on 'reset', redrawAll
+                MapBackground.$on 'zoom', redrawAll
                 redrawAll()
     ]
 
-    NOISE_DENSITY = 25
+    NOISE_DENSITY = 20
     NOISE_IMPACT  = 0.22
     noise         = new ROT.Noise.Simplex()
     GRAYSCALE     = [0.3, 0.59, 0.11]
@@ -55,7 +56,7 @@ namespace 'Alcarin.Game.Directives.Map', (exports, Alcarin) ->
             @context = @canvas[0].getContext '2d'
             @context.fillStyle = "black"
             @context.fillRect 0, 0, @width(), @height()
-            $(@context).disableSmoothing()
+            $(@context).enableSmoothing()
 
         getBackbuffer: (sizeW, sizeH)->
             @backbuffer?.remove()
@@ -63,7 +64,7 @@ namespace 'Alcarin.Game.Directives.Map', (exports, Alcarin) ->
             @backbuffer = $ '<canvas>'
             $.extend @backbuffer[0], {width: sizeW, height: sizeH}
             @backbufferContext = @backbuffer[0].getContext '2d'
-            $(@backbufferContext).disableSmoothing()
+            $(@backbufferContext).enableSmoothing()
 
             c = @background
             c = @applyGrayscale c, @lighting if @lighting
@@ -90,21 +91,19 @@ namespace 'Alcarin.Game.Directives.Map', (exports, Alcarin) ->
             }
 
         redraw: =>
-            size          = @radius * 2
+            size          = Math.round @radius * 2
             bufferContext = @getBackbuffer size, size
 
             imageData = bufferContext.getImageData 0, 0, size, size
             offset = {x: @center.x - @radius, y: @center.y - @radius}
-            # canvasTitle = "View radius: #{radius / 10}km"
-            # @canvas.parent().tooltip {title: canvasTitle, placement: 'bottom'}
 
             lighting = @lighting
             c = {}
             for field in @fields
-                color = field.land.color
-
                 pixelX = field.loc.x - offset.x
                 pixelY = field.loc.y - offset.y
+                continue if pixelX < 0 or pixelY < 0 or pixelX >= size or pixelY >= size
+                color = field.land.color
 
                 mod = Math.abs noise.get field.loc.x / NOISE_DENSITY, field.loc.y / NOISE_DENSITY
 

@@ -1,7 +1,7 @@
 namespace('Alcarin.JQueryPlugins', function(exports, Alcarin) {
   var def_spin, _old_position;
 
-  $.fn.disableSmoothing = function() {
+  $.fn.enableSmoothing = function() {
     var context;
 
     context = this[0];

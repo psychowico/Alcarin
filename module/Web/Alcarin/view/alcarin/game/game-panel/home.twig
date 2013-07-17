@@ -25,29 +25,37 @@
 
         <div ng-show="showGreatTower">
             <div class="great-tower hide" alc-world-center>
-                <span class="label label-warning" title="W oddali widzisz olbrzymią skalną konstrukcję której szczyt emanuje jasnym, ciepłym światłem.">
+                <span class="label label-warning" title="W oddali widzisz olbrzymią skalną konstrukcję której szczyt za dnia emanuje jasnym, ciepłym światłem, nocą zaś mieni się jako delikatna poświata.">
                     <i class="icon-cog"></i>
                 </span>
             </div>
         </div>
 
-        <div class="btn-group toolbar">
-            <button type="button" class="btn btn-mini btn-inverse" ng-class="{active: showEyeRange}"
-                title="Zasięg rozpoznawania postaci" ng-click="showEyeRange = !showEyeRange">
-                <i class="icon-eye-close"></i>
-            </button>
-            <button type="button" class="btn btn-mini btn-inverse" ng-class="{active: showChars}"
-                title="Postacie" ng-click="showChars = !showChars">
-                <i class="icon-user"></i>
-            </button>
-            <button type="button" class="btn btn-mini btn-inverse" ng-class="{active: showMoveTarget}"
-                title="Cel podróży" ng-click="showMoveTarget = !showMoveTarget">
-                <i class="icon-move"></i>
-            </button>
-            <button type="button" class="btn btn-mini btn-inverse" ng-class="{active: showGreatTower}"
-                title="Wielka Latarnia" ng-click="showGreatTower = !showGreatTower">
-                <i class="icon-cog"></i>
-            </button>
+        <div class="btn-toolbar">
+            <div class="btn-group">
+                <button type="button" class="btn btn-mini btn-inverse" ng-class="{active: zoomMap}"
+                    title="Mapa bliskiego otoczenia" ng-click="toggleZoomMap()">
+                    <i class="icon-zoom-in"></i>
+                </button>
+            </div>
+            <div class="btn-group">
+                <button type="button" class="btn btn-mini btn-inverse" ng-class="{active: showEyeRange}"
+                    title="Zasięg rozpoznawania postaci" ng-click="showEyeRange = !showEyeRange">
+                    <i class="icon-eye-close"></i>
+                </button>
+                <button type="button" class="btn btn-mini btn-inverse" ng-class="{active: showChars}"
+                    title="Postacie" ng-click="showChars = !showChars">
+                    <i class="icon-user"></i>
+                </button>
+                <button type="button" class="btn btn-mini btn-inverse" ng-class="{active: showMoveTarget}"
+                    title="Cel podróży" ng-click="showMoveTarget = !showMoveTarget">
+                    <i class="icon-move"></i>
+                </button>
+                <button type="button" class="btn btn-mini btn-inverse" ng-class="{active: showGreatTower}"
+                    title="Wielka Latarnia" ng-click="showGreatTower = !showGreatTower">
+                    <i class="icon-cog"></i>
+                </button>
+            </div>
         </div>
     </div>
     {* mainDescription *}

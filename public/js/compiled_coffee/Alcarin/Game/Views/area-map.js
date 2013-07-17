@@ -14,6 +14,10 @@
           return GameServer.emit('swap.all');
         });
       };
+      this.toggleZoomMap = function() {
+        _this.zoomMap = !_this.zoomMap;
+        return MapBackground.enableZoom(_this.zoomMap);
+      };
       lastClick = new Date();
       this.mapClicked = function(ev) {
         var current, diff;

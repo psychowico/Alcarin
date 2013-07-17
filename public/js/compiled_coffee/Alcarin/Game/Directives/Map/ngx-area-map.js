@@ -25,12 +25,13 @@ namespace('Alcarin.Game.Directives.Map', function(exports, Alcarin) {
           };
           element.data('rel', terrain);
           MapBackground.$on('reset', redrawAll);
+          MapBackground.$on('zoom', redrawAll);
           return redrawAll();
         }
       };
     }
   ]);
-  NOISE_DENSITY = 25;
+  NOISE_DENSITY = 20;
   NOISE_IMPACT = 0.22;
   noise = new ROT.Noise.Simplex();
   GRAYSCALE = [0.3, 0.59, 0.11];
@@ -93,7 +94,7 @@ namespace('Alcarin.Game.Directives.Map', function(exports, Alcarin) {
       this.context = this.canvas[0].getContext('2d');
       this.context.fillStyle = "black";
       this.context.fillRect(0, 0, this.width(), this.height());
-      return $(this.context).disableSmoothing();
+      return $(this.context).enableSmoothing();
     };
 
     Terrain.prototype.getBackbuffer = function(sizeW, sizeH) {
@@ -108,7 +109,7 @@ namespace('Alcarin.Game.Directives.Map', function(exports, Alcarin) {
         height: sizeH
       });
       this.backbufferContext = this.backbuffer[0].getContext('2d');
-      $(this.backbufferContext).disableSmoothing();
+      $(this.backbufferContext).enableSmoothing();
       c = this.background;
       if (this.lighting) {
         c = this.applyGrayscale(c, this.lighting);
@@ -144,7 +145,7 @@ namespace('Alcarin.Game.Directives.Map', function(exports, Alcarin) {
     Terrain.prototype.redraw = function() {
       var bufferContext, c, cmp, color, dataOffset, field, i, imageData, lighting, mod, offset, pixelX, pixelY, result, size, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2;
 
-      size = this.radius * 2;
+      size = Math.round(this.radius * 2);
       bufferContext = this.getBackbuffer(size, size);
       imageData = bufferContext.getImageData(0, 0, size, size);
       offset = {
@@ -156,9 +157,12 @@ namespace('Alcarin.Game.Directives.Map', function(exports, Alcarin) {
       _ref = this.fields;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         field = _ref[_i];
-        color = field.land.color;
         pixelX = field.loc.x - offset.x;
         pixelY = field.loc.y - offset.y;
+        if (pixelX < 0 || pixelY < 0 || pixelX >= size || pixelY >= size) {
+          continue;
+        }
+        color = field.land.color;
         mod = Math.abs(noise.get(field.loc.x / NOISE_DENSITY, field.loc.y / NOISE_DENSITY));
         dataOffset = 4 * (pixelY * size + pixelX);
         result = 0;

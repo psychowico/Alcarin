@@ -31,6 +31,7 @@ namespace 'Alcarin.Game.Services', (exports, Alcarin) ->
                 y: offset.y + Math.round pixelY * radius / pixelRadius
             }
 
+    ZOOM_FACTOR = 5
     exports.module.factory 'MapBackground', ['$q', 'GameServer', 'CurrentCharacter',
         ($q, GameServer, CurrentCharacter)->
 
@@ -43,6 +44,11 @@ namespace 'Alcarin.Game.Services', (exports, Alcarin) ->
 
                 units: -> @_units
 
+                enableZoom: (@zoom)->
+                    factor = if @zoom then 1 / ZOOM_FACTOR else ZOOM_FACTOR
+                    @radius *= factor
+                    @$emit 'zoom', @zoom
+
                 onDataReady: (args)=>
                     # all data needed to draw map has been loaded
                     [character, terrainArgs, charsArgs] = args
@@ -51,6 +57,7 @@ namespace 'Alcarin.Game.Services', (exports, Alcarin) ->
                     @center         = character.loc
                     @fields         = terrain
                     @radius         = info.radius
+                    @radius /= ZOOM_FACTOR if @zoom
                     @charViewRadius = info.charViewRadius
                     @lighting       = info.lighting
 

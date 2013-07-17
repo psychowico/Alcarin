@@ -4,7 +4,7 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 namespace('Alcarin.Game.Services', function(exports, Alcarin) {
-  var Units;
+  var Units, ZOOM_FACTOR;
 
   Units = (function() {
     function Units(parent) {
@@ -64,6 +64,7 @@ namespace('Alcarin.Game.Services', function(exports, Alcarin) {
     return Units;
 
   })();
+  ZOOM_FACTOR = 5;
   return exports.module.factory('MapBackground', [
     '$q', 'GameServer', 'CurrentCharacter', function($q, GameServer, CurrentCharacter) {
       var Background;
@@ -85,6 +86,15 @@ namespace('Alcarin.Game.Services', function(exports, Alcarin) {
           return this._units;
         };
 
+        Background.prototype.enableZoom = function(zoom) {
+          var factor;
+
+          this.zoom = zoom;
+          factor = this.zoom ? 1 / ZOOM_FACTOR : ZOOM_FACTOR;
+          this.radius *= factor;
+          return this.$emit('zoom', this.zoom);
+        };
+
         Background.prototype.onDataReady = function(args) {
           var character, charsArgs, info, terrain, terrainArgs;
 
@@ -93,6 +103,9 @@ namespace('Alcarin.Game.Services', function(exports, Alcarin) {
           this.center = character.loc;
           this.fields = terrain;
           this.radius = info.radius;
+          if (this.zoom) {
+            this.radius /= ZOOM_FACTOR;
+          }
           this.charViewRadius = info.charViewRadius;
           this.lighting = info.lighting;
           this._units = new Units(this);

@@ -1,7 +1,7 @@
 namespace 'Alcarin.JQueryPlugins', (exports, Alcarin) ->
 
-    # disabling canvas contexts smoothing
-    $.fn.disableSmoothing = ->
+    # enable canvas contexts smoothing
+    $.fn.enableSmoothing = ->
         context = @[0]
         context.webkitImageSmoothingEnabled = context.mozImageSmoothingEnabled = true
 
