@@ -1,6 +1,6 @@
 'use strict';namespace('Alcarin.Game.Directives.Map', function(exports, Alcarin) {
   return exports.module.directive('alcCharacterToken', [
-    'MapBackground', function(MapBackground) {
+    'MapBackground', 'CurrentCharacter', function(MapBackground, CurrentChar) {
       return {
         restrict: 'A',
         scope: {
@@ -8,8 +8,32 @@
           playerCharacter: '='
         },
         link: function($scope, $token, attrs) {
-          var resetPosition;
+          var resetPosition, resetTitle;
 
+          resetTitle = function() {
+            var loc, text;
+
+            loc = $scope.alcCharacterToken.loc;
+            text = $scope.alcCharacterToken.name;
+            return CurrentChar.then(function(current) {
+              var cloc, distance, _end;
+
+              cloc = current.loc;
+              distance = Math.sqrt(Math.pow(cloc.x - loc.x, 2) + Math.pow(cloc.y - loc.y, 2));
+              distance /= 10;
+              if (distance < 1) {
+                distance = Math.round(distance * 1000);
+                _end = 'm';
+              } else {
+                distance = Math.round(distance);
+                _end = 'km';
+              }
+              if (distance > 0) {
+                text += "\n" + distance + _end;
+              }
+              return $token.attr('title', text);
+            });
+          };
           resetPosition = function() {
             var loc, _ref;
 
@@ -25,6 +49,7 @@
                 top: ploc.y,
                 left: ploc.x
               });
+              resetTitle();
               return $token.show();
             });
           };
@@ -36,9 +61,7 @@
             isCurrentChar = val === $scope.alcCharacterToken._id;
             return $token.toggleClass('current', isCurrentChar);
           });
-          return $scope.$watch('alcCharacterToken.name', function(val) {
-            return $token.attr('title', val);
-          });
+          return $scope.$watch('alcCharacterToken.name', resetTitle);
         }
       };
     }

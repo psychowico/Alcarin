@@ -72,7 +72,7 @@ namespace('Alcarin.Game.Services', function(exports, Alcarin) {
     return Units;
 
   })();
-  ZOOM_FACTOR = 20;
+  ZOOM_FACTOR = 30;
   return exports.module.factory('MapBackground', [
     '$q', 'GameServer', 'CurrentCharacter', function($q, GameServer, CurrentCharacter) {
       var Background;

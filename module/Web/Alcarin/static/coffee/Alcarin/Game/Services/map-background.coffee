@@ -35,7 +35,7 @@ namespace 'Alcarin.Game.Services', (exports, Alcarin) ->
                 y: offset.y + round pixelY * radius / pixelRadius
             }
 
-    ZOOM_FACTOR = 20
+    ZOOM_FACTOR = 30
     exports.module.factory 'MapBackground', ['$q', 'GameServer', 'CurrentCharacter',
         ($q, GameServer, CurrentCharacter)->
 
