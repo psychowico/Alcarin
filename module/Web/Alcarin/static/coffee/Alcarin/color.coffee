@@ -21,3 +21,14 @@ namespace 'Alcarin', (exports, Alcarin) ->
             for cmp, i in ['r', 'g', 'b']
                 c[cmp] = ((color >> (8 * (2 - i) ) ) & 0xFF)
             return c
+
+        @RGBToInt: (rgb)->
+            return (rgb.r << 16) + (rgb.g << 8) + rgb.b
+
+        # mix two color - use (1 - percentage) of first and percentage second
+        @mix: (color1, color2, percentage=0.5)->
+            return {
+                r: (1 - percentage) * color1.r + color2.r * percentage
+                g: (1 - percentage) * color1.g + color2.g * percentage
+                b: (1 - percentage) * color1.b + color2.b * percentage
+            }

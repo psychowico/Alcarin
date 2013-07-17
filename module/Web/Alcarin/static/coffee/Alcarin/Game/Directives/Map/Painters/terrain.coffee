@@ -2,16 +2,16 @@
 
 namespace 'Alcarin.Game.Directives.Map.Painters', (exports, Alcarin) ->
 
-    NOISE_DENSITY = 20
-    NOISE_IMPACT  = 0.22
-    noise         = new ROT.Noise.Simplex()
-    GRAYSCALE     = [0.3, 0.59, 0.11]
-
     class exports.Terrain
         background:
             r: 0
             g: 0
             b: 255
+
+        @NOISE_DENSITY: 20
+        @NOISE_IMPACT : 0.22
+        @noise        : new ROT.Noise.Simplex()
+        @GRAYSCALE    : [0.3, 0.59, 0.11]
 
         constructor: (@canvas)->
             @prepareCanvas()
@@ -72,6 +72,12 @@ namespace 'Alcarin.Game.Directives.Map.Painters', (exports, Alcarin) ->
             }
 
         redraw: =>
+
+            NOISE_DENSITY = exports.Terrain.NOISE_DENSITY
+            NOISE_IMPACT  = exports.Terrain.NOISE_IMPACT
+            noise         = exports.Terrain.noise
+            GRAYSCALE     = exports.Terrain.GRAYSCALE
+
             size          = Math.round @radius * 2
             bufferContext = @getBackbuffer size, size
 

@@ -2,18 +2,20 @@
 var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 namespace('Alcarin.Game.Directives.Map.Painters', function(exports, Alcarin) {
-  var GRAYSCALE, NOISE_DENSITY, NOISE_IMPACT, noise;
-
-  NOISE_DENSITY = 20;
-  NOISE_IMPACT = 0.22;
-  noise = new ROT.Noise.Simplex();
-  GRAYSCALE = [0.3, 0.59, 0.11];
   return exports.Terrain = (function() {
     Terrain.prototype.background = {
       r: 0,
       g: 0,
       b: 255
     };
+
+    Terrain.NOISE_DENSITY = 20;
+
+    Terrain.NOISE_IMPACT = 0.22;
+
+    Terrain.noise = new ROT.Noise.Simplex();
+
+    Terrain.GRAYSCALE = [0.3, 0.59, 0.11];
 
     function Terrain(canvas) {
       this.canvas = canvas;
@@ -113,8 +115,12 @@ namespace('Alcarin.Game.Directives.Map.Painters', function(exports, Alcarin) {
     };
 
     Terrain.prototype.redraw = function() {
-      var bufferContext, c, cmp, color, dataOffset, field, i, imageData, lighting, mod, offset, pixelX, pixelY, result, size, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2;
+      var GRAYSCALE, NOISE_DENSITY, NOISE_IMPACT, bufferContext, c, cmp, color, dataOffset, field, i, imageData, lighting, mod, noise, offset, pixelX, pixelY, result, size, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2;
 
+      NOISE_DENSITY = exports.Terrain.NOISE_DENSITY;
+      NOISE_IMPACT = exports.Terrain.NOISE_IMPACT;
+      noise = exports.Terrain.noise;
+      GRAYSCALE = exports.Terrain.GRAYSCALE;
       size = Math.round(this.radius * 2);
       bufferContext = this.getBackbuffer(size, size);
       imageData = bufferContext.getImageData(0, 0, size, size);

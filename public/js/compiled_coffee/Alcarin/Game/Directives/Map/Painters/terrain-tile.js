@@ -2,14 +2,13 @@
 var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 namespace('Alcarin.Game.Directives.Map.Painters', function(exports, Alcarin) {
-  var BBHEIGHT, BBWIDTH, GRAYSCALE, NOISE_DENSITY, NOISE_IMPACT, noise;
+  var BBHEIGHT, BBWIDTH, BLUR, NOISE_DENSITY, NOISE_IMPACT;
 
   NOISE_DENSITY = 10;
   NOISE_IMPACT = 0.1;
-  noise = new ROT.Noise.Simplex();
-  GRAYSCALE = [0.3, 0.59, 0.11];
   BBWIDTH = 40;
   BBHEIGHT = 40;
+  BLUR = 0.2;
   return exports.TerrainTile = (function() {
     TerrainTile.prototype.background = {
       r: 0,
@@ -21,6 +20,7 @@ namespace('Alcarin.Game.Directives.Map.Painters', function(exports, Alcarin) {
       this.canvas = canvas;
       this.redraw = __bind(this.redraw, this);
       this.prepareCanvas();
+      this.Terrain = exports.Terrain;
     }
 
     TerrainTile.prototype.setCenter = function(center) {
@@ -61,8 +61,9 @@ namespace('Alcarin.Game.Directives.Map.Painters', function(exports, Alcarin) {
     };
 
     TerrainTile.prototype.applyGrayscale = function(color, lighting) {
-      var gray;
+      var GRAYSCALE, gray;
 
+      GRAYSCALE = this.Terrain.GRAYSCALE;
       gray = GRAYSCALE[0] * color.r + GRAYSCALE[1] * color.g + GRAYSCALE[2] * color.b;
       gray *= 1 - lighting;
       return {
@@ -95,9 +96,50 @@ namespace('Alcarin.Game.Directives.Map.Painters', function(exports, Alcarin) {
       return this.context.restore();
     };
 
-    TerrainTile.prototype.redraw = function() {
-      var backbufferContext, c, center, cmp, color, dataOffset, field, i, imageData, lighting, mod, offset, offsetX, offsetY, pixel, rCenterX, rCenterY, size, x, y, _i, _j, _k, _l, _len, _len1, _len2, _m, _ref, _ref1, _ref2;
+    TerrainTile.prototype.prepareColors = function() {
+      var Terrain, bg, center, cmp, color, colors, diffX, diffY, field, i, mod, rCenterX, rCenterY, x, y, _i, _j, _k, _l, _len, _len1, _ref, _ref1;
 
+      center = this.center;
+      rCenterX = Math.floor(center.x);
+      rCenterY = Math.floor(center.y);
+      colors = [];
+      bg = this.background;
+      for (i = _i = 0; _i <= 8; i = ++_i) {
+        colors.push(bg);
+      }
+      i = 0;
+      _ref = this.fields;
+      for (_j = 0, _len = _ref.length; _j < _len; _j++) {
+        field = _ref[_j];
+        diffX = field.loc.x - rCenterX;
+        diffY = field.loc.y - rCenterY;
+        if (Math.abs(diffY) <= 1 && Math.abs(diffX) <= 1) {
+          color = field.land.color;
+          colors[(diffY + 1) * 3 + (diffX + 1)] = Alcarin.Color.intToRGB(color);
+          i++;
+          if (i > 8) {
+            break;
+          }
+        }
+      }
+      Terrain = this.Terrain;
+      for (i = _k = 0; _k <= 8; i = ++_k) {
+        x = rCenterX - 1 + i % 3;
+        y = rCenterY - 1 + Math.floor(i / 3);
+        mod = Math.abs(Terrain.noise.get(x / Terrain.NOISE_DENSITY, y / Terrain.NOISE_DENSITY));
+        _ref1 = ['r', 'g', 'b'];
+        for (_l = 0, _len1 = _ref1.length; _l < _len1; _l++) {
+          cmp = _ref1[_l];
+          colors[i][cmp] *= 1 - Terrain.NOISE_IMPACT * (1 - mod);
+        }
+      }
+      return colors;
+    };
+
+    TerrainTile.prototype.redraw = function() {
+      var Terrain, backbufferContext, blur, c, center, cmp, colors, dataOffset, i, imageData, lighting, mod, offset, offsetX, offsetY, pixel, pixelUnitsH, pixelUnitsW, rCenterX, rCenterY, selectColor, size, x, y, _i, _j, _k, _l, _len, _len1, _ref, _ref1;
+
+      console.log(this.center);
       size = Math.round(this.radius * 2);
       backbufferContext = this.getBackbuffer();
       imageData = backbufferContext.getImageData(0, 0, BBWIDTH, BBHEIGHT);
@@ -108,37 +150,83 @@ namespace('Alcarin.Game.Directives.Map.Painters', function(exports, Alcarin) {
       lighting = this.lighting;
       c = {};
       center = this.center;
-      rCenterX = Math.round(center.x);
-      rCenterY = Math.round(center.y);
-      _ref = this.fields;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        field = _ref[_i];
-        if (field.loc.x === rCenterX && field.loc.y === rCenterY) {
-          color = field.land.color;
-          break;
+      colors = this.prepareColors();
+      pixelUnitsW = 1 / (BBWIDTH / 2);
+      pixelUnitsH = 1 / (BBHEIGHT / 2);
+      rCenterX = Math.floor(center.x);
+      rCenterY = Math.floor(center.y);
+      blur = function(cX, cY, realX, realY) {
+        var baseColor, i, index, newCX, newCY, realXDec, realYDec, second, usage, _index;
+
+        index = function(x, y) {
+          return (y + 1) * 3 + (x + 1);
+        };
+        _index = index(cX, cY);
+        if (_index < 0 || _index > 8) {
+          throw Error("Something wrong with drawing alghoritm.. Index: " + _index);
         }
-      }
-      c = color != null ? Alcarin.Color.intToRGB(color) : this.background;
-      console.log("drawing minimap:");
-      console.log(center);
-      for (y = _j = 0; 0 <= BBHEIGHT ? _j <= BBHEIGHT : _j >= BBHEIGHT; y = 0 <= BBHEIGHT ? ++_j : --_j) {
-        for (x = _k = 0; 0 <= BBWIDTH ? _k <= BBWIDTH : _k >= BBWIDTH; x = 0 <= BBWIDTH ? ++_k : --_k) {
+        baseColor = colors[_index];
+        realXDec = Math.abs(realX % 1);
+        if (realXDec < BLUR) {
+          newCX = realX < 0 ? Math.min(cX + 1, 1) : Math.max(cX - 1, -1);
+          i = index(newCX, cY);
+          second = colors[i];
+          usage = 0.5 * (BLUR - realXDec) / BLUR;
+          baseColor = Alcarin.Color.mix(baseColor, second, usage);
+        } else if (realXDec > 1 - BLUR) {
+          newCX = realX >= 0 ? Math.min(cX + 1, 1) : Math.max(cX - 1, -1);
+          i = index(newCX, cY);
+          second = colors[i];
+          usage = -0.5 * (1 - BLUR - realXDec) / BLUR;
+          baseColor = Alcarin.Color.mix(baseColor, second, usage);
+        }
+        realYDec = Math.abs(realY % 1);
+        if (realYDec < BLUR) {
+          newCY = realY < 0 ? Math.min(cY + 1, 1) : Math.max(cY - 1, -1);
+          i = index(cX, newCY);
+          second = colors[i];
+          usage = 0.5 * (BLUR - realYDec) / BLUR;
+          baseColor = Alcarin.Color.mix(baseColor, second, usage);
+        } else if (realYDec > 1 - BLUR) {
+          newCY = realY >= 0 ? Math.min(cY + 1, 1) : Math.max(cY - 1, -1);
+          i = index(cX, newCY);
+          second = colors[i];
+          usage = -0.5 * (1 - BLUR - realYDec) / BLUR;
+          baseColor = Alcarin.Color.mix(baseColor, second, usage);
+        }
+        return baseColor;
+      };
+      selectColor = function(x, y) {
+        var cX, cY, realX, realY;
+
+        x -= BBWIDTH / 2;
+        y -= BBHEIGHT / 2;
+        realX = center.x + x * pixelUnitsW;
+        realY = center.y + y * pixelUnitsH;
+        cX = Math.floor(realX - Math.floor(center.x));
+        cY = Math.floor(realY - Math.floor(center.y));
+        return blur(cX, cY, realX, realY);
+      };
+      Terrain = this.Terrain;
+      for (y = _i = 0; 0 <= BBHEIGHT ? _i <= BBHEIGHT : _i >= BBHEIGHT; y = 0 <= BBHEIGHT ? ++_i : --_i) {
+        for (x = _j = 0; 0 <= BBWIDTH ? _j <= BBWIDTH : _j >= BBWIDTH; x = 0 <= BBWIDTH ? ++_j : --_j) {
+          c = selectColor(x, y);
           offsetX = (BBWIDTH * center.x / 2) + x;
           offsetY = (BBHEIGHT * center.y / 2) + y;
-          mod = Math.abs(noise.get(offsetX / NOISE_DENSITY, offsetY / NOISE_DENSITY));
+          mod = Math.abs(Terrain.noise.get(offsetX / NOISE_DENSITY, offsetY / NOISE_DENSITY));
           pixel = {};
-          _ref1 = ['r', 'g', 'b'];
-          for (_l = 0, _len1 = _ref1.length; _l < _len1; _l++) {
-            cmp = _ref1[_l];
+          _ref = ['r', 'g', 'b'];
+          for (_k = 0, _len = _ref.length; _k < _len; _k++) {
+            cmp = _ref[_k];
             pixel[cmp] = c[cmp] * (1 - NOISE_IMPACT * (1 - mod));
           }
           if (lighting) {
             pixel = this.applyGrayscale(pixel, lighting);
           }
           dataOffset = 4 * (y * BBWIDTH + x);
-          _ref2 = ['r', 'g', 'b'];
-          for (i = _m = 0, _len2 = _ref2.length; _m < _len2; i = ++_m) {
-            cmp = _ref2[i];
+          _ref1 = ['r', 'g', 'b'];
+          for (i = _l = 0, _len1 = _ref1.length; _l < _len1; i = ++_l) {
+            cmp = _ref1[i];
             imageData.data[dataOffset + i] = ~~pixel[cmp];
           }
         }

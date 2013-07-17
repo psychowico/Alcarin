@@ -41,6 +41,21 @@ namespace('Alcarin', function(exports, Alcarin) {
       return c;
     };
 
+    Color.RGBToInt = function(rgb) {
+      return (rgb.r << 16) + (rgb.g << 8) + rgb.b;
+    };
+
+    Color.mix = function(color1, color2, percentage) {
+      if (percentage == null) {
+        percentage = 0.5;
+      }
+      return {
+        r: (1 - percentage) * color1.r + color2.r * percentage,
+        g: (1 - percentage) * color1.g + color2.g * percentage,
+        b: (1 - percentage) * color1.b + color2.b * percentage
+      };
+    };
+
     return Color;
 
   })();
