@@ -36,8 +36,8 @@ namespace('Alcarin.Game.Services', function(exports, Alcarin) {
       radius = this.radius();
       pixelRadius = this.pixelRadius();
       offset = {
-        x: center.x - radius,
-        y: center.y - radius
+        x: Math.round(center.x) - radius,
+        y: Math.round(center.y) - radius
       };
       return {
         x: Math.round(Math.round(x - offset.x) * pixelRadius / radius),
@@ -52,8 +52,8 @@ namespace('Alcarin.Game.Services', function(exports, Alcarin) {
       radius = this.radius();
       pixelRadius = this.pixelRadius();
       offset = {
-        x: center.x - radius,
-        y: center.y - radius
+        x: Math.round(center.x) - radius,
+        y: Math.round(center.y) - radius
       };
       return {
         x: offset.x + Math.round(pixelX * radius / pixelRadius),
@@ -65,55 +65,57 @@ namespace('Alcarin.Game.Services', function(exports, Alcarin) {
 
   })();
   return exports.module.factory('MapBackground', [
-    '$q', function($q) {
+    '$q', 'GameServer', 'CurrentCharacter', function($q, GameServer, CurrentCharacter) {
       var Background;
 
       Background = (function(_super) {
         __extends(Background, _super);
 
-        Background.prototype.BackgroundReadyDefer = null;
-
-        Background.prototype.isReady = false;
+        Background.prototype.dataReadyDeffered = null;
 
         function Background() {
-          this.onDrawn = __bind(this.onDrawn, this);          this.reset();
+          this.onDataReady = __bind(this.onDataReady, this);          this.reset();
         }
-
-        Background.prototype.onDrawn = function() {
-          var UnitsConverter;
-
-          UnitsConverter = new Units(this);
-          this.BackgroundReadyDefer.resolve(UnitsConverter);
-          this.$emit('drawn', UnitsConverter);
-          return this.isReady = true;
-        };
-
-        Background.prototype.init = function(center, info) {
-          this.center = center;
-          this.radius = info.radius;
-          this.charViewRadius = info.charViewRadius;
-          return this.lighting = info.lighting;
-        };
 
         Background.prototype.setPixelRadius = function(pixelRadius) {
           this.pixelRadius = pixelRadius;
         };
 
-        Background.prototype.setFields = function(fields) {
-          this.fields = fields;
-          return this.$emit('fieldsChanged');
+        Background.prototype.units = function() {
+          return this._units;
+        };
+
+        Background.prototype.onDataReady = function(args) {
+          var character, charsArgs, info, terrain, terrainArgs;
+
+          character = args[0], terrainArgs = args[1], charsArgs = args[2];
+          terrain = terrainArgs[0], info = terrainArgs[1];
+          this.center = character.loc;
+          this.fields = terrain;
+          this.radius = info.radius;
+          this.charViewRadius = info.charViewRadius;
+          this.lighting = info.lighting;
+          this._units = new Units(this);
+          return this.dataReadyDeffered.resolve(this);
         };
 
         Background.prototype.reset = function() {
-          if (this.BackgroundReadyDefer != null) {
-            this.BackgroundReadyDefer.reject();
+          var loadingData, swapingChars, swapingTerrain;
+
+          if (this.dataReadyDeffered != null) {
+            this.dataReadyDeffered.reject();
           }
-          this.BackgroundReadyDefer = $q.defer();
-          return this.isReady = false;
+          this.center = this.radius = this.charViewRadius = this.lighting = void 0;
+          swapingTerrain = GameServer.one('terrain.swap');
+          swapingChars = GameServer.one('chars.swap');
+          this.dataReadyDeffered = $q.defer();
+          loadingData = $q.all([CurrentCharacter, swapingTerrain, swapingChars]);
+          loadingData.then(this.onDataReady);
+          return this.$emit('reset');
         };
 
-        Background.prototype.then = function(what) {
-          return this.BackgroundReadyDefer.promise.then(what);
+        Background.prototype.dataReady = function() {
+          return this.dataReadyDeffered.promise;
         };
 
         return Background;

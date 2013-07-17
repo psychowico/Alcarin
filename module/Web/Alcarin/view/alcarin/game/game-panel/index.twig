@@ -7,10 +7,8 @@
 {% set root_controller = "Alcarin.Game.App" %}
 
 {% block leftcontent %}
-    {# for class in ['home', 'glass', 'plane', 'eye-close', 'circle-arrow-up', 'calendar'] #}
     <div ng-view>
     </div>
-    {# endfor #}
 {% endblock %}
 
 {% block middlecontent %}
@@ -20,13 +18,8 @@
     <div id="main-nav">
         <nav>
             <ul class="nav-bar">
-                {% for class in ['list', 'glass', 'plane', 'eye-close', 'circle-arrow-up', 'calendar'] %}
-                <li {% if class == href %} class="current" {% endif %}>
-                    <a href="?href={{class}}" class="active-link" data-hash-href="{{class}}">
-                        <i class="icon-{{class}}"></i>
-                    </a>
-                </li>
-                {% endfor %}
+                <li><a href="#/home"><i class="icon-eye-open"></i></a></li>
+                <li><a href="#/chars"><i class="icon-user"></i></a></li>
             </ul>
         </nav>
     </div>

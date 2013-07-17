@@ -15,7 +15,7 @@ namespace 'Alcarin.Game.Services', (exports, Alcarin) ->
             center = @center()
             radius = @radius()
             pixelRadius = @pixelRadius()
-            offset = {x: center.x - radius, y: center.y - radius}
+            offset = {x: Math.round(center.x) - radius, y: Math.round(center.y) - radius}
             return {
                 x: Math.round Math.round(x - offset.x) * pixelRadius / radius
                 y: Math.round Math.round(y - offset.y) * pixelRadius / radius
@@ -25,41 +25,53 @@ namespace 'Alcarin.Game.Services', (exports, Alcarin) ->
             center = @center()
             radius = @radius()
             pixelRadius = @pixelRadius()
-            offset = {x: center.x - radius, y: center.y - radius}
+            offset = {x: Math.round(center.x) - radius, y: Math.round(center.y) - radius}
             return {
                 x: offset.x + Math.round pixelX * radius / pixelRadius
                 y: offset.y + Math.round pixelY * radius / pixelRadius
             }
 
-    exports.module.factory 'MapBackground', ['$q', ($q)->
+    exports.module.factory 'MapBackground', ['$q', 'GameServer', 'CurrentCharacter',
+        ($q, GameServer, CurrentCharacter)->
 
-        class Background extends Alcarin.EventsEmitter
-            BackgroundReadyDefer: null
-            isReady: false
+            class Background extends Alcarin.EventsEmitter
+                dataReadyDeffered: null
 
-            constructor: -> @reset()
+                constructor: -> @reset()
 
-            onDrawn: =>
-                UnitsConverter = new Units @
-                @BackgroundReadyDefer.resolve UnitsConverter
-                @$emit 'drawn', UnitsConverter
-                @isReady = true
+                setPixelRadius: (@pixelRadius)->
 
-            init: (@center, info)->
-                @radius         = info.radius
-                @charViewRadius = info.charViewRadius
-                @lighting       = info.lighting
+                units: -> @_units
 
-            setPixelRadius: (@pixelRadius)->
-            setFields: (@fields)->
-                @$emit 'fieldsChanged'
+                onDataReady: (args)=>
+                    # all data needed to draw map has been loaded
+                    [character, terrainArgs, charsArgs] = args
 
-            reset: ->
-                @BackgroundReadyDefer.reject() if @BackgroundReadyDefer?
-                @BackgroundReadyDefer = $q.defer()
-                @isReady = false
+                    [terrain, info] = terrainArgs
+                    @center         = character.loc
+                    @fields         = terrain
+                    @radius         = info.radius
+                    @charViewRadius = info.charViewRadius
+                    @lighting       = info.lighting
 
-            then: (what)-> @BackgroundReadyDefer.promise.then what
+                    @_units = new Units @
+                    @dataReadyDeffered.resolve @
 
-        new Background()
+                reset: ->
+                    # redraw call.. fetching data..
+                    @dataReadyDeffered.reject() if @dataReadyDeffered?
+                    @center = @radius = @charViewRadius = @lighting = undefined
+
+                    swapingTerrain = GameServer.one 'terrain.swap'
+                    swapingChars   = GameServer.one 'chars.swap'
+                    @dataReadyDeffered     = $q.defer()
+
+                    loadingData = $q.all([CurrentCharacter, swapingTerrain, swapingChars])
+                    loadingData.then @onDataReady
+
+                    @$emit 'reset'
+
+                dataReady: -> @dataReadyDeffered.promise
+
+            return new Background()
     ]

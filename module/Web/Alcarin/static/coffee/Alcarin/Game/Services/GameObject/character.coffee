@@ -15,6 +15,11 @@ namespace 'Alcarin.Game.Services.GameObject', (exports, Alcarin) ->
         waitingPromises: {}
         cache          : {}
 
+        constructor: (@GameServer, @$q)->
+            @GameServer.on 'char.fetch', @onCharFetch
+            @GameServer.on 'game-event.add', @onGameEvent
+            @GameServer.on 'chars.swap', @onCharsSwap
+
         _factoryObject: (obj)->
             id = obj._id
             if not id?
@@ -28,30 +33,40 @@ namespace 'Alcarin.Game.Services.GameObject', (exports, Alcarin) ->
             instance.update obj if instance.update
             return instance
 
-        constructor: (@GameServer, @$q)->
-            @GameServer.on 'char.fetch', @onServerResponse
-            @GameServer.on 'chars.swap', @onCharsSwap
-
-        onCharsSwap: (chars)=>
-            # @BackgroundReady.then (units)=>
-            #     @charslist = {}
-            #     for _char in chars
-            #         _char.pixelLoc = units.toPixels(_char.loc.x, _char.loc.y)
-            #         _char.type = 'char'
-            #         CharEnvironment.character(_char).then (obj)=>
-            #             @charslist[obj._id] = obj
-
-        onServerResponse: (obj)=>
-            throw Error 'Wrong server answer.' if typeof obj is 'string'
+        addCharFromServer: (obj)->
             _id = obj._id
             result = @factory obj
 
             if @cache[_id]?
                 character = @cache[_id]
-                character[key]= val for key, val of obj
+                character[key] = val for key, val of obj
                 character.$emit 'update'
             if @waitingPromises[_id]?
                 deffered.resolve result for deffered in @waitingPromises[_id]
+
+        onCharsSwap: (chars)=>
+            @charslist = {}
+            @addCharFromServer _char for _char in chars
+
+        onCharFetch: (obj)=>
+            throw Error 'Wrong server answer.' if typeof obj is 'string'
+            @addCharFromServer obj
+
+        onGameEvent: (gameEvent)=>
+            if gameEvent.system
+                id = gameEvent.id
+                switch id
+                    when 'char.update-location'
+                        _char = gameEvent.args[0]
+                        loc = _char.loc
+                        if @cache[_char._id]?
+                            item = @cache[_char._id]
+                            oldloc = item.loc
+                            if oldloc.x != loc.x or oldloc.y != loc.y
+                                item.loc = loc
+                                item.$emit 'update-location'
+
+        all: => @cache
 
         factory: (objOrId)=>
             if typeof objOrId is 'string'

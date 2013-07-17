@@ -11,12 +11,16 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
                     .when '/home',
                         controller: Alcarin.Game.Views.Home
                         templateUrl: urls.game.panel + '/__home'
+                    .when '/chars',
+                        controller: Alcarin.Game.Views.Chars
+                        templateUrl: urls.game.panel + '/__chars'
                     .otherwise
                         redirectTo:'/home'
             ]
 
-    exports.App = ngcontroller ['$window', 'CurrentCharacter', 'GameServer',
-        ($window, CurrentCharacter, GameServer)->
+    # don't delete MapBackground - it need initialization somewhere
+    exports.App = ngcontroller ['$window', 'CurrentCharacter', 'GameServer', 'MapBackground',
+        ($window, CurrentCharacter, GameServer, MapBackground)->
             @charid = $window.charid
 
             GameServer.init charid

@@ -11,20 +11,21 @@ namespace('Alcarin.Game.Directives.Map', function(exports, Alcarin) {
       return {
         restrict: 'A',
         link: function($scope, element, attrs) {
-          return $(function() {
-            var terrain;
+          var redrawAll, terrain;
 
-            terrain = new Terrain(element);
-            terrain.$on('drawn', MapBackground.onDrawn);
-            MapBackground.$on('fieldsChanged', function() {
-              terrain.setCenter(MapBackground.center);
-              terrain.setRadius(MapBackground.radius);
-              terrain.setFields(MapBackground.fields);
-              terrain.setLighting(MapBackground.lighting);
+          terrain = new Terrain(element);
+          redrawAll = function() {
+            return MapBackground.dataReady().then(function(map) {
+              terrain.setCenter(map.center);
+              terrain.setRadius(map.radius);
+              terrain.setFields(map.fields);
+              terrain.setLighting(map.lighting);
               return terrain.redraw();
             });
-            return element.data('rel', terrain);
-          });
+          };
+          element.data('rel', terrain);
+          MapBackground.$on('reset', redrawAll);
+          return redrawAll();
         }
       };
     }

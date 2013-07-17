@@ -21,25 +21,17 @@
         current = new Date();
         diff = (current.getTime() - lastClick.getTime()) / 1000;
         if (diff > 1) {
-          if (MapBackground.isReady) {
-            MapBackground.then(function(units) {
-              var target;
+          MapBackground.dataReady().then(function(map) {
+            var target;
 
-              target = units.toUnits(ev.offsetX, ev.offsetY);
-              return CurrentCharacter.then(function(character) {
-                return character.moveTo(target);
-              });
+            target = map.units().toUnits(ev.offsetX, ev.offsetY);
+            return CurrentCharacter.then(function(character) {
+              return character.moveTo(target);
             });
-          }
+          });
           return lastClick = current;
         }
       };
-      GameServer.on('terrain.swap', function(terrain, info) {
-        return CurrentCharacter.then(function(character) {
-          MapBackground.init(character.loc, info);
-          return MapBackground.setFields(terrain);
-        });
-      });
       return MapBackground.setPixelRadius($('.area-map canvas.terrain').width() / 2);
     }
   ]);

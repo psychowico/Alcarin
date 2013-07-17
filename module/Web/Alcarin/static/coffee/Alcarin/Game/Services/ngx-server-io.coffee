@@ -4,11 +4,11 @@ namespace 'Alcarin.Game.Services', (exports, Alcarin) ->
 
 
     exports.module = angular.module('@game-services', ['ngCookies'])
-        .factory 'GameServer', ['$location', '$cookies', '$rootScope',
-            ($location, cookies, $rootScope)->
+        .factory 'GameServer', ['$location', '$cookies', '$rootScope', '$q',
+            ($location, cookies, $rootScope, $q)->
                 console.info 'creating server service..'
                 service = new ServerConnector $location.host(), socket_port,
-                                              cookies.alcarin, $rootScope
+                                              cookies.alcarin, $rootScope, $q
                 return service
     ]
 
@@ -17,7 +17,7 @@ namespace 'Alcarin.Game.Services', (exports, Alcarin) ->
     # in ServerConnector we use normal Q promises, not angularjs $q
     class ServerConnector
 
-        constructor: (@host, @port, @sessionid, @$scope)->
+        constructor: (@host, @port, @sessionid, @$scope, @$q)->
             @initSocket         = @_loadSocketLibrary @host, @port
             @resetAuth()
 
@@ -41,6 +41,20 @@ namespace 'Alcarin.Game.Services', (exports, Alcarin) ->
             @initSocket.done (socket)->
                 socket.on eventId, safeCallback
             return @
+
+        # one called 'on' but return promise instead using callback
+        one: (eventId)->
+            scope    = @$scope
+            deffered = @$q.defer()
+
+            @initSocket.done (socket)->
+                callback = (args...)->
+                    socket.of callback
+                    scope.$safeApply -> deffered.resolve args
+
+                socket.on eventId, callback
+
+            return deffered.promise
 
         emit: (eventId, _args...)->
             emitting = Q.all([@initSocket, @authorization]).spread (socket)->

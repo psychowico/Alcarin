@@ -5,17 +5,18 @@ namespace 'Alcarin.Game.Directives.Map', (exports, Alcarin) ->
     exports.module.directive 'alcAreaMap', ['MapBackground', (MapBackground)->
             restrict:'A'
             link: ($scope, element, attrs)->
-                $ ->
-                    terrain = new Terrain element
-                    terrain.$on 'drawn', MapBackground.onDrawn
-                    MapBackground.$on 'fieldsChanged', ->
-                        terrain.setCenter MapBackground.center
-                        terrain.setRadius MapBackground.radius
-                        terrain.setFields MapBackground.fields
-                        terrain.setLighting MapBackground.lighting
+                terrain = new Terrain element
+                redrawAll = ->
+                    MapBackground.dataReady().then (map)->
+                        terrain.setCenter map.center
+                        terrain.setRadius map.radius
+                        terrain.setFields map.fields
+                        terrain.setLighting map.lighting
                         terrain.redraw()
 
-                    element.data 'rel', terrain
+                element.data 'rel', terrain
+                MapBackground.$on 'reset', redrawAll
+                redrawAll()
     ]
 
     NOISE_DENSITY = 25
@@ -94,12 +95,10 @@ namespace 'Alcarin.Game.Directives.Map', (exports, Alcarin) ->
 
             imageData = bufferContext.getImageData 0, 0, size, size
             offset = {x: @center.x - @radius, y: @center.y - @radius}
-
             # canvasTitle = "View radius: #{radius / 10}km"
             # @canvas.parent().tooltip {title: canvasTitle, placement: 'bottom'}
 
             lighting = @lighting
-            # console.log lighting
             c = {}
             for field in @fields
                 color = field.land.color
@@ -111,10 +110,6 @@ namespace 'Alcarin.Game.Directives.Map', (exports, Alcarin) ->
 
                 dataOffset = 4 * (pixelY * size + pixelX)
 
-                # color =
-                #     r: unpack color, 0, mod
-                #     g: unpack color, 1, mod
-                #     b: unpack color, 2, mod
                 result = 0
                 for cmp, i in ['r', 'g', 'b']
                     c[cmp] = ((color >> (8 * (2 - i) ) ) & 0xFF)

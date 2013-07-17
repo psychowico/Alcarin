@@ -12,17 +12,19 @@ It shouldn't storing things not related with player char surroundings.
 
 namespace 'Alcarin.Game.Services', (exports, Alcarin) ->
 
-    class GameObjectFactory
-
-        constructor: (@GameServer, $q)->
-            CharacterFactory = Alcarin.Game.Services.GameObject.CharacterFactory
-            @factories =
-                chars: new CharacterFactory @GameServer, $q
-
-        character: (charObjOrId)=> @factories.chars.factory charObjOrId
-
     module = Alcarin.Game.Services.module
     module.factory 'CharEnvironment', ['GameServer', '$q',
         (GameServer, $q)->
-            return new GameObjectFactory GameServer, $q
+
+            CharacterFactory = Alcarin.Game.Services.GameObject.CharacterFactory
+            class GameObjectFactory
+
+                constructor: ->
+                    @factories =
+                        chars: new CharacterFactory GameServer, $q
+
+                character: (charObjOrId)=> @factories.chars.factory charObjOrId
+                characters: => @factories.chars.all()
+
+            return new GameObjectFactory()
     ]

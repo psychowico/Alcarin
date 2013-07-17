@@ -6,21 +6,22 @@ namespace('Alcarin.Game.Services', function(exports, Alcarin) {
   var ServerConnector, socket_port;
 
   exports.module = angular.module('@game-services', ['ngCookies']).factory('GameServer', [
-    '$location', '$cookies', '$rootScope', function($location, cookies, $rootScope) {
+    '$location', '$cookies', '$rootScope', '$q', function($location, cookies, $rootScope, $q) {
       var service;
 
       console.info('creating server service..');
-      service = new ServerConnector($location.host(), socket_port, cookies.alcarin, $rootScope);
+      service = new ServerConnector($location.host(), socket_port, cookies.alcarin, $rootScope, $q);
       return service;
     }
   ]);
   socket_port = 8080;
   return ServerConnector = (function() {
-    function ServerConnector(host, port, sessionid, $scope) {
+    function ServerConnector(host, port, sessionid, $scope, $q) {
       this.host = host;
       this.port = port;
       this.sessionid = sessionid;
       this.$scope = $scope;
+      this.$q = $q;
       this.authorize = __bind(this.authorize, this);
       this.socketInitialized = __bind(this.socketInitialized, this);
       this.resetAuth = __bind(this.resetAuth, this);
@@ -63,6 +64,28 @@ namespace('Alcarin.Game.Services', function(exports, Alcarin) {
         return socket.on(eventId, safeCallback);
       });
       return this;
+    };
+
+    ServerConnector.prototype.one = function(eventId) {
+      var deffered, scope;
+
+      scope = this.$scope;
+      deffered = this.$q.defer();
+      this.initSocket.done(function(socket) {
+        var callback;
+
+        callback = function() {
+          var args;
+
+          args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+          socket.of(callback);
+          return scope.$safeApply(function() {
+            return deffered.resolve(args);
+          });
+        };
+        return socket.on(eventId, callback);
+      });
+      return deffered.promise;
     };
 
     ServerConnector.prototype.emit = function() {

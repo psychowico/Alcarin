@@ -4,21 +4,22 @@
       return {
         restrict: 'A',
         link: function($scope, $icon, attrs) {
-          return MapBackground.$on('drawn', function(units) {
-            var c, length, nvector, pc, pradius;
+          return MapBackground.dataReady().then(function(map) {
+            var c, length, newPos, nvector, pc, pradius;
 
-            c = units.center();
+            c = map.units().center();
             length = Math.sqrt(c.x * c.x + c.y * c.y);
             nvector = {
               x: -c.x / length,
               y: -c.y / length
             };
-            pradius = units.pixelRadius();
-            pc = units.pixelCenter();
-            $icon.position({
+            pradius = map.units().pixelRadius();
+            pc = map.units().pixelCenter();
+            newPos = {
               left: pc.x + nvector.x * pradius,
               top: pc.y + nvector.y * pradius
-            });
+            };
+            $icon.position(newPos);
             return $icon.show();
           });
         }

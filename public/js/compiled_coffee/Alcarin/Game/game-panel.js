@@ -7,13 +7,16 @@
       return $routeProvider.when('/home', {
         controller: Alcarin.Game.Views.Home,
         templateUrl: urls.game.panel + '/__home'
+      }).when('/chars', {
+        controller: Alcarin.Game.Views.Chars,
+        templateUrl: urls.game.panel + '/__chars'
       }).otherwise({
         redirectTo: '/home'
       });
     }
   ]);
   return exports.App = ngcontroller([
-    '$window', 'CurrentCharacter', 'GameServer', function($window, CurrentCharacter, GameServer) {
+    '$window', 'CurrentCharacter', 'GameServer', 'MapBackground', function($window, CurrentCharacter, GameServer, MapBackground) {
       this.charid = $window.charid;
       GameServer.init(charid);
       return CurrentCharacter.init(charid);

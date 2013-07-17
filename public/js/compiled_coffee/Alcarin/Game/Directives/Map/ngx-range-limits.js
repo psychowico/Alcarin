@@ -4,15 +4,15 @@
       return {
         restrict: 'A',
         link: function($scope, $shadow, attrs) {
-          return MapBackground.$on('drawn', function(units) {
+          return MapBackground.dataReady().then(function(map) {
             var $child, pos, shadowRadius;
 
-            pos = units.pixelCenter();
+            pos = map.units().pixelCenter();
             $shadow.position({
               left: pos.x,
               top: pos.y
             });
-            shadowRadius = MapBackground.charViewRadius * MapBackground.pixelRadius / MapBackground.radius;
+            shadowRadius = map.charViewRadius * map.pixelRadius / map.radius;
             $child = $shadow.children();
             $child.width(2 * shadowRadius);
             $child.height(2 * shadowRadius);
