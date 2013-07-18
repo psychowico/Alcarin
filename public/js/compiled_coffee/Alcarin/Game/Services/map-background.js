@@ -100,26 +100,33 @@ namespace('Alcarin.Game.Services', function(exports, Alcarin) {
           var factor;
 
           this.zoom = zoom;
-          factor = this.zoom ? 1 / ZOOM_FACTOR : ZOOM_FACTOR;
-          this.radius *= factor;
-          this._units = new Units(this, !this.zoom);
+          if (this.info != null) {
+            factor = this.zoom ? 1 / ZOOM_FACTOR : ZOOM_FACTOR;
+            this.info.radius *= factor;
+            this._units = new Units(this.info, !this.zoom);
+          }
           return this.$emit('zoom', this.zoom);
         };
 
-        Background.prototype.onDataReady = function(args) {
-          var character, charsArgs, info, terrain, terrainArgs;
+        Background.prototype.onDataReady = function(_arg) {
+          var character, charsArgs, info, radius, terrain, terrainArgs;
 
-          character = args[0], terrainArgs = args[1], charsArgs = args[2];
+          character = _arg[0], terrainArgs = _arg[1], charsArgs = _arg[2];
           terrain = terrainArgs[0], info = terrainArgs[1];
-          this.center = character.loc;
-          this.fields = terrain;
-          this.radius = info.radius;
+          radius = info.radius;
           if (this.zoom) {
-            this.radius /= ZOOM_FACTOR;
+            radius /= ZOOM_FACTOR;
           }
-          this.charViewRadius = info.charViewRadius;
-          this.lighting = info.lighting;
-          this._units = new Units(this, !this.zoom);
+          this.info = {
+            center: character.loc,
+            fields: terrain,
+            radius: radius,
+            charViewRadius: info.charViewRadius,
+            talkRadius: info.talkRadius,
+            lighting: info.lighting,
+            pixelRadius: this.pixelRadius
+          };
+          this._units = new Units(this.info, !this.zoom);
           return this.dataReadyDeffered.resolve(this);
         };
 

@@ -103,8 +103,9 @@ namespace('Alcarin.Game.Directives.Map.Painters', function(exports, Alcarin) {
     };
 
     Terrain.prototype.applyGrayscale = function(color, lighting) {
-      var gray;
+      var GRAYSCALE, gray;
 
+      GRAYSCALE = exports.Terrain.GRAYSCALE;
       gray = GRAYSCALE[0] * color.r + GRAYSCALE[1] * color.g + GRAYSCALE[2] * color.b;
       gray *= 1 - lighting;
       return {

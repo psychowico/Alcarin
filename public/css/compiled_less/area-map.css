@@ -93,6 +93,9 @@
   width: 100%;
   height: 100%;
 }
+.area-map .main .characters .character.hearable div {
+  border-color: yellow;
+}
 .area-map .main .characters .character.current div {
   background: #1100CC;
   z-index: 1;

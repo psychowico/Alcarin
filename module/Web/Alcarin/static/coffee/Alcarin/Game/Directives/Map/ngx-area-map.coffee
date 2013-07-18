@@ -13,10 +13,11 @@ namespace 'Alcarin.Game.Directives.Map', (exports, Alcarin) ->
                 redrawAll = ->
                     MapBackground.dataReady().then (map)->
                         _terrain = if map.zoom then terrainTile else terrain
-                        _terrain.setCenter map.center
-                        _terrain.setRadius map.radius if _terrain.setRadius?
-                        _terrain.setFields map.fields
-                        _terrain.setLighting map.lighting
+                        info = map.info
+                        _terrain.setCenter info.center
+                        _terrain.setRadius info.radius if _terrain.setRadius?
+                        _terrain.setFields info.fields
+                        _terrain.setLighting info.lighting
                         _terrain.redraw()
 
                 element.data 'rel', [terrain, terrainTile]

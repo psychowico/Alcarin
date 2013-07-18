@@ -63,6 +63,7 @@ namespace 'Alcarin.Game.Directives.Map.Painters', (exports, Alcarin) ->
             @context.restore()
 
         applyGrayscale: (color, lighting)->
+            GRAYSCALE = exports.Terrain.GRAYSCALE
             gray = GRAYSCALE[0] * color.r + GRAYSCALE[1] * color.g + GRAYSCALE[2] * color.b
             gray *= (1 - lighting)
             return {

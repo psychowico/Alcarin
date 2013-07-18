@@ -50,24 +50,28 @@ namespace 'Alcarin.Game.Services', (exports, Alcarin) ->
                 units: -> @_units
 
                 enableZoom: (@zoom)->
-                    factor = if @zoom then 1 / ZOOM_FACTOR else ZOOM_FACTOR
-                    @radius *= factor
-                    @_units = new Units @, not @zoom
+                    if @info?
+                        factor = if @zoom then 1 / ZOOM_FACTOR else ZOOM_FACTOR
+                        @info.radius *= factor
+                        @_units = new Units @info, not @zoom
                     @$emit 'zoom', @zoom
 
-                onDataReady: (args)=>
-                    # all data needed to draw map has been loaded
-                    [character, terrainArgs, charsArgs] = args
-
+                # all data needed to draw map has been loaded
+                onDataReady: ([character, terrainArgs, charsArgs])=>
                     [terrain, info] = terrainArgs
-                    @center         = character.loc
-                    @fields         = terrain
-                    @radius         = info.radius
-                    @radius /= ZOOM_FACTOR if @zoom
-                    @charViewRadius = info.charViewRadius
-                    @lighting       = info.lighting
 
-                    @_units = new Units @, not @zoom
+                    radius = info.radius
+                    radius /= ZOOM_FACTOR if @zoom
+                    @info =
+                        center        : character.loc
+                        fields        : terrain
+                        radius        : radius
+                        charViewRadius: info.charViewRadius
+                        talkRadius    : info.talkRadius
+                        lighting      : info.lighting
+                        pixelRadius   : @pixelRadius
+
+                    @_units = new Units @info, not @zoom
                     @dataReadyDeffered.resolve @
 
                 reset: ->

@@ -100,7 +100,6 @@ namespace 'Alcarin.Game.Directives.Map.Painters', (exports, Alcarin) ->
             return colors
 
         redraw: =>
-            console.log @center
             size   = Math.round @radius * 2
 
             backbufferContext = @getBackbuffer()

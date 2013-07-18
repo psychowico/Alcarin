@@ -139,7 +139,6 @@ namespace('Alcarin.Game.Directives.Map.Painters', function(exports, Alcarin) {
     TerrainTile.prototype.redraw = function() {
       var Terrain, backbufferContext, blur, c, center, cmp, colors, dataOffset, i, imageData, lighting, mod, offset, offsetX, offsetY, pixel, pixelUnitsH, pixelUnitsW, rCenterX, rCenterY, selectColor, size, x, y, _i, _j, _k, _l, _len, _len1, _ref, _ref1;
 
-      console.log(this.center);
       size = Math.round(this.radius * 2);
       backbufferContext = this.getBackbuffer();
       imageData = backbufferContext.getImageData(0, 0, BBWIDTH, BBHEIGHT);

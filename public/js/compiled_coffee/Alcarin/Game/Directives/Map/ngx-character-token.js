@@ -1,6 +1,6 @@
 'use strict';namespace('Alcarin.Game.Directives.Map', function(exports, Alcarin) {
   return exports.module.directive('alcCharacterToken', [
-    'MapBackground', 'CurrentCharacter', function(MapBackground, CurrentChar) {
+    'MapBackground', 'CurrentCharacter', '$q', function(MapBackground, CurrentChar, $q) {
       return {
         restrict: 'A',
         scope: {
@@ -15,11 +15,13 @@
 
             loc = $scope.alcCharacterToken.loc;
             text = $scope.alcCharacterToken.name;
-            return CurrentChar.then(function(current) {
-              var cloc, distance, _end;
+            return $q.all([CurrentChar, MapBackground.dataReady()]).then(function(_arg) {
+              var cloc, current, distance, hearable, map, _end;
 
+              current = _arg[0], map = _arg[1];
               cloc = current.loc;
               distance = Math.sqrt(Math.pow(cloc.x - loc.x, 2) + Math.pow(cloc.y - loc.y, 2));
+              hearable = distance <= map.info.talkRadius;
               distance /= 10;
               if (distance < 1) {
                 distance = Math.round(distance * 1000);
@@ -31,7 +33,8 @@
               if (distance > 0) {
                 text += "\n" + distance + _end;
               }
-              return $token.attr('title', text);
+              $token.attr('title', text);
+              return $token.toggleClass('hearable', hearable);
             });
           };
           resetPosition = function() {

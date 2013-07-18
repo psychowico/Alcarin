@@ -18,16 +18,15 @@
         _this.zoomMap = !_this.zoomMap;
         return MapBackground.enableZoom(_this.zoomMap);
       };
+      this._radiusDescr = '';
       this.radiusWithUnits = function() {
-        var km;
+        var km, _ref;
 
-        if (MapBackground.radius) {
-          km = MapBackground.radius / 10;
-          if (km < 1) {
-            return "" + (km * 1000) + "m";
-          }
-          return "" + km + "km";
+        if (((_ref = MapBackground.info) != null ? _ref.radius : void 0) != null) {
+          km = MapBackground.info.radius / 10;
+          _this._radiusDescr = km < 1 ? "" + (km * 1000) + "m" : "" + km + "km";
         }
+        return _this._radiusDescr;
       };
       lastClick = new Date();
       this.mapClicked = function(ev) {

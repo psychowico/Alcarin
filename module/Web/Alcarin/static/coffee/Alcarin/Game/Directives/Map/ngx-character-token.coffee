@@ -2,8 +2,8 @@
 
 namespace 'Alcarin.Game.Directives.Map', (exports, Alcarin) ->
 
-    exports.module.directive 'alcCharacterToken', ['MapBackground', 'CurrentCharacter',
-        (MapBackground, CurrentChar)->
+    exports.module.directive 'alcCharacterToken', ['MapBackground', 'CurrentCharacter', '$q',
+        (MapBackground, CurrentChar, $q)->
             restrict: 'A'
             scope:
                 alcCharacterToken: '='
@@ -12,11 +12,12 @@ namespace 'Alcarin.Game.Directives.Map', (exports, Alcarin) ->
                 resetTitle = ->
                     loc = $scope.alcCharacterToken.loc
                     text = $scope.alcCharacterToken.name
-                    CurrentChar.then (current)->
+                    $q.all([CurrentChar, MapBackground.dataReady()]).then ([current, map])->
                         cloc = current.loc
                         distance = Math.sqrt Math.pow(cloc.x - loc.x, 2) + Math.pow(cloc.y - loc.y, 2)
-                        distance /= 10
+                        hearable = distance <= map.info.talkRadius
 
+                        distance /= 10
                         if distance < 1
                             distance = Math.round distance*1000
                             _end = 'm'
@@ -25,6 +26,7 @@ namespace 'Alcarin.Game.Directives.Map', (exports, Alcarin) ->
                             _end = 'km'
                         text += "\n#{distance}#{_end}" if distance > 0
                         $token.attr 'title', text
+                        $token.toggleClass 'hearable', hearable
                 resetPosition = ->
                     loc = $scope.alcCharacterToken?.loc
                     return if not loc?

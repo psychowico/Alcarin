@@ -11,15 +11,16 @@
           terrainTile = new Painters.TerrainTile(element);
           redrawAll = function() {
             return MapBackground.dataReady().then(function(map) {
-              var _terrain;
+              var info, _terrain;
 
               _terrain = map.zoom ? terrainTile : terrain;
-              _terrain.setCenter(map.center);
+              info = map.info;
+              _terrain.setCenter(info.center);
               if (_terrain.setRadius != null) {
-                _terrain.setRadius(map.radius);
+                _terrain.setRadius(info.radius);
               }
-              _terrain.setFields(map.fields);
-              _terrain.setLighting(map.lighting);
+              _terrain.setFields(info.fields);
+              _terrain.setLighting(info.lighting);
               return _terrain.redraw();
             });
           };
