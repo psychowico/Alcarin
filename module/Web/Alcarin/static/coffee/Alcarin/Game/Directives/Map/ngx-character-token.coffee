@@ -28,6 +28,7 @@ namespace 'Alcarin.Game.Directives.Map', (exports, Alcarin) ->
                         $token.attr 'title', text
                         $token.toggleClass 'hearable', hearable
                 resetPosition = ->
+                    $token.data 'rel', $scope.alcCharacterToken
                     loc = $scope.alcCharacterToken?.loc
                     return if not loc?
                     MapBackground.dataReady().then (map)->

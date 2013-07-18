@@ -40,6 +40,7 @@
           resetPosition = function() {
             var loc, _ref;
 
+            $token.data('rel', $scope.alcCharacterToken);
             loc = (_ref = $scope.alcCharacterToken) != null ? _ref.loc : void 0;
             if (loc == null) {
               return;

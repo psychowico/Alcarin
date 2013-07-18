@@ -9,7 +9,10 @@ namespace 'Alcarin.Game.Services.GameObject', (exports, Alcarin) ->
             Character.count++
 
         moveTo: (target)->
-            @GameServer.emit 'move.char', target
+            if target instanceof Character
+                @GameServer.emit 'follow.char', target._id
+            else
+                @GameServer.emit 'move.char', target
 
     class exports.CharacterFactory
         waitingPromises: {}

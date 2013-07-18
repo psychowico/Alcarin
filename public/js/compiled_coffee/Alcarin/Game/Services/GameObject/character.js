@@ -17,7 +17,11 @@ namespace('Alcarin.Game.Services.GameObject', function(exports, Alcarin) {
     }
 
     Character.prototype.moveTo = function(target) {
-      return this.GameServer.emit('move.char', target);
+      if (target instanceof Character) {
+        return this.GameServer.emit('follow.char', target._id);
+      } else {
+        return this.GameServer.emit('move.char', target);
+      }
     };
 
     return Character;

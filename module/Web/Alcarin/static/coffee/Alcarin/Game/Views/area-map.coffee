@@ -28,12 +28,16 @@ namespace 'Alcarin.Game.Views', (exports, Alcarin) ->
 
             lastClick = new Date()
             @mapClicked = (ev)=>
+                target = $(ev.target).closest '.character,.characters'
                 current = new Date()
                 diff = (current.getTime() - lastClick.getTime()) / 1000
                 # we can click one per second
                 if diff > 1
                     MapBackground.dataReady().then (map)->
-                        target = map.units().toUnits ev.offsetX, ev.offsetY
+                        if target.is '.character'
+                            target = target.data 'rel'
+                        else
+                            target = map.units().toUnits ev.offsetX, ev.offsetY
                         CurrentCharacter.then (character)-> character.moveTo target
                     lastClick = current
 

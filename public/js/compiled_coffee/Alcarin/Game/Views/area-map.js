@@ -30,15 +30,18 @@
       };
       lastClick = new Date();
       this.mapClicked = function(ev) {
-        var current, diff;
+        var current, diff, target;
 
+        target = $(ev.target).closest('.character,.characters');
         current = new Date();
         diff = (current.getTime() - lastClick.getTime()) / 1000;
         if (diff > 1) {
           MapBackground.dataReady().then(function(map) {
-            var target;
-
-            target = map.units().toUnits(ev.offsetX, ev.offsetY);
+            if (target.is('.character')) {
+              target = target.data('rel');
+            } else {
+              target = map.units().toUnits(ev.offsetX, ev.offsetY);
+            }
             return CurrentCharacter.then(function(character) {
               return character.moveTo(target);
             });
