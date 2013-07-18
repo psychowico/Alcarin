@@ -88,13 +88,22 @@ namespace('Alcarin.Game.Services.GameObject', function(exports, Alcarin) {
     };
 
     CharacterFactory.prototype.onCharsSwap = function(chars) {
-      var _char, _i, _len, _results;
+      var byids, key, _char, _i, _len, _results;
 
       this.charslist = {};
-      _results = [];
+      byids = {};
       for (_i = 0, _len = chars.length; _i < _len; _i++) {
         _char = chars[_i];
-        _results.push(this.addCharFromServer(_char));
+        byids[_char._id] = _char;
+        this.addCharFromServer(_char);
+      }
+      _results = [];
+      for (key in this.cache) {
+        if (byids[key] == null) {
+          _results.push(delete this.cache[key]);
+        } else {
+          _results.push(void 0);
+        }
       }
       return _results;
     };

@@ -46,7 +46,12 @@ namespace 'Alcarin.Game.Services.GameObject', (exports, Alcarin) ->
 
         onCharsSwap: (chars)=>
             @charslist = {}
-            @addCharFromServer _char for _char in chars
+            byids = {}
+            for _char in chars
+                byids[_char._id] = _char
+                @addCharFromServer _char
+            for key of @cache
+                delete @cache[key] if not byids[key]?
 
         onCharFetch: (obj)=>
             throw Error 'Wrong server answer.' if typeof obj is 'string'
