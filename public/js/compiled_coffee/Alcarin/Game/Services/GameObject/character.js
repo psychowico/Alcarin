@@ -116,7 +116,8 @@ namespace('Alcarin.Game.Services.GameObject', function(exports, Alcarin) {
     };
 
     CharacterFactory.prototype.onGameEvent = function(gameEvent) {
-      var id, item, loc, oldloc, _char;
+      var id, loc, _char,
+        _this = this;
 
       if (gameEvent.system) {
         id = gameEvent.id;
@@ -124,14 +125,15 @@ namespace('Alcarin.Game.Services.GameObject', function(exports, Alcarin) {
           case 'char.update-location':
             _char = gameEvent.args[0];
             loc = _char.loc;
-            if (this.cache[_char._id] != null) {
-              item = this.cache[_char._id];
+            return this.factory(_char._id).then(function(item) {
+              var oldloc;
+
               oldloc = item.loc;
               if (oldloc.x !== loc.x || oldloc.y !== loc.y) {
                 item.loc = loc;
                 return item.$emit('update-location');
               }
-            }
+            });
         }
       }
     };
@@ -145,13 +147,17 @@ namespace('Alcarin.Game.Services.GameObject', function(exports, Alcarin) {
 
       if (typeof objOrId === 'string') {
         _id = objOrId;
-        deffered = this.$q.defer();
-        if (!this.waitingPromises[_id]) {
-          this.waitingPromises[_id] = [];
+        if (this.cache[_id] != null) {
+          return this.$q.when(this.cache[_id]);
+        } else {
+          deffered = this.$q.defer();
+          if (!this.waitingPromises[_id]) {
+            this.waitingPromises[_id] = [];
+          }
+          this.waitingPromises[_id].push(deffered);
+          this.GameServer.emit('fetch.char', _id);
+          return deffered.promise;
         }
-        this.waitingPromises[_id].push(deffered);
-        this.GameServer.emit('fetch.char', _id);
-        return deffered.promise;
       } else {
         return this.$q.when(this._factoryObject(objOrId));
       }

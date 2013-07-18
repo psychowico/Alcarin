@@ -64,8 +64,7 @@ namespace 'Alcarin.Game.Services.GameObject', (exports, Alcarin) ->
                     when 'char.update-location'
                         _char = gameEvent.args[0]
                         loc = _char.loc
-                        if @cache[_char._id]?
-                            item = @cache[_char._id]
+                        @factory(_char._id).then (item)=>
                             oldloc = item.loc
                             if oldloc.x != loc.x or oldloc.y != loc.y
                                 item.loc = loc
@@ -76,10 +75,13 @@ namespace 'Alcarin.Game.Services.GameObject', (exports, Alcarin) ->
         factory: (objOrId)=>
             if typeof objOrId is 'string'
                 _id = objOrId
-                deffered = @$q.defer()
-                @waitingPromises[_id] = [] if not @waitingPromises[_id]
-                @waitingPromises[_id].push deffered
-                @GameServer.emit 'fetch.char', _id
-                return deffered.promise
+                if @cache[_id]?
+                    return @$q.when @cache[_id]
+                else
+                    deffered = @$q.defer()
+                    @waitingPromises[_id] = [] if not @waitingPromises[_id]
+                    @waitingPromises[_id].push deffered
+                    @GameServer.emit 'fetch.char', _id
+                    return deffered.promise
             else
                 return @$q.when @_factoryObject objOrId
