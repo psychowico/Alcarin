@@ -1,18 +1,29 @@
 {% extends "alcarin-layout" %}
 
+{% set root_app        = "create-char" %}
+{% set root_controller = "Alcarin.Game.CreateChar" %}
+
 {% block leftcontent %}
-<div id="create-char">
-    <div>
-        Tu będziemy mieć tekst o tworzeniu postaci, wybór ras, ograniczenia ilościowe,
-        ostrzeżenia o blokowaniu slotów etc. Musi być dużo informacji.
-        Aktulnie tworzenie postaci o podanym nicku.
+<div>
+    <div>{{ translate('char-create.description') }}</div>
+    <div class="subdescription hide" ng-class="{hide: hover==null}">
+        <div ng-show="hover=='name'">{{ _('char-create.name.description') }}</div>
+        <div ng-show="hover=='race'">{{ _('char-create.race.description') }}</div>
+        <div ng-show="hover=='sex'">{{ _('char-create.sex.description') }}</div>
     </div>
 </div>
 {% endblock %}
 
 {% block rightcontent %}
-<form method="post" action="{{uri() }}/create" class="form-inline">
-    <input type="text" name="name" value="Nowy">
-    <input type="submit" value="Stwórz postać">
-</form>
+    <fieldset><legend>Creating character</legend></fieldset>
+    <div ui-event="{mousemove: 'mouseMove($event)'}">
+        {{ bootstrap(form) }}
+    </div>
+{#<form method="post" action="{{uri() }}/create" class="form-inline">
+    <fieldset>
+        <legend>Nowa postać</legend>
+        <input type="text" name="name" value="Nowy">
+        <input type="submit" value="Stwórz postać">
+    </fieldset>
+</form>#}
 {% endblock %}

@@ -99,10 +99,9 @@ return array(
                     ),
                     //files for regular players
                     'player' => array(
-                        'sources' => array(
-                            '/css/compiled_less/middle-nav.css',
-                            '/css/compiled_less/player-panel.css',
-                            '/css/compiled_less/area-map.css',
+                        'sources' => [],
+                        'directories' => array(
+                            '/css/compiled_less/player',
                         ),
                     ),
                 ),

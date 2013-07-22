@@ -1,0 +1,10 @@
+.create-char {
+  margin: 10px;
+}
+.create-char .radio {
+  display: inline-block;
+  margin-left: 15px;
+}
+.create-char .radio:first-child {
+  margin-left: 0;
+}

@@ -37,6 +37,7 @@
         "webino/zf2nette-debug"             : "1.*",
         "colinmollenhour/mongodb-php-odm"   : "dev-master",
         "evandotpro/edp-module-layouts"     : "dev-master",
-        "doctrine/common"                   : ">=2.1"
+        "doctrine/common"                   : ">=2.1",
+        "umpirsky/twig-gettext-extractor"   : "1.1.*"
     }
 }
