@@ -66,9 +66,10 @@ class PlayerChars extends \Core\GameObject
 
         //player only data for fast displaying
         $data = [
-            'owner'=> new \MongoId($player),
-            'name'=> $name,
-            'loc' => ['x' => 0, 'y' => 0],
+            'owner' => new \MongoId($player),
+            'name'  => $name,
+            'loc'   => ['x' => 0, 'y' => 0],
+            'lang'  => $player->lang(),
         ];
         $this->mongo()->{'map.chars'}->insert($data);
 
