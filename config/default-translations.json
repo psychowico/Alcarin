@@ -13,6 +13,13 @@
         "static.time-of-day.day": "Cóż za piękny dzionek.",
         "static.time-of-day.evening": "Zaraz będzie ciemno!",
         "static.time-of-day.night": "Ciemno wszędzie, głucho wszędzie..",
-        "static.time-of-day.morning": "Z jutrzenką wraca nadzieja."
+        "static.time-of-day.morning": "Z jutrzenką wraca nadzieja.",
+
+        "static.race.human": "Człowiek",
+        "static.race.elf": "Elf",
+        "static.race.dwarf": "Krasnolud",
+
+        "static.sex.man": "Mężczyzna",
+        "static.sex.woman": "Kobieta"
     }
 }

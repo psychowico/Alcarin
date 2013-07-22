@@ -87,7 +87,6 @@ class DevConsoleController extends AbstractActionController
         echo 'Done indexing "map.chars.events" collection.' . PHP_EOL;
 
         $this->initTranslationsAction();
-        echo 'Done setting default translations pack.' . PHP_EOL;
     }
 
     public function initTranslationsAction()
@@ -97,6 +96,9 @@ class DevConsoleController extends AbstractActionController
         $filepath = realpath('./config/default-translations.json');
         $json_string = file_get_contents($filepath);
         $data = json_decode($json_string, true);
+        if($data == null) {
+            throw new \Exception("Can not parse \"default-translations.json\" file.");
+        }
         foreach($data as $lang => $pack) {
             foreach($pack as $key => $value) {
                 $fullkey = $key . '.' . $lang;
@@ -106,6 +108,7 @@ class DevConsoleController extends AbstractActionController
                 ]);
             }
         }
+        echo 'Done setting default translations pack.' . PHP_EOL;
 
     }
 }
