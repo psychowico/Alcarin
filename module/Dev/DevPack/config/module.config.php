@@ -92,7 +92,7 @@ return array(
                         ),
                     ),
                 ),
-                'init-db' => array(
+                'update-translations' => array(
                     'options' => array(
                         'route'    => 'update translations',
                         'defaults' => array(
