@@ -1,0 +1,12 @@
+{
+    "pl": {
+        "events.public-talk.std": "Mówisz: %0",
+        "events.public-talk.others": "%1 powiedział: %0",
+        "static.man-age.very-young": "Młody chłopak",
+        "static.man-age.young": "Chłopak",
+        "static.man-age.adult-male": "Mężczyzna",
+        "static.man-age.old": "Staruszek",
+        "static.man-age.middle-aged": "Mężczyzna w średnim wieku",
+        "static.man-age.elderly": "Starszy mężczyzna"
+    }
+}

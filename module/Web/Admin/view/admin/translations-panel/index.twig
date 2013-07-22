@@ -41,7 +41,7 @@
                             <label>Viariety:
                                 <!-- key as value for (key, value) in varieties -->
                                 <select name="descr" class="span12" ng-model="variety"
-                                        ng-options="obj.name as obj.name for (key, obj) in tag.defaults">
+                                        ng-options="key as key for (key, obj) in tag.content">
                                 </select>
                             </label>
                         </div>

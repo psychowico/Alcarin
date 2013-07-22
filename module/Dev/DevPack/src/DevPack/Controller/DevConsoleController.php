@@ -85,5 +85,27 @@ class DevConsoleController extends AbstractActionController
         $mongo->command( ['deleteIndexes' => 'map.chars.events', 'index' => 'chars_time']);
             $mongo->{'map.chars.events'}->ensureIndex(['char' => 1, 'time' => -1], ['name'=> 'chars_time']);
         echo 'Done indexing "map.chars.events" collection.' . PHP_EOL;
+
+        $this->initTranslations();
+        echo 'Done setting default translations pack.' . PHP_EOL;
+    }
+
+    protected function initTranslations()
+    {
+        $mongo = $this->getServiceLocator()->get('mongo');
+
+        $filepath = realpath('./config/default-translations.json');
+        $json_string = file_get_contents($filepath);
+        $data = json_decode($json_string, true);
+        foreach($data as $lang => $pack) {
+            foreach($pack as $key => $value) {
+                $fullkey = $key . '.' . $lang;
+                $mongo->translations->insert([
+                    '_id' => $fullkey,
+                    'val' => $value,
+                ]);
+            }
+        }
+
     }
 }

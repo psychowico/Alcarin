@@ -37,7 +37,13 @@ namespace 'Alcarin.Admin', (exports, Alcarin) ->
 
         fetchSentence = =>
             @tag = Translation.get $.extend({tagid: @selected.tagid}, @choose),
-                (response)=> @variety = response.defaults?[0]?.name
+                (response)=>
+                    if response.content?
+                        for key of response.content
+                            @variety = key
+                            break
+                    else
+                        @variety = null
 
         @saveSentence = ->
             @saving = true

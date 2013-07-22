@@ -58,6 +58,7 @@ class DynamicTranslations extends \Core\GameObject
         }
     }
 
+
     public function getTagDefinition($group, $tagid, $lang = null)
     {
         $lang = $lang ?: $this->lang();
@@ -67,13 +68,7 @@ class DynamicTranslations extends \Core\GameObject
             $def     = $this->def()->get($group, $tagid) ?: [];
 
             $entry = $this->translation($group, $tagid, $lang);
-            $def['content'] = [];
-            if(!empty($def['defaults'])) {
-                foreach($def['defaults'] as $tagid => $def_val) {
-                    $def['content'][$tagid] = $entry->val($tagid);
-                }
-            }
-
+            $def['content'] = $entry->allValues();
             return $def;
         }
         else {

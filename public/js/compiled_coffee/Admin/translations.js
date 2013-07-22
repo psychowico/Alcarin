@@ -41,9 +41,18 @@
         return _this.tag = Translation.get($.extend({
           tagid: _this.selected.tagid
         }, _this.choose), function(response) {
-          var _ref, _ref1;
+          var key, _results;
 
-          return _this.variety = (_ref = response.defaults) != null ? (_ref1 = _ref[0]) != null ? _ref1.name : void 0 : void 0;
+          if (response.content != null) {
+            _results = [];
+            for (key in response.content) {
+              _this.variety = key;
+              break;
+            }
+            return _results;
+          } else {
+            return _this.variety = null;
+          }
         });
       };
       this.saveSentence = function() {

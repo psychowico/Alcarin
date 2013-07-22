@@ -21,23 +21,23 @@ class DynamicTranslationsDefinitions extends \Core\GameObject
                     ['type' => self::TEXT, 'descr' => 'Talking content.'],
                     ['type' => self::CHARNAME, 'descr' => 'Speaking person name.']
                 ],
-                'defaults'  => [
-                    'std' => 'You say: %0',
-                    'others' => '%1 says: %0',
-                ],
+                // 'defaults'  => [
+                //     'std' => 'You say: %0',
+                //     'others' => '%1 says: %0',
+                // ],
             ],
         ],
         'static' => [
             'man-age' => [
                 'descr'     => 'Newly met men characters, before we give him name, does appear in this way.',
-                'defaults'  => [
-                    'very-young'  => 'Young boy',
-                    'young'       => 'Young man',
-                    'adult-male'  => 'Adult male man',
-                    'middle-aged' => 'Middle-aged man',
-                    'elderly'     => 'Elderly man',
-                    'old'         => 'Old man',
-                ],
+                // 'defaults'  => [
+                //     'very-young'  => 'Young boy',
+                //     'young'       => 'Young man',
+                //     'adult-male'  => 'Adult male man',
+                //     'middle-aged' => 'Middle-aged man',
+                //     'elderly'     => 'Elderly man',
+                //     'old'         => 'Old man',
+                // ],
             ],
         ],
     ];

@@ -9,6 +9,7 @@ class TranslationEntry extends \Core\GameObject
     protected $variety = 'std';
 
     protected $cache = [];
+    protected $cache_full = false;
 
     public function __construct($group, $tagid)
     {
@@ -50,19 +51,37 @@ class TranslationEntry extends \Core\GameObject
             $key = $this->generateKey();
             $entry = $this->mongo()->translations->findOne(['_id' => $key]);
             $value = '';
-            if(empty($entry['val'])) {
-                $def = $this->parent()->def()->get($this->group, $this->tagid);
-                if(!empty($def['defaults'][$variety])) {
-                    $value = $def['defaults'][$variety];
-                }
-            }
-            else {
-                $value = $entry['val'];
-            }
+            // if(empty($entry['val'])) {
+            //     $def = $this->parent()->def()->get($this->group, $this->tagid);
+            //     if(!empty($def['defaults'][$variety])) {
+            //         $value = $def['defaults'][$variety];
+            //     }
+            // }
+            // else {
+            $value = empty($entry['val']) ? '#NOTAG#' : $entry['val'];
+            // }
 
             $this->cache[$variety] = $value;
         }
         return $this->cache[$variety];
+    }
+
+    public function allValues()
+    {
+        if($this->cache_full) return $this->cache;
+
+        $regex = sprintf("%s\.%s\.(.*?)\.%s", $this->group, $this->tagid, $this->parent()->lang());
+        $entries = $this->mongo()->translations->find(['_id' => ['$regex' => $regex]]);
+        foreach($entries->toArray() as $entry) {
+            $id  = $entry['_id'];
+            $val = $entry['val'];
+            preg_match('/' . $regex . '/', $id, $match);
+            $variety = $match[1];
+
+            $this->cache[$variety] = $val;
+        }
+        $this->cache_full = true;
+        return $this->cache;
     }
 
     /*

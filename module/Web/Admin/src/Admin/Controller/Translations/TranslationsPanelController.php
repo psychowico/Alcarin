@@ -10,6 +10,7 @@ class TranslationsPanelController extends AbstractAlcarinRestfulController
 {
     public function getList()
     {
+        $this->system()->getTagDefinition('static', 'man-age', 'pl');
         $group = $this->params()->fromQuery('group');
         $lang = $this->params()->fromQuery('lang');
         if(empty($group) || empty($lang)) {
