@@ -92,6 +92,15 @@ return array(
                         ),
                     ),
                 ),
+                'init-db' => array(
+                    'options' => array(
+                        'route'    => 'update translations',
+                        'defaults' => array(
+                            'controller' => 'DevPack\DevConsoleController',
+                            'action'     => 'initTranslations',
+                        ),
+                    ),
+                ),
             ),
         ),
     ),

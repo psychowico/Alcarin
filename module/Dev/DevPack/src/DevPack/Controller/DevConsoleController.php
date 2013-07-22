@@ -86,11 +86,11 @@ class DevConsoleController extends AbstractActionController
             $mongo->{'map.chars.events'}->ensureIndex(['char' => 1, 'time' => -1], ['name'=> 'chars_time']);
         echo 'Done indexing "map.chars.events" collection.' . PHP_EOL;
 
-        $this->initTranslations();
+        $this->initTranslationsAction();
         echo 'Done setting default translations pack.' . PHP_EOL;
     }
 
-    protected function initTranslations()
+    public function initTranslationsAction()
     {
         $mongo = $this->getServiceLocator()->get('mongo');
 

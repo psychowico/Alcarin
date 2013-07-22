@@ -31,8 +31,8 @@ namespace 'Alcarin.Admin', (exports, Alcarin) ->
 
 
     exports.SelectedTranslation = ngcontroller ['Translation', (Translation)->
-        @tag = null
-        @saving = false
+        @tag     = null
+        @saving  = false
         @variety = null
 
         fetchSentence = =>
