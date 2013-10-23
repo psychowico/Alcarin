@@ -22,7 +22,7 @@ and use `composer` to install dependencies:
 .. code-block:: bash
 
     cd my/project/dir
-    git clone git://github.com/psychowico/Alcarin.git
+    git clone --recursive git://github.com/psychowico/Alcarin.git
     cd Alcarin
     php composer.phar self-update
     php composer.phar install
@@ -54,6 +54,14 @@ need any configuration you should looking in *config/autoload/local.php* file,
 under the key 'mongo'.
 
 .. _`install mongo server`: http://docs.mongodb.org/manual/installation/
+
+Real time server
+----------------
+For real time operations additional server exists, writed in NodeJS technology. You
+will find it code in */alcarin-gameplay-server* directory. Follow `Alcarin Gameplay Server`_
+readme file to install and run it.
+
+.. _`Alcarin Gameplay Server`: https://github.com/psychowico/AlcarinGameplayServer
 
 Virtual Host
 ------------
