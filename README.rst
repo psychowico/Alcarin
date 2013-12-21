@@ -22,7 +22,7 @@ and use `composer` to install dependencies:
 .. code-block:: bash
 
     cd my/project/dir
-    git clone --recursive git://github.com/psychowico/Alcarin.git
+    git clone --recursive git@github.com:psychowico/Alcarin.git
     cd Alcarin
     php composer.phar self-update
     php composer.phar install
