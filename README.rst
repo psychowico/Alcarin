@@ -85,6 +85,4 @@ At last you should run script which will initalize mongo db instance (indexes an
 
 .. code-block:: bash
 
-    bin/init\ db alcarin@test.com test321
-
-On linux you will probably need run above commands as system administrator.
+    bin/init\ db
