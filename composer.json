@@ -22,6 +22,22 @@
                     "classmap": ["classes/"]
                 }
             }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "psychowico/zf2nette-debug",
+                "version": "dev-master",
+                "dist": {
+                    "url": "https://github.com/psychowico/ZF2NetteDebug/zipball/develop",
+                    "type": "zip"
+                },
+                "autoload": {
+                    "classmap": [
+                        "./"
+                    ]
+                }
+            }
         }
     ],
     "require": {
@@ -34,7 +50,7 @@
         "neilime/zf2-twb-bundle"            : "dev-master",
 
         "zendframework/zend-developer-tools": "dev-master",
-        "webino/zf2nette-debug"             : "1.*",
+        "psychowico/zf2nette-debug"         : "dev-master",
         "colinmollenhour/mongodb-php-odm"   : "dev-master",
         "evandotpro/edp-module-layouts"     : "dev-master",
         "doctrine/common"                   : ">=2.1",
