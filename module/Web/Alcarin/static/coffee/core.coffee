@@ -35,7 +35,10 @@ angular.module = (args...)->
         args.push ['$interpolateProvider', ($ip)->
             $ip.startSymbol('{*').endSymbol('*}')
         ]
-    angular._module.apply angular, args
+    angular._module.apply(angular, args)
+        # temporary code to fix all auto unwrapping promises cases
+        # https://github.com/angular/angular.js/commit/5dc35b527b3c99f6544b8cb52e93c6510d3ac577
+        .config ($parseProvider)-> $parseProvider.unwrapPromises true
 
 $ =>
     # focus first input on site

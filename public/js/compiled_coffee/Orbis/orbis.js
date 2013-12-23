@@ -20,7 +20,10 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
     '$routeParams', 'MapInfo', function(params, MapInfo) {
       var _this = this;
       this.active_group = 0;
-      this.mapinfo = MapInfo();
+      this.mapinfo = "";
+      MapInfo().then(function(info) {
+        return _this.mapinfo = info;
+      });
       return this.$on('groupChanged', function(ev, group) {
         return _this.active_group = group;
       });

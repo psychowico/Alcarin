@@ -1,6 +1,7 @@
 namespace 'Alcarin.Orbis.Gateways', (exports, Alcarin) ->
 
-    angular.module('@gateways', ['@proxy', ])
+    angular.module('@gateways', ['@proxy'])
+
         .factory('GatewaysGroup', ['alc-resource', ($res)->
             Group = $res urls.orbis.gatewaysgroups + '/:groupid', {groupid: '@id'}
             Group.prototype.displayname = ->
@@ -12,5 +13,6 @@ namespace 'Alcarin.Orbis.Gateways', (exports, Alcarin) ->
         ])
         .factory('MapInfo', ['$http', ($http)->
             ()->
-                $http.get("#{urls.orbis.map}/get-info").then (response)-> response.data
+                $http.get("#{urls.orbis.map}/get-info")
+                     .then (response)-> response.data
         ])

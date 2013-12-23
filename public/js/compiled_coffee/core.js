@@ -55,7 +55,9 @@ angular.module = function() {
       }
     ]);
   }
-  return angular._module.apply(angular, args);
+  return angular._module.apply(angular, args).config(function($parseProvider) {
+    return $parseProvider.unwrapPromises(true);
+  });
 };
 
 $(function() {

@@ -21,7 +21,9 @@ namespace 'Alcarin.Orbis', (exports, Alcarin) ->
 
     exports.App = ngcontroller ['$routeParams', 'MapInfo', (params, MapInfo)->
         @active_group = 0
-        @mapinfo = MapInfo()
+        @mapinfo = ""
+
+        MapInfo().then (info)=> @mapinfo = info
         @$on 'groupChanged', (ev, group)=>
             @active_group = group
     ]
