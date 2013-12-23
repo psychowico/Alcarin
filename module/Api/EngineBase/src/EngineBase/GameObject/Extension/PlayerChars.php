@@ -58,25 +58,25 @@ class PlayerChars extends \Core\GameObject
     }
 
     /**
-     * create simple test char
+     * create new character
      */
-    public function create($name)
+    public function create($name, $options)
     {
-        $player = $this->parent()->id();
+        $player = $this->parent();
 
-        //player only data for fast displaying
+        //char only data for fast displaying
         $data = [
-            'owner' => new \MongoId($player),
+            'owner' => new \MongoId($player->id()),
             'name'  => $name,
             'loc'   => ['x' => 0, 'y' => 0],
             'lang'  => $player->lang(),
+            'options' => $options
         ];
         $this->mongo()->{'map.chars'}->insert($data);
 
-        //real-player in world
-
+        //link real-char in world
         $char_id = $data['_id'];
-        $this->mongo()->users->update( ['_id' => new \MongoId($player)],
+        $this->mongo()->users->update( ['_id' => new \MongoId($player->id())],
             ['$push' => ['chars' => $char_id]]);
 
         return $this->createChild($data);

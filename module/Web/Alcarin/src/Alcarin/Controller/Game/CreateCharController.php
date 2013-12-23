@@ -21,6 +21,9 @@ class CreateCharController extends AbstractAlcarinRestfulController
             $values[$key] = $all[$key];
         }
         $form->get('race')->setValueOptions($values);
+        $form->setAttribute('action', $this->url()->fromRoute(
+            'alcarin/default', ['controller' => 'create-char'])
+        );
 
         return $form;
     }
@@ -33,9 +36,21 @@ class CreateCharController extends AbstractAlcarinRestfulController
 
     public function create($data)
     {
-        if(!empty($data['name'])) {
-            $this->player()->chars()->create($data['name']);
+        $form = $this->getForm();
+        $form->setData($data);
+        if($form->isValid($data)) {
+            $data = $form->getData();
+            $charname = $data['charname'];
+
+            $a_options = ['race', 'sex'];
+            $options = [];
+            foreach ($a_options as $key) {
+                $options[$key] = $data[$key];
+            }
+
+            $this->player()->chars()->create($charname, $options);
         }
+
         return $this->redirect()->toParent();
     }
 }
