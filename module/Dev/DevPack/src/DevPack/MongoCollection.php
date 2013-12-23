@@ -8,6 +8,12 @@ namespace DevPack;
  */
 class MongoCollection extends \Mongo_Collection
 {
+  public function distinct($key, $query = array())
+  {
+    $data = parent::distinct($key, $query);
+    return $data['values'];
+  }
+
   public function findById($_id, $fields = [])
   {
     $result = parent::findOne(['_id' => new \MongoId($_id)], $fields);

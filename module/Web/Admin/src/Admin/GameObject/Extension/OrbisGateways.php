@@ -8,8 +8,7 @@ class OrbisGateways extends \Core\GameObject
 
     public function fetchGroups()
     {
-        $_groups = $this->mongo()->{static::COLLECTION}->distinct('group');
-        return $_groups['values'];
+        return $this->mongo()->{static::COLLECTION}->distinct('group');
     }
 
     public function find($grouped = true)
