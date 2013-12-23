@@ -2,6 +2,8 @@
 
 namespace 'Alcarin.Game.Directives.Map', (exports, Alcarin) ->
 
+    # this directory give possibility to select other characters on map and turn
+    # turn on auto-following them
     exports.module.directive 'alcMoveTarget', ['CurrentCharacter', 'MapBackground', 'CharEnvironment',
         (CurrentCharacter, MapBackground, CharEnvironment) ->
             restrict: 'A'
