@@ -1,18 +1,15 @@
-'use strict';namespace('Alcarin.Game', function(exports, Alcarin) {
+'use strict';
+namespace('Alcarin.Game', function(exports, Alcarin) {
   var GameTime;
-
   exports.GameEvents = ngcontroller([
     'GameServer', 'GameEventsTranslator', function(GameServer, Translate) {
       var _this = this;
-
       this.gameEvents = null;
       this.sending = false;
       GameServer.on('game-event.swap', function(data) {
         var ev;
-
         return _this.gameEvents = (function() {
           var _i, _len, _results;
-
           _results = [];
           for (_i = 0, _len = data.length; _i < _len; _i++) {
             ev = data[_i];
@@ -23,7 +20,6 @@
       });
       GameServer.on('game-event.add', function(evData) {
         var gameEvent;
-
         if (!evData.system) {
           gameEvent = Translate(evData);
           _this.gameEvents.splice(0, 0, gameEvent);
@@ -49,7 +45,6 @@
   Alcarin.Game.module.filter('EventTime', function() {
     return function(time) {
       var _time;
-
       if (isNaN(time)) {
         return time;
       }
@@ -59,11 +54,9 @@
   }).factory('GameEventsTranslator', [
     function() {
       var reg;
-
       reg = /%([0-9])+/g;
       return function(gameEvent) {
         var arg, arg_index, fArg, match, offset, output, pre_text, _text;
-
         _text = gameEvent.text;
         output = [];
         offset = 0;

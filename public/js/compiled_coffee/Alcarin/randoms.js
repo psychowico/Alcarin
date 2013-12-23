@@ -6,7 +6,6 @@ namespace('Alcarin', function(exports, Alcarin) {
 
     Randoms.id = function() {
       var _index;
-
       _index = this.index++;
       return "id--" + _index;
     };

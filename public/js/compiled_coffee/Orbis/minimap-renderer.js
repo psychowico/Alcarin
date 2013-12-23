@@ -2,7 +2,6 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
 
 namespace('Alcarin.Orbis', function(exports, Alcarin) {
   var Flag;
-
   exports.MinimapRenderer = (function() {
     MinimapRenderer.prototype._radius = 100;
 
@@ -15,7 +14,6 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
     function MinimapRenderer(_minimap) {
       this._on_drop = __bind(this._on_drop, this);
       var _this = this;
-
       this.rel = _minimap;
       this.rel.on('drop', this._on_drop);
       this.context = _minimap[0].getContext('2d');
@@ -23,7 +21,6 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
       _minimap.data('minimap', this).droppable({
         'accept': function(drop) {
           var p, r;
-
           p = drop.position();
           p = {
             x: p.left - _this.pixel_radius,
@@ -45,7 +42,6 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
 
     MinimapRenderer.prototype.create_flag = function(x, y) {
       var flag;
-
       flag = new Flag(this);
       flag.position(x, y);
       return flag;
@@ -53,7 +49,6 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
 
     MinimapRenderer.prototype._on_drop = function(e, drop_event) {
       var flag, _base, _name;
-
       flag = drop_event.draggable.data('minimap-flag');
       return typeof (_base = this.flags_drop)[_name = flag.id] === "function" ? _base[_name](drop_event) : void 0;
     };
@@ -74,7 +69,6 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
 
     MinimapRenderer.prototype.fill_by_sea = function() {
       var r;
-
       r = this.pixel_radius;
       this.context.beginPath();
       this.context.fillStyle = 'blue';
@@ -163,7 +157,6 @@ namespace('Alcarin.Orbis', function(exports, Alcarin) {
 
     Flag.prototype.destroy = function(with_anim, anim_speed) {
       var _this = this;
-
       if (with_anim == null) {
         with_anim = true;
       }

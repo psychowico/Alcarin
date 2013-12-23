@@ -5,7 +5,6 @@ var __hasProp = {}.hasOwnProperty,
 
 namespace('Alcarin.Game.Services.GameObject', function(exports, Alcarin) {
   var Character;
-
   Character = (function(_super) {
     __extends(Character, _super);
 
@@ -47,7 +46,6 @@ namespace('Alcarin.Game.Services.GameObject', function(exports, Alcarin) {
 
     CharacterFactory.prototype._factoryObject = function(obj) {
       var id, instance, key, val;
-
       id = obj._id;
       if (id == null) {
         throw Error("Factory: Can not create Character withot '_id' id key.");
@@ -69,7 +67,6 @@ namespace('Alcarin.Game.Services.GameObject', function(exports, Alcarin) {
 
     CharacterFactory.prototype.addCharFromServer = function(obj) {
       var character, deffered, key, result, val, _i, _id, _len, _ref, _results;
-
       _id = obj._id;
       result = this.factory(obj);
       if (this.cache[_id] != null) {
@@ -93,7 +90,6 @@ namespace('Alcarin.Game.Services.GameObject', function(exports, Alcarin) {
 
     CharacterFactory.prototype.onCharsSwap = function(chars) {
       var byids, key, _char, _i, _len, _results;
-
       this.charslist = {};
       byids = {};
       for (_i = 0, _len = chars.length; _i < _len; _i++) {
@@ -122,7 +118,6 @@ namespace('Alcarin.Game.Services.GameObject', function(exports, Alcarin) {
     CharacterFactory.prototype.onGameEvent = function(gameEvent) {
       var id, loc, _char,
         _this = this;
-
       if (gameEvent.system) {
         id = gameEvent.id;
         switch (id) {
@@ -131,7 +126,6 @@ namespace('Alcarin.Game.Services.GameObject', function(exports, Alcarin) {
             loc = _char.loc;
             return this.factory(_char._id).then(function(item) {
               var oldloc;
-
               oldloc = item.loc;
               if (oldloc.x !== loc.x || oldloc.y !== loc.y) {
                 item.loc = loc;
@@ -148,7 +142,6 @@ namespace('Alcarin.Game.Services.GameObject', function(exports, Alcarin) {
 
     CharacterFactory.prototype.factory = function(objOrId) {
       var deffered, _id;
-
       if (typeof objOrId === 'string') {
         _id = objOrId;
         if (this.cache[_id] != null) {

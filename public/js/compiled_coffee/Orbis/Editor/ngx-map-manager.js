@@ -1,4 +1,5 @@
-'use strict';namespace('Alcarin.Orbis', function(exports, Alcarin) {
+'use strict';
+namespace('Alcarin.Orbis', function(exports, Alcarin) {
   return angular.module('@map-manager').directive('alcMapManager', [
     '@EventsBus', function(EventsBus) {
       return {
@@ -13,7 +14,6 @@
         },
         link: function($scope, canvas, attrs) {
           var painter, plugins;
-
           plugins = [Admin.Map.Layers.EditableTerrain];
           painter = new Alcarin.Map.Painter(canvas, plugins);
           canvas.data('map-painter', painter);

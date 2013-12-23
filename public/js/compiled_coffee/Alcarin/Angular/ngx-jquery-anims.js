@@ -1,4 +1,5 @@
-'use strict';namespace('Alcarin.Angular', function(exports, Alcarin) {
+'use strict';
+namespace('Alcarin.Angular', function(exports, Alcarin) {
   return angular.module('@jquery-anims').animation('$slideDown', function() {
     return {
       setup: function(e) {

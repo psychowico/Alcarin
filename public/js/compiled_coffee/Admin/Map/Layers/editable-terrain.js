@@ -4,10 +4,8 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
 
 namespace('Admin.Map.Layers', function(exports, Alcarin) {
   var canvas_events;
-
   canvas_events = function(map, element) {
     var events;
-
     events = (function() {
       function events() {
         this.mouse_painting = __bind(this.mouse_painting, this);
@@ -37,7 +35,6 @@ namespace('Admin.Map.Layers', function(exports, Alcarin) {
 
       events.prototype.mouse_painting = function(e) {
         var brush, coords, ox, oy, range, range_2, _i, _j;
-
         coords = map.pixels_to_coords(e.offsetX, e.offsetY);
         brush = map.mapBrush;
         if (brush.size > 1) {
@@ -75,7 +72,6 @@ namespace('Admin.Map.Layers', function(exports, Alcarin) {
     function EditableTerrain(canvas, c_x, c_y) {
       var ev,
         _this = this;
-
       this.canvas = canvas;
       this.redraw = __bind(this.redraw, this);
       this.set_center = __bind(this.set_center, this);
@@ -108,7 +104,6 @@ namespace('Admin.Map.Layers', function(exports, Alcarin) {
 
     EditableTerrain.prototype.draw_shadow = function(p, size) {
       var c, up, x, y, _size;
-
       if (this.foreground == null) {
         return false;
       }
@@ -129,7 +124,6 @@ namespace('Admin.Map.Layers', function(exports, Alcarin) {
 
     EditableTerrain.prototype.in_view_rect = function(x, y) {
       var _rect;
-
       _rect = this.rect || {
         left: this.center.x - this.size / 2,
         right: this.center.x + this.size / 2,
@@ -142,7 +136,6 @@ namespace('Admin.Map.Layers', function(exports, Alcarin) {
 
     EditableTerrain.prototype.init_backbuffer = function(sizeW, sizeH) {
       var _canvas;
-
       if (this.backbuffer_canvas == null) {
         this.backbuffer_canvas = $('<canvas>');
         _canvas = this.backbuffer_canvas[0];
@@ -158,7 +151,6 @@ namespace('Admin.Map.Layers', function(exports, Alcarin) {
 
     EditableTerrain.prototype.init_foreground = function() {
       var _canvas;
-
       if (this.foreground == null) {
         this.foreground_canvas = $('<canvas>', {
           "class": 'foreground'
@@ -174,7 +166,6 @@ namespace('Admin.Map.Layers', function(exports, Alcarin) {
 
     EditableTerrain.prototype.init = function() {
       var bg;
-
       this.context = this.canvas[0].getContext('2d');
       bg = this.background;
       this.context.fillStyle = "rgb(" + bg[0] + ", " + bg[1] + ", " + bg[2] + ")";
@@ -184,7 +175,6 @@ namespace('Admin.Map.Layers', function(exports, Alcarin) {
 
     EditableTerrain.prototype.redraw = function(size, fields) {
       var backbuffer, c, color, field, i, image_data, mod, offset, _i, _j, _len, _offset, _x, _y;
-
       this.plain_colors = [];
       this.size = size;
       backbuffer = this.init_backbuffer(size, size);
@@ -218,7 +208,6 @@ namespace('Admin.Map.Layers', function(exports, Alcarin) {
 
     EditableTerrain.prototype.pixels_to_coords = function(x, y) {
       var offset;
-
       offset = {
         x: this.center.x - this.size / 2,
         y: this.center.y - this.size / 2
@@ -231,7 +220,6 @@ namespace('Admin.Map.Layers', function(exports, Alcarin) {
 
     EditableTerrain.prototype.put_field = function(x, y, field_brush) {
       var bb_pos, color, current, i, mod, offset, rgb, target, _data, _i;
-
       if ((x != null) && (y != null) && this.in_view_rect(x, y)) {
         mod = Math.abs(this.noise().get(x / this.noise_density, y / this.noise_density));
         color = field_brush.color;
@@ -270,7 +258,6 @@ namespace('Admin.Map.Layers', function(exports, Alcarin) {
 
     EditableTerrain.prototype._buffer_to_front = function(with_swap) {
       var _h, _w;
-
       if (with_swap == null) {
         with_swap = false;
       }
@@ -286,7 +273,6 @@ namespace('Admin.Map.Layers', function(exports, Alcarin) {
 
     EditableTerrain.prototype._coords_to_backbuffer_pixels = function(x, y) {
       var offset;
-
       offset = {
         x: this.center.x - this.size / 2,
         y: this.center.y - this.size / 2

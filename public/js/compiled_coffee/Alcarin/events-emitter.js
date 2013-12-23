@@ -18,7 +18,6 @@ namespace('Alcarin', function(exports, Alcarin) {
 
     EventsEmitter.prototype.$emit = function() {
       var args, name, _i, _j, _len, _len1, _meth, _ref, _ref1, _results;
-
       name = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
       this.$_listeners = this.$_listeners || {};
       if (this.$_listeners[name] != null) {

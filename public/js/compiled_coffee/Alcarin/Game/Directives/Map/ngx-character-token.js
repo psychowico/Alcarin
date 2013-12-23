@@ -1,4 +1,5 @@
-'use strict';namespace('Alcarin.Game.Directives.Map', function(exports, Alcarin) {
+'use strict';
+namespace('Alcarin.Game.Directives.Map', function(exports, Alcarin) {
   return exports.module.directive('alcCharacterToken', [
     'MapBackground', 'CurrentCharacter', '$q', function(MapBackground, CurrentChar, $q) {
       return {
@@ -9,15 +10,12 @@
         },
         link: function($scope, $token, attrs) {
           var resetPosition, resetTitle;
-
           resetTitle = function() {
             var loc, text;
-
             loc = $scope.alcCharacterToken.loc;
             text = $scope.alcCharacterToken.name;
             return $q.all([CurrentChar, MapBackground.dataReady()]).then(function(_arg) {
               var cloc, current, distance, hearable, map, _end;
-
               current = _arg[0], map = _arg[1];
               cloc = current.loc;
               distance = Math.sqrt(Math.pow(cloc.x - loc.x, 2) + Math.pow(cloc.y - loc.y, 2));
@@ -39,7 +37,6 @@
           };
           resetPosition = function() {
             var loc, _ref;
-
             $token.data('rel', $scope.alcCharacterToken);
             loc = (_ref = $scope.alcCharacterToken) != null ? _ref.loc : void 0;
             if (loc == null) {
@@ -47,7 +44,6 @@
             }
             return MapBackground.dataReady().then(function(map) {
               var ploc;
-
               ploc = map.units().toPixels(loc.x, loc.y);
               $token.position({
                 top: ploc.y,
@@ -61,7 +57,6 @@
           MapBackground.$on('zoom', resetPosition);
           $scope.$watch('playerCharacter', function(val) {
             var isCurrentChar;
-
             isCurrentChar = val === $scope.alcCharacterToken._id;
             return $token.toggleClass('current', isCurrentChar);
           });

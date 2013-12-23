@@ -5,7 +5,6 @@ $(function() {
   $('select.chosen-search').chosen({});
   $('select.chosen-always-visible').each(function() {
     var chosen, _;
-
     _ = $(this);
     _.chosen({});
     chosen = _.data('chosen');

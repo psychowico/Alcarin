@@ -1,9 +1,9 @@
-'use strict';namespace('Alcarin.Game.Views', function(exports, Alcarin) {
+'use strict';
+namespace('Alcarin.Game.Views', function(exports, Alcarin) {
   return exports.AreaMap = ngcontroller([
     'GameServer', 'CurrentCharacter', '$q', '$safeApply', 'MapBackground', function(GameServer, CurrentCharacter, $q, $safeApply, MapBackground) {
       var lastClick,
         _this = this;
-
       this.showGreatTower = true;
       this.showMoveTarget = true;
       this.showChars = true;
@@ -21,7 +21,6 @@
       this._radiusDescr = '';
       this.radiusWithUnits = function() {
         var km, _ref;
-
         if (((_ref = MapBackground.info) != null ? _ref.radius : void 0) != null) {
           km = MapBackground.info.radius / 10;
           _this._radiusDescr = km < 1 ? "" + (km * 1000) + "m" : "" + km + "km";
@@ -31,7 +30,6 @@
       lastClick = new Date();
       this.mapClicked = function(ev) {
         var current, diff, target;
-
         target = $(ev.target).closest('.character,.characters');
         current = new Date();
         diff = (current.getTime() - lastClick.getTime()) / 1000;

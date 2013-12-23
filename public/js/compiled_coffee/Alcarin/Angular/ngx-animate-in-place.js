@@ -1,4 +1,5 @@
-'use strict';namespace('Alcarin.Angular', function(exports, Alcarin) {
+'use strict';
+namespace('Alcarin.Angular', function(exports, Alcarin) {
   return angular.module('@animate').directive('alcAnimateInPlace', function() {
     return {
       restrict: 'A',

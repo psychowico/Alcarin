@@ -1,10 +1,10 @@
-'use strict';namespace('Alcarin.Angular', function(exports, Alcarin) {
+'use strict';
+namespace('Alcarin.Angular', function(exports, Alcarin) {
   return angular.module('@chosen').directive('alcChosenWatch', function() {
     return {
       restrict: 'A',
       link: function($scope, element, attrs) {
         var model;
-
         model = attrs['ngModel'];
         $scope.$watch(attrs['alcChosenWatch'], function() {
           return element.trigger('liszt:updated');

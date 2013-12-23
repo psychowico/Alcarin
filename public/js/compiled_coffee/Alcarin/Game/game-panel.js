@@ -1,6 +1,6 @@
-'use strict';namespace('Alcarin.Game', function(exports, Alcarin) {
+'use strict';
+namespace('Alcarin.Game', function(exports, Alcarin) {
   var socket_port;
-
   socket_port = 8080;
   exports.module = angular.module('game', ['@spin', 'ui.event', '@talk-input', '@game-services', '@alcarin-map', '@popover']).config([
     '$routeProvider', function($routeProvider) {

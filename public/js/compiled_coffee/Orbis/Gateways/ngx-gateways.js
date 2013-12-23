@@ -2,7 +2,6 @@ namespace('Alcarin.Orbis.Gateways', function(exports, Alcarin) {
   return angular.module('@gateways', ['@proxy']).factory('GatewaysGroup', [
     'alc-resource', function($res) {
       var Group;
-
       Group = $res(urls.orbis.gatewaysgroups + '/:groupid', {
         groupid: '@id'
       });

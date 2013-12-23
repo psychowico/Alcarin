@@ -1,4 +1,5 @@
-'use strict';namespace('Alcarin.Angular', function(exports, Alcarin) {
+'use strict';
+namespace('Alcarin.Angular', function(exports, Alcarin) {
   return angular.module('@slider').directive('jslider', function() {
     return {
       restrict: 'E',
@@ -8,7 +9,6 @@
       },
       link: function($scope, element, attrs) {
         var options;
-
         element.addClass('slider');
         options = $.extend({
           change: function(e, ui) {

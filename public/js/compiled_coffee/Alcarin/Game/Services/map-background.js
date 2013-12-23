@@ -5,7 +5,6 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
 
 namespace('Alcarin.Game.Services', function(exports, Alcarin) {
   var Units, ZOOM_FACTOR;
-
   Units = (function() {
     function Units(parent, round) {
       this.parent = parent;
@@ -37,7 +36,6 @@ namespace('Alcarin.Game.Services', function(exports, Alcarin) {
 
     Units.prototype.toPixels = function(x, y) {
       var center, offset, pixelRadius, radius, round;
-
       center = this.center();
       radius = this.radius();
       pixelRadius = this.pixelRadius();
@@ -54,7 +52,6 @@ namespace('Alcarin.Game.Services', function(exports, Alcarin) {
 
     Units.prototype.toUnits = function(pixelX, pixelY) {
       var center, offset, pixelRadius, radius, round;
-
       center = this.center();
       radius = this.radius();
       pixelRadius = this.pixelRadius();
@@ -76,7 +73,6 @@ namespace('Alcarin.Game.Services', function(exports, Alcarin) {
   return exports.module.factory('MapBackground', [
     '$q', 'GameServer', 'CurrentCharacter', function($q, GameServer, CurrentCharacter) {
       var Background;
-
       Background = (function(_super) {
         __extends(Background, _super);
 
@@ -85,7 +81,8 @@ namespace('Alcarin.Game.Services', function(exports, Alcarin) {
         Background.prototype.zoom = false;
 
         function Background() {
-          this.onDataReady = __bind(this.onDataReady, this);          this.reset();
+          this.onDataReady = __bind(this.onDataReady, this);
+          this.reset();
         }
 
         Background.prototype.setPixelRadius = function(pixelRadius) {
@@ -98,7 +95,6 @@ namespace('Alcarin.Game.Services', function(exports, Alcarin) {
 
         Background.prototype.enableZoom = function(zoom) {
           var factor;
-
           this.zoom = zoom;
           if (this.info != null) {
             factor = this.zoom ? 1 / ZOOM_FACTOR : ZOOM_FACTOR;
@@ -110,7 +106,6 @@ namespace('Alcarin.Game.Services', function(exports, Alcarin) {
 
         Background.prototype.onDataReady = function(_arg) {
           var character, charsArgs, info, radius, terrain, terrainArgs;
-
           character = _arg[0], terrainArgs = _arg[1], charsArgs = _arg[2];
           terrain = terrainArgs[0], info = terrainArgs[1];
           radius = info.radius;
@@ -132,7 +127,6 @@ namespace('Alcarin.Game.Services', function(exports, Alcarin) {
 
         Background.prototype.reset = function() {
           var loadingData, swapingChars, swapingTerrain;
-
           if (this.dataReadyDeffered != null) {
             this.dataReadyDeffered.reject();
           }

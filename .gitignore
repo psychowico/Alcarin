@@ -11,3 +11,4 @@ composer.lock
 *.ignore
 .tags*
 *.js.map
+composer.phar

@@ -1,18 +1,16 @@
-'use strict';namespace('Alcarin.Game.Directives.Map', function(exports, Alcarin) {
+'use strict';
+namespace('Alcarin.Game.Directives.Map', function(exports, Alcarin) {
   return exports.module.directive('alcMoveTarget', [
     'CurrentCharacter', 'MapBackground', 'CharEnvironment', function(CurrentCharacter, MapBackground, CharEnvironment) {
       return {
         restrict: 'A',
         link: function($scope, $token, attrs) {
           var updateTarget;
-
           updateTarget = function() {
             return MapBackground.dataReady().then(function(map) {
               var focusOn;
-
               focusOn = function(target) {
                 var loc;
-
                 loc = map.units().toPixels(target.x, target.y);
                 return $token.position({
                   left: loc.x,
@@ -21,7 +19,6 @@
               };
               return CurrentCharacter.then(function(character) {
                 var target, visible, _ref;
-
                 visible = ((_ref = character.move) != null ? _ref.target : void 0) != null;
                 if (visible) {
                   target = character.move.target;

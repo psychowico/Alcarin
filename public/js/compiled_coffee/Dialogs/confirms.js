@@ -4,7 +4,6 @@ namespace('Alcarin.Dialogs', function(exports, Alcarin) {
 
     Confirms.admin = function(query, onconfirm, onreject) {
       var result;
-
       result = confirm(query);
       if (result && (onconfirm != null)) {
         onconfirm();

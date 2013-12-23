@@ -1,4 +1,5 @@
-'use strict';namespace('Alcarin.Game.Directives', function(exports, Alcarin) {
+'use strict';
+namespace('Alcarin.Game.Directives', function(exports, Alcarin) {
   return angular.module('@talk-input').directive('alcTalkingInput', [
     '$rootScope', function($rootScope) {
       return {
@@ -9,7 +10,6 @@
         link: function($scope, input, attrs) {
           return input.on('keydown', function(ev) {
             var content, wantSending;
-
             wantSending = ev.keyCode === 13 && !ev.shiftKey;
             if (wantSending) {
               ev.preventDefault();

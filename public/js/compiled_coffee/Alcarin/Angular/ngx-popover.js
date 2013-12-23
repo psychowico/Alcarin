@@ -1,4 +1,5 @@
-'use strict';namespace('Admin.Angular', function(exports, Alcarin) {
+'use strict';
+namespace('Admin.Angular', function(exports, Alcarin) {
   return angular.module('@popover').directive('alcPopover', function() {
     return {
       restrict: 'A',

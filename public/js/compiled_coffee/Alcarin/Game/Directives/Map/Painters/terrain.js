@@ -53,13 +53,11 @@ namespace('Alcarin.Game.Directives.Map.Painters', function(exports, Alcarin) {
 
     Terrain.prototype.width = function() {
       var _ref;
-
       return (_ref = this.canvas[0]) != null ? _ref.width : void 0;
     };
 
     Terrain.prototype.height = function() {
       var _ref;
-
       return (_ref = this.canvas[0]) != null ? _ref.height : void 0;
     };
 
@@ -72,7 +70,6 @@ namespace('Alcarin.Game.Directives.Map.Painters', function(exports, Alcarin) {
 
     Terrain.prototype.getBackbuffer = function(sizeW, sizeH) {
       var c, _ref;
-
       if ((_ref = this.backbuffer) != null) {
         _ref.remove();
       }
@@ -94,7 +91,6 @@ namespace('Alcarin.Game.Directives.Map.Painters', function(exports, Alcarin) {
 
     Terrain.prototype.swapBuffer = function() {
       var h, w;
-
       this.context.save();
       w = this.backbuffer[0].width;
       h = this.backbuffer[0].height;
@@ -104,7 +100,6 @@ namespace('Alcarin.Game.Directives.Map.Painters', function(exports, Alcarin) {
 
     Terrain.prototype.applyGrayscale = function(color, lighting) {
       var GRAYSCALE, gray;
-
       GRAYSCALE = exports.Terrain.GRAYSCALE;
       gray = GRAYSCALE[0] * color.r + GRAYSCALE[1] * color.g + GRAYSCALE[2] * color.b;
       gray *= 1 - lighting;
@@ -117,7 +112,6 @@ namespace('Alcarin.Game.Directives.Map.Painters', function(exports, Alcarin) {
 
     Terrain.prototype.redraw = function() {
       var GRAYSCALE, NOISE_DENSITY, NOISE_IMPACT, bufferContext, c, cmp, color, dataOffset, field, i, imageData, lighting, mod, noise, offset, pixelX, pixelY, result, size, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2;
-
       NOISE_DENSITY = exports.Terrain.NOISE_DENSITY;
       NOISE_IMPACT = exports.Terrain.NOISE_IMPACT;
       noise = exports.Terrain.noise;

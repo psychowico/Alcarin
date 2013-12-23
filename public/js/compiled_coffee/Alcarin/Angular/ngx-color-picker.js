@@ -1,6 +1,6 @@
-'use strict';namespace('Alcarin.Angular', function(exports, Alcarin) {
+'use strict';
+namespace('Alcarin.Angular', function(exports, Alcarin) {
   var cthtml;
-
   cthtml = function(c) {
     return "rgb(" + c.r + ", " + c.g + ", " + c.b + ")";
   };
@@ -12,7 +12,6 @@
       },
       link: function($scope, element, attrs) {
         var _this = this;
-
         element.data('color', cthtml($scope.ngModel));
         $scope.$watch('ngModel', function(val) {
           if (val != null) {
@@ -21,7 +20,6 @@
         });
         element.colorpicker().on('hide', function(e) {
           var rgb;
-
           rgb = e.color.toRGB();
           delete rgb['a'];
           return $scope.$apply(function() {

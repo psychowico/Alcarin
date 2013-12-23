@@ -13,17 +13,16 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
 
 namespace('Alcarin.Game.Services', function(exports, Alcarin) {
   var module;
-
   module = Alcarin.Game.Services.module;
   return module.factory('CharEnvironment', [
     'GameServer', '$q', function(GameServer, $q) {
       var CharacterFactory, GameObjectFactory;
-
       CharacterFactory = Alcarin.Game.Services.GameObject.CharacterFactory;
       GameObjectFactory = (function() {
         function GameObjectFactory() {
           this.characters = __bind(this.characters, this);
-          this.character = __bind(this.character, this);          this.factories = {
+          this.character = __bind(this.character, this);
+          this.factories = {
             chars: new CharacterFactory(GameServer, $q)
           };
         }

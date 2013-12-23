@@ -3,7 +3,6 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
 
 namespace('Alcarin.Game.Directives.Map.Painters', function(exports, Alcarin) {
   var BBHEIGHT, BBWIDTH, BLUR, NOISE_DENSITY, NOISE_IMPACT;
-
   NOISE_DENSITY = 10;
   NOISE_IMPACT = 0.1;
   BBWIDTH = 40;
@@ -43,13 +42,11 @@ namespace('Alcarin.Game.Directives.Map.Painters', function(exports, Alcarin) {
 
     TerrainTile.prototype.width = function() {
       var _ref;
-
       return (_ref = this.canvas[0]) != null ? _ref.width : void 0;
     };
 
     TerrainTile.prototype.height = function() {
       var _ref;
-
       return (_ref = this.canvas[0]) != null ? _ref.height : void 0;
     };
 
@@ -62,7 +59,6 @@ namespace('Alcarin.Game.Directives.Map.Painters', function(exports, Alcarin) {
 
     TerrainTile.prototype.applyGrayscale = function(color, lighting) {
       var GRAYSCALE, gray;
-
       GRAYSCALE = this.Terrain.GRAYSCALE;
       gray = GRAYSCALE[0] * color.r + GRAYSCALE[1] * color.g + GRAYSCALE[2] * color.b;
       gray *= 1 - lighting;
@@ -75,7 +71,6 @@ namespace('Alcarin.Game.Directives.Map.Painters', function(exports, Alcarin) {
 
     TerrainTile.prototype.getBackbuffer = function() {
       var _ref;
-
       if ((_ref = this.backbuffer) != null) {
         _ref.remove();
       }
@@ -98,7 +93,6 @@ namespace('Alcarin.Game.Directives.Map.Painters', function(exports, Alcarin) {
 
     TerrainTile.prototype.prepareColors = function() {
       var Terrain, bg, center, cmp, color, colors, diffX, diffY, field, i, mod, rCenterX, rCenterY, x, y, _i, _j, _k, _l, _len, _len1, _ref, _ref1;
-
       center = this.center;
       rCenterX = Math.floor(center.x);
       rCenterY = Math.floor(center.y);
@@ -138,7 +132,6 @@ namespace('Alcarin.Game.Directives.Map.Painters', function(exports, Alcarin) {
 
     TerrainTile.prototype.redraw = function() {
       var Terrain, backbufferContext, blur, c, center, cmp, colors, dataOffset, i, imageData, lighting, mod, offset, offsetX, offsetY, pixel, pixelUnitsH, pixelUnitsW, rCenterX, rCenterY, selectColor, size, x, y, _i, _j, _k, _l, _len, _len1, _ref, _ref1;
-
       size = Math.round(this.radius * 2);
       backbufferContext = this.getBackbuffer();
       imageData = backbufferContext.getImageData(0, 0, BBWIDTH, BBHEIGHT);
@@ -156,7 +149,6 @@ namespace('Alcarin.Game.Directives.Map.Painters', function(exports, Alcarin) {
       rCenterY = Math.floor(center.y);
       blur = function(cX, cY, realX, realY) {
         var baseColor, i, index, newCX, newCY, realXDec, realYDec, second, usage, _index;
-
         index = function(x, y) {
           return (y + 1) * 3 + (x + 1);
         };
@@ -197,7 +189,6 @@ namespace('Alcarin.Game.Directives.Map.Painters', function(exports, Alcarin) {
       };
       selectColor = function(x, y) {
         var cX, cY, realX, realY;
-
         x -= BBWIDTH / 2;
         y -= BBHEIGHT / 2;
         realX = center.x + x * pixelUnitsW;

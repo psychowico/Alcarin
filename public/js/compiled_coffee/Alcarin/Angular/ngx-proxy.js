@@ -1,6 +1,6 @@
-'use strict';namespace('Alcarin.Angular', function(exports, Alcarin) {
+'use strict';
+namespace('Alcarin.Angular', function(exports, Alcarin) {
   var module;
-
   module = angular.module('@proxy', ['ngResource']);
   return module.factory('alc-resource', [
     '$resource', function($res) {

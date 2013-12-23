@@ -10,7 +10,6 @@ namespace('Alcarin.Map', function(exports, Alcarin) {
 
     Painter.prototype.$broadcast = function() {
       var args, layerInstance, name, _args, _i, _len, _ref, _results;
-
       name = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
       _ref = this.layers;
       _results = [];
@@ -29,7 +28,6 @@ namespace('Alcarin.Map', function(exports, Alcarin) {
     function Painter(element, layers, services) {
       var layerClass, layerInstance, _i, _len,
         _this = this;
-
       this.services = services;
       for (_i = 0, _len = layers.length; _i < _len; _i++) {
         layerClass = layers[_i];
@@ -48,7 +46,6 @@ namespace('Alcarin.Map', function(exports, Alcarin) {
 
     Painter.prototype.setTarget = function(charPromise) {
       var layer, _i, _len, _ref, _results;
-
       this.charPromise = charPromise;
       _ref = this.layers;
       _results = [];

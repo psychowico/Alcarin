@@ -6,7 +6,6 @@ namespace('Alcarin.Angular', function(exports, Alcarin) {
     '$rootScope', function($rootScope) {
       return $rootScope.$safeApply = function(_meth) {
         var _this = this;
-
         if ($rootScope.$$phase) {
           return _meth();
         } else {
@@ -19,7 +18,6 @@ namespace('Alcarin.Angular', function(exports, Alcarin) {
   ]).factory('$safeApply', function() {
     return function(scope, _meth) {
       var _this = this;
-
       if (scope.$$phase) {
         return _meth();
       } else {
@@ -30,7 +28,6 @@ namespace('Alcarin.Angular', function(exports, Alcarin) {
     };
   }).factory('@EventsBus', function() {
     var EventsBus;
-
     EventsBus = (function() {
       var listeners;
 
@@ -47,7 +44,6 @@ namespace('Alcarin.Angular', function(exports, Alcarin) {
 
       EventsBus.prototype.emit = function() {
         var args, name, _i, _len, _meth, _ref, _results;
-
         name = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
         if (listeners[name] != null) {
           _ref = listeners[name];

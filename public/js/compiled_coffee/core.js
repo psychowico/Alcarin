@@ -5,7 +5,6 @@ var namespace, ngcontroller,
 
 namespace = function(target, name, block) {
   var item, main_ns, _i, _len, _ref, _ref1;
-
   if (arguments.length < 3) {
     _ref = [(typeof exports !== 'undefined' ? exports : window)].concat(__slice.call(arguments)), target = _ref[0], name = _ref[1], block = _ref[2];
   }
@@ -20,14 +19,12 @@ namespace = function(target, name, block) {
 
 Array.prototype.remove = function(obj) {
   var ind;
-
   ind = this.indexOf(obj);
   return this.splice(ind, 1);
 };
 
 ngcontroller = function(block) {
   var args, fun, inv;
-
   if (!$.isArray(block)) {
     block = [block];
   }
@@ -36,7 +33,6 @@ ngcontroller = function(block) {
   inv = ['$scope'].concat(args);
   inv.push(function() {
     var $scope, _args;
-
     $scope = arguments[0], _args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
     return fun.apply($scope, _args);
   });
@@ -47,7 +43,6 @@ angular._module = angular.module;
 
 angular.module = function() {
   var args;
-
   args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
   if (args.length < 2) {
     args.push([]);
@@ -67,7 +62,6 @@ $(function() {
   $('input[type="text"],textarea:first').focus();
   $('.modal-footer .btn-primary').on('click', function(e) {
     var result;
-
     return result = $(this).trigger('success', e);
   });
   $('.modal').on('success', function(e) {
