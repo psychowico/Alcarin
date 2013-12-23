@@ -11,7 +11,7 @@
             </ul>
         </div>
         <div class = "span9">
-        	{% for key, module in modules %}   
+        	{% for key, module in modules %}
                 <section>
                     <div id={{key}}>
             		  <h4><a href="modules/{{key}}">{{key}}</a></h4>
@@ -21,8 +21,11 @@
         	{% endfor %}
         </div>
     </div>
-    <script>
-        console.log("kotek");
-        $('body').attr("data-spy", "scroll");
+    <script type="text/javascript">
+        document.onreadystatechange = function () {
+            if($) {
+                $('body').attr("data-spy", "scroll");
+            }
+        }
     </script>
 {% endblock %}
