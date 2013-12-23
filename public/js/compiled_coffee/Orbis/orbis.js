@@ -1,6 +1,6 @@
 'use strict';
 namespace('Alcarin.Orbis', function(exports, Alcarin) {
-  angular.module('orbis', ['@popover', '@x-editable', '@gateways', '@minimap-renderer', '@animate', 'ui.event']).config([
+  angular.module('orbis', ['@popover', '@x-editable', '@gateways', 'ngRoute', '@minimap-renderer', '@animate', 'ui.event']).config([
     '$routeProvider', function($routeProvider) {
       return $routeProvider.when('/groups', {
         controller: Alcarin.Orbis.Gateways.List,

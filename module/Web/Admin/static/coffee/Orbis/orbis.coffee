@@ -2,7 +2,7 @@
 
 namespace 'Alcarin.Orbis', (exports, Alcarin) ->
 
-    angular.module('orbis', ['@popover', '@x-editable', '@gateways',
+    angular.module('orbis', ['@popover', '@x-editable', '@gateways', 'ngRoute',
                              '@minimap-renderer', '@animate', 'ui.event'])
            .config ['$routeProvider', ($routeProvider)->
                 $routeProvider

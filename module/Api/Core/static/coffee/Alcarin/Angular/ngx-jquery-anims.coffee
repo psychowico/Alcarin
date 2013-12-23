@@ -2,12 +2,18 @@
 
 namespace 'Alcarin.Angular', (exports, Alcarin) ->
 
-    angular.module('@jquery-anims')
-        .animation '$slideDown', ->
-            setup : (e)-> e.hide()
-            start : (e, done)-> e.slideDown -> done()
-            cancel : (e)-> e.stop()
-        .animation '$slideUp', ->
-            setup : (e)-> e.show()
-            start: (e, done)-> e.slideUp -> done()
-            cancel : (e)-> e.stop()
+    angular.module('@jquery-anims', ['ngAnimate'])
+        .animation '.anim-slide', ->
+            enter: (e, done)->
+                e.hide().slideDown -> done()
+                return (isCancelled)-> e.stop() if isCancelled
+            leave: (e, done)->
+                e.slideUp -> done()
+                return (isCancelled)-> e.stop() if isCancelled
+        .animation '.anim-slide-show', ->
+            removeClass: (e, cn, done)->
+                e.hide().slideDown -> done()
+                return (isCancelled)-> e.stop() if isCancelled
+            beforeAddClass: (e, cn, done)->
+                e.slideUp -> done()
+                return (isCancelled)-> e.stop() if isCancelled

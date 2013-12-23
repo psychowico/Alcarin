@@ -1,31 +1,49 @@
 'use strict';
 namespace('Alcarin.Angular', function(exports, Alcarin) {
-  return angular.module('@jquery-anims').animation('$slideDown', function() {
+  return angular.module('@jquery-anims', ['ngAnimate']).animation('.anim-slide', function() {
     return {
-      setup: function(e) {
-        return e.hide();
-      },
-      start: function(e, done) {
-        return e.slideDown(function() {
+      enter: function(e, done) {
+        e.hide().slideDown(function() {
           return done();
         });
+        return function(isCancelled) {
+          if (isCancelled) {
+            return e.stop();
+          }
+        };
       },
-      cancel: function(e) {
-        return e.stop();
+      leave: function(e, done) {
+        e.slideUp(function() {
+          return done();
+        });
+        return function(isCancelled) {
+          if (isCancelled) {
+            return e.stop();
+          }
+        };
       }
     };
-  }).animation('$slideUp', function() {
+  }).animation('.anim-slide-show', function() {
     return {
-      setup: function(e) {
-        return e.show();
-      },
-      start: function(e, done) {
-        return e.slideUp(function() {
+      removeClass: function(e, cn, done) {
+        e.hide().slideDown(function() {
           return done();
         });
+        return function(isCancelled) {
+          if (isCancelled) {
+            return e.stop();
+          }
+        };
       },
-      cancel: function(e) {
-        return e.stop();
+      beforeAddClass: function(e, cn, done) {
+        e.slideUp(function() {
+          return done();
+        });
+        return function(isCancelled) {
+          if (isCancelled) {
+            return e.stop();
+          }
+        };
       }
     };
   });

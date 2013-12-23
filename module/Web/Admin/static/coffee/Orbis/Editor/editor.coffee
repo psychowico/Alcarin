@@ -1,7 +1,7 @@
 namespace 'Alcarin.Orbis.Editor', (exports, Alcarin) ->
 
     angular.module('orbis.editor', ['@slider', '@map-manager', '@spin', 'ui.event',
-        '@disabled', '@color-picker'])
+        '@disabled', '@color-picker', 'ngRoute'])
        .config(['$routeProvider', ($routeProvider)->
             $routeProvider
                 .when '/x=:x&y=:y',

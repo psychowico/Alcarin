@@ -7,8 +7,6 @@ namespace 'Admin.Angular', (exports, Alcarin) ->
             scope:
                 _content: "@alcPopover"
             link: ($scope, element, attrs)->
-                console.log 'param'
                 $scope.$watch '_content', (val)->
-                    console.log val
                     element.data('popover').options.content = val
                 element.popover()

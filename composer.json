@@ -51,7 +51,7 @@
 
         "zendframework/zend-developer-tools": "dev-master",
         "psychowico/zf2nette-debug"         : "dev-master",
-        "colinmollenhour/mongodb-php-odm"   : "dev-master",
+        "colinmollenhour/mongodb-php-odm"   : "1.1",
         "evandotpro/edp-module-layouts"     : "dev-master",
         "doctrine/common"                   : ">=2.1",
         "umpirsky/twig-gettext-extractor"   : "1.1.*"

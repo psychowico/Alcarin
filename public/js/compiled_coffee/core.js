@@ -47,7 +47,7 @@ angular.module = function() {
   if (args.length < 2) {
     args.push([]);
   }
-  args[1].push('@core', '@jquery-anims');
+  args[1].push('@core', '@jquery-anims', 'ngAnimate-animate.css');
   if (args.length < 3) {
     args.push([
       '$interpolateProvider', function($ip) {

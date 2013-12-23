@@ -30,7 +30,7 @@ angular._module = angular.module
 angular.module = (args...)->
     args.push [] if args.length < 2
     # automatic add @core module from ngx-core.coffee
-    args[1].push '@core', '@jquery-anims'
+    args[1].push '@core', '@jquery-anims', 'ngAnimate-animate.css'
     if args.length < 3
         args.push ['$interpolateProvider', ($ip)->
             $ip.startSymbol('{*').endSymbol('*}')
