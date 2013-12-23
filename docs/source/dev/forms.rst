@@ -5,7 +5,7 @@ Forms
 In alcarin project we prefer using zf2 annotations_ form system instead of standard form
 system.
 
-.. _`annotations` http://framework.zend.com/manual/2.0/en/modules/zend.form.quick-start.html#using-annotations
+.. _`annotations`: http://framework.zend.com/manual/2.0/en/modules/zend.form.quick-start.html#using-annotations
 
 Alcarin code has prepared some facilities to make working with annotations forms easier.
 First, you should use *\\Core\\Service\\AnnotationBuilderService* builder class instead of
