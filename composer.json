@@ -2,6 +2,7 @@
     "name": "alcarin/alcarin",
     "description": "Alcarin MMORPG",
     "license": "BSD-3-Clause",
+    "version": "0.1.0",
     "keywords": [
         "alcarin",
         "rpg"
