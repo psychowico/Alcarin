@@ -2,7 +2,7 @@
     "name": "alcarin/alcarin",
     "description": "Alcarin MMORPG",
     "license": "BSD-3-Clause",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "keywords": [
         "alcarin",
         "rpg"
@@ -44,7 +44,7 @@
     "require": {
         "php"                               : ">=5.4.0",
         "zendframework/zendframework"       : "2.2.*",
-        "psychowico/assets-compiler"        : "dev-master",
+        "psychowico/assets-compiler"        : "1.0.0",
 
         "zf-commons/zfc-twig"               : "1.0.3",
         "zf-commons/zfc-user"               : "dev-master",
