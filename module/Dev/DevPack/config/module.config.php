@@ -39,7 +39,7 @@ return array(
             'mongo-log-writer'          => 'DevPack\Log\Writer\MongoWriter',
             'DevPack\MongoCollector'    => 'DevPack\Collector\MongoCollector',
             'DevPack\GameTimeCollector' => 'DevPack\Collector\GameTimeCollector',
-            'DevPack\CharInfoCollector'   => 'DevPack\CharInfoCollector',
+            'DevPack\CharInfoCollector' => 'DevPack\Collector\CharInfoCollector',
             'DevPack\MongoCollection'   => 'DevPack\MongoCollection',
         ),
         'factories' => array(
