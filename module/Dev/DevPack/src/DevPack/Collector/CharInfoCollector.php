@@ -20,11 +20,16 @@ class CharInfoCollector extends AbstractCollector
     {
         $sm = $mvcEvent->getApplication()->getServiceManager();
         $player = $sm->get('game-services')->get('players')->current();
-        $this->data = $player->currentChar()->toArray();
+        if($player->currentChar() !== null) {
+            $this->data = $player->currentChar()->toArray();
+        }
     }
 
     public function getLocation()
     {
+        if($this->data == null) {
+            return '';
+        }
         $loc = $this->data['loc'];
         return sprintf('%.2f, %.2f', $loc['x'], $loc['y']);
     }
