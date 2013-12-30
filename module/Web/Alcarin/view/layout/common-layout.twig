@@ -46,7 +46,7 @@
                     </a>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="chars-list">
                         {% for char in player().chars().names() %}
-                        {% set char_url = url('alcarin/default', { controller: 'panel', id: char.id() }) %}
+                        {% set char_url = url('alcarin/default', { controller: 'panel', charid: char.id() }) %}
                         <li><a href="{{ char_url }}">{{ char.name() }}</a></li>
                         {% endfor %}
 

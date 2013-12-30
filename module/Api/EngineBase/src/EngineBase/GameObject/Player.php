@@ -50,9 +50,6 @@ class Player extends \Core\GameObject
 
     public function currentChar()
     {
-        if($this->current_char == null) {
-            throw new \Exception('Current char wasnot choosed.');
-        }
         return $this->current_char;
     }
 }

@@ -36,10 +36,11 @@ return array(
 
     'service_manager' => array(
         'invokables' => array(
-            'mongo-log-writer'        => 'DevPack\Log\Writer\MongoWriter',
-            'DevPack\MongoCollector'  => 'DevPack\Collector\MongoCollector',
-            'DevPack\GameTimeCollector'  => 'DevPack\Collector\GameTimeCollector',
-            'DevPack\MongoCollection' => 'DevPack\MongoCollection',
+            'mongo-log-writer'          => 'DevPack\Log\Writer\MongoWriter',
+            'DevPack\MongoCollector'    => 'DevPack\Collector\MongoCollector',
+            'DevPack\GameTimeCollector' => 'DevPack\Collector\GameTimeCollector',
+            'DevPack\CharInfoCollector' => 'DevPack\Collector\CharInfoCollector',
+            'DevPack\MongoCollection'   => 'DevPack\MongoCollection',
         ),
         'factories' => array(
             'system-logger' => 'DevPack\Factory\SystemLoggerFactory',
