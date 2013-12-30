@@ -12,11 +12,12 @@ class GamePanelController extends AbstractAlcarinRestfulController
     {
         $chars = $this->player()->chars()->names();
         if(count($chars) == 0) {
-            return $this->redirect()->toRoute('alcarin/default', ['controller' => 'create-char']);
+            return $this->redirect()->toRoute('alcarin/default',
+                ['controller' => 'create-char']);
         }
         else {
             return $this->redirect()->toRoute('alcarin/default',
-                ['controller' => 'panel', 'id' => current($chars)->id()]);
+                ['controller' => 'panel', 'charid' => current($chars)->id()]);
         }
     }
 
@@ -25,12 +26,13 @@ class GamePanelController extends AbstractAlcarinRestfulController
         $chars = $this->player()->chars();
         $all = $chars->names();
         if(empty($all[$id])) {
-            return $this->redirect()->toRoute('alcarin/default', ['controller' => 'create-char']);
+            return $this->redirect()->toRoute('alcarin/default',
+                ['controller' => 'create-char']);
         }
         $char = $chars->get($id);
 
         $builder = $this->getServiceLocator()->get('AnnotationBuilderService');
-        $talking_form    = $builder->createForm(new \Alcarin\Form\TalkingForm(), false, "Mów");
+        $talking_form = $builder->createForm(new \Alcarin\Form\TalkingForm(), false, "Mów");
 
         return [
             'charid'       => $id,

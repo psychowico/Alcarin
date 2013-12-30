@@ -25,11 +25,17 @@ class CharInfoCollector extends AbstractCollector
         }
     }
 
+    public function getCharName()
+    {
+        if($this->data == null) return '';
+
+        return $this->data['name'];
+    }
+
     public function getLocation()
     {
-        if($this->data == null) {
-            return '';
-        }
+        if($this->data == null) return '';
+
         $loc = $this->data['loc'];
         return sprintf('%.2f, %.2f', $loc['x'], $loc['y']);
     }
