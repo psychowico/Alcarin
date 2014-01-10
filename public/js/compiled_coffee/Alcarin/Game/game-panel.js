@@ -18,6 +18,7 @@ namespace('Alcarin.Game', function(exports, Alcarin) {
   return exports.App = ngcontroller([
     '$window', 'CurrentCharacter', 'GameServer', 'MapBackground', function($window, CurrentCharacter, GameServer, MapBackground) {
       this.charid = $window.charid;
+      this["interface"] = Alcarin.Game.Interfaces.Test;
       GameServer.init(charid);
       return CurrentCharacter.init(charid);
     }

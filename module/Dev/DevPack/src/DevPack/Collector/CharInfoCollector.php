@@ -20,7 +20,7 @@ class CharInfoCollector extends AbstractCollector
     {
         $sm = $mvcEvent->getApplication()->getServiceManager();
         $player = $sm->get('game-services')->get('players')->current();
-        if($player->currentChar() !== null) {
+        if($player !== null && $player->currentChar() !== null) {
             $this->data = $player->currentChar()->toArray();
         }
     }
