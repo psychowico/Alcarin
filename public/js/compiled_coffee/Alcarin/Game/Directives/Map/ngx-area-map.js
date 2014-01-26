@@ -18,7 +18,7 @@ namespace('Alcarin.Game.Directives.Map', function(exports, Alcarin) {
               if (_terrain.setRadius != null) {
                 _terrain.setRadius(info.radius);
               }
-              _terrain.setFields(info.fields);
+              _terrain.setFields(info.fields, info.plots);
               _terrain.setLighting(info.lighting);
               return _terrain.redraw();
             });

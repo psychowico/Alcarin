@@ -105,9 +105,9 @@ namespace('Alcarin.Game.Services', function(exports, Alcarin) {
         };
 
         Background.prototype.onDataReady = function(_arg) {
-          var character, charsArgs, info, radius, terrain, terrainArgs;
+          var character, charsArgs, info, plots, radius, terrain, terrainArgs;
           character = _arg[0], terrainArgs = _arg[1], charsArgs = _arg[2];
-          terrain = terrainArgs[0], info = terrainArgs[1];
+          terrain = terrainArgs[0], plots = terrainArgs[1], info = terrainArgs[2];
           radius = info.radius;
           if (this.zoom) {
             radius /= ZOOM_FACTOR;
@@ -115,6 +115,7 @@ namespace('Alcarin.Game.Services', function(exports, Alcarin) {
           this.info = {
             center: character.loc,
             fields: terrain,
+            plots: this.preparePlots(plots),
             radius: radius,
             charViewRadius: info.charViewRadius,
             talkRadius: info.talkRadius,
@@ -123,6 +124,27 @@ namespace('Alcarin.Game.Services', function(exports, Alcarin) {
           };
           this._units = new Units(this.info, !this.zoom);
           return this.dataReadyDeffered.resolve(this);
+        };
+
+        Background.prototype.preparePlots = function(grouped_plots) {
+          var dict_plots, getKey, id, identify, plot, plots, _i, _len;
+          dict_plots = {};
+          getKey = function(loc) {
+            return Math.floor(loc.x) + ';' + Math.floor(loc.y);
+          };
+          for (id in grouped_plots) {
+            plots = grouped_plots[id];
+            for (_i = 0, _len = plots.length; _i < _len; _i++) {
+              plot = plots[_i];
+              identify = getKey(plot.loc);
+              dict_plots[identify] = true;
+            }
+          }
+          return {
+            getKey: getKey,
+            dict: dict_plots,
+            data: plots
+          };
         };
 
         Background.prototype.reset = function() {

@@ -22,7 +22,7 @@ namespace 'Alcarin.Game.Directives.Map.Painters', (exports, Alcarin) ->
                     x: Math.round center.x
                     y: Math.round center.y
         setRadius: (@radius)->
-        setFields: (@fields)->
+        setFields: (@fields, @plots)->
         setLighting: (lighting)->
             # we transform lighting and enable grayscale
             if lighting?
@@ -72,6 +72,17 @@ namespace 'Alcarin.Game.Directives.Map.Painters', (exports, Alcarin) ->
                 b: (lighting * color.b) + gray
             }
 
+        # I tried to get effect of barren land, but with similar color
+        # to original
+        modPlotColor: (color)->
+            rdiff = Math.floor (color.g - color.r) / 4
+            bdiff = Math.floor (color.g - color.b) / 4
+            return {
+                r: color.r + rdiff
+                g: color.g - rdiff - bdiff
+                b: color.b + bdiff
+            }
+
         redraw: =>
 
             NOISE_DENSITY = exports.Terrain.NOISE_DENSITY
@@ -99,6 +110,10 @@ namespace 'Alcarin.Game.Directives.Map.Painters', (exports, Alcarin) ->
 
                 result = 0
                 c = Alcarin.Color.intToRGB color
+
+                plot_key = @plots.getKey field.loc
+                c = @modPlotColor c if @plots.dict[plot_key]
+
                 for cmp, i in ['r', 'g', 'b']
                     c[cmp] *= 1 - NOISE_IMPACT * ( 1 - mod )
                 if lighting

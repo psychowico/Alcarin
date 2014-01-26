@@ -16,7 +16,7 @@ namespace 'Alcarin.Game.Directives.Map', (exports, Alcarin) ->
                         info = map.info
                         _terrain.setCenter info.center
                         _terrain.setRadius info.radius if _terrain.setRadius?
-                        _terrain.setFields info.fields
+                        _terrain.setFields info.fields, info.plots
                         _terrain.setLighting info.lighting
                         _terrain.redraw()
 

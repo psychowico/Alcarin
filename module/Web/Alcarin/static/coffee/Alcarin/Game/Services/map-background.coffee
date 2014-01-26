@@ -58,13 +58,14 @@ namespace 'Alcarin.Game.Services', (exports, Alcarin) ->
 
                 # all data needed to draw map has been loaded
                 onDataReady: ([character, terrainArgs, charsArgs])=>
-                    [terrain, info] = terrainArgs
+                    [terrain, plots, info] = terrainArgs
 
                     radius = info.radius
                     radius /= ZOOM_FACTOR if @zoom
                     @info =
                         center        : character.loc
                         fields        : terrain
+                        plots         : @preparePlots plots
                         radius        : radius
                         charViewRadius: info.charViewRadius
                         talkRadius    : info.talkRadius
@@ -73,6 +74,22 @@ namespace 'Alcarin.Game.Services', (exports, Alcarin) ->
 
                     @_units = new Units @info, not @zoom
                     @dataReadyDeffered.resolve @
+
+                # we need fast way to check that specific pixel is
+                # a plot, so we can draw map in real time faster
+                preparePlots: (grouped_plots)->
+                    dict_plots = {}
+                    getKey = (loc)-> Math.floor(loc.x) + ';' + Math.floor(loc.y)
+                    for id, plots of grouped_plots
+                        for plot in plots
+                            identify = getKey(plot.loc)
+                            dict_plots[identify] = true
+
+                    return {
+                        getKey: getKey
+                        dict: dict_plots
+                        data: plots
+                    }
 
                 reset: ->
                     # redraw call.. fetching data..
