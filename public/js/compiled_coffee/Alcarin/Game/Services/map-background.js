@@ -13,7 +13,7 @@ namespace('Alcarin.Game.Services', function(exports, Alcarin) {
       }
       this.toUnits = __bind(this.toUnits, this);
       this.toPixels = __bind(this.toPixels, this);
-      this.round = round ? Math.round : function(x) {
+      this.round = round ? Math.floor : function(x) {
         return x;
       };
     }
@@ -45,8 +45,8 @@ namespace('Alcarin.Game.Services', function(exports, Alcarin) {
         y: round(center.y) - radius
       };
       return {
-        x: Math.round(round(x - offset.x) * pixelRadius / radius),
-        y: Math.round(round(y - offset.y) * pixelRadius / radius)
+        x: Math.floor(round(x - offset.x) * pixelRadius / radius),
+        y: Math.floor(round(y - offset.y) * pixelRadius / radius)
       };
     };
 
@@ -143,7 +143,7 @@ namespace('Alcarin.Game.Services', function(exports, Alcarin) {
           return {
             getKey: getKey,
             dict: dict_plots,
-            data: plots
+            data: grouped_plots
           };
         };
 

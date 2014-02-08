@@ -5,7 +5,7 @@ namespace 'Alcarin.Game.Services', (exports, Alcarin) ->
     class Units
 
         constructor: (@parent, round=true)->
-            @round = if round then Math.round else (x)->x
+            @round = if round then Math.floor else (x)->x
 
         pixelCenter: -> @toPixels(@parent.center.x, @parent.center.y)
         center: -> @parent.center
@@ -16,12 +16,13 @@ namespace 'Alcarin.Game.Services', (exports, Alcarin) ->
             center = @center()
             radius = @radius()
             pixelRadius = @pixelRadius()
+            # pixelRadius = 92.5
 
             round = @round
             offset = {x: round(center.x) - radius, y: round(center.y) - radius}
             return {
-                x: Math.round round(x - offset.x) * pixelRadius / radius
-                y: Math.round round(y - offset.y) * pixelRadius / radius
+                x: Math.floor round(x - offset.x) * pixelRadius / radius
+                y: Math.floor round(y - offset.y) * pixelRadius / radius
             }
 
         toUnits: (pixelX, pixelY)=>
@@ -59,7 +60,6 @@ namespace 'Alcarin.Game.Services', (exports, Alcarin) ->
                 # all data needed to draw map has been loaded
                 onDataReady: ([character, terrainArgs, charsArgs])=>
                     [terrain, plots, info] = terrainArgs
-
                     radius = info.radius
                     radius /= ZOOM_FACTOR if @zoom
                     @info =
@@ -76,7 +76,7 @@ namespace 'Alcarin.Game.Services', (exports, Alcarin) ->
                     @dataReadyDeffered.resolve @
 
                 # we need fast way to check that specific pixel is
-                # a plot, so we can draw map in real time faster
+                # a plot, so we can draw map in real time faster.
                 preparePlots: (grouped_plots)->
                     dict_plots = {}
                     getKey = (loc)-> Math.floor(loc.x) + ';' + Math.floor(loc.y)
@@ -88,7 +88,7 @@ namespace 'Alcarin.Game.Services', (exports, Alcarin) ->
                     return {
                         getKey: getKey
                         dict: dict_plots
-                        data: plots
+                        data: grouped_plots
                     }
 
                 reset: ->

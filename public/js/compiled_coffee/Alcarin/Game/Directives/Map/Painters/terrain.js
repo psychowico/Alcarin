@@ -26,15 +26,17 @@ namespace('Alcarin.Game.Directives.Map.Painters', function(exports, Alcarin) {
     Terrain.prototype.setCenter = function(center) {
       this.center = center;
       if (this.center) {
-        return this.center = {
-          x: Math.round(center.x),
-          y: Math.round(center.y)
+        this.center = {
+          x: Math.floor(center.x),
+          y: Math.floor(center.y)
         };
+        return this.canvas.data('map-center', this.center);
       }
     };
 
     Terrain.prototype.setRadius = function(radius) {
       this.radius = radius;
+      return this.canvas.data('map-radius', this.radius);
     };
 
     Terrain.prototype.setFields = function(fields, plots) {

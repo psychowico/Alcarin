@@ -7,6 +7,8 @@ systemctl $CMD mongodb
 
 
 if [ "$CMD" == 'start' ]; then
+    DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+    cd $DIR
     cd ../alcarin-gameplay-server/src
     nodemon -I index.coffee &>> /var/log/httpd/alcarin.loc-gameplay_server_log &
 fi

@@ -19,9 +19,13 @@ namespace 'Alcarin.Game.Directives.Map.Painters', (exports, Alcarin) ->
         setCenter: (@center)->
             if @center
                 @center =
-                    x: Math.round center.x
-                    y: Math.round center.y
+                    x: Math.floor center.x
+                    y: Math.floor center.y
+                @canvas.data 'map-center', @center
+
         setRadius: (@radius)->
+            @canvas.data 'map-radius', @radius
+
         setFields: (@fields, @plots)->
         setLighting: (lighting)->
             # we transform lighting and enable grayscale
@@ -84,7 +88,6 @@ namespace 'Alcarin.Game.Directives.Map.Painters', (exports, Alcarin) ->
             }
 
         redraw: =>
-
             NOISE_DENSITY = exports.Terrain.NOISE_DENSITY
             NOISE_IMPACT  = exports.Terrain.NOISE_IMPACT
             noise         = exports.Terrain.noise
