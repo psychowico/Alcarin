@@ -1,8 +1,7 @@
 <span class="home-description">
     <div class="area-map" ng-controller="Alcarin.Game.Views.AreaMap">
-        <div class="main">
-            <canvas class="terrain cover-map" {# map-radius="radius" map-fields="terrain"
-                    map-center="center" on-drawn="onTerrainReady()" #}  alc-area-map>
+        <div class="main" ng-click="mapClicked($event)" >
+            <canvas class="terrain cover-map" alc-area-map>
             </canvas>
 
             <div class="shadow" ng-show="showEyeRange" alc-range-limits><div></div></div>
@@ -14,7 +13,7 @@
             </div>
 
             <div class="characters cover-map" ng-controller="Alcarin.Game.Views.Map.Chars"
-                ng-click="mapClicked($event)" ng-show="showChars" >
+                ng-show="showChars">
                 <div class="character hide" alc-character-token="char" ng-repeat="char in charslist" player-character="charid">
                     <div></div>
                 </div>

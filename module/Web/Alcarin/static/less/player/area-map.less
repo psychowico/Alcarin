@@ -34,10 +34,17 @@
     background-color: #DCDCED;
     .rounded-corners(50%);
     overflow: hidden;
-    .cover-map {
+    canvas.cover-map {
       position: absolute;
       width: 193px;
       height:193px;
+      left: -6px;
+      top: -6px;
+    }
+    .cover-map {
+      position: absolute;
+      width: 0;
+      height:0;
       left: -6px;
       top: -6px;
     }
@@ -46,6 +53,8 @@
       .rounded-corners(50%);
     }
     .shadow {
+      width:0;
+      height:0;
       position: absolute;
       div {
         position: relative;
@@ -70,7 +79,6 @@
       }
     }
     .characters {
-      overflow: hidden;
       .rounded-corners(50%);
       .character.hearable div {
         border-color: yellow;
@@ -101,7 +109,6 @@
     }
 
     .places {
-      overflow: hidden;
       .rounded-corners(50%);
       .place {
         position: absolute;

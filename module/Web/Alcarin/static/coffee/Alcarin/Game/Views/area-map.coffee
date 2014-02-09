@@ -37,7 +37,10 @@ namespace 'Alcarin.Game.Views', (exports, Alcarin) ->
                         if target.is '.character'
                             target = target.data 'rel'
                         else
-                            target = map.units().toUnits ev.offsetX, ev.offsetY
+                            offset = $(ev.currentTarget).offset()
+                            x = ev.pageX - offset.left
+                            y = ev.pageY - offset.top
+                            target = map.units().toUnits x, y
                         CurrentCharacter.then (character)-> character.moveTo target
                     lastClick = current
 
