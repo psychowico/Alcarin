@@ -2,12 +2,16 @@
 
 namespace 'Alcarin.Game.Views', (exports, Alcarin) ->
 
-    exports.SimpleMenu = ngcontroller ['MapBackground', 'CurrentCharacter'
-        (MapBackground, CurrentChar)->
+    exports.SimpleMenu = ngcontroller ['MapBackground', 'CurrentCharacter', 'GameServer',
+        (MapBackground, CurrentChar, GameServer)->
             @playerOnPlot = false
 
-            @enterPlace = =>
-                @$emit 'change-interface', Alcarin.Game.Interfaces.Place
+            @togglePlace = =>
+                if @playerOnPlot
+                    if @toggleOutside()
+                        GameServer.emit 'leave-place'
+                    else
+                        GameServer.emit 'enter-place', @playerOnPlot
 
             MapBackground.$on 'swap', (map)=>
                 CurrentChar.then (current)=>

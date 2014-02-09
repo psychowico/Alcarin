@@ -144,7 +144,7 @@ namespace('Alcarin.Game.Services', function(exports, Alcarin) {
             for (_i = 0, _len = plots.length; _i < _len; _i++) {
               plot = plots[_i];
               identify = getKey(plot.loc);
-              dict_plots[identify] = true;
+              dict_plots[identify] = id;
             }
           }
           return {

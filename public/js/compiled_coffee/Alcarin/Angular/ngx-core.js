@@ -5,25 +5,27 @@ namespace('Alcarin.Angular', function(exports, Alcarin) {
   return angular._module('@core', []).run([
     '$rootScope', function($rootScope) {
       return $rootScope.$safeApply = function(_meth) {
-        var _this = this;
         if ($rootScope.$$phase) {
           return _meth();
         } else {
-          return $rootScope.$apply(function() {
-            return _meth();
-          });
+          return $rootScope.$apply((function(_this) {
+            return function() {
+              return _meth();
+            };
+          })(this));
         }
       };
     }
   ]).factory('$safeApply', function() {
     return function(scope, _meth) {
-      var _this = this;
       if (scope.$$phase) {
         return _meth();
       } else {
-        return scope.$apply(function() {
-          return _meth();
-        });
+        return scope.$apply((function(_this) {
+          return function() {
+            return _meth();
+          };
+        })(this));
       }
     };
   }).factory('@EventsBus', function() {

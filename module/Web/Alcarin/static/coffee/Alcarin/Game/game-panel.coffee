@@ -19,15 +19,26 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
             ]
 
     # don't delete MapBackground - it need initialization somewhere
-    exports.App = ngcontroller ['$window', 'CurrentCharacter', 'GameServer', 'MapBackground',
-        ($window, CurrentCharacter, GameServer, MapBackground)->
-            @charid = $window.charid
-            @interface = Alcarin.Game.Interfaces.Default
+    exports.App = ngcontroller ['$window', '$safeApply', 'CurrentCharacter', 'GameServer', 'MapBackground',
+        ($window, $safeApply, CurrentCharacter, GameServer, MapBackground)->
+            @charid    = $window.charid
+            @interface = null
+            @outside   = true
 
             GameServer.init charid
             CurrentCharacter.init charid
 
-            @$on 'change-interface', (ev, target)=>
-                @interface = target
+            @$watch 'outside', => @updateInterface()
+            @toggleOutside = => @outside = not @outside
 
+            @updateInterface = =>
+                I = Alcarin.Game.Interfaces
+                _interface = I.Default
+                _interface = I.Place if not @outside
+                @interface = _interface
+
+            CurrentCharacter.then (current)=>
+                @outside = !current.loc.place?
+                # set starting interface
+                @updateInterface()
     ]

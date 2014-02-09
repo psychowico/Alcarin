@@ -1,11 +1,17 @@
 'use strict';
 namespace('Alcarin.Game.Views', function(exports, Alcarin) {
   return exports.SimpleMenu = ngcontroller([
-    'MapBackground', 'CurrentCharacter', function(MapBackground, CurrentChar) {
+    'MapBackground', 'CurrentCharacter', 'GameServer', function(MapBackground, CurrentChar, GameServer) {
       this.playerOnPlot = false;
-      this.enterPlace = (function(_this) {
+      this.togglePlace = (function(_this) {
         return function() {
-          return _this.$emit('change-interface', Alcarin.Game.Interfaces.Place);
+          if (_this.playerOnPlot) {
+            if (_this.toggleOutside()) {
+              return GameServer.emit('leave-place');
+            } else {
+              return GameServer.emit('enter-place', _this.playerOnPlot);
+            }
+          }
         };
       })(this);
       return MapBackground.$on('swap', (function(_this) {

@@ -91,7 +91,7 @@ namespace 'Alcarin.Game.Services', (exports, Alcarin) ->
                     for id, plots of grouped_plots
                         for plot in plots
                             identify = getKey(plot.loc)
-                            dict_plots[identify] = true
+                            dict_plots[identify] = id
 
                     return {
                         getKey: getKey
