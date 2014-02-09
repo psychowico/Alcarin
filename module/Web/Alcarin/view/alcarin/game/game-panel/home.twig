@@ -8,12 +8,12 @@
             <div class="shadow" ng-show="showEyeRange" alc-range-limits><div></div></div>
 
             <div class="places cover-map" ng-controller="Alcarin.Game.Views.Map.Places">
-                <div class="place" alc-place-token="place" ng-repeat="place in placesList">
+                <div class="place" alc-map-tracker="place" ng-repeat="place in placesList">
                     <div class="icon-home"></div>
                 </div>
             </div>
 
-            <div class="characters cover-map debug-coords" ng-controller="Alcarin.Game.Views.Map.Chars"
+            <div class="characters cover-map" ng-controller="Alcarin.Game.Views.Map.Chars"
                 ng-click="mapClicked($event)" ng-show="showChars" >
                 <div class="character hide" alc-character-token="char" ng-repeat="char in charslist" player-character="charid">
                     <div></div>

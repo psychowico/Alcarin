@@ -5,12 +5,12 @@ namespace('Alcarin.Game.Directives.Map', function(exports, Alcarin) {
       return {
         restrict: 'A',
         link: function($scope, element, attrs) {
-          var Painters, redrawAll, terrain, terrainTile;
-          Painters = Alcarin.Game.Directives.Map.Painters;
-          terrain = new Painters.Terrain(element);
-          terrainTile = new Painters.TerrainTile(element);
-          redrawAll = function() {
-            return MapBackground.dataReady().then(function(map) {
+          return MapBackground.dataReady().then(function(map) {
+            var Painters, redrawAll, terrain, terrainTile;
+            Painters = Alcarin.Game.Directives.Map.Painters;
+            terrain = new Painters.Terrain(element);
+            terrainTile = new Painters.TerrainTile(element);
+            redrawAll = function() {
               var info, _terrain;
               _terrain = map.zoom ? terrainTile : terrain;
               info = map.info;
@@ -21,12 +21,13 @@ namespace('Alcarin.Game.Directives.Map', function(exports, Alcarin) {
               _terrain.setFields(info.fields, info.plots);
               _terrain.setLighting(info.lighting);
               return _terrain.redraw();
-            });
-          };
-          element.data('rel', [terrain, terrainTile]);
-          MapBackground.$on('reset', redrawAll);
-          MapBackground.$on('zoom', redrawAll);
-          return redrawAll();
+            };
+            element.data('rel', [terrain, terrainTile]);
+            MapBackground.$on('reset', redrawAll);
+            MapBackground.$on('swap', redrawAll);
+            MapBackground.$on('zoom', redrawAll);
+            return redrawAll();
+          });
         }
       };
     }

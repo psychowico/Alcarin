@@ -4,7 +4,7 @@ namespace 'Alcarin.Game.Services', (exports, Alcarin) ->
 
     class Units
 
-        constructor: (@parent, round=true)->
+        update: (@parent, round=true)->
             @round = if round then Math.floor else (x)->x
 
         pixelCenter: -> @toPixels(@parent.center.x, @parent.center.y)
@@ -41,7 +41,9 @@ namespace 'Alcarin.Game.Services', (exports, Alcarin) ->
         ($q, GameServer, CurrentCharacter)->
 
             class Background extends Alcarin.EventsEmitter
-                dataReadyDeffered: null
+                # dataReadyDeffered: null
+                initializedDeffered: null
+
                 zoom: false
 
                 constructor: -> @reset()
@@ -72,8 +74,14 @@ namespace 'Alcarin.Game.Services', (exports, Alcarin) ->
                         lighting      : info.lighting
                         pixelRadius   : @pixelRadius
 
-                    @_units = new Units @info, not @zoom
-                    @dataReadyDeffered.resolve @
+                    @_units = new Units if not @_units?
+                    @_units.update @info, not @zoom
+
+                    @initializedDeffered.resolve @
+                    # map reloaded means, that all map has been changed some way,
+                    # in most cases it will be current character travel event
+                    @$emit 'swap'
+                    # @dataReadyDeffered.resolve @
 
                 # we need fast way to check that specific pixel is
                 # a plot, so we can draw map in real time faster.
@@ -93,19 +101,22 @@ namespace 'Alcarin.Game.Services', (exports, Alcarin) ->
 
                 reset: ->
                     # redraw call.. fetching data..
-                    @dataReadyDeffered.reject() if @dataReadyDeffered?
+                    @initializedDeffered = $q.defer() if not @initializedDeffered?
+                    # @dataReadyDeffered.reject() if @dataReadyDeffered?
+
                     @center = @radius = @charViewRadius = @lighting = undefined
 
                     swapingTerrain = GameServer.one 'terrain.swap'
                     swapingChars   = GameServer.one 'chars.swap'
-                    @dataReadyDeffered     = $q.defer()
+                    # @dataReadyDeffered     = $q.defer()
 
                     loadingData = $q.all([CurrentCharacter, swapingTerrain, swapingChars])
                     loadingData.then @onDataReady
 
                     @$emit 'reset'
 
-                dataReady: -> @dataReadyDeffered.promise
+                # map has been loaded first time
+                dataReady: -> @initializedDeffered.promise
 
             return new Background()
     ]

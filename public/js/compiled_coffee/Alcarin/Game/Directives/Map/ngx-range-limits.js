@@ -5,9 +5,9 @@ namespace('Alcarin.Game.Directives.Map', function(exports, Alcarin) {
       return {
         restrict: 'A',
         link: function($scope, $shadow, attrs) {
-          var reposRange;
-          reposRange = function() {
-            return MapBackground.dataReady().then(function(map) {
+          return MapBackground.dataReady().then(function(map) {
+            var reposRange;
+            reposRange = function() {
               var $child, pos, shadowRadius;
               pos = map.units().pixelCenter();
               $shadow.position({
@@ -22,13 +22,14 @@ namespace('Alcarin.Game.Directives.Map', function(exports, Alcarin) {
                 left: -shadowRadius,
                 top: -shadowRadius
               });
+            };
+            MapBackground.$on('reset', reposRange);
+            MapBackground.$on('swap', reposRange);
+            MapBackground.$on('zoom', function(zoom) {
+              return $shadow.toggle(!zoom);
             });
-          };
-          MapBackground.$on('reset', reposRange);
-          MapBackground.$on('zoom', function(zoom) {
-            return $shadow.toggle(!zoom);
+            return reposRange();
           });
-          return reposRange();
         }
       };
     }
