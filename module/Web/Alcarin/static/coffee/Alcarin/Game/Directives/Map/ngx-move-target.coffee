@@ -8,9 +8,9 @@ namespace 'Alcarin.Game.Directives.Map', (exports, Alcarin) ->
         (CurrentCharacter, MapBackground, CharEnvironment) ->
             restrict: 'A'
             link: ($scope, $token,attrs)->
+                MapBackground.dataReady().then (map)->
 
-                updateTarget = ->
-                    MapBackground.dataReady().then (map)->
+                    updateTarget = ->
                         focusOn = (target)->
                             loc = map.units().toPixels target.x, target.y
                             $token.position {left: loc.x, top: loc.y}
@@ -26,8 +26,9 @@ namespace 'Alcarin.Game.Directives.Map', (exports, Alcarin) ->
                                     focusOn character.move.target
                             $token.toggle visible
 
-                CurrentCharacter.then (character)->
-                    character.$on 'update', updateTarget
-                MapBackground.$on 'zoom', updateTarget
-                updateTarget()
+                    CurrentCharacter.then (character)->
+                        character.$on 'update', updateTarget
+                    MapBackground.$on 'swap', updateTarget
+                    MapBackground.$on 'zoom', updateTarget
+                    updateTarget()
         ]

@@ -26,19 +26,22 @@ namespace('Alcarin.Game.Directives.Map.Painters', function(exports, Alcarin) {
     Terrain.prototype.setCenter = function(center) {
       this.center = center;
       if (this.center) {
-        return this.center = {
-          x: Math.round(center.x),
-          y: Math.round(center.y)
+        this.center = {
+          x: Math.floor(center.x),
+          y: Math.floor(center.y)
         };
+        return this.canvas.data('map-center', this.center);
       }
     };
 
     Terrain.prototype.setRadius = function(radius) {
       this.radius = radius;
+      return this.canvas.data('map-radius', this.radius);
     };
 
-    Terrain.prototype.setFields = function(fields) {
+    Terrain.prototype.setFields = function(fields, plots) {
       this.fields = fields;
+      this.plots = plots;
     };
 
     Terrain.prototype.setLighting = function(lighting) {
@@ -110,8 +113,19 @@ namespace('Alcarin.Game.Directives.Map.Painters', function(exports, Alcarin) {
       };
     };
 
+    Terrain.prototype.modPlotColor = function(color) {
+      var bdiff, rdiff;
+      rdiff = Math.floor((color.g - color.r) / 4);
+      bdiff = Math.floor((color.g - color.b) / 4);
+      return {
+        r: color.r + rdiff,
+        g: color.g - rdiff - bdiff,
+        b: color.b + bdiff
+      };
+    };
+
     Terrain.prototype.redraw = function() {
-      var GRAYSCALE, NOISE_DENSITY, NOISE_IMPACT, bufferContext, c, cmp, color, dataOffset, field, i, imageData, lighting, mod, noise, offset, pixelX, pixelY, result, size, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2;
+      var GRAYSCALE, NOISE_DENSITY, NOISE_IMPACT, bufferContext, c, cmp, color, dataOffset, field, i, imageData, lighting, mod, noise, offset, pixelX, pixelY, plot_key, result, size, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2;
       NOISE_DENSITY = exports.Terrain.NOISE_DENSITY;
       NOISE_IMPACT = exports.Terrain.NOISE_IMPACT;
       noise = exports.Terrain.noise;
@@ -138,6 +152,10 @@ namespace('Alcarin.Game.Directives.Map.Painters', function(exports, Alcarin) {
         dataOffset = 4 * (pixelY * size + pixelX);
         result = 0;
         c = Alcarin.Color.intToRGB(color);
+        plot_key = this.plots.getKey(field.loc);
+        if (this.plots.dict[plot_key]) {
+          c = this.modPlotColor(c);
+        }
         _ref1 = ['r', 'g', 'b'];
         for (i = _j = 0, _len1 = _ref1.length; _j < _len1; i = ++_j) {
           cmp = _ref1[i];

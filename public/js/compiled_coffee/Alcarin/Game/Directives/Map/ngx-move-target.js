@@ -5,9 +5,9 @@ namespace('Alcarin.Game.Directives.Map', function(exports, Alcarin) {
       return {
         restrict: 'A',
         link: function($scope, $token, attrs) {
-          var updateTarget;
-          updateTarget = function() {
-            return MapBackground.dataReady().then(function(map) {
+          return MapBackground.dataReady().then(function(map) {
+            var updateTarget;
+            updateTarget = function() {
               var focusOn;
               focusOn = function(target) {
                 var loc;
@@ -32,13 +32,14 @@ namespace('Alcarin.Game.Directives.Map', function(exports, Alcarin) {
                 }
                 return $token.toggle(visible);
               });
+            };
+            CurrentCharacter.then(function(character) {
+              return character.$on('update', updateTarget);
             });
-          };
-          CurrentCharacter.then(function(character) {
-            return character.$on('update', updateTarget);
+            MapBackground.$on('swap', updateTarget);
+            MapBackground.$on('zoom', updateTarget);
+            return updateTarget();
           });
-          MapBackground.$on('zoom', updateTarget);
-          return updateTarget();
         }
       };
     }

@@ -1,5 +1,5 @@
 namespace('Alcarin.Game.Interfaces', function(exports, Alcarin) {
-  return exports.Test = {
+  return exports.Default = {
     mainbar: [
       {
         href: '#/href',
@@ -13,5 +13,5 @@ namespace('Alcarin.Game.Interfaces', function(exports, Alcarin) {
 });
 
 /*
-//@ sourceMappingURL=test.js.map
+//@ sourceMappingURL=default.js.map
 */

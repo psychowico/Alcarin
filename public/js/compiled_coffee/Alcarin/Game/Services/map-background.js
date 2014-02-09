@@ -6,17 +6,20 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
 namespace('Alcarin.Game.Services', function(exports, Alcarin) {
   var Units, ZOOM_FACTOR;
   Units = (function() {
-    function Units(parent, round) {
+    function Units() {
+      this.toUnits = __bind(this.toUnits, this);
+      this.toPixels = __bind(this.toPixels, this);
+    }
+
+    Units.prototype.update = function(parent, round) {
       this.parent = parent;
       if (round == null) {
         round = true;
       }
-      this.toUnits = __bind(this.toUnits, this);
-      this.toPixels = __bind(this.toPixels, this);
-      this.round = round ? Math.round : function(x) {
+      return this.round = round ? Math.floor : function(x) {
         return x;
       };
-    }
+    };
 
     Units.prototype.pixelCenter = function() {
       return this.toPixels(this.parent.center.x, this.parent.center.y);
@@ -45,8 +48,8 @@ namespace('Alcarin.Game.Services', function(exports, Alcarin) {
         y: round(center.y) - radius
       };
       return {
-        x: Math.round(round(x - offset.x) * pixelRadius / radius),
-        y: Math.round(round(y - offset.y) * pixelRadius / radius)
+        x: Math.floor(round(x - offset.x) * pixelRadius / radius),
+        y: Math.floor(round(y - offset.y) * pixelRadius / radius)
       };
     };
 
@@ -76,7 +79,7 @@ namespace('Alcarin.Game.Services', function(exports, Alcarin) {
       Background = (function(_super) {
         __extends(Background, _super);
 
-        Background.prototype.dataReadyDeffered = null;
+        Background.prototype.initializedDeffered = null;
 
         Background.prototype.zoom = false;
 
@@ -105,9 +108,9 @@ namespace('Alcarin.Game.Services', function(exports, Alcarin) {
         };
 
         Background.prototype.onDataReady = function(_arg) {
-          var character, charsArgs, info, radius, terrain, terrainArgs;
+          var character, charsArgs, info, plots, radius, terrain, terrainArgs;
           character = _arg[0], terrainArgs = _arg[1], charsArgs = _arg[2];
-          terrain = terrainArgs[0], info = terrainArgs[1];
+          terrain = terrainArgs[0], plots = terrainArgs[1], info = terrainArgs[2];
           radius = info.radius;
           if (this.zoom) {
             radius /= ZOOM_FACTOR;
@@ -115,32 +118,57 @@ namespace('Alcarin.Game.Services', function(exports, Alcarin) {
           this.info = {
             center: character.loc,
             fields: terrain,
+            plots: this.preparePlots(plots),
             radius: radius,
             charViewRadius: info.charViewRadius,
             talkRadius: info.talkRadius,
             lighting: info.lighting,
             pixelRadius: this.pixelRadius
           };
-          this._units = new Units(this.info, !this.zoom);
-          return this.dataReadyDeffered.resolve(this);
+          if (this._units == null) {
+            this._units = new Units;
+          }
+          this._units.update(this.info, !this.zoom);
+          this.initializedDeffered.resolve(this);
+          return this.$emit('swap', this);
+        };
+
+        Background.prototype.preparePlots = function(grouped_plots) {
+          var dict_plots, getKey, id, identify, plot, plots, _i, _len;
+          dict_plots = {};
+          getKey = function(loc) {
+            return Math.floor(loc.x) + ';' + Math.floor(loc.y);
+          };
+          for (id in grouped_plots) {
+            plots = grouped_plots[id];
+            for (_i = 0, _len = plots.length; _i < _len; _i++) {
+              plot = plots[_i];
+              identify = getKey(plot.loc);
+              dict_plots[identify] = id;
+            }
+          }
+          return {
+            getKey: getKey,
+            dict: dict_plots,
+            data: grouped_plots
+          };
         };
 
         Background.prototype.reset = function() {
           var loadingData, swapingChars, swapingTerrain;
-          if (this.dataReadyDeffered != null) {
-            this.dataReadyDeffered.reject();
+          if (this.initializedDeffered == null) {
+            this.initializedDeffered = $q.defer();
           }
           this.center = this.radius = this.charViewRadius = this.lighting = void 0;
           swapingTerrain = GameServer.one('terrain.swap');
           swapingChars = GameServer.one('chars.swap');
-          this.dataReadyDeffered = $q.defer();
           loadingData = $q.all([CurrentCharacter, swapingTerrain, swapingChars]);
           loadingData.then(this.onDataReady);
           return this.$emit('reset');
         };
 
         Background.prototype.dataReady = function() {
-          return this.dataReadyDeffered.promise;
+          return this.initializedDeffered.promise;
         };
 
         return Background;

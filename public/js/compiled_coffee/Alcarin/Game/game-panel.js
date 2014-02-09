@@ -16,11 +16,39 @@ namespace('Alcarin.Game', function(exports, Alcarin) {
     }
   ]);
   return exports.App = ngcontroller([
-    '$window', 'CurrentCharacter', 'GameServer', 'MapBackground', function($window, CurrentCharacter, GameServer, MapBackground) {
+    '$window', '$safeApply', 'CurrentCharacter', 'GameServer', 'MapBackground', function($window, $safeApply, CurrentCharacter, GameServer, MapBackground) {
       this.charid = $window.charid;
-      this["interface"] = Alcarin.Game.Interfaces.Test;
+      this["interface"] = null;
+      this.outside = true;
       GameServer.init(charid);
-      return CurrentCharacter.init(charid);
+      CurrentCharacter.init(charid);
+      this.$watch('outside', (function(_this) {
+        return function() {
+          return _this.updateInterface();
+        };
+      })(this));
+      this.toggleOutside = (function(_this) {
+        return function() {
+          return _this.outside = !_this.outside;
+        };
+      })(this);
+      this.updateInterface = (function(_this) {
+        return function() {
+          var I, _interface;
+          I = Alcarin.Game.Interfaces;
+          _interface = I.Default;
+          if (!_this.outside) {
+            _interface = I.Place;
+          }
+          return _this["interface"] = _interface;
+        };
+      })(this);
+      return CurrentCharacter.then((function(_this) {
+        return function(current) {
+          _this.outside = current.loc.place == null;
+          return _this.updateInterface();
+        };
+      })(this));
     }
   ]);
 });

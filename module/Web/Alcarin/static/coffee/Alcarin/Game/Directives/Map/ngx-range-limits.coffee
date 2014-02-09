@@ -5,8 +5,8 @@ namespace 'Alcarin.Game.Directives.Map', (exports, Alcarin) ->
     exports.module.directive 'alcRangeLimits', ['MapBackground', (MapBackground)->
         restrict: 'A'
         link: ($scope,$shadow,attrs)->
-            reposRange = ->
-                MapBackground.dataReady().then (map)->
+            MapBackground.dataReady().then (map)->
+                reposRange = ->
                     pos = map.units().pixelCenter()
                     $shadow.position {left: pos.x, top: pos.y}
 
@@ -15,7 +15,8 @@ namespace 'Alcarin.Game.Directives.Map', (exports, Alcarin) ->
                     $child.width 2 * shadowRadius
                     $child.height 2 * shadowRadius
                     $child.position {left: -shadowRadius, top: -shadowRadius}
-            MapBackground.$on 'reset', reposRange
-            MapBackground.$on 'zoom', (zoom)-> $shadow.toggle !zoom
-            reposRange()
+                MapBackground.$on 'reset', reposRange
+                MapBackground.$on 'swap', reposRange
+                MapBackground.$on 'zoom', (zoom)-> $shadow.toggle !zoom
+                reposRange()
     ]

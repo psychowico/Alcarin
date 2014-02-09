@@ -1,7 +1,7 @@
 'use strict';
 namespace('Alcarin.Game.Views.Map', function(exports, Alcarin) {
   return exports.Chars = ngcontroller([
-    'GameServer', 'CurrentCharacter', 'CharEnvironment', 'MapBackground', function(GameServer, CurrentCharacter, CharEnvironment, MapBackground) {
+    'CurrentCharacter', 'CharEnvironment', function(CurrentCharacter, CharEnvironment) {
       var _this = this;
       this.charslist = CharEnvironment.characters();
       return CurrentCharacter.then(function(current) {

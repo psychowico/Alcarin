@@ -6,21 +6,26 @@ namespace('Alcarin.Game.Directives.Map', function(exports, Alcarin) {
         restrict: 'A',
         link: function($scope, $icon, attrs) {
           return MapBackground.dataReady().then(function(map) {
-            var c, length, newPos, nvector, pc, pradius;
-            c = map.units().center();
-            length = Math.sqrt(c.x * c.x + c.y * c.y);
-            nvector = {
-              x: -c.x / length,
-              y: -c.y / length
+            var reposWC;
+            reposWC = function() {
+              var c, length, newPos, nvector, pc, pradius;
+              c = map.units().center();
+              length = Math.sqrt(c.x * c.x + c.y * c.y);
+              nvector = {
+                x: -c.x / length,
+                y: -c.y / length
+              };
+              pradius = map.units().pixelRadius();
+              pc = map.units().pixelCenter();
+              newPos = {
+                left: pc.x + nvector.x * pradius,
+                top: pc.y + nvector.y * pradius
+              };
+              $icon.position(newPos);
+              return $icon.show();
             };
-            pradius = map.units().pixelRadius();
-            pc = map.units().pixelCenter();
-            newPos = {
-              left: pc.x + nvector.x * pradius,
-              top: pc.y + nvector.y * pradius
-            };
-            $icon.position(newPos);
-            return $icon.show();
+            MapBackground.$on('swap', reposWC);
+            return reposWC();
           });
         }
       };

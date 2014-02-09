@@ -2,8 +2,8 @@
 
 namespace 'Alcarin.Game.Views.Map', (exports, Alcarin) ->
 
-    exports.Chars = ngcontroller ['GameServer', 'CurrentCharacter', 'CharEnvironment', 'MapBackground',
-        (GameServer, CurrentCharacter, CharEnvironment, MapBackground)->
+    exports.Chars = ngcontroller ['CurrentCharacter', 'CharEnvironment',
+        (CurrentCharacter, CharEnvironment)->
             @charslist  = CharEnvironment.characters()
 
             CurrentCharacter.then (current)=>

@@ -14,6 +14,15 @@
     border-color: #ff4646;
   }
 }
+.test-menu {
+  width: 170px;
+  text-align: center;
+  vertical-align: middle;
+}
+.test-menu button {
+  padding: 20px;
+  margin: 20px;
+}
 .area-map {
   position: relative;
   float: right;
@@ -33,12 +42,21 @@
   border-radius: 50%;
   overflow: hidden;
 }
-.area-map .main .terrain {
+.area-map .main canvas.cover-map {
+  position: absolute;
   width: 193px;
   height: 193px;
-  position: absolute;
   left: -6px;
   top: -6px;
+}
+.area-map .main .cover-map {
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: -6px;
+  top: -6px;
+}
+.area-map .main .terrain {
   overflow: hidden;
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
@@ -47,6 +65,8 @@
   border-radius: 50%;
 }
 .area-map .main .shadow {
+  width: 0;
+  height: 0;
   position: absolute;
 }
 .area-map .main .shadow div {
@@ -83,15 +103,11 @@
   -webkit-animation: targetpulse 0.5s linear 0s infinite alternate;
 }
 .area-map .main .characters {
-  overflow: hidden;
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
   -ms-border-radius: 50%;
   -o-border-radius: 50%;
   border-radius: 50%;
-  position: absolute;
-  width: 100%;
-  height: 100%;
 }
 .area-map .main .characters .character.hearable div {
   border-color: yellow;
@@ -127,6 +143,42 @@
   height: 12px;
   left: -9px;
   top: -9px;
+}
+.area-map .main .places {
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  border-radius: 50%;
+}
+.area-map .main .places .place {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+.area-map .main .places .place div {
+  cursor: pointer;
+  position: relative;
+  padding: 0px;
+  background-color: transparent;
+  width: 12px;
+  height: 12px;
+  left: -9px;
+  top: -9px;
+}
+.area-map .main .places .place div:hover {
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  border-radius: 50%;
+  width: 14px;
+  height: 14px;
+  left: -12px;
+  top: -12px;
+  border-style: dotted double;
+  border-width: 3px;
+  border-color: red;
 }
 .area-map .great-tower {
   position: absolute;

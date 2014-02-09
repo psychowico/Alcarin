@@ -4,7 +4,8 @@ var __hasProp = {}.hasOwnProperty,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 namespace('Alcarin.Game.Services.GameObject', function(exports, Alcarin) {
-  var Character;
+  var Character, Place;
+  Place = Alcarin.Game.Views.Map.Place;
   Character = (function(_super) {
     __extends(Character, _super);
 
@@ -18,6 +19,8 @@ namespace('Alcarin.Game.Services.GameObject', function(exports, Alcarin) {
     Character.prototype.moveTo = function(target) {
       if (target instanceof Character) {
         return this.GameServer.emit('follow.char', target._id);
+      } else if (target instanceof Place) {
+        return this.GameServer.emit('move-to-place.char', target);
       } else {
         return this.GameServer.emit('move.char', target);
       }
@@ -116,22 +119,23 @@ namespace('Alcarin.Game.Services.GameObject', function(exports, Alcarin) {
     };
 
     CharacterFactory.prototype.onGameEvent = function(gameEvent) {
-      var id, loc, _char,
-        _this = this;
+      var id, loc, _char;
       if (gameEvent.system) {
         id = gameEvent.id;
         switch (id) {
           case 'char.update-location':
             _char = gameEvent.args[0];
             loc = _char.loc;
-            return this.factory(_char._id).then(function(item) {
-              var oldloc;
-              oldloc = item.loc;
-              if (oldloc.x !== loc.x || oldloc.y !== loc.y) {
-                item.loc = loc;
-                return item.$emit('update-location');
-              }
-            });
+            return this.factory(_char._id).then((function(_this) {
+              return function(item) {
+                var oldloc;
+                oldloc = item.loc;
+                if (oldloc.x !== loc.x || oldloc.y !== loc.y) {
+                  item.loc = loc;
+                  return item.$emit('update-location');
+                }
+              };
+            })(this));
         }
       }
     };

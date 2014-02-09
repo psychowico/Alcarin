@@ -1,6 +1,7 @@
 'use strict'
 
 namespace 'Alcarin.Game.Services.GameObject', (exports, Alcarin) ->
+    Place = Alcarin.Game.Views.Map.Place
 
     class Character extends Alcarin.EventsEmitter
         @count : 0
@@ -11,6 +12,8 @@ namespace 'Alcarin.Game.Services.GameObject', (exports, Alcarin) ->
         moveTo: (target)->
             if target instanceof Character
                 @GameServer.emit 'follow.char', target._id
+            else if target instanceof Place
+                @GameServer.emit 'move-to-place.char', target
             else
                 @GameServer.emit 'move.char', target
 
