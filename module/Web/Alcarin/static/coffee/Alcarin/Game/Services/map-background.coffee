@@ -80,7 +80,7 @@ namespace 'Alcarin.Game.Services', (exports, Alcarin) ->
                     @initializedDeffered.resolve @
                     # map reloaded means, that all map has been changed some way,
                     # in most cases it will be current character travel event
-                    @$emit 'swap'
+                    @$emit 'swap', @
                     # @dataReadyDeffered.resolve @
 
                 # we need fast way to check that specific pixel is

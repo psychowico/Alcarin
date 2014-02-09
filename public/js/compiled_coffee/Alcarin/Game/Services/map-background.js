@@ -130,7 +130,7 @@ namespace('Alcarin.Game.Services', function(exports, Alcarin) {
           }
           this._units.update(this.info, !this.zoom);
           this.initializedDeffered.resolve(this);
-          return this.$emit('swap');
+          return this.$emit('swap', this);
         };
 
         Background.prototype.preparePlots = function(grouped_plots) {

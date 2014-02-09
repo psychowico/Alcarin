@@ -13,7 +13,6 @@ namespace 'Alcarin.Game.Views.Map', (exports, Alcarin) ->
             MapBackground.dataReady().then (map)=>
                 reloadPlaces = =>
                     plots = map.info.plots
-                    console.log plots
                     table = {}
                     getKey = (loc)-> Math.floor(loc.x) + ';' + Math.floor(loc.y)
                     places = {}

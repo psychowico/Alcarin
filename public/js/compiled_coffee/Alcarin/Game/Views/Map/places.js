@@ -20,7 +20,6 @@ namespace('Alcarin.Game.Views.Map', function(exports, Alcarin) {
           reloadPlaces = function() {
             var getKey, place, places, plot, plots, table, x, y, _i, _len, _plots, _ref;
             plots = map.info.plots;
-            console.log(plots);
             table = {};
             getKey = function(loc) {
               return Math.floor(loc.x) + ';' + Math.floor(loc.y);
