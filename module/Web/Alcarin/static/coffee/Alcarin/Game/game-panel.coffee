@@ -22,9 +22,12 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
     exports.App = ngcontroller ['$window', 'CurrentCharacter', 'GameServer', 'MapBackground',
         ($window, CurrentCharacter, GameServer, MapBackground)->
             @charid = $window.charid
-            @interface = Alcarin.Game.Interfaces.Test
+            @interface = Alcarin.Game.Interfaces.Default
 
             GameServer.init charid
             CurrentCharacter.init charid
+
+            @$on 'change-interface', (ev, target)=>
+                @interface = target
 
     ]

@@ -6,6 +6,9 @@ namespace 'Alcarin.Game.Views', (exports, Alcarin) ->
         (MapBackground, CurrentChar)->
             @playerOnPlot = false
 
+            @enterPlace = =>
+                @$emit 'change-interface', Alcarin.Game.Interfaces.Place
+
             MapBackground.$on 'swap', (map)=>
                 CurrentChar.then (current)=>
                     plots = MapBackground.info.plots
