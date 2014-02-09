@@ -1,7 +1,10 @@
 'use strict'
 
 namespace 'Alcarin.Game.Views.Map', (exports, Alcarin) ->
+    class Place
+        constructor: (@id, @loc)->
 
+    exports.Place = Place
     exports.Places = ngcontroller ['MapBackground',
         (MapBackground)->
             @placesList = []
@@ -10,6 +13,7 @@ namespace 'Alcarin.Game.Views.Map', (exports, Alcarin) ->
             MapBackground.dataReady().then (map)=>
                 reloadPlaces = =>
                     plots = map.info.plots
+                    console.log plots
                     table = {}
                     getKey = (loc)-> Math.floor(loc.x) + ';' + Math.floor(loc.y)
                     places = {}
@@ -21,8 +25,7 @@ namespace 'Alcarin.Game.Views.Map', (exports, Alcarin) ->
                             y += plot.loc.y
                         x /= _plots.length
                         y /= _plots.length
-                        places[place] =
-                            loc: {x: x, y: y}
+                        places[place] = new Place place, {x: x, y: y}
                     @placesList = places
                 MapBackground.$on 'swap', reloadPlaces
                 reloadPlaces()

@@ -35,27 +35,31 @@ namespace('Alcarin.Game.Views', function(exports, Alcarin) {
       lastClick = new Date();
       this.mapClicked = (function(_this) {
         return function(ev) {
-          var current, diff, target;
-          target = $(ev.target).closest('.character,.characters');
+          var current, diff;
           current = new Date();
           diff = (current.getTime() - lastClick.getTime()) / 1000;
           if (diff > 1) {
-            MapBackground.dataReady().then(function(map) {
-              var offset, x, y;
-              if (target.is('.character')) {
-                target = target.data('rel');
-              } else {
-                offset = $(ev.currentTarget).offset();
-                x = ev.pageX - offset.left;
-                y = ev.pageY - offset.top;
-                target = map.units().toUnits(x, y);
-              }
-              return CurrentCharacter.then(function(character) {
-                return character.moveTo(target);
-              });
-            });
+            _this.chooseClickType(ev);
             return lastClick = current;
           }
+        };
+      })(this);
+      this.chooseClickType = (function(_this) {
+        return function(ev) {
+          var target;
+          target = $(ev.target).closest('.character,.place').data('rel');
+          return MapBackground.dataReady().then(function(map) {
+            var offset, x, y;
+            if (target == null) {
+              offset = $(ev.currentTarget).offset();
+              x = ev.pageX - offset.left;
+              y = ev.pageY - offset.top;
+              target = map.units().toUnits(x, y);
+            }
+            return CurrentCharacter.then(function(character) {
+              return character.moveTo(target);
+            });
+          });
         };
       })(this);
       return MapBackground.setPixelRadius($('.area-map canvas.terrain').width() / 2);

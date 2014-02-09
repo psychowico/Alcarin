@@ -28,21 +28,22 @@ namespace 'Alcarin.Game.Views', (exports, Alcarin) ->
 
             lastClick = new Date()
             @mapClicked = (ev)=>
-                target = $(ev.target).closest '.character,.characters'
                 current = new Date()
                 diff = (current.getTime() - lastClick.getTime()) / 1000
                 # we can click one per second
                 if diff > 1
-                    MapBackground.dataReady().then (map)->
-                        if target.is '.character'
-                            target = target.data 'rel'
-                        else
-                            offset = $(ev.currentTarget).offset()
-                            x = ev.pageX - offset.left
-                            y = ev.pageY - offset.top
-                            target = map.units().toUnits x, y
-                        CurrentCharacter.then (character)-> character.moveTo target
+                    @chooseClickType ev
                     lastClick = current
+
+            @chooseClickType = (ev)=>
+                target = $(ev.target).closest('.character,.place').data 'rel'
+                MapBackground.dataReady().then (map)->
+                    if not target?
+                        offset = $(ev.currentTarget).offset()
+                        x = ev.pageX - offset.left
+                        y = ev.pageY - offset.top
+                        target = map.units().toUnits x, y
+                    CurrentCharacter.then (character)-> character.moveTo target
 
             # no idea how to get canvas size without breaking angularjs rules ;)
             # so threat it as exception.

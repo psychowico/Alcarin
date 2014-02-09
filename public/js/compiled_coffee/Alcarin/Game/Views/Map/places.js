@@ -1,5 +1,16 @@
 'use strict';
 namespace('Alcarin.Game.Views.Map', function(exports, Alcarin) {
+  var Place;
+  Place = (function() {
+    function Place(id, loc) {
+      this.id = id;
+      this.loc = loc;
+    }
+
+    return Place;
+
+  })();
+  exports.Place = Place;
   return exports.Places = ngcontroller([
     'MapBackground', function(MapBackground) {
       this.placesList = [];
@@ -9,6 +20,7 @@ namespace('Alcarin.Game.Views.Map', function(exports, Alcarin) {
           reloadPlaces = function() {
             var getKey, place, places, plot, plots, table, x, y, _i, _len, _plots, _ref;
             plots = map.info.plots;
+            console.log(plots);
             table = {};
             getKey = function(loc) {
               return Math.floor(loc.x) + ';' + Math.floor(loc.y);
@@ -26,12 +38,10 @@ namespace('Alcarin.Game.Views.Map', function(exports, Alcarin) {
               }
               x /= _plots.length;
               y /= _plots.length;
-              places[place] = {
-                loc: {
-                  x: x,
-                  y: y
-                }
-              };
+              places[place] = new Place(place, {
+                x: x,
+                y: y
+              });
             }
             return _this.placesList = places;
           };
