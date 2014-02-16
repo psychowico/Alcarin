@@ -1,5 +1,18 @@
 'use strict'
 
+#
+# tag translation is the process of working up the text
+# and a list of arguments for a list of objects that contain fragments of text
+# and object-oriented description of a particular piece of property.
+# example:
+#
+# input object: {text: "I, %0, like bananas.", [{text: "Filipe", type: "char"}]}
+# output:
+# [{text: "I, ", type: "text"}, {text: "Filipe", type: "char"}, {text:", like bananas.", type: "text"}]
+#
+# this kind of list are easier to display and manage by angularjs mechanism, in our templates
+#
+
 namespace 'Alcarin.Game.Tools', (exports, Alcarin) ->
 
     reg = /%([0-9])+/g
