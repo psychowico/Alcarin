@@ -102,10 +102,11 @@ class DevConsoleController extends AbstractActionController
         foreach($data as $lang => $pack) {
             foreach($pack as $key => $value) {
                 $fullkey = $key . '.' . $lang;
-                $mongo->translations->insert([
-                    '_id' => $fullkey,
-                    'val' => $value,
-                ]);
+                $mongo->translations->update(
+                    ['_id' => $fullkey],
+                    ['_id' => $fullkey, 'val' => $value],
+                    ['upsert' => true]
+                );
             }
         }
         echo 'Done setting default translations pack.' . PHP_EOL;
