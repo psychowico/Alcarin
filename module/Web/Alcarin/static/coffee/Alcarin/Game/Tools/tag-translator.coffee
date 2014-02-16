@@ -9,6 +9,7 @@ namespace 'Alcarin.Game.Tools', (exports, Alcarin) ->
 
         output = []
         offset = 0
+
         while match = reg.exec _text
             arg_index = parseInt match[1]
             arg = _args[arg_index]
@@ -25,5 +26,10 @@ namespace 'Alcarin.Game.Tools', (exports, Alcarin) ->
             output.push fArg
 
             _text = _text.substr match.index + match[0].length
+
+        if output.length == 0
+            output.push
+                text: _text
+                type: 'text'
 
         return output
