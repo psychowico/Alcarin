@@ -40,7 +40,7 @@ namespace 'Alcarin.Game.Tools', (exports, Alcarin) ->
 
             _text = _text.substr match.index + match[0].length
 
-        if output.length == 0
+        if _text.length > 0
             output.push
                 text: _text
                 type: 'text'
