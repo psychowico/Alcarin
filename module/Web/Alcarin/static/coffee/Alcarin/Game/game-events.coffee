@@ -26,39 +26,16 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
                     console.log c
     ]
 
+    TagTranslator = Alcarin.Game.Tools.TagTranslator
     Alcarin.Game.module.filter('EventTime', ->
         (time)->
             return time if isNaN time
             _time = new GameTime time
             return _time.print_long()
     ).factory('GameEventsTranslator', [->#'GameObjectFactory', (GameObjectFactory)->
-        reg = /%([0-9])+/g
         return (gameEvent)->
-            _text = gameEvent.text
-            output = []
-            offset = 0
-            # time: gameEvent.time
-            while match = reg.exec _text
-                arg_index = parseInt match[1]
-                arg = gameEvent.args[arg_index]
-
-                if $.isPlainObject arg
-                    fArg = $.extend {text: arg.text}, arg.__base
-                    # GameObjectFactory fArg
-                else
-                    fArg =
-                        text: arg
-                        type: 'text'
-
-                pre_text = _text.substr offset, match.index
-                output.push {text: pre_text, type: 'text'} if pre_text.length > 0
-                output.push fArg
-
-                _text = _text.substr match.index + match[0].length
-            {
-                body: output
-                time: gameEvent.time
-            }
+            body: TagTranslator gameEvent
+            time: gameEvent.time
     ])
 
     class GameTime
