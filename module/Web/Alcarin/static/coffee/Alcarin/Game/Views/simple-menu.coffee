@@ -7,15 +7,16 @@ namespace 'Alcarin.Game.Views', (exports, Alcarin) ->
             @playerOnPlot = false
 
             @togglePlace = =>
-                if @playerOnPlot
-                    if @toggleOutside()
-                        GameServer.emit 'leave-place'
-                    else
-                        GameServer.emit 'enter-place', @playerOnPlot
+                if @playerOnPlot and not @toggleOutside()
+                    GameServer.emit 'enter-place', @playerOnPlot
 
-            MapBackground.$on 'swap', (map)=>
+            @_checkVisibility = (map)=>
                 CurrentChar.then (current)=>
                     plots = MapBackground.info.plots
                     key = plots.getKey current.loc
                     @playerOnPlot = plots.dict[key]
+
+            MapBackground.$on 'swap', @_checkVisibility
+            MapBackground.dataReady().then @_checkVisibility
+
     ]

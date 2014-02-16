@@ -9,9 +9,12 @@ namespace Admin\GameObject\Extension\Translation;
  */
 class DynamicTranslationsDefinitions extends \Core\GameObject
 {
-    const TEXT   = 0;
+    const TEXT      = 0;
+    const NUMBER    = 1;
     //CHARNAME - visible in way how observer calls arg char.
-    const CHARNAME   = 1;
+    const CHARNAME  = 2;
+    //PLACENAME - visible in way how observer calls arg place
+    const PLACENAME = 3;
 
     protected $defs = [
         'events' => [
@@ -29,6 +32,21 @@ class DynamicTranslationsDefinitions extends \Core\GameObject
             ],
             'time-of-day' => [
                 'descr'     => 'Textual representation of specific times of the day.',
+            ],
+            'no-named-place' => [
+                'descr'     => 'Name of place, showing when player not give place any name.',
+            ],
+            'place-description-name' => [
+                'descr'     => 'Description of place, showing when player is "inside" specific place, player naming part.',
+                'args'      => [
+                    ['type' => self::PLACENAME, 'descr' => 'Named place.'],
+                ],
+            ],
+            'place-description-chars' => [
+                'descr'     => 'Description of place, numbers of place inside this zone.',
+                'args'      => [
+                    ['type' => self::NUMBER, 'descr' => 'Number of chars inside zone.'],
+                ],
             ],
             'race' => [
                 'descr'     => 'Character races.',

@@ -22,19 +22,25 @@ namespace('Alcarin.Game.Services', function(exports, Alcarin) {
       this.$q = $q;
       this.authorize = __bind(this.authorize, this);
       this.socketInitialized = __bind(this.socketInitialized, this);
+      this.ready = __bind(this.ready, this);
       this.resetAuth = __bind(this.resetAuth, this);
       this.initSocket = this._loadSocketLibrary(this.host, this.port);
       this.resetAuth();
     }
 
     ServerConnector.prototype.resetAuth = function() {
-      var _this = this;
       this.authorizationToken = Q.defer();
       this.authorization = this.authorizationToken.promise;
-      return this.authorization.then(function() {
-        console.log('authorized..');
-        return _this.emit('swap.all');
-      });
+      return this.authorization.then((function(_this) {
+        return function() {
+          console.log('authorized..');
+          return _this.emit('swap.all');
+        };
+      })(this));
+    };
+
+    ServerConnector.prototype.ready = function() {
+      return this.authorizationToken.promise;
     };
 
     ServerConnector.prototype.init = function(charid) {
@@ -91,25 +97,29 @@ namespace('Alcarin.Game.Services', function(exports, Alcarin) {
     };
 
     ServerConnector.prototype.socketInitialized = function(socket) {
-      var _this = this;
       socket.on('connect', this.authorize);
-      socket.on('disconnect', function() {
-        console.warn('GameServer disconnected.');
-        return _this.resetAuth();
-      });
-      return socket.on('client.authorized', function() {
-        return _this.authorizationToken.resolve();
-      });
+      socket.on('disconnect', (function(_this) {
+        return function() {
+          console.warn('GameServer disconnected.');
+          return _this.resetAuth();
+        };
+      })(this));
+      return socket.on('client.authorized', (function(_this) {
+        return function() {
+          return _this.authorizationToken.resolve();
+        };
+      })(this));
     };
 
     ServerConnector.prototype.authorize = function() {
-      var _this = this;
-      return this.initSocket.then(function(socket) {
-        return socket.emit('auth', {
-          charid: _this.charid,
-          session: _this.sessionid
-        });
-      });
+      return this.initSocket.then((function(_this) {
+        return function(socket) {
+          return socket.emit('auth', {
+            charid: _this.charid,
+            session: _this.sessionid
+          });
+        };
+      })(this));
     };
 
     ServerConnector.prototype._loadSocketLibrary = function(host, socket_port) {
@@ -140,5 +150,5 @@ namespace('Alcarin.Game.Services', function(exports, Alcarin) {
 });
 
 /*
-//@ sourceMappingURL=ngx-server-io.js.map
+//@ sourceMappingURL=ngx-game-server.js.map
 */

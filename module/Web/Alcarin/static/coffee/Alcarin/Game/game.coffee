@@ -14,13 +14,16 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
                     .when '/chars',
                         controller: Alcarin.Game.Views.Chars
                         templateUrl: urls.game.panel + '/__chars'
+                    .when '/place-default',
+                        controller: Alcarin.Game.Views.Place.Default
+                        templateUrl: urls.game.panel + '/__place-default'
                     .otherwise
                         redirectTo:'/home'
             ]
 
-    # don't delete MapBackground - it need initialization somewhere
-    exports.App = ngcontroller ['$window', '$safeApply', 'CurrentCharacter', 'GameServer', 'MapBackground',
-        ($window, $safeApply, CurrentCharacter, GameServer, MapBackground)->
+    # core controller, root in game custom controllers hierarchy
+    AppBody = ($window, $safeApply, CurrentCharacter, GameServer, MapBackground,
+        $location)->
             @charid    = $window.charid
             @interface = null
             @outside   = true
@@ -34,11 +37,19 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
             @updateInterface = =>
                 I = Alcarin.Game.Interfaces
                 _interface = I.Default
-                _interface = I.Place if not @outside
-                @interface = _interface
+                if not @outside
+                    _interface = I.Place
+
+                if @interface != _interface
+                    $location.path _interface.mainbar[0].href
+                    @interface = _interface
 
             CurrentCharacter.then (current)=>
                 @outside = !current.loc.place?
                 # set starting interface
-                @updateInterface()
-    ]
+            @updateInterface()
+
+    # don't delete MapBackground - it need initialization somewhere
+    exports.App = ngcontroller ['$window', '$safeApply', 'CurrentCharacter',
+            'GameServer', 'MapBackground', '$location', AppBody]
+

@@ -1,47 +1,55 @@
 'use strict';
 namespace('Alcarin.Game', function(exports, Alcarin) {
-  var GameTime;
+  var GameTime, TagTranslator;
   exports.GameEvents = ngcontroller([
     'GameServer', 'GameEventsTranslator', function(GameServer, Translate) {
-      var _this = this;
       this.gameEvents = null;
       this.sending = false;
-      GameServer.on('game-event.swap', function(data) {
-        var ev;
-        return _this.gameEvents = (function() {
-          var _i, _len, _results;
-          _results = [];
-          for (_i = 0, _len = data.length; _i < _len; _i++) {
-            ev = data[_i];
-            _results.push(Translate(ev));
+      GameServer.on('game-event.swap', (function(_this) {
+        return function(data) {
+          var ev;
+          return _this.gameEvents = (function() {
+            var _i, _len, _results;
+            _results = [];
+            for (_i = 0, _len = data.length; _i < _len; _i++) {
+              ev = data[_i];
+              _results.push(Translate(ev));
+            }
+            return _results;
+          })();
+        };
+      })(this));
+      GameServer.on('game-event.add', (function(_this) {
+        return function(evData) {
+          var gameEvent;
+          if (!evData.system) {
+            gameEvent = Translate(evData);
+            _this.gameEvents.splice(0, 0, gameEvent);
+            if (evData.response) {
+              return _this.sending = false;
+            }
           }
-          return _results;
-        })();
-      });
-      GameServer.on('game-event.add', function(evData) {
-        var gameEvent;
-        if (!evData.system) {
-          gameEvent = Translate(evData);
-          _this.gameEvents.splice(0, 0, gameEvent);
-          if (evData.response) {
-            return _this.sending = false;
+        };
+      })(this));
+      this.talkToAll = (function(_this) {
+        return function(content) {
+          if (content.length === 0) {
+            return;
           }
-        }
-      });
-      this.talkToAll = function(content) {
-        if (content.length === 0) {
-          return;
-        }
-        _this.sending = true;
-        return GameServer.emit('public-talk', content);
-      };
-      return this.charClicked = function(_char) {
-        return _char.resolve().then(function(c) {
-          return console.log(c);
-        });
-      };
+          _this.sending = true;
+          return GameServer.emit('public-talk', content);
+        };
+      })(this);
+      return this.charClicked = (function(_this) {
+        return function(_char) {
+          return _char.resolve().then(function(c) {
+            return console.log(c);
+          });
+        };
+      })(this);
     }
   ]);
+  TagTranslator = Alcarin.Game.Tools.TagTranslator;
   Alcarin.Game.module.filter('EventTime', function() {
     return function(time) {
       var _time;
@@ -53,38 +61,9 @@ namespace('Alcarin.Game', function(exports, Alcarin) {
     };
   }).factory('GameEventsTranslator', [
     function() {
-      var reg;
-      reg = /%([0-9])+/g;
       return function(gameEvent) {
-        var arg, arg_index, fArg, match, offset, output, pre_text, _text;
-        _text = gameEvent.text;
-        output = [];
-        offset = 0;
-        while (match = reg.exec(_text)) {
-          arg_index = parseInt(match[1]);
-          arg = gameEvent.args[arg_index];
-          if ($.isPlainObject(arg)) {
-            fArg = $.extend({
-              text: arg.text
-            }, arg.__base);
-          } else {
-            fArg = {
-              text: arg,
-              type: 'text'
-            };
-          }
-          pre_text = _text.substr(offset, match.index);
-          if (pre_text.length > 0) {
-            output.push({
-              text: pre_text,
-              type: 'text'
-            });
-          }
-          output.push(fArg);
-          _text = _text.substr(match.index + match[0].length);
-        }
         return {
-          body: output,
+          body: TagTranslator(gameEvent),
           time: gameEvent.time
         };
       };

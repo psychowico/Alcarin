@@ -15,6 +15,15 @@
         "static.time-of-day.night": "Ciemno wszędzie, głucho wszędzie..",
         "static.time-of-day.morning": "Z jutrzenką wraca nadzieja.",
 
+        "static.no-named-place.std": "obce miejsce",
+
+        "static.place-description-name.nonamed": "Nie rozpoznajesz tego miejsca.",
+        "static.place-description-name.named": "To %0.",
+
+        "static.place-description-chars.empty": "W okolicy nie widać żywej duszy.",
+        "static.place-description-chars.one": "Spostrzegasz kogoś w pobliżu.",
+        "static.place-description-chars.more": "Widzisz %0 osób.",
+
         "static.race.human": "Człowiek",
         "static.race.elf": "Elf",
         "static.race.dwarf": "Krasnolud",

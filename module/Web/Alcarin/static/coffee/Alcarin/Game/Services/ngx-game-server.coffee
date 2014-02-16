@@ -2,7 +2,6 @@
 
 namespace 'Alcarin.Game.Services', (exports, Alcarin) ->
 
-
     exports.module = angular.module('@game-services', ['ngCookies'])
         .factory 'GameServer', ['$location', '$cookies', '$rootScope', '$q',
             ($location, cookies, $rootScope, $q)->
@@ -29,6 +28,8 @@ namespace 'Alcarin.Game.Services', (exports, Alcarin) ->
             @authorization.then =>
                 console.log 'authorized..'
                 @emit 'swap.all'
+
+        ready: => @authorizationToken.promise
 
         init: (@charid)->
             @initSocket.then @socketInitialized
