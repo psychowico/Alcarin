@@ -60,7 +60,7 @@ return array(
                     # files for regular players
                     'player' => array(
                         'sources' => array(
-                            '/js/compiled_coffee/Alcarin/Game/Services/ngx-server-io.js',
+                            '/js/compiled_coffee/Alcarin/Game/Services/ngx-game-server.js',
                             '/js/compiled_coffee/Alcarin/Game/Directives/Map/ngx-map-module.js',
                             '/js/compiled_coffee/Alcarin/Game/Services/char-environment.js',
                         ),

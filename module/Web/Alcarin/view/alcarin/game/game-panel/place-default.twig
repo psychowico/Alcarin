@@ -1,1 +1,15 @@
-Default place view!
+<div>
+
+    <div class="pull-left">
+        <span ng-repeat="descr in description">
+            <span ng-repeat="part in descr">
+                <span ng-switch on="part.type">
+                    <span ng-switch-when="text">{* part.text *}</span>
+                </span>
+            </span>
+        </span>
+    </div>
+    <div class="pull-right">
+        {{ help('Tu znajduje się domyślny opis miejsca. Jest nazwa nadana mu przez gracza, liczba osób znajdujących się tutaj, będzie opis nadany przez graczy, gdy powstanie taka funkcjonalność.', 'left') }}
+    </div>
+</div>
