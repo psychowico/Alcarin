@@ -10,7 +10,7 @@ namespace('Alcarin.Game.Views', function(exports, Alcarin) {
           }
         };
       })(this);
-      return MapBackground.$on('swap', (function(_this) {
+      this._checkVisibility = (function(_this) {
         return function(map) {
           return CurrentChar.then(function(current) {
             var key, plots;
@@ -19,7 +19,9 @@ namespace('Alcarin.Game.Views', function(exports, Alcarin) {
             return _this.playerOnPlot = plots.dict[key];
           });
         };
-      })(this));
+      })(this);
+      MapBackground.$on('swap', this._checkVisibility);
+      return MapBackground.dataReady().then(this._checkVisibility);
     }
   ]);
 });
