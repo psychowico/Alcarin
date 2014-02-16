@@ -41,9 +41,11 @@ namespace('Alcarin.Game', function(exports, Alcarin) {
         _interface = I.Default;
         if (!_this.outside) {
           _interface = I.Place;
-          $location.path('/place-default');
         }
-        return _this["interface"] = _interface;
+        if (_this["interface"] !== _interface) {
+          $location.path(_interface.mainbar[0].href);
+          return _this["interface"] = _interface;
+        }
       };
     })(this);
     CurrentCharacter.then((function(_this) {

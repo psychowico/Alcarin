@@ -7,11 +7,8 @@ namespace 'Alcarin.Game.Views', (exports, Alcarin) ->
             @playerOnPlot = false
 
             @togglePlace = =>
-                if @playerOnPlot
-                    if @toggleOutside()
-                        GameServer.emit 'leave-place'
-                    else
-                        GameServer.emit 'enter-place', @playerOnPlot
+                if @playerOnPlot and not @toggleOutside()
+                    GameServer.emit 'enter-place', @playerOnPlot
 
             MapBackground.$on 'swap', (map)=>
                 CurrentChar.then (current)=>

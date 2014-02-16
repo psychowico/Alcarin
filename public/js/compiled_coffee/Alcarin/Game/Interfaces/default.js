@@ -2,7 +2,7 @@ namespace('Alcarin.Game.Interfaces', function(exports, Alcarin) {
   return exports.Default = {
     mainbar: [
       {
-        href: '#/home',
+        href: '/home',
         icon: 'icon-globe'
       }
     ]

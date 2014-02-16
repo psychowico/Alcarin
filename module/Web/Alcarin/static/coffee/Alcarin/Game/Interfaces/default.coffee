@@ -5,7 +5,7 @@
 namespace 'Alcarin.Game.Interfaces', (exports, Alcarin) ->
     exports.Default =
         mainbar: [
-            { href: '#/home', icon: 'icon-globe' }
+            { href: '/home', icon: 'icon-globe' }
             # { href: '#/chars', icon: 'icon-globe' }
         ]
 

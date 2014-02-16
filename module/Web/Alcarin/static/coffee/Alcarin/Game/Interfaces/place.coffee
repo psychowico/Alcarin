@@ -5,6 +5,6 @@
 namespace 'Alcarin.Game.Interfaces', (exports, Alcarin) ->
     exports.Place =
         mainbar: [
-            { href: '#/place-default', icon: 'icon-home' }
+            { href: '/place-default', icon: 'icon-home' }
         ]
 

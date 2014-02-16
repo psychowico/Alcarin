@@ -5,12 +5,8 @@ namespace('Alcarin.Game.Views', function(exports, Alcarin) {
       this.playerOnPlot = false;
       this.togglePlace = (function(_this) {
         return function() {
-          if (_this.playerOnPlot) {
-            if (_this.toggleOutside()) {
-              return GameServer.emit('leave-place');
-            } else {
-              return GameServer.emit('enter-place', _this.playerOnPlot);
-            }
+          if (_this.playerOnPlot && !_this.toggleOutside()) {
+            return GameServer.emit('enter-place', _this.playerOnPlot);
           }
         };
       })(this);

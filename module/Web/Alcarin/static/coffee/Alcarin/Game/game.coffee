@@ -39,9 +39,10 @@ namespace 'Alcarin.Game', (exports, Alcarin) ->
                 _interface = I.Default
                 if not @outside
                     _interface = I.Place
-                    $location.path '/place-default'
 
-                @interface = _interface
+                if @interface != _interface
+                    $location.path _interface.mainbar[0].href
+                    @interface = _interface
 
             CurrentCharacter.then (current)=>
                 @outside = !current.loc.place?
