@@ -14,7 +14,7 @@ Planeta ma kształt dysku, opiera się o plecy czterech słonii, które stoją n
 w przestrzeniach wszechświata. Światło i ciepło planecie daje olbrzymia latarnia znajdująca się na
 szczycie wielkiej kolumny postawionej przez bogów w centrum świata. Latarnia ta pulsuje, tak
 że mamy atmosferę podobną do naszego dnia i nocy. Jednak dzień trwa dwie nasze doby (48h), tak samo
-jak i noc. Z tego wynika, że pełny obrót latarnii zajmuje jej 4 doby czasu naszego świata.
+jak i noc. Z tego wynika, że pełny cykl latarnii zajmuje 4 doby czasu naszego świata.
 Na planecie nie ma wyraźnych pór roku, za to są obszary znacznie różniące się klimatem - na obrzeżach
 planety panuje wieczne zlodowacenie (dzięki temu oceny nie "spływają"), za to w okolicach centrum
 mamy coś w rodzaju tropikalnej dżungli.
