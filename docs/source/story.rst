@@ -38,7 +38,7 @@ czy trwa noc, czy też dzień.
 
 Humanoidy
 ---------
-Na Alcarin można spotkać więcej niż jeden typ intelegintnych istot. Na pewno będą to elfy, krasnolodu
+Na Alcarin można spotkać więcej niż jeden typ intelegintnych istot. Na pewno będą to elfy, krasnolody
 i ludzie, jednak być może potem znajdzie się tego więcej.
 
 Nadprzyrodzone
